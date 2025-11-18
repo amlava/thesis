@@ -1,0 +1,268 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global/global}
+    \entry{Boyd_Vandenberghe_2004}{book}{}{}
+      \name{author}{2}{}{%
+        {{hash=ec94d94cc487dd71939a90cbeaaf47d0}{%
+           family={Boyd},
+           familyi={B\bibinitperiod},
+           given={Stephen},
+           giveni={S\bibinitperiod}}}%
+        {{hash=2608d599a0bc2a784c301329a8da5f7b}{%
+           family={Vandenberghe},
+           familyi={V\bibinitperiod},
+           given={Lieven},
+           giveni={L\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{436abed3bce8d1b1d30640d4e5ff3d58}
+      \strng{fullhash}{436abed3bce8d1b1d30640d4e5ff3d58}
+      \strng{fullhashraw}{436abed3bce8d1b1d30640d4e5ff3d58}
+      \strng{bibnamehash}{436abed3bce8d1b1d30640d4e5ff3d58}
+      \strng{authorbibnamehash}{436abed3bce8d1b1d30640d4e5ff3d58}
+      \strng{authornamehash}{436abed3bce8d1b1d30640d4e5ff3d58}
+      \strng{authorfullhash}{436abed3bce8d1b1d30640d4e5ff3d58}
+      \strng{authorfullhashraw}{436abed3bce8d1b1d30640d4e5ff3d58}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Convex Optimization}
+      \field{year}{2004}
+    \endentry
+    \entry{chung1954stochastic}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=1e7091c4baf9ddfb854e70699ada72d8}{%
+           family={Chung},
+           familyi={C\bibinitperiod},
+           given={Kai\bibnamedelima Lai},
+           giveni={K\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {JSTOR}%
+      }
+      \strng{namehash}{1e7091c4baf9ddfb854e70699ada72d8}
+      \strng{fullhash}{1e7091c4baf9ddfb854e70699ada72d8}
+      \strng{fullhashraw}{1e7091c4baf9ddfb854e70699ada72d8}
+      \strng{bibnamehash}{1e7091c4baf9ddfb854e70699ada72d8}
+      \strng{authorbibnamehash}{1e7091c4baf9ddfb854e70699ada72d8}
+      \strng{authornamehash}{1e7091c4baf9ddfb854e70699ada72d8}
+      \strng{authorfullhash}{1e7091c4baf9ddfb854e70699ada72d8}
+      \strng{authorfullhashraw}{1e7091c4baf9ddfb854e70699ada72d8}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The Annals of Mathematical Statistics}
+      \field{title}{On a stochastic approximation method}
+      \field{year}{1954}
+      \field{pages}{463\bibrangedash 483}
+      \range{pages}{21}
+    \endentry
+    \entry{cutler2023drift}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=d72399eeb0d100727efc0536d1ca3353}{%
+           family={Cutler},
+           familyi={C\bibinitperiod},
+           given={Joshua},
+           giveni={J\bibinitperiod}}}%
+        {{hash=b0a4d9b21a7072ea57b625a8306e18d5}{%
+           family={Drusvyatskiy},
+           familyi={D\bibinitperiod},
+           given={Dmitriy},
+           giveni={D\bibinitperiod}}}%
+        {{hash=93f7c37f41abcababec1f53b76184ef8}{%
+           family={Harchaoui},
+           familyi={H\bibinitperiod},
+           given={Zaid},
+           giveni={Z\bibinitperiod}}}%
+      }
+      \strng{namehash}{8dee8e79a799505b7b355f5f2c52f8d3}
+      \strng{fullhash}{8dee8e79a799505b7b355f5f2c52f8d3}
+      \strng{fullhashraw}{8dee8e79a799505b7b355f5f2c52f8d3}
+      \strng{bibnamehash}{8dee8e79a799505b7b355f5f2c52f8d3}
+      \strng{authorbibnamehash}{8dee8e79a799505b7b355f5f2c52f8d3}
+      \strng{authornamehash}{8dee8e79a799505b7b355f5f2c52f8d3}
+      \strng{authorfullhash}{8dee8e79a799505b7b355f5f2c52f8d3}
+      \strng{authorfullhashraw}{8dee8e79a799505b7b355f5f2c52f8d3}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Machine Learning Research}
+      \field{number}{147}
+      \field{title}{Stochastic Optimization under Distributional Drift}
+      \field{volume}{24}
+      \field{year}{2023}
+      \field{pages}{1\bibrangedash 56}
+      \range{pages}{56}
+      \verb{urlraw}
+      \verb http://jmlr.org/papers/v24/21-1410.html
+      \endverb
+      \verb{url}
+      \verb http://jmlr.org/papers/v24/21-1410.html
+      \endverb
+    \endentry
+    \entry{duchi2018introductory}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=468dba603c17ad74f810b4ae49b043a6}{%
+           family={Duchi},
+           familyi={D\bibinitperiod},
+           given={John\bibnamedelima C},
+           giveni={J\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+      }
+      \strng{namehash}{468dba603c17ad74f810b4ae49b043a6}
+      \strng{fullhash}{468dba603c17ad74f810b4ae49b043a6}
+      \strng{fullhashraw}{468dba603c17ad74f810b4ae49b043a6}
+      \strng{bibnamehash}{468dba603c17ad74f810b4ae49b043a6}
+      \strng{authorbibnamehash}{468dba603c17ad74f810b4ae49b043a6}
+      \strng{authornamehash}{468dba603c17ad74f810b4ae49b043a6}
+      \strng{authorfullhash}{468dba603c17ad74f810b4ae49b043a6}
+      \strng{authorfullhashraw}{468dba603c17ad74f810b4ae49b043a6}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The mathematics of data}
+      \field{title}{Introductory lectures on stochastic optimization}
+      \field{volume}{25}
+      \field{year}{2018}
+      \field{pages}{99\bibrangedash 186}
+      \range{pages}{88}
+    \endentry
+    \entry{durrett2019probability}{book}{}{}
+      \name{author}{1}{}{%
+        {{hash=175a15e34b656dab74bea645e2ed84d0}{%
+           family={Durrett},
+           familyi={D\bibinitperiod},
+           given={Rick},
+           giveni={R\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge university press}%
+      }
+      \strng{namehash}{175a15e34b656dab74bea645e2ed84d0}
+      \strng{fullhash}{175a15e34b656dab74bea645e2ed84d0}
+      \strng{fullhashraw}{175a15e34b656dab74bea645e2ed84d0}
+      \strng{bibnamehash}{175a15e34b656dab74bea645e2ed84d0}
+      \strng{authorbibnamehash}{175a15e34b656dab74bea645e2ed84d0}
+      \strng{authornamehash}{175a15e34b656dab74bea645e2ed84d0}
+      \strng{authorfullhash}{175a15e34b656dab74bea645e2ed84d0}
+      \strng{authorfullhashraw}{175a15e34b656dab74bea645e2ed84d0}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Probability: theory and examples}
+      \field{volume}{49}
+      \field{year}{2019}
+    \endentry
+    \entry{garrigos2023handbook}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=ff14600907cfc90cbd0b1d13ad91c45f}{%
+           family={Garrigos},
+           familyi={G\bibinitperiod},
+           given={Guillaume},
+           giveni={G\bibinitperiod}}}%
+        {{hash=d740b920ee7b92aaa73e3450f6a6e085}{%
+           family={Gower},
+           familyi={G\bibinitperiod},
+           given={Robert\bibnamedelima M},
+           giveni={R\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \strng{namehash}{4a7c8da8095a599dd8c6691900ecc1ac}
+      \strng{fullhash}{4a7c8da8095a599dd8c6691900ecc1ac}
+      \strng{fullhashraw}{4a7c8da8095a599dd8c6691900ecc1ac}
+      \strng{bibnamehash}{4a7c8da8095a599dd8c6691900ecc1ac}
+      \strng{authorbibnamehash}{4a7c8da8095a599dd8c6691900ecc1ac}
+      \strng{authornamehash}{4a7c8da8095a599dd8c6691900ecc1ac}
+      \strng{authorfullhash}{4a7c8da8095a599dd8c6691900ecc1ac}
+      \strng{authorfullhashraw}{4a7c8da8095a599dd8c6691900ecc1ac}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:2301.11235}
+      \field{title}{Handbook of convergence theorems for (stochastic) gradient methods}
+      \field{year}{2023}
+    \endentry
+    \entry{doi:10.1137/070704277}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=282ecf2c6791713a21aed06539f155a4}{%
+           family={Nemirovski},
+           familyi={N\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=5609845ebbf4527f446e901d96fed9bc}{%
+           family={Juditsky},
+           familyi={J\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=2048b1c31152db4c18596dfa5e2232da}{%
+           family={Lan},
+           familyi={L\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod}}}%
+        {{hash=ba351f57292fe31120868fab2d95442c}{%
+           family={Shapiro},
+           familyi={S\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{25ba2efe92df2b74c7019920e82292b7}
+      \strng{fullhash}{9c351ffd738779d2879f1e942b29e044}
+      \strng{fullhashraw}{9c351ffd738779d2879f1e942b29e044}
+      \strng{bibnamehash}{25ba2efe92df2b74c7019920e82292b7}
+      \strng{authorbibnamehash}{25ba2efe92df2b74c7019920e82292b7}
+      \strng{authornamehash}{25ba2efe92df2b74c7019920e82292b7}
+      \strng{authorfullhash}{9c351ffd738779d2879f1e942b29e044}
+      \strng{authorfullhashraw}{9c351ffd738779d2879f1e942b29e044}
+      \field{sortinit}{N}
+      \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{In this paper we consider optimization problems where the objective function is given in a form of the expectation. A basic difficulty of solving such stochastic optimization problems is that the involved multidimensional integrals (expectations) cannot be computed with high accuracy. The aim of this paper is to compare two computational approaches based on Monte Carlo sampling techniques, namely, the stochastic approximation (SA) and the sample average approximation (SAA) methods. Both approaches, the SA and SAA methods, have a long history. Current opinion is that the SAA method can efficiently use a specific (say, linear) structure of the considered problem, while the SA approach is a crude subgradient method, which often performs poorly in practice. We intend to demonstrate that a properly modified SA approach can be competitive and even significantly outperform the SAA method for a certain class of convex stochastic problems. We extend the analysis to the case of convex-concave stochastic saddle point problems and present (in our opinion highly encouraging) results of numerical experiments.}
+      \field{journaltitle}{SIAM Journal on Optimization}
+      \field{number}{4}
+      \field{title}{Robust Stochastic Approximation Approach to Stochastic Programming}
+      \field{volume}{19}
+      \field{year}{2009}
+      \field{pages}{1574\bibrangedash 1609}
+      \range{pages}{36}
+      \verb{doi}
+      \verb 10.1137/070704277
+      \endverb
+      \verb{eprint}
+      \verb https://doi.org/10.1137/070704277
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1137/070704277
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1137/070704277
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

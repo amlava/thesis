@@ -1,0 +1,1891 @@
+\documentclass[11pt,a4paper,oneside]{scrreprt}
+
+% Basic setup
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=3cm]{geometry}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{csquotes}
+\onehalfspacing
+\usepackage[english]{babel}
+
+% --- Bib ---
+\usepackage{biblatex}
+\addbibresource{references.bib}
+
+% Math
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{amsthm}            % define theorem counters (reliable \label)
+
+% tcolorbox for styling the theorem environments
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{skins,breakable}
+
+% aliascnt to make cleveref distinguish environments that share a counter
+\usepackage{aliascnt}
+
+% Hyperref & cleveref (hyperref before cleveref)
+\usepackage[
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=red,
+    urlcolor=teal
+]{hyperref}
+\usepackage[nameinlink]{cleveref}
+
+% --------------------------
+% Theorem counters (amsthm + aliascnt)
+% --------------------------
+% main theorem counter
+\newtheorem{theorem}{Theorem}[chapter]
+
+% create alias counters so cleveref knows the environment type
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+
+\newcounter{algoCounter}
+\theoremstyle{definition}
+\newaliascnt{algorithm}{algoCounter}
+\newtheorem{algorithm}[algorithm]{Algorithm}
+\aliascntresetthe{algorithm}
+
+\theoremstyle{definition}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+
+\theoremstyle{definition}
+\newaliascnt{notation}{theorem}
+\newtheorem{notation}[notation]{Notation}
+\aliascntresetthe{notation}
+
+\newcounter{assumptionCounter}
+\theoremstyle{definition}
+\newaliascnt{assumption}{assumptionCounter}
+\newtheorem{assumption}[assumption]{Assumption}
+\aliascntresetthe{assumption}
+
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+
+% --------------------------
+% Box styling for these environments (grey-ish boxes)
+% --------------------------
+% A simple grey-ish boxed style that wraps the entire amsthm environment.
+% \tcolorboxenvironment{theorem}{
+%   enhanced,
+%   breakable,
+%   boxrule=0.6pt,
+%   arc=2pt,
+%   left=6pt, right=6pt, top=6pt, bottom=6pt,
+%   colback=gray!8,        % light grey background
+%   colframe=gray!60,      % medium grey frame
+%   colbacktitle=gray!12,
+%   coltitle=black,
+%   fonttitle=\bfseries,
+%   before skip=10pt,
+%   after skip=10pt,
+% }
+% \tcolorboxenvironment{lemma}{
+%   enhanced, breakable, boxrule=0.6pt, arc=2pt,
+%   left=6pt, right=6pt, top=6pt, bottom=6pt,
+%   colback=gray!8, colframe=gray!60,
+%   before skip=10pt, after skip=10pt
+% }
+% \tcolorboxenvironment{proposition}{
+%   enhanced, breakable, boxrule=0.6pt, arc=2pt,
+%   left=6pt, right=6pt, top=6pt, bottom=6pt,
+%   colback=gray!8, colframe=gray!60,
+%   before skip=10pt, after skip=10pt
+% }
+% \tcolorboxenvironment{corollary}{
+%   enhanced, breakable, boxrule=0.6pt, arc=2pt,
+%   left=6pt, right=6pt, top=6pt, bottom=6pt,
+%   colback=gray!8, colframe=gray!60,
+%   before skip=10pt, after skip=10pt
+% }
+% \tcolorboxenvironment{definition}{
+%   enhanced, breakable, boxrule=0.6pt, arc=2pt,
+%   left=6pt, right=6pt, top=6pt, bottom=6pt,
+%   colback=gray!8, colframe=gray!60,
+%   before skip=10pt, after skip=10pt
+% }
+% \tcolorboxenvironment{algorithm}{
+%   enhanced, breakable, boxrule=0.6pt, arc=2pt,
+%   left=6pt, right=6pt, top=6pt, bottom=6pt,
+%   colback=gray!8, colframe=gray!60,
+%   before skip=10pt, after skip=10pt
+% }
+% \tcolorboxenvironment{example}{
+%   enhanced, breakable, boxrule=0.6pt, arc=2pt,
+%   left=6pt, right=6pt, top=6pt, bottom=6pt,
+%   colback=gray!8, colframe=gray!60,
+%   before skip=10pt, after skip=10pt
+% }
+% \tcolorboxenvironment{remark}{
+%   enhanced, breakable, boxrule=0.6pt, arc=2pt,
+%   left=6pt, right=6pt, top=6pt, bottom=6pt,
+%   colback=gray!8, colframe=gray!60,
+%   before skip=10pt, after skip=10pt
+% }
+
+% --------------------------
+% cleveref names (explicit)
+% --------------------------
+\crefname{theorem}{theorem}{theorems}
+\Crefname{theorem}{Theorem}{Theorems}
+\crefname{lemma}{lemma}{lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{proposition}{proposition}{propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\crefname{corollary}{corollary}{corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{example}{example}{examples}
+\Crefname{example}{Example}{Examples}
+\crefname{definition}{definition}{definitions}
+\Crefname{definition}{Definition}{Definitions}
+\crefname{algorithm}{algorithm}{algorithms}
+\Crefname{algorithm}{Algorithm}{Algorithms}
+\crefname{notation}{notation}{notations}
+\Crefname{notation}{Notation}{Notations}
+\crefname{assumption}{assumption}{assumptions}
+\Crefname{assumption}{Assumption}{Assumption}
+\crefname{remark}{remark}{remarks}
+\Crefname{remark}{Remark}{Remarks}
+
+% --------------------------
+% boxedproofof environments
+% --------------------------
+% Plain proof-of (uses amsthm's proof)
+\newenvironment{proofof}[1]{%
+  \begin{proof}[Proof of \Cref{#1}]%
+}{%
+  \end{proof}%
+}
+
+\newenvironment{proofbf}[1]{%
+  \begin{proof}[\textbf{Proof}]%
+}{%
+  \end{proof}%
+}
+
+% Boxed proof-of (tcolorbox)
+\newenvironment{boxedproofof}[1]{%
+  \begin{tcolorbox}[enhanced, breakable,
+      boxrule=0.6pt, arc=2pt,
+      left=6pt,right=6pt,top=6pt,bottom=6pt,
+      colback=gray!8, colframe=gray!60,
+      fonttitle=\bfseries,
+      title={Proof of \cref{#1}}, before skip=10pt, after skip=10pt]%
+}{%
+  \end{tcolorbox}%
+}
+
+% ---------------------------------------------------------------------------
+% End of preamble - continue with \begin{document} in your document body
+
+
+% Custom commands
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Var}{\mathbb{V}\textnormal{ar}}
+\newcommand{\dist}{\textnormal{dist}}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\esssup}{ess\,sup}
+\DeclareMathOperator*{\dom}{dom}
+
+% ---------------- Document ----------------
+\title{Stochastic Optimization Under Almost-Sure Affine Inequality Constraints}
+\author{Amir Miri Lavasani}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+
+\chapter{Introduction}
+
+We consider a constrained stochastic optimization problem of the form
+\begin{equation*}
+    \begin{aligned}
+    &\min_{x \in \mathbb{R}^d} \,
+        \left\{
+            j(x) := \E\left( \frac{1}{2} |\!| y-b |\!|^2 + \frac{\lambda}{2} |\!| x |\!|^2 \right)
+        \right\} \\
+    &\textup{subject to (s.\,t.)} \quad B(\xi)y = C(\xi)x \quad \text{almost surely (a.\,s.)} \\
+    &\phantom{\textup{subject to (s.\,t.)}} \quad y \leq c\,,
+    \end{aligned}
+\end{equation*}
+where $y, b, c \in\R^d$, $\lambda \in (0,\infty)$, $\xi: \Omega\to \R^m$ is a random vector on some fixed
+probability space $(\Omega, \mathcal{F}, \Prob)$, and $B(z), \,C(z) \in \R^{n\times d}$ for all $z\in\R^m$.
+As a norm, we
+consider the standard Euclidian norm on $\R^d$.
+Under the assumption that $B(z)$ is invertible for all $z\in\R^m$, we have $y = B(\xi)^{-1}C(\xi)x$
+almost surely and the problem can be rewritten as
+\begin{equation}
+\label{eq:model-problem}
+\tag{P}
+    \begin{aligned}
+    &\min_{x \in \mathbb{R}^d} \,
+    \left\{
+        j(x) = \E\left( \frac{1}{2} |\!| A(\xi)x - b |\!|^2 + \frac{\lambda}{2} |\!| x |\!|^2 \right)
+    \right\} \\
+    &\textup{s.\,t.} \quad A(\xi)x \leq c \quad \text{a.\,s.}\,,
+    \end{aligned}
+\end{equation}
+where $A(z) := B(z)^{-1}C(z) \in \R^{d\times d}$ for all $z\in\R^m$ and we assume
+that $\E|\!|A(\xi)x|\!|^2$ is finite for all $x\in\R^d$.
+
+A key difficulty in solving
+the problem is the almost sure constraint. For one, it is not directly clear whether there even exists
+a feasible point. For this, one would atleast need $A(\xi)$ to have bounded support.
+Additionally, even if its nonempty, the feasibile set is in general still very difficult to compute explicitly,
+due to its probabilistic nature. However, even simple situations can be problematic:
+Suppose for instance that $\xi \in \{1, \dots, M\}$ for some $M\in\N$. Then, problem \eqref{eq:model-problem}
+is equivalent to
+\begin{equation}
+\label{eq:model-problem-finite-randomness}
+\tag{$\text{P}^{M}$}
+    \begin{aligned}
+    &\min_{x \in \mathbb{R}^d} \,
+    \left\{
+        j(x) = \E\left( \frac{1}{2} |\!| A(\xi)x - b |\!|^2 + \frac{\lambda}{2} |\!| x |\!|^2 \right)
+    \right\} \\
+    &\textup{s.\,t.} \quad A(i)x \leq c \quad \forall i \in \{ 1,\dots, M \}.
+    \end{aligned}
+\end{equation}
+% This is a stochastic convex optimzation problem with
+% $n\times M$ determinist constraints, which can be solved with
+% projected stochastic gradient methods \cite{doi:10.1137/070704277},
+% where the projection is onto the polyhedral set
+% $\{ x\in\R^d, \, A(i)x \leq c \textnormal{ for all } i \in \{ 1, \dots, M \} \}$.
+The projection
+itself is the solution to a quadratic program, which has a generic cost of $\mathcal{O}(n^3 M^3)$ operations if
+the matrices $A(i)$ have no special structure (sparsity, for example) that can be exploited \cite{Boyd_Vandenberghe_2004}.
+This projection can become expensive to compute if $n\times M$ is large.
+
+In this work, we will consider a
+different approach by introducing a family of unconstrained optimization problems
+\begin{equation}
+\label{eq:penalized-objective}
+\tag{$\text{P}^k$}
+    \begin{aligned}
+    &\min_{x \in \mathbb{R}^d} \,
+    \left\{ 
+        j^k(x) := \E\left( \frac{1}{2} |\!| y-b |\!|^2 + \frac{\lambda}{2} |\!| x |\!|^2 \right) + \frac{\gamma_k}{2} \pi(x)
+    \right\},
+    \end{aligned}
+\end{equation}
+where $\gamma_k \in (0,\infty)$ for all $k\in\N$ and $\pi: \R^d\to\R$ has the properties $\pi(x) \geq 0$ and $\pi(x) = 0$
+if and only if $x$ is feasible for \eqref{eq:model-problem}. If $\pi$ is also convex and
+\eqref{eq:model-problem} has at least one feasible point, then
+there always exists a solution $x^\star_k\in\R^d$ to problem \eqref{eq:penalized-objective}
+for all $k\in\N$. There are three immediate questions:
+\begin{enumerate}
+    \item If $x^\star$ denotes the solution to
+    \eqref{eq:model-problem}, when can we guarantee that
+    $x^\gamma\to x^\star$?
+    \item How do we choose $\pi$?
+    \item How can we use this to numerically solve \eqref{eq:model-problem}?
+\end{enumerate}
+\noindent
+\textcolor{red}{Outline}.\\
+\textcolor{red}{Related literature}.\\
+\textcolor{red}{Contributions}.
+
+\chapter{Theory Background}
+
+
+In this chapter, we state some classic definitions and results that we will make use of in the later sections.
+Proofs are omitted, but can be found in the cited sources.
+
+\section{Convex Optimization}
+
+The contents of this section can be found in \cite{Boyd_Vandenberghe_2004,garrigos2023handbook}.
+Throughout, we let $|\!|\cdot|\!|$ denote the standard Euclidian norm and
+$\langle \cdot, \cdot \rangle$ the standard inner product on $\R^d$.
+
+\begin{definition}
+    Let $f\colon \R^d \to \R$ be differentiable, and $L > 0$. We say that $f$ is
+    \textbf{Lipschitz-smooth with constant $L$}, or simply \textbf{$L$-smooth},
+    if its gradient is Lipschitz continuous, i.\,e. there exists a constant $L\in (0,\infty)$ such that
+    \[
+        |\!|\nabla f(y) - \nabla f(x)|\!| \leq L|\!|y - x|\!|
+    \]
+    for all $x,y\in\R^d$\,.
+\end{definition}
+
+\begin{proposition}
+    \label{prop:lipschitz-gradients}
+    Let $f\colon \R^d \to \R$ be $L$-smooth. Then
+    \[
+        f(y) \leq f(x) + \langle \nabla f(x), y-x \rangle + \frac{L}{2} |\!|y-x|\!|^2
+    \]
+    for all $x, y\in\R^d$\,.
+\end{proposition}
+
+\begin{proposition}
+    \label{prop:linear-combination-of-lipschitz-is-lipschitz}
+    Let $f\colon \R^d \to \R$ be $L_f$-smooth and let  $g\colon \R^d \to \R$
+    be $L_g$-smooth and define $h(x) := a\,f(x) + b\,g(x)$ for some positive
+    constants $a,b\in (0, \infty)$. Then $h$ is Lipschitz-smooth with
+    constant $a L_f + b L_g$.
+\end{proposition}
+
+\begin{definition}
+    We say that $f\colon \R^d\to\R$ is \textbf{convex} if
+    \begin{align*}
+        f((1-t) x + t y) \leq (1-t) f(x) + t f(y)
+    \end{align*}
+    for all $x, y\in\R^d$ and all $t\in (0, 1)$. We say that $f$ is \textbf{concave} if
+    $-f$ is convex.
+\end{definition}
+
+\begin{proposition}
+    \label{prop:convex-implies-continuous}
+    Every convex function on $\R^d$ is continuous.
+\end{proposition}
+
+\begin{definition}
+    Let $f\colon \R^d\to\R$ be convex. A vector $g\in\R^d$ is a \textbf{subgradient} of $f$ at $x\in\R^d$ if
+    \[
+        f(y) \geq f(x) + \langle g, y-x \rangle
+    \]
+    for all $y\in\R^d$.
+    The set of all subgradients of $f$ at $x$ is denoted by $\partial f(x)$
+    and we call this set the \textbf{subdifferential of} $f$ \textbf{at} $x$.
+    If $\partial f(x) \neq \emptyset$, then we call $f$ \textbf{subdifferentiable at} $x$.
+    If $\partial f(x) \neq \emptyset$ for all $x\in\R^d$, we call $f$ \textbf{subdifferentiable}.
+\end{definition}
+
+\begin{proposition}
+    Let $f\colon \R^d\to\R$ be convex and differentiable. Then $f$ is subdifferentiable with
+    $\partial f(x) = \{ \nabla f(x) \}$ for all $x\in\R^d$. In particular,
+    \[
+        f(y) \geq f(x) + \langle \nabla f(x), y-x \rangle
+    \]
+    for all $x,y\in\R^d$.
+\end{proposition}
+
+% \begin{notation}
+%     If $f$ is subdifferentiable, but not necessarily differentiable, we will denote any subgradient of $f$
+%     at $x\in\R^d$ simply by $\tilde{\nabla}f(x)$. Exceptions may occur, if we need to refer to two different
+%     subgradients at the same point.
+% \end{notation}
+
+\begin{proposition}
+    \label{prop:convex-implies-monotone-gradient}
+    Let $f\colon \R^d\to\R$ be subdifferentiable. Then
+    \[
+        \langle g_y - g_x, y-x \rangle \geq 0
+    \]
+    for all $x,y\in\R^d$ and $g_x\in\partial f(x)$, $g_y\in\partial f(y)$.
+\end{proposition}
+
+\begin{definition}
+    Let $f\colon \R^d \to \R$ and $\mu\in (0,\infty)$\,. We say that $f$ is ($\mu$-)\textbf{strongly convex} if
+    \begin{align*}
+        f((1-t)x + ty) \leq (1-t)f(x) + tf(y) - \mu t(1-t) |\!|x-y|\!|^2    
+    \end{align*}
+    for all $x,y\in\R^d$ and $t\in (0,1)$.
+\end{definition}
+\noindent
+Clearly, strongly convex functions are convex.
+\begin{proposition}
+    \label{prop:operations-conserving-convexity}
+    Let $f\colon \R^d\to\R$ and $g\colon \R^d\to\R$ be convex and $\alpha > 0$.
+    Also, let $A\in\R^{d\times m}$ and $b\in\R^d$. Then, the functions
+    \begin{enumerate}
+        \item $x\mapsto f(x) + g(x)$,
+        \item $x\mapsto \alpha f(x)$,
+        \item $x\mapsto f(Ax + b)$,
+    \end{enumerate}
+    are all convex.
+    If $f$ is $\mu$-strongly convex, then the above functions are also all $\mu$-strongly convex.
+\end{proposition}
+
+\begin{proposition}
+    \label{prop:convex-circ-increasing-is-convex}
+    Let $f\colon \R\to\R$ and $g\colon \R\to\R$ be convex and nondecreasing. Then the composition
+    $f \circ g$ is also convex.
+\end{proposition}
+
+\begin{proposition}
+    \label{prop:strongly-convex-subdifferentiable-bound}
+    Let $f\colon \R^n \to \R$ be $\mu$-strongly convex and subdifferentiable. Then
+    \[
+        f(y) \geq f(x) + \langle g, y-x \rangle + \frac{\mu}{2}|\!|y-x|\!|^2
+    \]
+    for all $x,y\in\R^d$ and $g\in\partial f(x)$. This implies that, for all $g_x\in\partial f(x)$,
+    $g_y\in\partial f(y)$, we have
+    \[
+        \langle g_y - g_x, x - y \rangle \geq \frac{\mu}{2} |\!| x - y |\!|^2,
+    \]
+    for all $x,y\in\R^d$. In particular, if $f$ is differentiable and $x^\star = \argmin_{x\in\R^d} f(x)$,
+    we have
+    \[
+        f(x^\star) \leq f(x) - \frac{\mu}{2} |\!| x - x^\star |\!|
+    \]
+    for all $x\in\R^d$.
+\end{proposition}
+
+\begin{proposition}
+    \label{prop:strongly-convex-implies-unique-minimizer}
+    If $f\colon \R^d\to\R$ is strongly convex, then $f$ admits a unique minimizer, i.\,e. there exists
+    a point $x^\star\in\R^d$ such that $f(x^\star) < f(x)$ for all $x\in\R^d$.
+\end{proposition}
+
+\begin{proposition}
+    \label{prop:pos-def-second-derivative-implies-convex}
+    Let $f\colon\R^d\to\R$ be twice differentiable. If $f$ has positive definite hessian, then
+    $f$ is convex. If, additionally, there exists some $\mu \in (0, \infty)$ such that
+    $f^{\prime\prime}(x) - \mu \,I_d$ is positive definite for all $x\in\R^d$,
+    where $I_d$ denotes the $d\times d$ identity matrix, then
+    $f$ is $\mu$-strongly convex.
+\end{proposition}
+
+
+\section{Probability Theory}
+
+The contents of this section can be found in standard probability texts, for example
+\cite{durrett2019probability}.
+
+\begin{definition}
+    Let $\Omega$ be a set and let $2^\Omega$ denote its power set. A subset $\mathcal{F} \subset 2^\Omega$ is called a $\sigma$-\textbf{algebra
+    over} $\Omega$ if it satisfies the following three conditions:
+    \begin{enumerate}
+        \item $\emptyset \in \mathcal{F}$.
+        \item If $A, B \in \mathcal{F}$, then $B \backslash A \in \mathcal{F}$.
+        \item For any countable sequence $A_1, A_2, \dots \in \mathcal{F}$, we have $\bigcup_{n=1}^\infty A_n \in \mathcal{F}$.
+    \end{enumerate}
+    If $\mathcal{F}$ is a $\sigma$-algebra over $\Omega$, then the tuple $(\Omega, \mathcal{F})$
+    is called a \textbf{measurable space}. For any subset $\mathcal{G} \subset 2^\Omega$, we define
+    the $\sigma$-\textbf{algebra generated by} $\mathcal{G}$ as the intersection over all $\sigma$-algebras
+    that contain $\mathcal{G}$ as an element, and we denote this $\sigma$-algebra by $\sigma(\mathcal{G})$.
+\end{definition}
+
+\begin{example}
+    \label{ex:borel-sigma-algebra}
+    An important example of a $\sigma$-algebra over $\R^d$ is the \textbf{Borel} $\sigma$-\textbf{algebra}
+    $\mathcal{B}(\R^d)$, which is defined to be the $\sigma$-algebra generated by the subset of all
+    open sets on $\R^d$.
+\end{example}
+
+\begin{definition}
+    Let $(\Omega, \mathcal{F})$ and $(E, \mathcal{G})$ be measurable spaces.
+    A map $f\colon \Omega \to E$ is called $\mathcal{F},\mathcal{G}$-\textbf{measurable}
+    if $f^{-1}(G) := \{ \omega\in\Omega \, | \, f(\omega) \in G \} \in \mathcal{F}$
+    for all $G\in\mathcal{G}$.  We may say $f$ is $\mathcal{F}$-\textbf{measurable}
+    or simply \textbf{measurable} if one or both of the $\sigma$-algebras are either
+    clear from the context or not relevant.
+\end{definition}
+
+\begin{definition}
+    Let $(\Omega, \mathcal{F})$ be a measurable space. A map $\mu : \mathcal{F} \to [0, \infty]$ is called a \textbf{measure on} $(\Omega, \mathcal{F})$ if it satisfies the following two conditions:
+    \begin{enumerate}
+        \item $\mu(\emptyset) = 0$.
+        \item For any countable sequence $A_1, A_2, \dots \in \mathcal{F}$, we have $\mu(\bigcup_{n=1}^{\infty} A_n) = \sum_{n=1}^{\infty} \mu(A_n)$.
+    \end{enumerate}
+    If $\mu$ is a measure on $(\Omega, \mathcal{F})$, then the triplet $(\Omega, \mathcal{F}, \mu)$ is called a \textbf{measure space}.
+\end{definition}
+
+\begin{definition}
+    Let $(\Omega, \mathcal{F}, \mu)$ be a measure space and let $f\colon \Omega \to \R$ be measurable. We define the ($\mu$-)\textbf{integral} of $f$, denoted $\int f \, \textnormal{d}\mu$, in three steps:
+    \begin{enumerate}
+        \item If $f(\omega) = \sum_{i=1}^n c_i 1_{A_i}(\omega)$ for some $n\in\N$, $c_1, \dots, c_n > 0$, and disjoint measurable sets $A_1, \dots, A_n\in\mathcal{F}$, then we define
+        \begin{align*}
+            \int f \, \textnormal{d}\mu := \sum_{i=1}^n c_i \mu(A_i).
+        \end{align*}
+
+        In this case $f$ is called a \textbf{simple function}. The set of all simple functions on $\Omega$ is denoted by $\mathcal{S}(\Omega)$.
+
+        \item If $f$ is nonnegative, i.\,e. $f(\omega) \geq 0$ of all $\omega\in\Omega$, then we define
+        \begin{align*}
+            \int f \, \textnormal{d}\mu := \sup_{g \in \mathcal{S}(\Omega), \, g \leq f} \int g \, \textnormal{d}\mu.
+        \end{align*}
+
+        \item If $f$ is neither a simple function, nor nonnegative, but $\int |f| \, \textnormal{d}\mu < \infty$, then we define
+        \begin{align*}
+            \int f \, \textnormal{d}\mu := \int \max(0, f) \, \textnormal{d}\mu - \int \max(0, -f) \, \textnormal{d}\mu.
+        \end{align*}
+    \end{enumerate}
+    Otherwise, we say that the ($\mu$-)integral of $f$ does not exist. If any of these three conditions apply to $f$, we say that $f$ is ($\mu$-)\textbf{integrable}.
+\end{definition}
+
+\begin{proposition}
+    \label{prop:integrals}
+    Let $(\Omega, \mathcal{F}, \mu)$ be a measure space and let $f\colon \Omega \to \R$ and
+    $g\colon \Omega \to \R$ be integrable. Then
+    \begin{enumerate}
+        \item[(i)] $\int f + g \, \textnormal{d}\mu = \int f \, \textnormal{d}\mu + \int g \, \textnormal{d}\mu$.
+        \item[(ii)] $\int c f \, \textnormal{d}\mu = c \int f \, \textnormal{d}\mu$ for all $c\in\R$.
+        \item[(iii)] If $f \leq g$, then $\int f \, \textnormal{d}\mu \leq \int g \, \textnormal{d}\mu$. If additionally $f < g$ on some set $A\in\mathcal{F}$ with $\mu(A) > 0$, then $\int f \, \textnormal{d}\mu < \int g \, \textnormal{d}\mu$.
+    \end{enumerate}
+\end{proposition}
+
+\begin{definition}
+    Let $(\Omega, \mathcal{F})$ be a measurable space. If $\Prob: \mathcal{F} \to [0,1]$ is a measure on $(\Omega, \mathcal{F})$, we call $\Prob$ a \textbf{probability measure} and we call the triple $(\Omega, \mathcal{F}, \Prob)$ a \textbf{probability space}. In this context, elements of $\mathcal{F}$ are called \textbf{events}.
+\end{definition}
+
+\begin{definition}
+    Let $(\Omega, \mathcal{F}, \Prob)$ be a probability space. An event $A\in\mathcal{F}$ is said to hold \textbf{almost surely} (a.\,s. for short) if $\Prob(A) = 1$.
+\end{definition}
+
+\begin{definition}
+    Let $(\Omega, \mathcal{F}, \Prob)$ be a probability space and $(E, \mathcal{G})$ a measurable space. A map $X\colon \Omega \to E$ is called
+    a \textbf{random variable} on $(\Omega, \mathcal{F}, \Prob)$ if $X$ is $\mathcal{F},\mathcal{G}$-measurable.
+    In the case $E = \R^d$, we may call $X$ a \textbf{random vector}.
+    Further, we define the notation $\Prob(X \in G) := \Prob(X^{-1}(G))$.
+    We define the \textbf{distribution of} $X$ to be the probability measure
+    $\Prob^X := \Prob \circ X^{-1}$ on $(E, \mathcal{G})$. Finally, we define
+    $\sigma(X) := \sigma(\{ X^{-1}(G),\, G\in \mathcal{G} \})$
+    and call this the \textbf{$\sigma$-algebra
+    generated by $X$}.
+\end{definition}
+
+\begin{definition}
+    Let $(\Omega, \mathcal{F}, \Prob)$ be a probability space. Two random variables $X$ and $Y$
+    on $(\Omega, \mathcal{F}, \Prob)$ are called \textbf{independent} if $\Prob(X\in A,\, Y\in B)
+    = \Prob(X\in A)\cdot \Prob(Y\in B)$ for all $A,B\in\mathcal{F}$. $X$ and $Y$ are called
+    \textbf{identically distributed} if $\Prob^X = \Prob^Y$.
+    We use the abbreviation \textbf{i.\,i.\,d.} as shorthand for \enquote{independent and identically distributed}.
+\end{definition}
+
+\begin{definition}
+    Let $(\Omega, \mathcal{F}, \Prob)$ be a probability space and let $X$ be a random variable on this space. If $X$ is integrable, we define the \textbf{expected value of} $X$, denoted by $\E(X)$, as $\E(X) := \int X \, \textnormal{d}\Prob$.
+\end{definition}
+\noindent
+The following three properties will be used multiple times throughout this text without explicit mention. They
+follow directly from \cref{prop:integrals}.
+
+\begin{proposition}
+    \label{prop:properties-of-expected-value}
+    Let $(\Omega, \mathcal{F}, \Prob)$ be a
+    probability space and let $X\colon \Omega \to \R$ and
+    $Y\colon \Omega \to \R$ be integrable random variables. Then
+    \begin{enumerate}
+        \item[(i)] $\E(X + Y) = \E(X) + \E(Y)$.
+        \item[(ii)] $\E(c X) = c\, \E(X)$ for all $c\in\R$.
+        \item[(iii)] If $X \leq Y$, then $\E(X) \leq \E(Y)$. If additionally
+        $X(\omega) < Y(\omega)$ for all $\omega$ in an event $A\in\mathcal{F}$ with $\Prob(A) > 0$,
+        then $\E(X) < \E(Y)$.
+    \end{enumerate}
+\end{proposition}
+
+\begin{proposition}
+    \label{prop:expectation-preserves-convexity}
+    Let $f\colon \R^d\times\Omega \to\R$ be convex in its first argument, i.\,e. $x~\mapsto~f(x, \omega)$
+    is convex for all $\omega\in\Omega$. Then, the function $x\mapsto \E(f(x, \cdot))$ is convex. 
+\end{proposition}
+
+\begin{proposition}[Jensen's inequality]
+    \label{prop:jensens-inequality} 
+    Let $(\Omega, \mathcal{F}, \Prob)$ be a probability space and let $X\colon \Omega\to\R$ be a random variable. Then we have
+    \[
+        \E(X^2) \geq \E(X)^{2}.
+    \]
+    In particular: If $X^2$ is integrable, then $X$ must also be integrable.
+\end{proposition}
+
+\begin{definition}
+    Let $(\Omega, \mathcal{F}, \Prob)$ be a probability space and let $X\colon \Omega \to \R$ be a random variable.
+    If $X^2$ is integrable, we define the \textbf{variance of} $X$, denoted by $\Var$, as $\Var(X) := \E(|\!|X-\E(X)|\!|^2)$.
+\end{definition}
+\noindent
+It is easy to check that, if two random variables $X$ and $Y$ are identically distributed, then
+they have the same expected value and variance.
+
+\begin{proposition}
+    \label{prop:variance-linear-for-independent-rvs}
+    Let $(\Omega, \mathcal{F}, \Prob)$ be a probability space and let $X_1,\dots,X_n\colon \Omega \to \R$
+    be independent random variables, such that $X_i^2$ is integrable
+    for all $i\in\{1,\dots, n\}$. Then $\Var(\sum_{i=1}^n a_i X_i) = \sum_{i=1}^{n} a_i^2\, \Var(X_i)$,
+    for any $a_1,\dots, a_n\in\R$.
+    If, additionally, they are all identically distributed, it holds that
+    $\Var(1/n\sum_{i=1}^n X_i) = \Var(X_1)/n$.
+\end{proposition}
+
+\begin{proposition}
+    \label{prop:variance-identity}
+    Let $(\Omega, \mathcal{F}, \Prob)$ be a probability space and let $X\colon \Omega \to \R$ be a random variable
+    such that $X^2$ is integrable. Then $\Var(X) = \E(X^2) - \E(X)^2$.
+\end{proposition}
+
+\begin{definition}
+    Let $(\Omega, \mathcal{F}, \Prob)$ be a probability space and let $X\colon \Omega\to\R^n$ and $Y\colon \Omega\to\R^m$ be random variables.
+    We call a random variable $Z\colon \Omega\to\R^n$ a \textbf{conditional expectation of} $X$ \textbf{given} $Y$, if
+    \begin{enumerate}
+        \item There exists some measurable $h\colon \R^m\to\R^n$ such that $Z = h(Y)$.
+        \item For all $C\in \sigma(Y)$,
+        \begin{equation*}
+            \int_{C} Z \, \textnormal{d}\Prob = \int_{C} X \, \textnormal{d}\Prob.
+        \end{equation*}
+    \end{enumerate}
+    If $Z$ is a conditional expectation of $X$ given $Y$, then we use the notation $\E(X \,|\, Y) := Z$.
+\end{definition}
+\noindent
+Note that $E(X \,|\, Y)$ is not unique. However, if $Z_1$ and $Z_2$ are both conditional expectations
+of $X$ given $Y$, then we always have $Z_1 = Z_2$ almost surely. For simplicity, we will keep the
+\enquote{almost surely} implicit.
+
+\begin{proposition}[Properties of $\E(X \,|\, Y)$] Let $(\Omega, \mathcal{F}, \Prob)$ be a probability space and
+    let $X\colon \Omega \to \R^n$, $Y\colon \Omega \to \R^m$ be integrable random variables.
+    Then
+    \begin{itemize}
+        \item[\textnormal{(i)}] $\E(\E(X \,|\, Y)) = \E(X)$.
+        \item[\textnormal{(ii)}] $\E(X \,|\, X) = X$.
+        \item[\textnormal{(iii)}] $\E(\cdot \,|\, Y)$ is linear.
+    \end{itemize}
+\end{proposition}
+
+
+\section{Stochastic Optimization}
+
+
+\begin{definition}[\cite{duchi2018introductory}]
+    Let $(\Omega, \mathcal{F}, \Prob)$ be a probability space and let $f\colon \R^d\to\R$ be a convex function.
+    A random vector $G\colon\Omega\to\R^d$ is called a \textbf{stochastic subgradient of} $f$
+    at a point $x\in\R^d$ if $\E(G)\in\partial f(x)$, or equivalently
+    \[
+        f(y) \geq f(x) + \langle \E(G), y-x \rangle
+    \]
+    for all $y\in\R^d$. If, additionally, $f$ is differentiable at $x$, we may simply
+    refer to $G$ as a \textbf{stochastic gradient}.
+\end{definition}
+
+\begin{example}
+    Let $F\colon \R^d\times\Omega\to\R$ be continuously differentiable in its first argument
+    and let $f(x) := \E(F(x, \cdot))$ for all $x\in\R^d$.
+    Then, for any $x\in\R^d$, the random vector $G_x\colon \Omega\to\R^d$, defined by
+    $G_x(\omega) := \nabla_x F(x, \omega)$, is a
+    stochastic gradient of $f$ at $x$.
+\end{example}
+
+\begin{definition}
+    Let $(\Omega, \mathcal{F}, \Prob)$ be a probability space. Further, let $f\colon \R^d\to\R$ and $g\colon \R^d\times \Omega \to\R^m$.
+    Consider a stochastic optimization problem $\min_{x\in\R^d} f(x)$ subject to the constraints
+    $g(x, \omega) \leq 0$ almost surely. We define the \textbf{active set of $x\in\R^d$ for scenario \textbf{$\omega\in\Omega$}}, as the set
+    \[
+        \mathcal{A}(x, \omega) := \{i\in\{1, \dots, m\}, \,  g_i(x, \omega) = 0 \},
+    \]
+    where $g_i(x, \omega)$ is the $i$th component of $g(x,\omega)$, for $i\in\{1,\dots, m\}$.
+\end{definition}
+
+
+\section{Norms and Inequalities}
+
+
+\chapter{Sequential Penalty Methods}
+
+\label{sec:spm}
+
+Throughout this chapter, we fix a probability space $(\Omega, \mathcal{F}, \Prob)$.
+All maps $\R^n\to\R^m$, $n,m\in\N$, are implicitly considered to be measurable with respect to
+the corresponding Borel $\sigma$-algebras on $\R^n$ and $\R^m$ (\cref{ex:borel-sigma-algebra}).
+We consider a more general form of problem \eqref{eq:model-problem}:
+\begin{equation}
+    \label{eq:general-problem}
+    \tag{Q}
+    \begin{aligned}
+        &\min_{x \in \mathbb{R}^d} \,
+            f(x) \\
+        &\textup{s.\,t.} \quad A(\xi)x \leq c \quad \text{a.\,s.}\,,
+    \end{aligned}
+\end{equation}
+where $f\colon\R^d\to\R$, $A(y)\in\R^{n\times d}$ for $y\in\R^m$,
+$c\in\R^n$ and $\xi:\Omega\to\R^m$ is a random variable.
+We also define the corresponding unconstrained problems
+\begin{equation}
+    \label{eq:penalized-general-problem}
+    \tag{$\textnormal{Q}^k$}
+    \begin{aligned}
+        &\min_{x \in \mathbb{R}^d} \,
+        \left\{ 
+            f^{k}(x) := f(x) + \frac{\gamma_k}{2} \pi(x)
+        \right\},
+    \end{aligned}
+\end{equation}
+where $\pi:\R^d\to\R$ and $\gamma_k \in (0, \infty)$ for all $k\in\N$.
+We state the following assumptions to refer back to.
+\begin{assumption}
+    \label{ass:strongly-convex-radially-unbounded}
+    The objective $f$ is $\mu$-strongly convex for some $\mu > 0$ and radially unbounded, which means
+    $\lim_{||x||\to\infty} f(x) = \infty$.
+\end{assumption}
+\begin{assumption}
+    \label{ass:penalty-function}
+    The penalty function $\pi$ is convex and satisfies $\pi(x) \geq 0$ for all $x$ and $\pi(x) = 0$ if
+    and only if $A(\xi)x \leq c$ almost surely.
+\end{assumption}
+\begin{assumption}
+    \label{ass:penalty-parameters}
+    The sequence of penalty parameters $(\gamma_k)_{k\in\N}$ is strictly increasing, unbounded, and
+    satisfies $\gamma_k\in (0, \infty)$ for all $k\in\N$.
+\end{assumption}
+\begin{assumption}
+    \label{ass:feasible-point}
+    There exists at least one feasible point for \eqref{eq:general-problem}.
+\end{assumption}
+\begin{assumption}
+    \label{ass:random-matrix}
+    The random matrix $A(\xi)$ has finite second moment, which means
+    $\E|\!|A(\xi)|\!|^2_F < \infty$,
+    where $|\!|M|\!|_F := \sqrt{\sum_{i=1}^{n}\sum_{j=1}^{n} M_{ij}^2}$ for $M\in\R^{n\times n}$.
+\end{assumption}
+% We will tackle the following objectives:
+% \begin{enumerate}
+%     \item Proof of convergence $x_k^\star \to x^\star$
+%     as $\gamma_k \to\infty$ (as well as the values $f^k(x^\star_k) \to f(x^\star)$).
+%     \item How to numerically solve problem \eqref{eq:model-problem}. In particular,
+%     we will derive asymptotically optimal combinations of step sizes $\tau_k$, batch sizes $b_k$
+%     and penalty parameters $\gamma_k$ for (a version of) stochastic gradient descent.
+% \end{enumerate}
+
+\section{Consistency of solutions}
+
+% The following theorem states sufficient conditions on the objective function $f$ and the
+% penalty function $\pi$ such that $x_k^\star \to x^\star$ and $f^k(x^\star_k) \to f(x^\star)$
+% as $\gamma_k \to\infty$.
+\begin{theorem}
+    \label{thm:consistency}
+    In the situation of \eqref{eq:general-problem} and \eqref{eq:penalized-general-problem}, assume that
+    \cref{ass:strongly-convex-radially-unbounded,ass:penalty-function,ass:penalty-parameters,ass:feasible-point}
+    hold.
+    Let $x_k^\star$ be the solution to \eqref{eq:penalized-general-problem}
+    and $x^\star$ the solution to \eqref{eq:general-problem} (in particular,
+    these solutions exist and are unique). Then $x^\star_k \to x^\star$ and
+    $f^k(x^\star_k) \to f(x^\star)$ as $k\to\infty$.
+\end{theorem}
+\noindent
+First, some preparation.
+\begin{lemma}
+    \label{lem:radially-unbounded-proper-cont-then-attains-minimum}
+    If $f\colon \R^d \to \R$ is radially unbounded, continuous, and $X \subset \R^d$ is nonempty
+    and closed, then $f$ attains a minimum over $X$, i.\,e.
+    there exists $x^\star\in X$ such that $f(x^\star) = \inf_{x\in X} f(x)$.
+\end{lemma}
+
+\begin{proof}
+    Let $x_0\in X$. Since $f$ is radially unbounded, there exists $r > 0$
+    such that $f(x) \geq f(x_0)$ for all $x\in\R^d$ with $|\!|x|\!| > r$,
+    therefore any minimum of $f$ -- if it exists -- must be contained in the closed ball of
+    radius $r$ around $0$, which we denote by
+    $B_r$. In particular, for $C := X \cap B_r$ we have
+    \[
+        \inf_{x\in X} f(x) = \inf_{x\in C} f(x).
+    \]
+    By continuity of $f$, its domain must be a closed set, which implies that $C$ is compact.
+    Assume now that $f$ does not attain a minimum on $C$.
+    Then there must exist a sequence $(x_k)_{k\in\N} \subset C$
+    such that $\lim_{k\to\infty} f(x_k) = \inf_{x\in C} f(x)$.
+    Continuous functions map compact sets to compact sets,
+    hence $\inf_{x\in C} f(x) \in f(C)$ and thus there must exist some
+    $x^\star\in C$ such that $f(x^\star) = \inf_{x\in C} f(x)$.
+\end{proof}
+
+\begin{lemma}
+    \label{lem:radially-unbounded-f-and-f(x^n)-bounded-implies-x^n-bounded}
+    Let $f\colon \R^d \to \R$ be radially unbounded and assume that $\{ f(u_k), \, k\in\N \}$
+    is bounded for some sequence
+    $(u_k)_{k\in\N} \subset \R^d$. Then, $(u_k)_{k\in\N}$ is a bounded sequence.
+\end{lemma}
+
+\begin{proof}
+    Assume $(u_k)_{k\in\N}$ is not bounded. Then there must exist some subsequence $(u_{k_r})_{r\in\N}$
+    such that $|\!|u_{k_r}|\!| \to \infty$ for $r\to\infty$. However, $f$ is radially unbounded,
+    which implies $f(u_{k_r}) \to \infty$ for $r\to\infty$, which contradicts our assumption that
+    $(f(u_{k_r}))_{r\in\N}$ is bounded. Hence $(u_{k_r})_{r\in\N}$ must be bounded.
+\end{proof}
+
+\begin{lemma}
+    \label{lem:if-every-subsequence-contains-convergent-subsequence-then-sequence-converges}
+    Let $U := \{ u_k, \, k\in\N \}$ be a subset of $\R^d$.
+    Suppose that any subsequence of $U$ contains a subsequence
+    that converges to $u\in\R^d$.
+    Then $u_k \to u$ for $k\to\infty$.
+\end{lemma}
+
+\begin{proof}
+    Assume that $u_k \not\to u$.
+    Then there must exist some $\epsilon > 0$ and a sequence of natural numbers $k_1 < k_2 < \dots$ such that
+    \begin{equation}
+        \label{proof:lem:if-every-subsequence-contains-convergent-subsequence-then-sequence-converges:ineq}
+        |\!|u_{k_r} - u|\!| \geq \epsilon
+    \end{equation}
+    for all $r\in\N$. However, as a subsequence of $U$, the sequence
+    $(u_{k_r})_{r\in\N}$
+    must simultanously contain a subsequence that converges to $u$, which contradicts
+    \eqref{proof:lem:if-every-subsequence-contains-convergent-subsequence-then-sequence-converges:ineq}.
+    Thus, our assumption $u_k \not\to u$ must be false.
+\end{proof}
+\noindent
+We will now prove the main theorem.
+\begin{proofof}{thm:consistency}
+    From strong convexity of $f$ (\cref{ass:strongly-convex-radially-unbounded}),
+    convexity of $\pi$ (\cref{ass:penalty-function}) and $\gamma_k > 0$ (\cref{ass:penalty-parameters}),
+    it follows that $f^k$ is also strongly convex for all $k\in\N$
+    (\cref{prop:operations-conserving-convexity}).
+    Thus, for every $k \in \N$, \cref{prop:strongly-convex-implies-unique-minimizer}
+    implies that there exists a unique solution $x^\star_k$
+    to problem \eqref{eq:penalized-general-problem}.
+    Let $x$ be any feasible point for \eqref{eq:general-problem}, which exists by \cref{ass:feasible-point}.
+    Then, for any $k\in\N$,
+    \begin{equation}
+        \label{proof:thm:consistency:eq} 
+        f(x^\star_k) \leq f^{k}(x^\star_k) \leq f^{k}(x) = f(x).
+    \end{equation}
+    In particular, $(f^k(x^\star_k))_{k\in\N}$ is a bounded sequence.
+    Since $f$ is radially unbounded (\cref{ass:strongly-convex-radially-unbounded}) and
+    $\pi$ is nonnegative (\cref{ass:penalty-function}),
+    $f^k$ must also be radially unbounded. It follows, by
+    \cref{lem:radially-unbounded-f-and-f(x^n)-bounded-implies-x^n-bounded},
+    that the sequence $(x^\star_k)_{k\in\N}$ is also bounded and thus it contains a subsequence
+    $(x^\star_{k_r})_{r\in\N}$ that converges to a point $x^\star_\infty \in\R^d$. For any $k\in\N$, we have
+    \begin{align*}
+        f^{k+1}(x^\star_{k+1}) - f^k(x^\star_k) 
+        &\geq
+        f^{k+1}(x^\star_{k+1}) - f^k(x^\star_{k+1}) \\
+        &=
+        \frac{\gamma_{k+1}}{2} \, \pi(x^\star_{k+1}) - \frac{\gamma_k}{2} \, \pi(x^\star_{k+1}) \\
+        &=
+        \frac{\gamma_{k+1} - \gamma_k}{2} \, \pi(x^\star_{k+1}) \\
+        &\geq
+        0\,,
+    \end{align*}
+    where we used \cref{ass:penalty-parameters,ass:penalty-function} in the last step.
+    This implies that $(f^k(x^\star_k))_{k\in\N}$ is a monotonically increasing sequence.
+    We know from \eqref{proof:thm:consistency:eq} that $(f^k(x^\star_k))_{k\in\N}$ must also be bounded and
+    thus $(f^k(x^\star_k))_{k\in\N}$ must converge.
+    In particular, we have
+    \begin{equation*}
+        \limsup_{k\to\infty} \,[f^k(x^\star_k) - f(x^\star_k)] < \infty.
+    \end{equation*}
+    By plugging in definitions for $f^k$ and $f$, we get
+    \begin{equation*}
+        \limsup_{k\to\infty} \frac{\gamma_k}{2} \pi(x^\star_k) < \infty.
+    \end{equation*}
+    The function $\pi$ is convex (\cref{ass:penalty-function}) and thus continuous
+    (\cref{prop:convex-implies-continuous}).
+    Hence, since $\lim_{k\to\infty} \gamma_k = \infty$ (\cref{ass:penalty-parameters}),
+    the above limit can be finite only if
+    \begin{equation*}
+        \pi(x^\star_{\infty}) = \lim_{r\to\infty} \pi(x^\star_{k_r}) = 0,
+    \end{equation*}
+    which implies that $x^\star_\infty$ is feasible, by \cref{ass:penalty-function}.
+    To prove optimality of $x^\star_\infty$, let $x^\star$ be the solution to \eqref{eq:general-problem}.
+    Then we have, again from \eqref{proof:thm:consistency:eq},
+    \[
+        f(x^\star_\infty)
+        = \lim_{r\to\infty} f(x^\star_{k_r})
+        \leq \lim_{r\to\infty} f^{k_r}(x^\star_{k_r})
+        = \lim_{k\to\infty} f^k(x^\star_k) \leq f(x^\star),
+    \]
+    which implies $f(x^\star_\infty) = f(x^\star)$ by feasibility of $x^\star_\infty$ and optimality of $x^\star$. This in turn implies that all inequalities must, in fact, be equalities and thus
+    \[
+        \lim_{k\to\infty} f^k(x^\star_k) = f(x^\star),
+    \]
+    as desired. Finally, by uniqueness of $x^\star$ we must
+    have $x^\star_\infty = x^\star$, proving that $x^\star$ is a limit point of $(x^\star_k)_{k\in\N}$.
+    Note that \cref{ass:penalty-parameters} still holds if we replace $(\gamma_k)_{k\in\N}$ by any
+    subsequence $(\gamma_{k_l})_{l\in\N}$ and the same arguments imply that $x^\star$ is also a
+    limit point of $(\gamma_{k_l})_{l\in\N}$.
+    Hence, by \cref{lem:if-every-subsequence-contains-convergent-subsequence-then-sequence-converges},
+    we in fact have $\lim_{k\to\infty} x^\star_k = x^\star$.
+\end{proofof}
+\noindent
+\begin{lemma}
+    \label{lem:j-satisfies-assumption}
+    In the situation of \eqref{eq:model-problem} assume that \cref{ass:random-matrix} holds.
+    Then, $j$ satisfies \cref{ass:strongly-convex-radially-unbounded}.
+\end{lemma}
+\begin{proof}
+    It holds that
+    \begin{align*}
+        j(x)
+        &\overset{\textnormal{def}}{=} \E\left( \frac{1}{2}|\!|A(\xi)x - b|\!|^2 \right) + \frac{\lambda}{2} |\!|x|\!|^2 \\
+        &\leq
+        \E(|\!|A(\xi)||\!|^2)|\!|x|\!|^2 + |\!|b|\!|^2 + \frac{\lambda}{2} |\!|x|\!|^2
+        \longrightarrow \infty, \quad ||x||\to\infty,
+    \end{align*}
+    thus $j$ is radially unbounded. Further, for all $x\in\R^d$,
+    \[
+        j^{\prime\prime}(x) = \E(A(\xi)^\top A(\xi)) + \lambda I_d,
+    \]
+    where $I_n$ is the $d\times d$-identity matrix. By definition,
+    \[
+        (A(\xi)^\top A(\xi))_{ij} = \sum_{k=1}^n A(\xi)_{ki}A(\xi)_{kj}.
+    \]
+    \Cref{ass:random-matrix} implies that $\E(A(\xi)_{ij}^2) < \infty$ for all $i,j\in\{1,\dots, d\}$.
+    Hence, by Cauchy-Schwarz,
+    \[
+        \E|(A(\xi)^\top A(\xi))_{ij}|
+        \leq \sum_{k=1}^n \E|A(\xi)_{ki}A(\xi)_{kj}|
+        \leq \sum_{k=1}^n \E(A(\xi)_{ki}^2) \E(A(\xi)_{kj}^2)
+        < \infty.
+    \]
+    Thus, for all $x\in\R^d$, $j^{\prime\prime}(x)$ exists and, since $\lambda > 0$,
+    $j^{\prime\prime}(x) - \lambda I$ is positive definite. By
+    \cref{prop:pos-def-second-derivative-implies-convex},
+    it follows that $j$ is ($\lambda$-)strongly convex.
+\end{proof}
+\noindent
+Applying this to our problem of interest, we have the following useful result for determining reasonable penalty
+functions $\pi$.
+\begin{corollary}
+    \label{cor:application-of-consistency-thm}
+    In the situation of \eqref{eq:model-problem} and \eqref{eq:penalized-objective}, assume that
+    \cref{ass:penalty-function,ass:penalty-parameters,ass:feasible-point,ass:random-matrix} hold.
+    Then there exists a unique solution $x^\star$ to \eqref{eq:model-problem} and, for all $k\in\N$, there
+    exists a unique solution $x^\star_k$ to \eqref{eq:penalized-objective}. These solutions satisfy
+    $\lim_{k\to\infty} x^\star_k = x^\star$, $\lim_{k\to\infty} j^k(x^\star_k) = j(x^\star)$.
+\end{corollary}
+\begin{proof}
+    By \cref{lem:j-satisfies-assumption}, $j$ satisfies \cref{ass:strongly-convex-radially-unbounded}.
+    The claim now follows from \cref{thm:consistency}.
+\end{proof}
+
+
+\section{Sequential SGD}
+
+We will now analyze a form of stochastic gradient descent to efficiently solve \eqref{eq:general-problem}.
+\begin{algorithm}
+    \label{algo:ssgd-algo}
+    For $k\in\N$, let $\tau_k,\gamma_k \in (0, \infty)$ and $b_k\in\N$.
+    The \textbf{Sequential SGD (SSGD)} iterates have the form
+    \[
+        x_{k+1} := x_k - \tau_k \tilde{G}^k(x_k)\,,
+    \]
+    where 
+    \[
+        \tilde{G}^k(x) := \frac{1}{b_k} \sum_{j=1}^{b_k} G^{k}(x, \xi_k^j)\,,
+    \]
+    $x_1\in\R^d$ is a starting point, $(\xi_i^j)_{i=1,\dots,k, j=1,\dots b_k}$ are i.\,i.\,d.
+    samples from the distribution of $\xi$ and $G^{k}(x_k, \xi)$
+    is a stochastic subgradient of $f^k$ at $x_k^\star$.
+    We refer to $\tau_k$ as a \textbf{step size}, $\gamma_k$ as a \textbf{penalty parameter} and
+    $b_k$ as a \textbf{batch size}.
+\end{algorithm}
+\noindent
+Let $x^\star$ be the solution to \eqref{eq:general-problem}.
+Our goal is to to determine appropriate parameters $\tau_k$, $\gamma_k$ and $b_k\in\N$,
+such $\E|\!|x_k - x^\star|\!|$ converges to zero as fast as possible.
+There are several difficulties here.
+One is that we do not use gradients from our main objective in \eqref{eq:general-problem},
+but from the surrogate objective \eqref{eq:penalized-general-problem}. In addition,
+this surrogate depends on $\gamma_k$, which may need to satisfy $\gamma_k \to\infty$ -- that is,
+the surrogate objective changes between iterations. Further,
+the squared gradient norm $\E|\!|G^{k}(x, \xi)|\!|^2$ grows quadratically in $\gamma_k$ and $|\!|x|\!|$,
+which goes against standard assumptions in the literature.
+These difficulties prevent us from being able to directly apply standard analysis techniques
+like the ones found in \cite{doi:10.1137/070704277}, for example.
+Because of this, we will first decompose $\E|\!|x_k - x^\star|\!|$ as follows:
+\begin{equation}
+    \label{ineq:u_k-u^star}
+    \E|\!|x_k - x^\star|\!| \leq  \E|\!|x_k - x_k^\star|\!| + |\!|x_k^\star - x^\star|\!|,
+\end{equation}
+where we used the triangle inequality.
+In the following sections, we will derive bounds for the two terms
+on the right-hand side and use those bounds to determine appropriate sequences $(\tau_k)_{k\in\N}$, $(\gamma_k)_{k\in\N}$ and $(b_k)_{k\in\N}$ to guarantee convergence of the algorithm.
+In the following, all statements involving random variables are understood to hold almost surely,
+unless otherwise stated. Looking at \eqref{ineq:u_k-u^star}, there are two terms we need to bound:
+$\E|\!|x_k - x_k^\star|\!|$ and $|\!|x_k^\star - x^\star|\!|$.
+We refer to the former as the \textbf{tracking error} and the latter as the \textbf{surrogate error.}
+We will refer to the following additional assumptions.
+\begin{assumption}
+    \label{ass:sampling}
+    We can sample arbitrarily many independent random variables $\xi_i^j$, $i,j\in\N$, from the distribution of $\xi$.
+\end{assumption}
+\begin{assumption}
+    \label{ass:subdifferentiable}
+    The objective $f$ and penalty $\pi$ are subdifferentiable.
+\end{assumption}
+% \begin{assumption}
+%     \label{ass:smoothness-of-f-and-pi}
+%     The objective $f$ and the penalty $\pi$ are differentiable and have Lipschitz gradients. More specifically,
+%     there exist $L,L_\pi\in (0, \infty)$ such that, for all $x,y\in\R^d$, $|\!|\nabla f(x) - \nabla f(y)|\!| \leq L|\!|x - y|\!|$ and
+%     $|\!|\nabla \pi(x) - \nabla \pi(y)|\!| \leq L_\pi|\!|x - y|\!|$.
+% \end{assumption}
+\begin{assumption}
+    \label{ass:quad-bounded-variance}
+    If $f^k$ is subdifferentiable at a point $x\in\R^d$ for some $k\in\N$,
+    let $g^k(x)\in\partial f(x)$ and let $G^k(x, \xi)$ be a stochastic subgradient of $f^k$ at $x$.
+    Then there exists a constant $C>0$, such that
+    \[
+        \Var(G^k(x, \xi)) \leq C \left(|\!|x|\!|^2 + |\!|x|\!|^2\gamma_k^2 + \gamma_k^2 + 1\right).
+    \]
+\end{assumption}
+\begin{assumption}
+    \label{ass:active-set}
+    There exists a $K\in\N$ such that, for all $k\geq K$, the
+    active sets $\mathcal{A}(x_k^\star, \omega)$ are almost surely identical to $\mathcal{A}(x^\star, \omega)$, i.\,e.
+    $\mathcal{A}(x_k^\star, \omega) = \mathcal{A}(x^\star, \omega)$ for all $k\geq K$ and almost every $\omega\in\Omega$.
+\end{assumption}
+\begin{assumption}
+    \label{ass:f-is-smooth}
+    The objective $f$ is $L$-smooth.
+\end{assumption}
+
+\subsection{Bounding the surrogate error}
+
+In this section, we will restrict ourselves to special cases for $\pi$, in order to bound the surrogate
+error $|\!|x_k^\star - x^\star|\!|$.
+
+\begin{theorem}
+    \label{thm:surrogate-error-squared-hinge-loss}
+    In the situations of \eqref{eq:general-problem} and \eqref{eq:penalized-general-problem}, let
+    $\pi(x) := \E|\!|(0, A(\xi)x - c)_+|\!|^2$ and assume that
+    \cref{ass:strongly-convex-radially-unbounded,ass:penalty-parameters,ass:feasible-point,ass:random-matrix,ass:active-set,ass:f-is-smooth} hold.
+    Then there exists a unique solution $x^\star$ to \eqref{eq:general-problem} and, for all $k\in\N$, there
+    exists a unique solution $x^\star_k$ to \eqref{eq:penalized-general-problem}. Further, we have
+    \[
+        |\!|x_k^\star - x^\star|\!| = \mathcal{O}(\gamma_k^{-1}).
+    \]
+\end{theorem}
+\noindent
+The following statement will be used multiple times, so we state it here, before proving
+\cref{thm:surrogate-error-squared-hinge-loss}.
+\begin{lemma}
+    \label{lem:square-hinge-penalty-satisfies-assumption}
+    The function $\pi(x) := \E|\!|(0, A(\xi)x - c)_+|\!|^2$, $x\in\R^d$, satisfies \cref{ass:penalty-function}.
+\end{lemma}
+\begin{proof}
+    The function $r(t) := \max(0, t)$ is convex and $t\mapsto t^2$ is convex and nondecreasing on $\R$.
+    Hence, their composition, $h(t):= \max(0, t)^2$, is also convex (\cref{prop:convex-circ-increasing-is-convex}).
+    Now, for $x = (x_1, \dots, x_d)^\top\in\R^d$, we
+    interpret $r(x)$ as the vector $(r(x_1), \dots, r(x_d))^\top$. Then, the function
+    \[
+        \phi(x) := ||r(x)||^2 = \sum_{i=1}^{d} h(x_i)
+    \]
+    is also convex, since it is the sum of convex functions (\cref{prop:operations-conserving-convexity}).
+    Thus, the function $\psi\colon \R^d\times \R^m$,
+    defined by $\psi(x, y) := \phi(A(y)x - c)$, is convex in its first argument,
+    by \cref{prop:operations-conserving-convexity}.
+    Finally, by \cref{prop:expectation-preserves-convexity}, $\pi(x) = \E(\psi(x))$ is convex.
+    Clearly, $\pi(x) \geq 0$ for all $x\in\R^d$ and $\pi(x) = 0$ if and only if $x\in\R^d$ is feasible for
+    \eqref{eq:model-problem}, so $\pi$ satisfies \cref{ass:penalty-function}.
+\end{proof}
+
+\begin{proofof}{thm:surrogate-error-squared-hinge-loss}
+    \Cref{ass:random-matrix} ensures that $\pi$ is well-defined. Existence and uniqueness of $x^\star$ and $x_k^\star$ for all $k\in\N$ follows from
+    \cref{ass:strongly-convex-radially-unbounded,ass:feasible-point,lem:square-hinge-penalty-satisfies-assumption,prop:strongly-convex-implies-unique-minimizer,prop:operations-conserving-convexity}.
+    By \cref{ass:active-set}, there exists $K\in\N$ such that $\mathcal{A}(x_k^\star, \omega) = \mathcal{A}(x^\star,\omega)$
+    for all $k\geq K$ and almost every $\omega\in\Omega$. This implies that the gradient of $\pi$,
+    \[
+        \nabla \pi(x) = 2\,\E\big( A(\xi)^\top \max(0, A(\xi)x - c) \big),
+    \]
+    is affine on the set $\{x_k^\star, \, k\geq K\}$. Specifically, if $\mathcal{A}(x^\star) = \{i_1, \dots, i_r\} \subset \{1,\dots, d\}$
+    for some $r\in\{1,\dots, d\}$, then, for all $k\geq K$,
+    \begin{equation}
+        \label{eq:proof:thm:surrogate-error-squared-hinge-loss:eq}
+        \nabla \pi(x_k^\star) = 2\,\E\big( A(\xi)^\top P \cdot (A(\xi) x_k^\star - \,c) \big)
+        = 2\,\E\big( A(\xi)^\top P A(\xi) \big) x_k^\star -  2\,\E\big( A(\xi)^\top \big) P \,c\,,
+    \end{equation}
+    where $P = (p_{ij})_{i,j\in\{1,\dots, d\}}\in\R^{d\times d}$, such that $p_{ii} = 1$ if $i\notin \mathcal{A}(x_K^\star)$
+    and $p_{ij} = 0$, otherwise. Let $k\geq K$. Since $\nabla\pi(x^\star) = 0$, we have
+    \[
+        |\!| \nabla \pi (x_k^\star) |\!|
+        = |\!| \nabla \pi (x_k^\star) - \nabla \pi (x^\star) |\!|
+        = 2 \, |\!|\E(A(\xi)^\top P A(\xi))  |\!| \, |\!| x_k^\star - x^\star |\!|.
+    \]
+    By optimality of $x_k^\star$ for $f^k$, it holds that
+    \[
+        0 = \nabla f^k(x_k^\star) = \nabla f(x_k^\star) + \frac{\gamma_k}{2} \pi(x_k^\star),
+    \]
+    which implies
+    \begin{equation}
+        \label{eq:proof:thm:surrogate-error-squared-hinge-loss:ineq}
+        |\!| \pi(x_k^\star) |\!|
+        \leq \frac{2}{\gamma_k} |\!| \nabla f(x_k^\star) |\!|
+        \leq \frac{2\, |\!| \nabla f(x_k^\star) - \nabla f(x^\star) |\!|}{\gamma_k} + \frac{2 \, |\!| \nabla f(x^\star) |\!|}{\gamma_k}.
+    \end{equation}
+    \Cref{ass:f-is-smooth,prop:lipschitz-gradients} imply that
+    \[
+        |\!| \nabla f(x_k^\star) - \nabla f(x^\star) |\!| \,\leq\, L \, |\!| x_k^\star - x^\star |\!|,
+    \]
+    and, combining that with \eqref{eq:proof:thm:surrogate-error-squared-hinge-loss:ineq}, we obtain
+    \[
+        |\!| \pi(x_k^\star) |\!| \,\leq\, \frac{2 L}{\gamma_k}\, |\!| x_k^\star - x^\star |\!| + \frac{2 \, |\!| \nabla f(x^\star) |\!|}{\gamma_k}\,.
+    \]
+    Together with the equality \eqref{eq:proof:thm:surrogate-error-squared-hinge-loss:eq}, we have
+    \begin{equation}
+        \label{eq:proof:thm:surrogate-error-squared-hinge-loss:ineq2}
+        2 \, |\!| \E(A(\xi)^\top P A(\xi)) |\!| \, |\!| x_k^\star - x^\star |\!|
+        \,\leq\,
+        \frac{2 L}{\gamma_k}\, |\!| x_k^\star - x^\star |\!| + \frac{2 \, |\!| \nabla f(x^\star) |\!|}{\gamma_k}\,.
+    \end{equation}
+    Set $q := 2 \, |\!| \E(A(\xi)^\top P A(\xi)) |\!|$. By \cref{ass:penalty-parameters},
+    there exists $K^\prime\geq K$ such that $2L_f/\gamma_k < q$ for all $k\geq K^\prime$. Hence,
+    rearrainging \eqref{eq:proof:thm:surrogate-error-squared-hinge-loss:ineq}, we obtain
+    \[
+        |\!| x_k^\star - x^\star |\!| \,\leq\, \frac{2 \, |\!| \nabla f(x^\star) |\!|}{\gamma_k (q - 2 \,L_f/\gamma_k)}
+        \,=\,
+        \mathcal{O}(\gamma_k^{-1}),
+    \]
+    as desired.
+\end{proofof}
+
+\begin{corollary}
+    In the situations of \eqref{eq:model-problem} and \eqref{eq:penalized-objective}, let
+    $\pi(x) := \E|\!|(0, A(\xi)x - c)_+|\!|^2$ and assume that
+    \cref{ass:penalty-parameters,ass:feasible-point,ass:random-matrix,ass:active-set} hold.
+    Then there exists a unique solution $x^\star$ to \eqref{eq:model-problem} and, for all $k\in\N$, there
+    exists a unique solution $x^\star_k$ to \eqref{eq:penalized-objective}. Further, we have
+    \[
+        |\!|x_k^\star - x^\star|\!| = \mathcal{O}(\gamma_k^{-1}).
+    \]
+\end{corollary}
+
+\begin{proof}
+    By \cref{lem:j-satisfies-assumption}, $j$ satisfies \cref{ass:strongly-convex-radially-unbounded}. Since
+    $j$ is quadratic, $j$ is also Lipschitz smooth, so \cref{ass:f-is-smooth} also holds. The
+    claim now follows from \cref{thm:surrogate-error-squared-hinge-loss}.
+\end{proof}
+
+\subsection{Bounding the tracking error}
+
+The following analysis is an adaptation of techniques used in \cite{cutler2023drift}.
+One notable difference is that we do not assume uniformly bounded variance or second moment of the
+stochastic gradients. We introduce the following notation
+\begin{notation}
+    For any $k\in\N$, we define $A_k := |\!|x_k-x_k^\star|\!|^2$,
+    $a_k := \E(A_k)$, and $\Delta_k := |\!|x_k^\star - x_{k+1}^\star|\!|$.
+    Further, we define $\xi_k^{[b_{k}]} := (\xi_k^1, \dots, \xi_k^{b_k})\in\R^{m\times b_k}$
+    and $\E_k(X) := \E\big(X \,|\, \xi_{k-1}^{[b_{k-1}]}, \dots, \xi_1^{[b_{1}]}\big)$.
+\end{notation}
+
+\begin{theorem}
+    \label{thm:tracking-error-sgd}
+    In the situations of \eqref{eq:general-problem} and \eqref{eq:penalized-general-problem}, assume that
+    \cref{ass:strongly-convex-radially-unbounded,ass:penalty-function,ass:penalty-parameters,ass:feasible-point,ass:sampling,ass:subdifferentiable,ass:quad-bounded-variance}
+    hold.
+    Then, for all $k\in\N$, the iterates $(x_k)_{k\in\N}$ of \cref{algo:ssgd-algo} satisfy
+    \[
+        a_{k+1} \leq \left(1 - \rho_k\right)a_k + 4M^2(1 + \gamma_k^2)\tau_k^2 + (1+\eta_k^{-1})\Delta_k^2,
+    \]
+    where $\rho_k := \mu\tau_k/2 - 8C(1+\gamma_k^2)\tau_k^2$, $\eta_k := \min(1, \mu\tau_k/2)$, and $M^2\in (0,\infty)$ is a constant.
+    If, additionally, $f^k$ is differentiable and $L_k$-smooth, then we have
+    \[
+        a_{k+1}
+        \leq
+        (1-\tilde{\rho}_k) a_k + 2M^2_k(1 + \gamma_k^2)\tau_k^2 + (1+\eta_k^{-1})\Delta_k^2,
+    \]
+    where $\tilde{\rho}_k := \mu\tau_k/2 - 2(M_k^2(1+\gamma_k^2) + L_k^2) \tau_k^2$ and $M_k^2 = \mathcal{O}(b_k^{-1})$.
+\end{theorem}
+
+\begin{remark}
+    Note that the strong convexity assumption is crucial for the above result to be useful, or otherwise there would not exist a step size $\tau_k$ that would lead to a contraction factor in front of $a_k$.
+\end{remark}
+\noindent
+We will use the following two lemmata in the proof of \cref{thm:tracking-error-sgd}.
+
+\begin{lemma}
+    \label{lem:bound-on-G^k(u_k)-squared}
+    In the situations of \eqref{eq:general-problem} and \eqref{eq:penalized-general-problem}, assume that
+    \cref{ass:strongly-convex-radially-unbounded,ass:penalty-function,ass:penalty-parameters,ass:feasible-point,ass:sampling,ass:subdifferentiable,ass:quad-bounded-variance}
+    hold. Then, for all $k\in\N$, the iterates of \cref{algo:ssgd-algo} satisfy
+    \[
+        \E_k |\!|\tilde{G}^k(x_k)|\!|^2 \leq 4C(1+\gamma_k^2) A_k + 2M^2(1 + \gamma_k^2)\,,
+    \]
+    where $M^2\in (0, \infty)$ is a constant.
+    If, additionally, $f^k$ is differentiable and $L_k$-smooth, then we have
+    \[
+        \E_k |\!|\tilde{G}^k(x_k)|\!|^2 \leq\left( M_k^2(1+\gamma_k^2) + L_k^2 \right) A_k + M^2_k(1 + \gamma_k^2)\,,
+    \]
+    where $M_k^2 = \mathcal{O}(b_k^{-1})$.
+\end{lemma}
+
+\begin{proof}
+    First, by \cref{ass:quad-bounded-variance} and the inequality $(a+b)^2\leq 2\,(a^2 + b^2)$ $\forall a,b\in\R$, we have
+    \begin{align*}
+        |\!|g^k(x_k)|\!|^2 &\leq C|\!|x_k|\!|^2 + C|\!|x_k|\!|^2\gamma_k^2 + C\gamma_k^2 + C \\
+                       &\leq 2C(|\!|x_k - x_k^\star|\!|^2 + |\!|x_k^\star|\!|^2) + 2C\gamma_k^2(|\!|x_k - x_k^\star|\!|^2 + |\!|x_k^\star|\!|^2) + C\gamma_k^2 + C \\
+                       &= 2C(1+\gamma_k^2) A_k + 2C|\!|x_k^\star|\!|^2 + (2C|\!|x_k^\star|\!|^2 + C)\gamma_k^2 + C \\
+                       &\leq 2C(1+\gamma_k^2) A_k + M^2(1 + \gamma_k^2),
+    \end{align*}
+    where $M^2 := \sup_{k\in\N} 2C|\!|x_k^\star|\!|^2 + C$.
+    Similarly, by \cref{prop:variance-linear-for-independent-rvs,prop:variance-identity}, and
+    \cref{ass:quad-bounded-variance}, we have
+    \begin{align*}
+        \Var_k(\tilde{G}^k(x_k))
+            &= \frac{1}{b_k} \Var_k(G^k(x_k, \xi)) \\
+            &\leq \frac{C}{b_k} \left(|\!|x_k|\!|^2 + |\!|x_k|\!|^2\gamma_k^2 + \gamma_k^2 + 1\right) \\
+            &\leq \frac{C}{b_k} \left( 2( |\!|x_k - x_k^\star|\!|^2
+                    + |\!|x_k^\star|\!|^2 )
+                    + 2\gamma_k^2 ( |\!|x_k - x_k^\star|\!|^2 + |\!|x_k^\star|\!|^2 )
+                    + \gamma_k^2 + 1\right) \\
+            &= \frac{C}{b_k} \left( 2(1+\gamma_k^2) |\!|x_k - x_k^\star|\!|^2
+                    + (2|\!|x_k^\star|\!|^2 + 1)\gamma_k^2 + 2|\!|x_k^\star|\!|^2 + 1\right) \\
+            &= \frac{C}{b_k} \left( 2(1+\gamma_k^2) A_k
+                    + (2|\!|x_k^\star|\!|^2 + 1)\gamma_k^2 + 2|\!|x_k^\star|\!|^2 + 1\right) \\
+            &\leq \frac{1}{b_k}\left( 2C(1+\gamma_k^2) A_k
+                    + M^2(1 + \gamma_k^2) \right).
+    \end{align*}
+    Putting both together, we thus have
+    \begin{align*}
+        \E_k|\!|\tilde{G}^k(x_k)|\!|^2 &= \Var_k(\tilde{G}^k(x_k)) + |\!|g^k(x_k)|\!|^2 \\
+                &\leq \left( 1 + \frac{1}{b_k} \right)\left( 2C(1+\gamma_k^2) A_k
+                    + M^2(1 + \gamma_k^2) \right) \\
+                &\leq 4C(1+\gamma_k^2) A_k + 2M^2(1 + \gamma_k^2).
+    \end{align*}
+    % where
+    % $M^2 := \sup_{k\in\N} \,2\left( C/b_k + C \right)|\!|x_k^\star|\!|^2 + C/b_k + C$.
+    For the second claim note that, by optimality of $x_k^\star$ for $f^k$, we have
+    \[
+        |\!|\nabla f^k(x_k)|\!|^2 = |\!|\nabla f^k(x_k) - \nabla f^k(x_k^\star)|\!|^2 \leq L_k^2 \, A_k.
+    \]
+    Bounding $\Var(\tilde{G}^k(x_k))$ the same way as above, we get
+    \begin{align*}
+        \E_k |\!|\tilde{G}^k(x_k)|\!|^2
+            &= \Var(\tilde{G}^k(x_k)) + |\!|\nabla f^k(x_k)|\!|^2 \\
+            &\leq \frac{1}{b_k}\left( 2C(1+\gamma_k^2) A_k + M^2(1 + \gamma_k^2) \right) + L_k^2 \, A_k \\
+            &= \left( \frac{2C}{b_k}(1+\gamma_k^2) + L_k^2 \right) A_k + \frac{M^2}{b_k}(1 + \gamma_k^2) \\
+            &= \left( M_k^2(1+\gamma_k^2) + L_k^2 \right) A_k + M^2_k(1 + \gamma_k^2),
+    \end{align*}
+    where $M_k^2 := \max(2C, \,M^2)/b_k$. Note that, by \cref{thm:consistency}, the sequence $(x_k^\star)_{k\in\N}$ converges,
+    and so $M^2 < \infty$ and $M_k^2 = \mathcal{O}(b_k^{-1})$, as desired.
+\end{proof}
+
+\begin{lemma}
+    \label{lem:one-step-improvement}
+    In the situations of \eqref{eq:general-problem} and \eqref{eq:penalized-general-problem}, assume that
+    \cref{ass:strongly-convex-radially-unbounded,ass:penalty-function,ass:penalty-parameters,ass:feasible-point,ass:sampling,ass:subdifferentiable,ass:quad-bounded-variance}
+    hold. Then, for all $k\in\N$, the iterates of \cref{algo:ssgd-algo} satisfy
+    \[
+        \E|\!|x_{k+1} - x_k^\star|\!|^2 \leq \left( 1 - q_k \right) A_k
+        + 2M^2(1 + \gamma_k^2)\tau_k^2\,,
+    \]
+    where $q_k := \mu\tau_k - 4C(1+\gamma_k^2)\tau_k^2$ and $M^2\in (0,\infty)$ is a constant.
+    If, additionally, $f^k$ is differentiable and $L_k$-smooth for all $k\in\N$, then we have
+    \[
+        \E|\!|x_{k+1} - x_k^\star|\!|^2 \leq (1 - \tilde{q}_k)a_k + M^2_k(1 + \gamma_k^2) \tau_k^2\,,
+    \]
+    for all $k\in\N$, where $\tilde{q}_k := \mu\tau_k - (M_k^2(1+\gamma_k^2) + L_k^2) \tau_k^2$ and $M_k^2 = \mathcal{O}(b_k^{-1})$ .
+\end{lemma}
+
+\begin{proof}
+    Plugging in the definition of $x_{k+1}$ and expanding, we get
+    \begin{align*}
+        |\!|x_{k+1} - x_k^\star|\!|^2 &= |\!|x_k - x^\star_k - \tau_k \tilde{G}^k(x_k)|\!|^2 \\
+                            &= A_k + \tau_k^2\,|\!|\tilde{G}^k(x_k)|\!|^2 - 2 \tau_k \langle x_k - x_k^\star, \tilde{G}^k(x_k) \rangle.
+    \end{align*}
+    Applying $\E_k$ on both sides, we get
+    \begin{align*}
+        \E_k|\!|x_{k+1} - x_k^\star|\!|^2 &= A_k + \tau_k^2\,\E_k|\!|\tilde{G}^k(x_k)|\!|^2 - 2 \tau_k \langle x_k - x_k^\star, g^k(x_k) \rangle.
+    \end{align*}
+    Strong convexity of $f^k$ yields
+    \begin{equation}
+        \label{eq:proof:lem:one-step-improvement}
+        \E_k|\!|x_{k+1} - x_k^\star|\!|^2 \leq (1-\mu\tau_k)A_k + \tau_k^2\,\E_k|\!|\tilde{G}^k(x_k)|\!|^2.        
+    \end{equation}
+    For the first claim, we use the first part of \cref{lem:bound-on-G^k(u_k)-squared}, which yields
+    \[
+        \E_k |\!|\tilde{G}^k(x_k)|\!|^2
+        \leq
+        4C(1+\gamma_k^2) A_k + 2M^2(1 + \gamma_k^2).
+    \]
+    Plugging this into \eqref{eq:proof:lem:one-step-improvement}, we get
+    \[
+        \E_k|\!|x_{k+1} - x_k^\star|\!|^2 \leq \left( 1 - \mu\tau_k + 4C(1+\gamma_k^2)\tau_k^2 \right) A_k
+        + 2M^2(1 + \gamma_k^2)\tau_k^2.
+    \]
+    Now, taking expectations of both sides yields the first claim.
+    For the second claim, we use the second part of \cref{lem:bound-on-G^k(u_k)-squared}
+    and use that bound with \eqref{eq:proof:lem:one-step-improvement}.
+\end{proof}
+\noindent
+We will now prove the first main theorem of this subsection.
+\begin{proofof}{thm:tracking-error-sgd}
+    Let $k\in\N$. First, we have
+    \begin{align*}
+        A_{k+1} &= \E_k|\!|x_{k+1} - x_k^\star + x_k^\star - x_{k+1}^\star|\!|^2 \\
+                &= \E_k|\!|x_{k+1} - x_k^\star|\!|^2 + \Delta^2_k + 2\,\E_k\langle x_{k+1} - x_k^\star, x_k^\star - x_{k+1}^\star \rangle\,.
+    \end{align*}
+    We can apply the Cauchy-Schwarz and Young inequalities to obtain
+    \[
+        A_{k+1} \leq (1+\eta_k)\E_k|\!|x_{k+1} - x_k^\star|\!|^2 + (1+\eta_k^{-1})\,\Delta^2_k\,,
+    \]
+    for all $\eta_k > 0$. Hence, by applying $\E(\cdot)$ on both sides,
+    \begin{equation}
+        \label{eq:proof:thm:tracking-error-sgd}
+        a_{k+1} \leq (1+\eta_k)\E|\!|x_{k+1} - x_k^\star|\!|^2 + (1+\eta_k^{-1})\,\Delta^2_k\,.        
+    \end{equation}
+    Using the first part of \cref{lem:one-step-improvement}, we can bound the first term:
+    \begin{equation}
+        \label{eq:proof:thm:tracking-error-sgd-2}
+        (1+\eta_k)\E|\!|x_{k+1} - x_k^\star|\!|^2
+            \leq (1+\eta_k)(1 - q_k)a_k + (1+\eta_k)2M^2(1 + \gamma_k^2)\tau_k^2\,.
+    \end{equation}
+    We choose $\eta_k = \min(1, \mu\tau_k/2)$ and have
+    \begin{align*}
+        (1+\eta_k)(1 - q_k)
+                    &= (1+\eta_k)(1 - \mu\tau_k + 4C(1+\gamma_k^2)\tau_k^2) \\
+                    &= 1 + \eta_k - (1+\eta_k)\mu\tau_k + (1+\eta_k)4C(1+\gamma_k^2)\tau_k^2 \\
+                    &\leq 1 + \frac{\mu}{2}\tau_k - \mu\tau_k + 8C(1+\gamma_k^2)\tau_k^2 \\
+                    &= 1 - \frac{\mu}{2}\tau_k + 8C(1+\gamma_k^2)\tau_k^2\,,
+    \end{align*}
+    Plugging this into \eqref{eq:proof:thm:tracking-error-sgd-2}
+    and using $1+\eta_k \leq 2$ again, we arrive at the bound
+    \[
+        (1+\eta_k)\E|\!|x_{k+1} - x_k^\star|\!|^2
+            \leq \left(1 - \frac{\mu}{2}\tau_k + 8C(1+\gamma_k^2)\tau_k^2\right)a_k + 4M^2(1 + \gamma_k^2)\tau_k^2.
+    \]
+    Together with \eqref{eq:proof:thm:tracking-error-sgd}, we obtain the first claim.
+    The proof of the second claim follows analogously after applying the second part of \cref{lem:one-step-improvement}
+    to bound \eqref{eq:proof:thm:tracking-error-sgd}.
+\end{proofof}
+
+
+\subsection{Convergence rates}
+
+In the previous sections, we proved bounds on the iterates of \cref{algo:ssgd-algo}.
+We will now use these bounds to choose asymptotically optimal policies for the parameters $(\tau_k)_{k\in\N}$,
+$(\gamma_k)_{k\in\N}$, and $(b_k)_{k\in\N}$ in \cref{algo:ssgd-algo}, for solving \eqref{eq:model-problem}.
+\begin{assumption}
+    \label{ass:random-matrix-2}
+    The random matrix $A(\xi)$ satisfies $\E|\!|A(\xi)|\!|_\textnormal{F}^4 < \infty$.
+\end{assumption}
+
+\begin{theorem}
+    \label{thm:convergence-rate-squared-hinge-penalty}
+    In the situations of \eqref{eq:model-problem} and \eqref{eq:penalized-objective}, let
+    $\pi(x) := \E|\!|(0, A(\xi)x - c)_+|\!|^2$ and assume that
+    \cref{ass:random-matrix-2,ass:feasible-point,ass:penalty-parameters,ass:sampling,ass:active-set} hold.
+    Then, for any $\epsilon \in (0, 1/3)$,
+    \cref{algo:ssgd-algo} with parameters $\tau_k = k^{-2/3}$,
+    $\gamma_k = k^{1/3 - \epsilon}$ and $b_k = 1 + k^{2(1/3 - \epsilon)}$, converges, and yields
+    iterates $(x_k)_{k\in\N}$ that satisfy
+    \[
+        \E|\!|x_k - x^\star|\!| = \mathcal{O}(\gamma_k^{-1}) = \mathcal{O}(k^{-1/3 + \epsilon})\,,
+    \]
+    where $x^\star$ denotes the solution to \eqref{eq:model-problem}.
+    Furthermore, it holds that
+    \[
+        \E(\pi(x_k)) = \mathcal{O}(\gamma_k^{-2}) = \mathcal{O}(k^{-2/3 + 2\epsilon})\,.
+    \]
+\end{theorem}
+
+\begin{lemma}
+    \label{lem:bound-on-Delta_k}
+    In the situations of \eqref{eq:general-problem} and \eqref{eq:penalized-general-problem}, assume that
+    \cref{ass:strongly-convex-radially-unbounded,ass:penalty-function,ass:penalty-parameters,ass:feasible-point} hold.
+    Additionally, assume that $f$ and $\pi$ are differentiable.
+    Then we have
+    \[
+        \Delta_k \,\leq\, \frac{\gamma_{k+1} - \gamma_k}{\gamma_k}\, \frac{G}{\mu}\,,
+    \]
+    for all $k\in\N$, where $G := 2\,\sup_{k\in\N} |\!|\nabla f(x_{k}^\star)|\!| < \infty$.
+\end{lemma}
+
+\begin{proof}
+    Let $k\in\N$. The claim clearly holds if $x_k^\star = x_{k+1}^\star$. Assume for the rest of the proof that
+    $x_k^\star \neq x_{k+1}^\star$.
+    We have
+    \[
+        f(x) = f^k(x) - \frac{\gamma_k}{2} \pi(x)\,,
+    \]
+    which implies
+    \begin{equation}
+        \label{proof:bound-successive-optima-by-successive-regularization:eq}
+        \nabla f(x_k^\star) = -\frac{\gamma_k}{2} \nabla \pi(x_k^\star)\,,
+    \end{equation}
+    by optimality of $x_k^\star$ for $f^k$. We can apply strong convexity of $f$ (\cref{ass:strongly-convex-radially-unbounded}) and
+    \cref{prop:strongly-convex-subdifferentiable-bound} to obtain
+    \begin{align*}
+        \frac{\mu}{2}\Delta_k^2
+                \,&\leq\, \langle x_k^\star - x_{k+1}^\star, \nabla f(x_k^\star) - \nabla f(x_{k+1}^\star) \rangle \\
+                &=\, \big\langle x_k^\star - x_{k+1}^\star, -\frac{\gamma_k}{2}\nabla \pi(x_k^\star) + \frac{\gamma_{k+1}}{2}\nabla \pi(x_{k+1}^\star) \big\rangle \\
+                &=\, \big\langle x_k^\star - x_{k+1}^\star, \frac{\gamma_{k+1} - \gamma_k}{2}\nabla \pi(x_{k+1}^\star) + \frac{\gamma_k}{2}(\nabla \pi(x_{k+1}^\star) - \nabla \pi(x_{k}^\star)) \big\rangle \\
+                &=\, \frac{\gamma_{k+1} - \gamma_k}{2}\langle x_{k}^\star - x_{k+1}^\star, \nabla \pi(x_{k+1}^\star) \rangle - \frac{\gamma_k}{2} \langle x_{k+1}^\star - x_{k}^\star, \nabla \pi(x_{k+1}^\star) - \nabla \pi(x_k^\star) \rangle\,.
+    \end{align*}
+    Convexity of $\pi$ (\cref{ass:penalty-function}) implies that
+    $\langle x-y, \pi(x) - \pi(y) \rangle \geq 0$ for all $x,y\in\R^d$, by \cref{prop:convex-implies-monotone-gradient}.
+    Hence, by positivity of $\gamma_k$ (\cref{ass:penalty-parameters}), we have
+    \[
+        \frac{\mu}{2}\Delta_k^2 \,\leq\, \frac{\gamma_{k+1} - \gamma_k}{2}\langle x_{k}^\star - x_{k+1}^\star, \nabla \pi(x_{k+1}^\star) \rangle
+    \]
+    and an application of the Cauchy-Schwarz inequality along with the fact $\gamma_{k+1} > \gamma_k$ (\cref{ass:penalty-parameters}), yield
+    \[
+        \frac{\mu}{2}\Delta_k^2 \,\leq\, \frac{\gamma_{k+1} - \gamma_k}{2} \cdot \Delta_k \cdot |\!|\nabla \pi(x_{k+1}^\star)|\!|\,.
+    \]
+    Dividing both sides by $\mu/2\,\Delta_k$, we get
+    \[
+        \Delta_k \,\leq\, \frac{\gamma_{k+1} - \gamma_k}{\mu}\, |\!|\nabla \pi(x_{k+1}^\star)|\!|\,.
+    \]
+    Substituting $\nabla f$ for $\nabla \pi$ via \eqref{proof:bound-successive-optima-by-successive-regularization:eq}, we arrive at
+    \[
+        \Delta_k \,\leq\, \frac{\gamma_{k+1} - \gamma_k}{\mu} \, \frac{2\,|\!|\nabla f(x_{k+1}^\star)|\!|}{\gamma_k} = \frac{\gamma_{k+1} - \gamma_k}{\gamma_k} \, \frac{2\,|\!|\nabla f(x_{k+1}^\star)|\!|}{\mu}\,.
+    \]
+    Finally, by \cref{thm:consistency}, we know that $x_k^\star \to x^\star$ for $k\to~\infty$.
+    Hence, continuity of $\nabla f$ implies that $(\nabla f(x_k^\star))_{k\in\N}$ also converges, and in particular
+    $\sup_{k\in\N} |\!|\nabla f(x_{k}^\star)|\!| < \infty$. Hence,
+    \[
+        \Delta_k \,\leq\, \frac{G}{\mu} \, \frac{ \gamma_{k+1} - \gamma_k }{\gamma_k}\,,
+    \]
+    where $G := 2\,\sup_{k\in\N} |\!|\nabla f(x_{k}^\star)|\!|$, as desired.
+\end{proof}
+
+\begin{lemma}[Chung's lemma]
+    \label{lem:chungs-lemma}
+    Let $(\alpha_k)_{k\in\N}$ be a nonnegative scalar sequence and $k_0\in\N$ be such that
+    \[
+        \alpha_{k+1} \leq \left( 1 - \frac{a}{k^s} \right)\alpha_k + \mathcal{O}\left(\frac{b}{k^{s+t}}\right)
+    \]
+    for all $k\geq k_0$ and some $0 < s \leq 1$, $a,b,t > 0$. Then, it holds that
+    \[
+        \alpha_k = \mathcal{O}\left(\frac{1}{k^t}\right).
+    \]
+\end{lemma}
+\begin{proof}
+    See \cite{chung1954stochastic}.
+\end{proof}
+\noindent
+We can now prove the main theorem of this section.
+\begin{proofof}{thm:convergence-rate-squared-hinge-penalty}
+    Let $k\in\N$. By the triangle inequality,
+    \begin{equation}
+        \label{proof:thm:convergence-rate-squared-hinge-penalty:eq}
+        \E|\!|x_k - x^\star|\!| \leq \E|\!|x_k - x_k^\star|\!| + |\!|x_k^\star - x^\star|\!|.
+    \end{equation}
+    First, we analyze $\E|\!|x_k - x_k^\star|\!|$.
+    We want to use \cref{thm:tracking-error-sgd}, but for this we first need to show that
+    \cref{ass:strongly-convex-radially-unbounded,ass:penalty-function,ass:quad-bounded-variance,ass:subdifferentiable} hold.
+    By Jensen's inequality (\cref{prop:jensens-inequality}), \cref{ass:random-matrix-2} implies \cref{ass:random-matrix}.
+    Hence, by \cref{lem:j-satisfies-assumption}, \cref{ass:strongly-convex-radially-unbounded} is satisfied by $j$.
+    Further, by \cref{lem:square-hinge-penalty-satisfies-assumption},
+    $\pi$ satisfies \cref{ass:penalty-function}.
+    \Cref{ass:subdifferentiable} holds, since $j$ and $\pi$ are differentiable.
+    What's left to show is that \cref{ass:quad-bounded-variance} holds.
+    Let $Q(\xi) := A(\xi)^\top A(\xi)$, $\tilde{b}(\xi) := A(\xi)^\top b$, and $\tilde{c} := A(\xi)^\top c$.
+    A stochastic gradient of $j^k$ at $x\in\R^d$, denoted by $G^k(x, \xi)$, is given by
+    \begin{align*}
+        G^k(x, \xi)
+            &= A(\xi)^{\top} \big( A(\xi)x - b + \gamma \, (0,A(\xi)x-c)_+ \big) + \lambda x \\
+            &= Q(\xi) x - \tilde{b}(\xi) + \gamma \, (0,\, Q(\xi)x - \tilde{c}(\xi))_+ + \lambda x.
+    \end{align*}
+    We have
+    \begin{align*}
+        |\!| G^k(x, \xi) |\!|
+            &\leq |\!| Q(\xi) x |\!| + |\!| \tilde{b}(\xi) |\!|
+                    + \gamma \, \big( |\!| Q(\xi)x |\!| + |\!| \tilde{c}(\xi) |\!| \big) + \lambda |\!|x|\!| \\
+            &\leq |\!|Q(\xi)|\!|_F |\!| x |\!| + |\!| \tilde{b}(\xi) |\!|
+                    + \gamma \, \big(|\!|Q(\xi)|\!|_F |\!| x |\!| + |\!| \tilde{c}(\xi) |\!|\big) + \lambda |\!|x|\!| \\
+            &= (|\!|Q(\xi)|\!|_F + \lambda) |\!| x |\!|
+                    + \gamma \, |\!|Q(\xi)|\!|_F |\!| x |\!| + \gamma\, |\!| \tilde{c}(\xi) |\!| + |\!| \tilde{b}(\xi) |\!|.
+    \end{align*}
+    % \[
+    %     \nabla \pi(x) = 2\,\E\big( A(\xi)^\top \max(0, A(\xi)x - c) \big).
+    % \]
+    Using the inequality $(a + b + c + d)^2 \,\leq\, 4 \, (a^2 + b^2 + c^2 + d^2)$, $\forall a,b,c,d\in\R$, we can conclude
+    \[
+        \E|\!| G^k(x, \xi) |\!|^2
+            \leq 4
+                \big( 
+                    \E(|\!|Q(\xi)|\!|_F + \lambda)^2 \, |\!| x |\!|^2
+                    + \gamma^2 \, \E(|\!|Q(\xi)|\!|_F^2) \, |\!| x |\!|^2
+                    + \gamma^2 \, \E|\!| \tilde{c}(\xi) |\!|^2
+                    + \E|\!| \tilde{b}(\xi) |\!|^2
+                \big).
+    \]
+    Note that all expectations are finite, by \cref{ass:random-matrix-2}.
+    Indeed, it holds that $|\!|Q(\xi)|\!|_F^2 = |\!|A(\xi)^\top A(\xi)|\!|_F^2 \leq |\!|A(\xi)|\!|_F^4 < \infty$,
+    and thus
+    \[
+        \E(|\!|Q(\xi)|\!|_F + \lambda)^2 \,\leq\, 2\, \E|\!|Q(\xi)|\!|_F^2 + 2 \lambda \,\leq\, 2\, \E|\!|A(\xi)|\!|_F^4 + 2 \lambda \,<\, \infty.
+    \]
+    The terms $\E|\!| \tilde{b}(\xi) |\!|^2$ and $\E|\!| \tilde{c}(\xi) |\!|^2$ are similarly
+    bounded by a constant times $\E|\!|A(\xi)|\!|_F^2$\,, which is also finite by \cref{ass:random-matrix-2}
+    and Jensen's inequality (\cref{prop:jensens-inequality}).
+    Hence, \cref{ass:quad-bounded-variance} is satisfied.
+    
+    With our choices for $\gamma_k$ and $b_k$,
+    \cref{thm:tracking-error-sgd} now yields
+    \[
+        a_{k+1}
+        \leq
+        (1-\tilde{\rho}_k) a_k + 2D\tau_k^2 + (1+\eta_k^{-1})\Delta_k^2,
+    \]
+    where $D\in (0, \infty)$ is a constant, $\eta_k = \min\left(1, \,\mu\tau_k/2\right)$ and
+    $\tilde{\rho}_k = \mu\tau_k/2 - 2(D + L_k^2)\tau_k^2$.
+    For large enough $k\in\N$, we have
+    $(D + L_k^2)\tau_k^2 \approx \gamma_k^2\tau_k^2 = k^{-2/3 - 2\epsilon}$, and, since this decays
+    faster than $\tau_k$, we then have
+    \begin{equation}
+        \label{proof:thm:convergence-rate-squared-hinge-penalty:eq:1.5}
+        \tilde{\rho}_k \geq \frac{\mu\tau_k}{4}\,.
+    \end{equation}
+    By \cref{lem:bound-on-Delta_k}, we know that $\Delta_k = \mathcal{O}((\gamma_{k+1} - \gamma_k)/\gamma_k)$.
+    To further analyze this, consider the function $h(x) := x^\alpha$ on $\R$ for some $\alpha>0$.
+    By the mean value theorem, there exists some $\theta\in [x, y]$, s.\,t.
+    \[
+        \frac{h(y) - h(x)}{y - x} = h^\prime (\theta) = \alpha \theta^{\alpha - 1}.
+    \]
+    In particular, if $\alpha \leq 1$, it holds that
+    \[
+        \frac{h(y) - h(x)}{y - x} \leq \alpha x^{\alpha - 1}.
+    \]
+    Setting $\alpha = 1/3 - \epsilon$ gives $h(k) = \gamma_k$, so
+    \[
+        \gamma_{k+1} - \gamma_k \leq \alpha k^{\alpha - 1}.
+    \]
+    Hence,
+    \[
+        \Delta_k^2 = \mathcal{O}(k^{-2}).
+    \]
+    Combining this with \eqref{proof:thm:convergence-rate-squared-hinge-penalty:eq:1.5}, there exists $k_0\in\N$ such that
+    \[
+        a_{k+1} \leq \left( 1-\frac{\mu}{4k^{2/3}} \right)a_k + \mathcal{O}\left( \frac{1}{k^{4/3}} \right),
+    \]
+    for all $k\geq k_0$.
+    Hence, by \cref{lem:chungs-lemma}, we have $a_k = \mathcal{O}(k^{-2/3})$ and an application of
+    Jensen's inequality
+    (\cref{prop:jensens-inequality}) yields $\E|\!|x_k - x_k^\star|\!| = \mathcal{O}(k^{-1/3})$.
+    
+    Finally, by \cref{thm:surrogate-error-squared-hinge-loss}, we know
+    $|\!|x_k^\star - x^\star|\!| = \mathcal{O}(k^{-1/3 + \epsilon})$. Combining this
+    with \eqref{proof:thm:convergence-rate-squared-hinge-penalty:eq}, we get
+    \begin{equation}
+        \label{proof:thm:convergence-rate-squared-hinge-penalty:eq:2}
+        \E|\!|x_k - x^\star|\!| = \mathcal{O}(k^{-1/3 + \epsilon}).     
+    \end{equation}
+    The remaining claim follows from the facts that $\pi$ has Lipschitz gradients and
+    $\pi(x^\star) = \nabla \pi(x^\star) = 0$, which together imply (\cref{prop:lipschitz-gradients})
+    \begin{align*}
+        \E(\pi(x_k)) &= \E(\pi(x_k) - \pi(x^\star)) \\
+                 &\leq \E\left(\big\langle x_k - x^\star, \nabla \pi(x^\star) \big\rangle + \frac{L_\pi}{2} |\!|x_k - x^\star|\!|^2\right) \\
+                 &= \frac{L_\pi}{2} \E|\!|x_k - x^\star|\!|^2
+    \end{align*}
+    for some constant $L_\pi\in (0, \infty)$. The claim now follows from \eqref{proof:thm:convergence-rate-squared-hinge-penalty:eq:2}.
+\end{proofof}
+
+\begin{remark}
+    The $\epsilon$ in the definition of $\gamma_k$ is needed in order
+    to ensure that the factor $1 - \tilde{\rho}_k$ is eventually smaller than $1$ for
+    all $k$ large enough, without needing to know the constants involved in $\tilde{\rho}_k$.
+\end{remark}
+
+
+
+\subsection{Iterate averaging}
+
+We will now analyze the convergence properties of the iterate average
+$\bar{x}_k := 1/k \sum_{i=1}^{k} x_i$, where $x_i$ denotes the $i$th iterate
+of \cref{algo:ssgd-algo}.
+\begin{lemma}
+    \label{lemma:average-inherits-asymptotics}
+    Let $(\alpha_k)_{k\in\N}$ be a sequence of real numbers such that $\alpha_k = \mathcal{O}(k^{-a})$
+    for some $a\in (0, 1)$. Then, we have
+    \[
+        \frac{1}{k} \sum_{i=1}^{k} \alpha_i = \mathcal{O}(k^{-a}).
+    \]
+\end{lemma}
+\begin{proof}
+    If $\alpha_k = \mathcal{O}(k^{-a})$, then there exists a constant $c\in (0, \infty)$ and $k_0\in\N$,
+    such that $\alpha_k \leq c\,k^{-a}$ for all $k \geq k_0$, hence
+    \begin{align*}
+        \frac{1}{k} \sum_{i=1}^{k} \alpha_i - \frac{1}{k} \sum_{i=1}^{k_0-1} \alpha_i
+            &=  \frac{1}{k} \sum_{i=k_0}^{k} \alpha_i \\
+            &\leq \frac{c}{k} \sum_{i=k_0}^{k} i^{-a} \\
+            &\leq \frac{c}{k} \int_{k_0}^{k} x^{-a} \, dx \\
+            &=  \frac{c\, (k^{1-a} - k_0^{1-a})}{k \, (1-a)} = \mathcal{O}(k^{-a})\,.    
+    \end{align*}
+    Since $1/k \sum_{i=1}^{k_0-1} a_i = \mathcal{O}(k^{-1})$ and $a\in (0, 1)$,
+    we obtain $1/k\sum_{i=1}^{k} \alpha_i = \mathcal{O}(k^{-a})$.
+\end{proof}
+
+\begin{theorem}
+    \label{thm:iterate-averaging-square-hinge-penalty}
+    In the situations of \eqref{eq:model-problem} and \eqref{eq:penalized-objective},
+    let $\pi(x) = \E|\!|(A(\xi)x - b)_+|\!|^2$,
+    and assume that \cref{ass:feasible-point,ass:penalty-parameters,ass:random-matrix-2,ass:sampling,ass:active-set} hold.
+    Then, for all $\epsilon \in (0, 1/3)$, \cref{algo:ssgd-algo} with parameters
+    $\tau_k = k^{-2/3}$, $\gamma_k = k^{1/3 - \epsilon}$ and $b_k = 1 + k^{2(1/3 - \epsilon)}$, converges, and yields
+    iterates $(x_k)_{k\in\N}$ that satisfy
+    \[
+        \E|j^k(\bar{x}_k) - j(x^\star)| = \mathcal{O}(\gamma_k^{-1}) = \mathcal{O}(k^{-1/3 + \epsilon}),
+    \]
+    where $\bar{x}_k := \frac{1}{k} \sum_{i=1}^{k} x_i$, for $k\in\N$, and $x^\star$ denotes the solution
+    to \eqref{eq:model-problem}.
+\end{theorem}
+\begin{proof}
+    Let $k\in\N$. We have
+    \begin{align}
+        \label{eq:proof:thm:iterate-averaging-square-hinge-penalty:triangle-split}
+        \E|j^k(\bar{x}_k) - j(x^\star)| &\leq \E|j^k(\bar{x}_k) - j^k(x_k^\star)| + |j^k(x_k^\star) - j(x^\star)| \\
+                                  &= \E(j^k(\bar{x}_k) - j^k(x_k^\star)) + (j(x^\star) - j^k(x_k^\star)).
+    \end{align}
+    We will first analyze $\E(j^k(\bar{x}_k) - j^k(x_k^\star))$. By convexity of $j$ and $\pi$, we have
+    \begin{equation}
+        \label{eq:proof:thm:iterate-averaging-square-hinge-penalty:eq}
+        j^k(\bar{x}_k) \overset{\textnormal{def}}{=} j(\bar{x}_k) + \frac{\gamma_k}{2}\pi(\bar{x}_k)
+                \leq \frac{1}{k} \sum_{i=1}^{k} j(x_i) + \frac{\gamma_k}{2k}\sum_{i=1}^{k}\pi(x_i).
+    \end{equation}
+    Next, note that $j^i(x_i^\star) \leq j^k(x_k^\star)$ for all $i\in\{ 1,\dots,k \}$, and thus
+    \begin{align*}
+        0 \leq j^k(\bar{x}_k) - j^k(x_k^\star)
+        &\leq
+        \frac{1}{k} \sum_{i=1}^{k} (j(x_i) - j^k(x_k^\star)) + \frac{\gamma_k}{2k}\sum_{i=1}^{k}\pi(x_i) \\
+        &\leq
+        \frac{1}{k} \sum_{i=1}^{k} (j(x_i) - j^i(x_i^\star)) + \frac{\gamma_k}{2k}\sum_{i=1}^{k}\pi(x_i) \\
+        &\overset{\textnormal{def}}{=}
+        \frac{1}{k} \sum_{i=1}^{k} (j^i(x_i) - j^i(x_i^\star)) + \frac{1}{2k}\sum_{i=1}^{k}(\gamma_k-\gamma_i)\pi(x_i),
+    \end{align*}
+    where, in the last step, we used that $j(x) = j^i(x) - \frac{\gamma_i}{2} \pi(x)$
+    for all $x\in\R^d$, $i\in\N$. By \cref{thm:convergence-rate-squared-hinge-penalty}, we have
+    $\pi(x_i) = \mathcal{O}(\gamma_i^{-2})$, thus
+    \[
+        \frac{1}{k}\sum_{i=1}^{k}(\gamma_k-\gamma_i)\pi(x_i)
+        =
+        \mathcal{O}\left(\frac{1}{k} \sum_{i=1}^{k}\frac{\gamma_k-\gamma_i}{\gamma_i^2}\right).
+    \]
+    Using \cref{lemma:average-inherits-asymptotics}, we have
+    \[
+        \frac{1}{k} \sum_{i=1}^{k}\frac{\gamma_k-\gamma_i}{\gamma_i^2}
+        =
+        \gamma_k\left(\frac{1}{k} \sum_{i=1}^{k} \frac{1}{\gamma_i^2}\right) - \frac{1}{k}\sum_{i=1}^{k} \frac{1}{\gamma_i}
+        =
+        \gamma_k \cdot \mathcal{O}(\gamma_k^{-2}) - \mathcal{O}(\gamma_k^{-1}) = \mathcal{O}(\gamma_k^{-1})
+    \]
+    and thus
+    \[
+        \frac{1}{k}\sum_{i=1}^{k}(\gamma_k-\gamma_i)\pi(x_i) = \mathcal{O}(\gamma_k^{-1}).
+    \]
+    Next, note that $\nabla j^i(x^\star_i) = 0$ for all $i\in\N$.
+    Furthermore, since $j^i$ is a linear combination of two Lipschitz-smooth functions with
+    constants which we will call $L$ and $L_\pi$, respectively, \cref{prop:linear-combination-of-lipschitz-is-lipschitz} implies that
+    $j^i$ must also be Lipschitz smooth with constant $L_i := L + \gamma_i  L_\pi = \mathcal{O}(\gamma_i)$, for all $i\in\N$.
+    Hence, by use of
+    \cref{prop:lipschitz-gradients} and \cref{thm:convergence-rate-squared-hinge-penalty}, we obtain
+    \[
+        j^i(x_i) - j^i(x_i^\star) \leq L_i\, |\!|x_i - x_i^\star|\!|^2 = \mathcal{O}(\gamma_i^{-1}),
+    \]
+    for all $i\in\N$.
+    An application of \cref{lemma:average-inherits-asymptotics} now yields
+    \[
+        \frac{1}{k}\sum_{i=1}^{k} j^i(x_i) - j^i(x_i^\star) = \mathcal{O}(\gamma_k^{-1}),
+    \]
+    and combining with \eqref{eq:proof:thm:iterate-averaging-square-hinge-penalty:eq}, we get
+    \begin{equation}
+        \label{eq:proof:thm:iterate-averaging-square-hinge-penalty:bound1}
+        j^k(\bar{x}_k) - j^k(x_k^\star) = \mathcal{O}(\gamma_k^{-1}).
+    \end{equation}
+    Similarly, since $\pi(x^\star) = 0$, we have
+    \[
+        j(x^\star) - j^k(x_k^\star) = j^k(x^\star) - j^k(x_k^\star) \leq L_k\, |\!|x^\star - x_k^\star|\!|^2
+    \]
+    and an application of \cref{thm:surrogate-error-squared-hinge-loss} yields
+    \begin{equation}
+    \label{eq:proof:thm:iterate-averaging-square-hinge-penalty:bound2}
+        j(x^\star) - j^k(x_k^\star) = \mathcal{O}(\gamma_k^{-1}).        
+    \end{equation}
+    Combining \eqref{eq:proof:thm:iterate-averaging-square-hinge-penalty:triangle-split},
+    \eqref{eq:proof:thm:iterate-averaging-square-hinge-penalty:bound1} and
+    \eqref{eq:proof:thm:iterate-averaging-square-hinge-penalty:bound2}, we arrive
+    at the desired result.
+\end{proof}
+
+
+% \subsection{Ergodic \texorpdfstring{$\mathcal{O}(k^{-1/2})$}{O(1/sqrt(k))} convergence}
+
+% The results in this section are not very practical. However, they may be of help for eventually establishing
+% a $\mathcal{O}(k^{-1/2})$ convergence rate of the values $f^k(\bar{x}_k)$ to the optimal value
+% of \eqref{eq:model-problem}, $f(x^\star)$, where $\bar{x}_k = 1/k \sum_{i=1}^{k} x_i$ is the average
+% of the first $k$ iterates of \cref{algo:ssgd-algo}.
+
+% \begin{theorem}
+%     \label{thm:ergodic-bound-on-values}
+%     Assume that $f$ is differentiable and $f^k$ is $L_k$-smooth for all $k\in\N$.
+%     Additionally assume that the step sizes $(\tau_k)_{k\in\N}$ (i) are non-increasing and (ii) satisfy
+%     $\tau_k \in \left( 0, \,\mu/8(C + L_k^2) \right)$
+%     for all $k\in\N$. Then, for all $K\in\N$, it holds that
+%     \[
+%         \frac{1}{K}\sum_{k=1}^K \E( f^k(x_k) - f^k(x_k^\star) )
+%         \leq
+%         \frac{D_K^2}{K\tau_K} + \frac{1}{K} \sum_{k=1}^K \left(C\frac{\gamma_k^2}{b_k} +  M_k^2\right)\tau_k + \frac{1}{K}\sum_{k=1}^K \frac{(1+\eta_k^{-1})\Delta_k^2}{\tau_k},
+%     \]
+%     where $D_K^2 := \max_{k=1,\dots, K} a_k$ and $\eta_k := \min(1, \mu\tau_k/2)$.
+% \end{theorem}
+% \begin{proof}
+%     Starting from the equality
+%     \[
+%         \E_k|\!|x_{k+1} - x_k^\star|\!|^2 = A_k + \tau_k^2 \,\E_k|\!|\tilde{G}^k(x_k)|\!|^2 - 2 \tau_k \langle x_k - x_k^\star, \nabla f^k(x_k) \rangle,
+%     \]
+%     we apply strong convexity of $f^k$ to get
+%     \begin{equation*}
+%         \E_k|\!|x_{k+1} - x_k^\star|\!|^2 \leq (1-\mu\tau_k)A_k + \tau_k^2\,\E_k|\!|\tilde{G}^k(x_k)|\!|^2 - 2\tau_k(f^k(x_k) - f^k(x_k^\star)).        
+%     \end{equation*}
+%     Similar calculations to those in the proof of \cref{thm:tracking-error-sgd} first yield
+%     \begin{equation*}
+%         (1+\eta_k)\E|\!|x_{k+1} - x_k^\star|\!|^2
+%             \leq (1 - \tilde{\rho}_k)a_k + 2 \left(C\frac{\gamma_k^2}{b_k} +  M_k^2\right) \tau_k^2 - 2\tau_k(1+\eta_k)(f^k(x_k) - f^k(x_k^\star)),
+%     \end{equation*}
+%     where $\tilde{\rho}_k = \mu\tau_k/2 - 4(C + L_k^2)\tau_k^2$, and then
+%     \[
+%         a_{k+1} \leq (1 - \tilde{\rho}_k)a_k + 2 \left(C\frac{\gamma_k^2}{b_k} +  M_k^2\right) \tau_k^2 - 2\tau_k(1+\eta_k)\E(f^k(x_k) - f^k(x_k^\star)) + (1+\eta_k^{-1})\Delta_k^2,
+%     \]
+%     where $\eta_k := \min(1, \mu\tau_k/2)$. Rearranging and using $1+\eta_k \geq 1$, we have
+%     \[
+%         2\tau_k\E(f^k(x_k) - f^k(x_k^\star)) \leq (1 - \tilde{\rho}_k)a_k - a_{k+1} + 2 \left(C\frac{\gamma_k^2}{b_k} +  M_k^2\right) \tau_k^2 + (1+\eta_k^{-1})\Delta_k^2.
+%     \]
+%     Assumption (ii) guarantees that $1 - \tilde{\rho}_k \leq 1$, and thus we have
+%     \[
+%         2\tau_k\E(f^k(x_k) - f^k(x_k^\star)) \leq a_k - a_{k+1} + 2 \left(C\frac{\gamma_k^2}{b_k} +  M_k^2\right) \tau_k^2 + (1+\eta_k^{-1})\Delta_k^2.
+%     \]
+%     The following is an adaptation of the proof of Theorem 5 in \cite{orvieto2022dynamics}. Divide both sides by $\tau_k$ and sum from $k=1,\dots, K\in\N$ to get
+%     \begin{align*}
+%         2\sum_{k=1}^K \E(f^k(x_k) - f^k(x_k^\star))
+%         &\leq
+%         \sum_{k=1}^K \frac{a_k}{\tau_k} - \sum_{k=1}^K \frac{a_{k+1}}{\tau_k} + 2 \sum_{k=1}^K \left(C\frac{\gamma_k^2}{b_k} +  M_k^2\right)\tau_k + \sum_{k=1}^K \frac{(1+\eta_k^{-1})\Delta_k^2}{\tau_k} \\
+%         &=
+%         \frac{a_1}{\tau_1} + \sum_{k=2}^K \frac{a_k}{\tau_k} - \sum_{k=1}^{K-1} \frac{a_{k+1}}{\tau_k} - \frac{a_{K+1}}{\tau_K} \\
+%             &\quad\quad+ 2 \sum_{k=1}^K \left(C\frac{\gamma_k^2}{b_k} +  M_k^2\right)\tau_k + \sum_{k=1}^K \frac{(1+\eta_k^{-1})\Delta_k^2}{\tau_k} \\
+%         &\leq
+%         \frac{a_1}{\tau_1} + \sum_{k=2}^K \frac{a_k}{\tau_k} - \sum_{k=1}^{K-1} \frac{a_{k+1}}{\tau_k} \\
+%             &\quad\quad+ 2 \sum_{k=1}^K \left(C\frac{\gamma_k^2}{b_k} +  M_k^2\right)\tau_k + \sum_{k=1}^K \frac{(1+\eta_k^{-1})\Delta_k^2}{\tau_k} \\
+%         &=
+%         \frac{a_1}{\tau_1} + \sum_{k=1}^{K-1} \frac{a_{k+1}}{\tau_{k+1}} - \sum_{k=1}^{K-1} \frac{a_{k+1}}{\tau_k} \\
+%             &\quad\quad+ 2 \sum_{k=1}^K \left(C\frac{\gamma_k^2}{b_k} +  M_k^2\right)\tau_k + \sum_{k=1}^K \frac{(1+\eta_k^{-1})\Delta_k^2}{\tau_k} \\
+%         &=
+%         \frac{a_1}{\tau_1} + \sum_{k=1}^{K-1}a_{k+1} \left( \frac{1}{\tau_{k+1}} - \frac{1}{\tau_k} \right) \\
+%             &\quad\quad+ 2 \sum_{k=1}^K \left(C\frac{\gamma_k^2}{b_k} +  M_k^2\right)\tau_k + \sum_{k=1}^K \frac{(1+\eta_k^{-1})\Delta_k^2}{\tau_k} \\
+%         &\leq
+%         D_K^2 \left(\frac{1}{\tau_1} + \sum_{k=1}^{K-1} \left( \frac{1}{\tau_{k+1}} - \frac{1}{\tau_k} \right)\right) \\
+%             &\quad\quad+ 2 \sum_{k=1}^K \left(C\frac{\gamma_k^2}{b_k} +  M_k^2\right)\tau_k + \sum_{k=1}^K \frac{(1+\eta_k^{-1})\Delta_k^2}{\tau_k} \\
+%         &= \frac{D_K^2}{\tau_K} + 2 \sum_{k=1}^K \left(C\frac{\gamma_k^2}{b_k} +  M_k^2\right)\tau_k + \sum_{k=1}^K \frac{(1+\eta_k^{-1})\Delta_k^2}{\tau_k},
+%     \end{align*}
+%     where we used assumption (i) in the last inequality to be able to collect the $a_k$ terms into $D_K^2 = \max_{k=1, \dots, K} a_k$. Now dividing both sides by $2K$ yields the desired result.
+% \end{proof}
+
+
+\section{Accelerated SSGD}
+
+\begin{algorithm}
+    \label{algo:accelerated-ssgd}
+    For $k\in\N$, let $\tau_k\in (0, 4/\mu)$, $\gamma_k\in (0, \infty)$ and $b_k\in\N$. The \textbf{Accelerated SSGD} iterates
+    have the form
+    \begin{align*}
+        x_{k+1} &:= x_k - \tau_k \tilde{G}^k(x_k, \xi_k) \\
+        \hat{x}_{k+1} &:= \left(1-\frac{\mu \tau_k}{4 - \mu \tau_k}\right)\hat{x}_{k} + \frac{\mu \tau_k}{4 - \mu \tau_k}\, x_{k+1}\,,
+    \end{align*}
+    where $\hat{x}_1 := x_1\in\R^d$.
+\end{algorithm}
+
+\begin{lemma}
+    \label{lem:accelerated-ssgd-one-step-improvement}
+    Let \cref{ass:strongly-convex-radially-unbounded,ass:sampling} hold. Further, for all $k\in\N$, assume that
+    $f^k$ is $L_k$-smooth. Then, \cref{algo:accelerated-ssgd} with step sizes $\tau_k\in (0, 1/L_k)$ yields iterates $(x_k)_{k\in\N}$,
+    such that
+    \[
+        2\tau_k\E(f^k(x_{k+1}) - f^k(x)) \leq \left( 1 - 2\mu\tau_k \right)\E|\!|x-x_k|\!|^2 - \E|\!|x-x_{k+1}|\!|^2 + \frac{\tau_k^2}{1-L_k\tau_k}\Var(\tilde{G}^k(x_k))    
+    \]
+    % \[
+    %     2\tau_k\E(f^k(x_{k+1}) - f^k(x_k^\star))
+    %     \leq
+    %     \left(1-\frac{\mu}{2}\tau_k\right) \E|\!|x-x_k|\!|^2 - \E|\!|x-x_{k+1}|\!|^2 + \frac{\mu}{4} \tau_k M_x^2\,,
+    % \]
+    % for all $x\in\R^d$ and $k\in\N$, where $M_x^2 := 2\,|\!|x|\!|^2 + 1$.
+    for all $x\in\R^d$.
+\end{lemma}
+\begin{proof}
+    For $k\in\N$, let $\tau_k \in (0, 1/L_k)$ and define $z_k := \nabla f^k(x_k) - \tilde{G}^k(x_k)$. Then,
+    \begin{align*}
+        f^k(x_{k+1}) &\leq f^k(x_k) + \langle \nabla f^k(x_k), x_{k+1} - x_k \rangle + \frac{L_k}{2} |\!| x_{k+1} - x_k |\!|^2 \\
+                     &= f^k(x_k) + \langle \tilde{G}^k(x_k), x_{k+1} - x_k \rangle + \frac{L_k}{2} |\!| x_{k+1} - x_k |\!|^2 + \langle z_k , x_{k+1} - x_k \rangle.
+    \end{align*}
+    By Cauchy-Schwarz and Young's inequality, for all $\epsilon_k > 0$, we have
+    \begin{align}
+        \label{eq:proof:lem:accelerated-ssgd-one-step-improvement:1}
+        f^k(x_{k+1}) &\leq f^k(x_k) + \langle \tilde{G}^k(x_k), x_{k+1} - x_k \rangle + \frac{L_k + \epsilon_k^{-1}}{2} |\!| x_{k+1} - x_k |\!|^2 + \frac{\epsilon_k}{2}|\!|z_k|\!|^2 \notag \\
+                     &= f^k(x_k) + \langle \tilde{G}^k(x_k), x_{k+1} - x_k \rangle + \frac{1}{2\tau_k}|\!|x_{k+1} - x_k|\!|^2 \notag \\
+                     &\phantom{= f^k(x_k) } + \frac{L_k + \epsilon_k^{-1} + \tau_k^{-1}}{2} |\!| x_{k+1} - x_k |\!|^2 + \frac{\epsilon_k}{2}|\!|z_k|\!|^2,
+    \end{align}    
+    where in the last step we added and subtracted $1/2\tau_k\, |\!|x_{k+1} - x_k|\!|$. Using the property of the stochastic gradient descent
+    iterates (\textcolor{red}{TODO}), we see that $x_{k+1}$ is the minimizer of the $1/2\tau_k$-strongly convex function
+    $x\mapsto \langle \tilde{G}^k(x_k), x - x_k \rangle + \frac{1}{2\tau_k}|\!|x - x_k|\!|^2$. Hence, by the last statement in \cref{prop:strongly-convex-subdifferentiable-bound},
+    we have
+    \[
+        \langle \tilde{G}^k(x_k), x_{k+1} - x_k \rangle + \frac{1}{2\tau_k}|\!|x_{k+1} - x_k|\!|^2 \leq \langle \tilde{G}^k(x_k), x - x_k \rangle + \frac{1}{2\tau_k}|\!|x - x_k|\!|^2 - \frac{1}{2\tau_k} |\!|x - x_{k+1}|\!|^2
+    \]
+    for all $x\in\R^d$. Plugging this into \eqref{eq:proof:lem:accelerated-ssgd-one-step-improvement:1}, we obtain
+    \begin{align*}
+        f^k(x_{k+1}) \leq f^k(x_k) &+ \langle \tilde{G}^k(x_k), x - x_k \rangle + \frac{1}{2\tau_k}|\!|x - x_k|\!|^2 - \frac{1}{2\tau_k} |\!|x - x_{k+1}|\!|^2 \\
+                                   &+ \frac{L_k + \epsilon_k^{-1} + \tau_k^{-1}}{2} |\!| x_{k+1} - x_k |\!|^2 + \frac{\epsilon_k}{2}|\!|z_k|\!|^2.
+    \end{align*}
+    We would like to use strong convexity of $f^k$ to proceed. To do this, we first need to add and subtract $\langle \nabla f^k(x_k), x - x_k \rangle$.
+    Applying \cref{prop:strongly-convex-subdifferentiable-bound} then yields
+    \begin{align*}
+        f^k(x_{k+1}) \leq f^k(x) - \frac{\mu}{2}|\!|x-x_k|\!|^2 &- \langle z_k, x_k - x \rangle + \frac{1}{2\tau_k}|\!|x-x_k|\!|^2 - \frac{1}{2\tau_k}|\!|x-x_{k+1}|\!|^2 \\
+                &+ \frac{L_k + \epsilon_k^{-1} + \tau_k^{-1}}{2} |\!| x_{k+1} - x_k |\!|^2 + \frac{\epsilon_k}{2}|\!|z_k|\!|^2
+    \end{align*}
+    for all $x\in\R^d$. Simplifying, and noting that $\langle z_k, x_k - x \rangle = -\langle z_k, x - x_k \rangle $, we thus have
+    \begin{align*}
+        f^k(x_{k+1}) \leq f^k(x) + \left( \frac{1}{2\tau_k} - \frac{\mu}{2} \right)|\!|x-x_k|\!|^2 &+ \langle z_k, x - x_k \rangle - \frac{1}{2\tau_k}|\!|x-x_{k+1}|\!|^2 \\
+                &+ \frac{L_k + \epsilon_k^{-1} + \tau_k^{-1}}{2} |\!| x_{k+1} - x_k |\!|^2 + \frac{\epsilon_k}{2}|\!|z_k|\!|^2 
+    \end{align*}
+    for all $x\in\R^d$ and $\epsilon_k > 0$. Choosing $\epsilon_k := \tau_k/(1-L_k\tau_k)$, we obtain
+    \[
+        f^k(x_{k+1}) \leq f^k(x) + \left( \frac{1}{2\tau_k} - \frac{\mu}{2} \right)|\!|x-x_k|\!|^2 + \langle z_k, x - x_k \rangle - \frac{1}{2\tau_k}|\!|x-x_{k+1}|\!|^2
+                                 + \frac{\tau_k}{2(1-L_k\tau_k)}|\!|z_k|\!|^2\,,
+    \]
+    for all $x\in\R^d$. Taking expectations, we can drop the inner product term, and subsequently multipliying by $2\tau_k$ yields
+    \[
+        2\tau_k\E(f^k(x_{k+1}) - f^k(x)) \leq \left( 1 - 2\mu\tau_k \right)\E|\!|x-x_k|\!|^2 - \E|\!|x-x_{k+1}|\!|^2 + \frac{\tau_k^2}{1-L_k\tau_k}\Var(\tilde{G}^k(x_k))\,,
+    \]
+    for all $x\in\R^d$.
+\end{proof}
+
+\begin{lemma}
+    In the situation of \eqref{eq:penalized-general-problem}, for all $t,i\in\N$, $u,v\in\R^d$, it holds that
+    \[
+        (f^t(u) - f^t(v)) - (f^i(u) - f^i(v)) = \frac{\gamma_t - \gamma_i}{2} (\pi(u) - \pi(v)).
+    \]
+\end{lemma}
+\begin{proof}
+    
+\end{proof}
+
+\begin{lemma}
+    In the situation of \eqref{eq:penalized-general-problem}, assume
+    that \cref{ass:strongly-convex-radially-unbounded,ass:penalty-function,ass:penalty-parameters,ass:feasible-point} hold.
+    Further, assume that $f^k$ is $L_k$-smooth for all $k\in\N$. Then, for all $t,i\in\N$ and all $\epsilon > 0$, there exist $\tau_i\in (0, 1/L_i)$
+    and $L_\pi, G, \sigma^2 \in (0, \infty)$, s.\,t.
+    \begin{align*}
+        2\tau_i\E(f^t(x_{i+1}) - f^t(x_t^\star))
+        \leq \left( 1 - \frac{\mu}{2}\tau_i \right)\E|\!|x_i - x_t^\star|\!|^2
+                &- \big(1-\alpha_{t,i}(\epsilon)(2\tau_i)\big)\E|\!|x_{i+1} - x_t^\star|\!|^2 \\
+                &+ \frac{2G\alpha_{t,i}(1/\epsilon)\tau_i}{\gamma_t^2\,(1+L_\pi)} + \frac{\mu}{4}\tau_i\sigma^2\,,
+    \end{align*}
+    where $\alpha_{t,i}(\epsilon) := \epsilon (\gamma_t - \gamma_i)(1 + L_\pi)/4$.
+\end{lemma}
+\begin{proof}
+    
+\end{proof}
+
+\chapter{Numerical Examples}
+
+
+\printbibliography
+
+\end{document}
