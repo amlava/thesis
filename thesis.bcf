@@ -2376,10 +2376,17 @@
     <bcf:citekey order="2" intorder="1">Boyd_Vandenberghe_2004</bcf:citekey>
     <bcf:citekey order="2" intorder="2">garrigos2023handbook</bcf:citekey>
     <bcf:citekey order="3" intorder="1">durrett2019probability</bcf:citekey>
+    <bcf:citekey order="3" intorder="2">blitzstein2019introduction</bcf:citekey>
     <bcf:citekey order="4" intorder="1">duchi2018introductory</bcf:citekey>
-    <bcf:citekey order="5" intorder="1">doi:10.1137/070704277</bcf:citekey>
-    <bcf:citekey order="6" intorder="1">cutler2023drift</bcf:citekey>
-    <bcf:citekey order="7" intorder="1">chung1954stochastic</bcf:citekey>
+    <bcf:citekey order="5" intorder="1">robbins1951stochastic</bcf:citekey>
+    <bcf:citekey order="6" intorder="1">doi:10.1137/070704277</bcf:citekey>
+    <bcf:citekey order="7" intorder="1">doi:10.1137/070704277</bcf:citekey>
+    <bcf:citekey order="8" intorder="1">cutler2023drift</bcf:citekey>
+    <bcf:citekey order="9" intorder="1">chung1954stochastic</bcf:citekey>
+    <bcf:citekey order="10" intorder="1">cutler2023drift</bcf:citekey>
+    <bcf:citekey order="11" intorder="1">ghadimi2012optimal</bcf:citekey>
+    <bcf:citekey order="12" intorder="1">cutler2023drift</bcf:citekey>
+    <bcf:citekey order="13" intorder="1">cutler2023drift</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nty">

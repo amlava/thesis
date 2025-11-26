@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.10.28)  18 NOV 2025 21:43
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.10.28)  27 NOV 2025 00:15
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -33,21 +33,21 @@ Package: tocbasic 2024/10/24 v3.43 KOMA-Script package (handling toc-files)
 Package tocbasic Info: omitting babel extension for `toc'
 (tocbasic)             because of feature `nobabel' available
 (tocbasic)             for `toc' on input line 137.
-Package scrreprt Info: You've used standard option `11pt'.
+Package scrreprt Info: You've used standard option `10pt'.
 (scrreprt)             This is correct!
-(scrreprt)             Internally I'm using `fontsize=11pt'.
+(scrreprt)             Internally I'm using `fontsize=10pt'.
 (scrreprt)             If you'd like to set the option with \KOMAoptions,
-(scrreprt)             you'd have to use `fontsize=11pt' there
-(scrreprt)             instead of `11pt', too.
+(scrreprt)             you'd have to use `fontsize=10pt' there
+(scrreprt)             instead of `10pt', too.
 Class scrreprt Info: You've used standard option `oneside'.
 (scrreprt)           This is correct!
 (scrreprt)           Internally I'm using `twoside=false'.
 (scrreprt)           If you'd like to set the option with \KOMAoptions,
 (scrreprt)           you'd have to use `twoside=false' there
 (scrreprt)           instead of `oneside', too.
-Class scrreprt Info: File `scrsize11pt.clo' used to setup font sizes on input line 2713.
- (/usr/local/texlive/2025/texmf-dist/tex/latex/koma-script/scrsize11pt.clo
-File: scrsize11pt.clo 2024/10/24 v3.43 KOMA-Script font size class option (11pt)
+Class scrreprt Info: File `scrsize10pt.clo' used to setup font sizes on input line 2713.
+ (/usr/local/texlive/2025/texmf-dist/tex/latex/koma-script/scrsize10pt.clo
+File: scrsize10pt.clo 2024/10/24 v3.43 KOMA-Script font size class option (10pt)
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/koma-script/typearea.sty
 Package: typearea 2024/10/24 v3.43 KOMA-Script package (type area)
 \ta@bcor=\skip50
@@ -69,21 +69,21 @@ Package typearea Info: You've used standard option `oneside'.
 \ta@temp=\skip53
 \footheight=\skip54
 Package typearea Info: These are the values describing the layout:
-(typearea)             DIV  = 10
+(typearea)             DIV  = 8
 (typearea)             BCOR = 0.0pt
 (typearea)             \paperwidth      = 597.50793pt
-(typearea)              \textwidth      = 418.25555pt
-(typearea)              DIV departure   = -6%
-(typearea)              \evensidemargin = 17.3562pt
-(typearea)              \oddsidemargin  = 17.3562pt
+(typearea)              \textwidth      = 373.44246pt
+(typearea)              DIV departure   = -4%
+(typearea)              \evensidemargin = 39.76274pt
+(typearea)              \oddsidemargin  = 39.76274pt
 (typearea)             \paperheight     = 845.04694pt
-(typearea)              \textheight     = 595.80026pt
-(typearea)              \topmargin      = -25.16531pt
-(typearea)              \headheight     = 17.0pt
-(typearea)              \headsep        = 20.40001pt
-(typearea)              \topskip        = 11.0pt
-(typearea)              \footskip       = 47.6pt
-(typearea)              \baselineskip   = 13.6pt
+(typearea)              \textheight     = 538.0pt
+(typearea)              \topmargin      = 0.36087pt
+(typearea)              \headheight     = 15.0pt
+(typearea)              \headsep        = 18.0pt
+(typearea)              \topskip        = 10.0pt
+(typearea)              \footskip       = 42.0pt
+(typearea)              \baselineskip   = 12.0pt
 (typearea)              on input line 1802.
 )
 \c@part=\count197
@@ -1100,23 +1100,23 @@ Package scrbase Info: activating english \indexname on input line 224.
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: 
-* h-part:(L,W,R)=(85.35826pt, 426.79135pt, 85.35826pt)
-* v-part:(T,H,B)=(85.35826pt, 674.33032pt, 85.35826pt)
+* h-part:(L,W,R)=(72.26999pt, 452.9679pt, 72.26999pt)
+* v-part:(T,H,B)=(72.26999pt, 700.50687pt, 72.26999pt)
 * \paperwidth=597.50787pt
 * \paperheight=845.04684pt
-* \textwidth=426.79135pt
-* \textheight=674.33032pt
-* \oddsidemargin=13.08827pt
-* \evensidemargin=13.08827pt
-* \topmargin=-24.31174pt
-* \headheight=17.0pt
-* \headsep=20.40001pt
-* \topskip=11.0pt
-* \footskip=47.6pt
-* \marginparwidth=59.7508pt
+* \textwidth=452.9679pt
+* \textheight=700.50687pt
+* \oddsidemargin=0.0pt
+* \evensidemargin=0.0pt
+* \topmargin=-33.0pt
+* \headheight=15.0pt
+* \headsep=18.0pt
+* \topskip=10.0pt
+* \footskip=42.0pt
+* \marginparwidth=74.68849pt
 * \marginparsep=12.8401pt
 * \columnsep=10.0pt
-* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
 * \hoffset=0.0pt
 * \voffset=0.0pt
 * \mag=1000
@@ -1259,11 +1259,7 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 Package tocbasic Info: character protrusion at toc deactivated on input line 226.
  (./thesis.toc
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 4.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 4.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 4.
+(Font)              <5> on input line 4.
 )
 \tf@toc=\write6
 \openout6 = `thesis.toc'.
@@ -1282,25 +1278,29 @@ chapter 1.
 pdfTeX warning (ext4): destination with the same identifier (name{equation.1.1}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.301 \end{equation}
-                    ]
-
-[4
+l.318 \begin{enumerate}
+                       
 pdfTeX warning (ext4): destination with the same identifier (name{equation.1.1}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.319 \chapter
-              {Theory Background}]
+l.318 \begin{enumerate}
+                       ]
+
+[4]
 chapter 2.
 
 
 [5
 
 ]
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 494.
+ (/usr/local/texlive/2025/texmf-dist/tex/latex/lm/ts1lmr.fd
+File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
 
 [6]
 
-[7]
+[7{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
 
 [8]
 
@@ -1318,27 +1318,27 @@ chapter 3.
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.797     \[
-            ]
+l.961     L
+           et $f\colon \R^d \to \R$ be radially unbounded and assume that $\...]
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.834     \begin{equation}
+l.984     \begin{equation}
                           
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.834     \begin{equation}
+l.984     \begin{equation}
                           
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.834     \begin{equation}
+l.984     \begin{equation}
                           
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.834     \begin{equation}
+l.984     \begin{equation}
                           
 
 [13]
@@ -1376,16 +1376,24 @@ l.834     \begin{equation}
 [29]
 
 [30]
+
+[31]
 chapter 4.
 
 
-[31
+[32
+
+]
+chapter 5.
+
+
+[33
 
 ]
 Package microtype Info: Character `029' is missing
-(microtype)             in font `T1/lmr/m/sc/10.95'.
+(microtype)             in font `T1/lmr/m/sc/10'.
 (microtype)             Ignoring protrusion settings for this character.
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1889.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2339.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -1395,7 +1403,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             See the microtype manual for details.
 
 
-[32
+[34
 
 ] (./thesis.aux)
  ***********
@@ -1409,18 +1417,18 @@ Package logreq Info: Writing requests to 'thesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 45000 strings out of 473190
- 916372 string characters out of 5715799
- 1917069 words of memory out of 5000000
- 67183 multiletter control sequences out of 15000+600000
- 641638 words of font info for 220 fonts, out of 8000000 for 9000
+ 45103 strings out of 473190
+ 919050 string characters out of 5715799
+ 1922872 words of memory out of 5000000
+ 67240 multiletter control sequences out of 15000+600000
+ 634655 words of font info for 220 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 124i,13n,121p,10923b,2141s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmcsc10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmmi6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmr6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmsy6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on thesis.pdf (32 pages, 410867 bytes).
+ 124i,14n,121p,10923b,2141s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmcsc10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmmi5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmr5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmr7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmsy5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
+Output written on thesis.pdf (34 pages, 450525 bytes).
 PDF statistics:
- 757 PDF objects out of 1000 (max. 8388607)
- 656 compressed objects within 7 object streams
- 170 named destinations out of 1000 (max. 500000)
- 41749 words of extra memory for PDF output out of 42996 (max. 10000000)
+ 860 PDF objects out of 1000 (max. 8388607)
+ 753 compressed objects within 8 object streams
+ 193 named destinations out of 1000 (max. 500000)
+ 39725 words of extra memory for PDF output out of 42996 (max. 10000000)
 

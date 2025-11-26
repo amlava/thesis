@@ -19,6 +19,38 @@
 
 \refsection{0}
   \datalist[entry]{nty/global//global/global/global}
+    \entry{blitzstein2019introduction}{book}{}{}
+      \name{author}{2}{}{%
+        {{hash=295407bf42e4f5cd54995a3fb13351d8}{%
+           family={Blitzstein},
+           familyi={B\bibinitperiod},
+           given={Joseph\bibnamedelima K},
+           giveni={J\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+        {{hash=57f3f25f58a60f557d446fcf3a27d81b}{%
+           family={Hwang},
+           familyi={H\bibinitperiod},
+           given={Jessica},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{publisher}{2}{%
+        {Chapman}%
+        {Hall/CRC}%
+      }
+      \strng{namehash}{14d466464b02dfd0b97fd181d95c1a31}
+      \strng{fullhash}{14d466464b02dfd0b97fd181d95c1a31}
+      \strng{fullhashraw}{14d466464b02dfd0b97fd181d95c1a31}
+      \strng{bibnamehash}{14d466464b02dfd0b97fd181d95c1a31}
+      \strng{authorbibnamehash}{14d466464b02dfd0b97fd181d95c1a31}
+      \strng{authornamehash}{14d466464b02dfd0b97fd181d95c1a31}
+      \strng{authorfullhash}{14d466464b02dfd0b97fd181d95c1a31}
+      \strng{authorfullhashraw}{14d466464b02dfd0b97fd181d95c1a31}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Introduction to probability}
+      \field{year}{2019}
+    \endentry
     \entry{Boyd_Vandenberghe_2004}{book}{}{}
       \name{author}{2}{}{%
         {{hash=ec94d94cc487dd71939a90cbeaaf47d0}{%
@@ -206,6 +238,42 @@
       \field{title}{Handbook of convergence theorems for (stochastic) gradient methods}
       \field{year}{2023}
     \endentry
+    \entry{ghadimi2012optimal}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=5218be627b4c6445b64478f5686e3023}{%
+           family={Ghadimi},
+           familyi={G\bibinitperiod},
+           given={Saeed},
+           giveni={S\bibinitperiod}}}%
+        {{hash=775230a39f44f535164fa9b7cabb0ba6}{%
+           family={Lan},
+           familyi={L\bibinitperiod},
+           given={Guanghui},
+           giveni={G\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {SIAM}%
+      }
+      \strng{namehash}{5b3f62fb9a8b483e5ffcf08a3989cc3b}
+      \strng{fullhash}{5b3f62fb9a8b483e5ffcf08a3989cc3b}
+      \strng{fullhashraw}{5b3f62fb9a8b483e5ffcf08a3989cc3b}
+      \strng{bibnamehash}{5b3f62fb9a8b483e5ffcf08a3989cc3b}
+      \strng{authorbibnamehash}{5b3f62fb9a8b483e5ffcf08a3989cc3b}
+      \strng{authornamehash}{5b3f62fb9a8b483e5ffcf08a3989cc3b}
+      \strng{authorfullhash}{5b3f62fb9a8b483e5ffcf08a3989cc3b}
+      \strng{authorfullhashraw}{5b3f62fb9a8b483e5ffcf08a3989cc3b}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{SIAM Journal on Optimization}
+      \field{number}{4}
+      \field{title}{Optimal stochastic approximation algorithms for strongly convex stochastic composite optimization i: A generic algorithmic framework}
+      \field{volume}{22}
+      \field{year}{2012}
+      \field{pages}{1469\bibrangedash 1492}
+      \range{pages}{24}
+    \endentry
     \entry{doi:10.1137/070704277}{article}{}{}
       \name{author}{4}{}{%
         {{hash=282ecf2c6791713a21aed06539f155a4}{%
@@ -261,6 +329,40 @@
       \verb{url}
       \verb https://doi.org/10.1137/070704277
       \endverb
+    \endentry
+    \entry{robbins1951stochastic}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=163566b92b332258782e61e3d217a2bb}{%
+           family={Robbins},
+           familyi={R\bibinitperiod},
+           given={Herbert},
+           giveni={H\bibinitperiod}}}%
+        {{hash=95751f7f614bc2af42f1a078b3e2ba61}{%
+           family={Monro},
+           familyi={M\bibinitperiod},
+           given={Sutton},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {JSTOR}%
+      }
+      \strng{namehash}{5d85b58c5cbfcc8fc266cf4f5f6fbdbb}
+      \strng{fullhash}{5d85b58c5cbfcc8fc266cf4f5f6fbdbb}
+      \strng{fullhashraw}{5d85b58c5cbfcc8fc266cf4f5f6fbdbb}
+      \strng{bibnamehash}{5d85b58c5cbfcc8fc266cf4f5f6fbdbb}
+      \strng{authorbibnamehash}{5d85b58c5cbfcc8fc266cf4f5f6fbdbb}
+      \strng{authornamehash}{5d85b58c5cbfcc8fc266cf4f5f6fbdbb}
+      \strng{authorfullhash}{5d85b58c5cbfcc8fc266cf4f5f6fbdbb}
+      \strng{authorfullhashraw}{5d85b58c5cbfcc8fc266cf4f5f6fbdbb}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The annals of mathematical statistics}
+      \field{title}{A stochastic approximation method}
+      \field{year}{1951}
+      \field{pages}{400\bibrangedash 407}
+      \range{pages}{8}
     \endentry
   \enddatalist
 \endrefsection

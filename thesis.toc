@@ -6,12 +6,15 @@
 \contentsline {section}{\numberline {2.3}Stochastic Optimization}{10}{section.2.3}%
 \contentsline {section}{\numberline {2.4}Norms and Inequalities}{11}{section.2.4}%
 \contentsline {chapter}{\numberline {3}Sequential Penalty Methods}{12}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Consistency of solutions}{12}{section.3.1}%
+\contentsline {section}{\numberline {3.1}Consistency of Solutions}{12}{section.3.1}%
 \contentsline {section}{\numberline {3.2}Sequential SGD}{15}{section.3.2}%
 \contentsline {subsection}{\numberline {3.2.1}Bounding the surrogate error}{16}{subsection.3.2.1}%
 \contentsline {subsection}{\numberline {3.2.2}Bounding the tracking error}{18}{subsection.3.2.2}%
-\contentsline {subsection}{\numberline {3.2.3}Convergence rates}{22}{subsection.3.2.3}%
-\contentsline {subsection}{\numberline {3.2.4}Iterate averaging}{26}{subsection.3.2.4}%
-\contentsline {section}{\numberline {3.3}Accelerated SSGD}{28}{section.3.3}%
-\contentsline {chapter}{\numberline {4}Numerical Examples}{31}{chapter.4}%
+\contentsline {subsection}{\numberline {3.2.3}Convergence rates}{20}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}Iterate averaging}{24}{subsection.3.2.4}%
+\contentsline {section}{\numberline {3.3}Fast Convergence with Iterate Moving Averages}{25}{section.3.3}%
+\contentsline {chapter}{\numberline {4}Applications \& Numerical Examples}{32}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Optimal Control}{32}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Reinforcement Learning}{32}{section.4.2}%
+\contentsline {chapter}{\numberline {5}Summary and Outlook}{33}{chapter.5}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
