@@ -45,7 +45,7 @@
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>labelalpha</bcf:key>
-      <bcf:value>0</bcf:value>
+      <bcf:value>1</bcf:value>
     </bcf:option>
     <bcf:option type="multivalued">
       <bcf:key>labelnamespec</bcf:key>
@@ -172,7 +172,7 @@
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>sortingtemplatename</bcf:key>
-      <bcf:value>nty</bcf:value>
+      <bcf:value>anyt</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>sortsets</bcf:key>
@@ -288,7 +288,7 @@
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>labelalpha</bcf:key>
-      <bcf:value>0</bcf:value>
+      <bcf:value>1</bcf:value>
     </bcf:option>
     <bcf:option type="multivalued">
       <bcf:key>labelnamespec</bcf:key>
@@ -2372,31 +2372,48 @@
     <bcf:datasource type="file" datatype="bibtex" glob="false">references.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="1" intorder="1">Boyd_Vandenberghe_2004</bcf:citekey>
-    <bcf:citekey order="2" intorder="1">Boyd_Vandenberghe_2004</bcf:citekey>
-    <bcf:citekey order="2" intorder="2">garrigos2023handbook</bcf:citekey>
-    <bcf:citekey order="3" intorder="1">durrett2019probability</bcf:citekey>
-    <bcf:citekey order="3" intorder="2">blitzstein2019introduction</bcf:citekey>
-    <bcf:citekey order="4" intorder="1">duchi2018introductory</bcf:citekey>
-    <bcf:citekey order="5" intorder="1">robbins1951stochastic</bcf:citekey>
-    <bcf:citekey order="6" intorder="1">doi:10.1137/070704277</bcf:citekey>
-    <bcf:citekey order="7" intorder="1">doi:10.1137/070704277</bcf:citekey>
-    <bcf:citekey order="8" intorder="1">cutler2023drift</bcf:citekey>
-    <bcf:citekey order="9" intorder="1">chung1954stochastic</bcf:citekey>
-    <bcf:citekey order="10" intorder="1">cutler2023drift</bcf:citekey>
-    <bcf:citekey order="11" intorder="1">ghadimi2012optimal</bcf:citekey>
-    <bcf:citekey order="12" intorder="1">cutler2023drift</bcf:citekey>
-    <bcf:citekey order="13" intorder="1">cutler2023drift</bcf:citekey>
+    <bcf:citekey order="1" intorder="1">evans-control</bcf:citekey>
+    <bcf:citekey order="2" intorder="1">fercoq2019almost</bcf:citekey>
+    <bcf:citekey order="3" intorder="1">hastie2004entire</bcf:citekey>
+    <bcf:citekey order="4" intorder="1">doi:10.1137/070704277</bcf:citekey>
+    <bcf:citekey order="5" intorder="1">nedic2020convergence</bcf:citekey>
+    <bcf:citekey order="6" intorder="1">wright1999numerical</bcf:citekey>
+    <bcf:citekey order="6" intorder="2">bertsekas1997nonlinear</bcf:citekey>
+    <bcf:citekey order="7" intorder="1">Boyd_Vandenberghe_2004</bcf:citekey>
+    <bcf:citekey order="7" intorder="2">garrigos2023handbook</bcf:citekey>
+    <bcf:citekey order="8" intorder="1">durrett2019probability</bcf:citekey>
+    <bcf:citekey order="8" intorder="2">blitzstein2019introduction</bcf:citekey>
+    <bcf:citekey order="9" intorder="1">duchi2018introductory</bcf:citekey>
+    <bcf:citekey order="10" intorder="1">robbins1951stochastic</bcf:citekey>
+    <bcf:citekey order="11" intorder="1">doi:10.1137/070704277</bcf:citekey>
+    <bcf:citekey order="12" intorder="1">geiersbach2022optimality</bcf:citekey>
+    <bcf:citekey order="13" intorder="1">doi:10.1137/070704277</bcf:citekey>
+    <bcf:citekey order="14" intorder="1">cutler2023drift</bcf:citekey>
+    <bcf:citekey order="15" intorder="1">hoffman2003approximate</bcf:citekey>
+    <bcf:citekey order="16" intorder="1">hoffman2003approximate</bcf:citekey>
+    <bcf:citekey order="17" intorder="1">burke1996unified</bcf:citekey>
+    <bcf:citekey order="18" intorder="1">burke1996unified</bcf:citekey>
+    <bcf:citekey order="19" intorder="1">burke1996unified</bcf:citekey>
+    <bcf:citekey order="20" intorder="1">shapiro2009semi</bcf:citekey>
+    <bcf:citekey order="21" intorder="1">cutler2023drift</bcf:citekey>
+    <bcf:citekey order="22" intorder="1">chung1954stochastic</bcf:citekey>
+    <bcf:citekey order="23" intorder="1">cutler2023drift</bcf:citekey>
+    <bcf:citekey order="24" intorder="1">ghadimi2012optimal</bcf:citekey>
+    <bcf:citekey order="25" intorder="1">cutler2023drift</bcf:citekey>
+    <bcf:citekey order="26" intorder="1">cutler2023drift</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
-  <bcf:sortingtemplate name="nty">
+  <bcf:sortingtemplate name="anyt">
     <bcf:sort order="1">
       <bcf:sortitem order="1">presort</bcf:sortitem>
     </bcf:sort>
-    <bcf:sort order="2" final="1">
+    <bcf:sort order="2">
+      <bcf:sortitem order="1">labelalpha</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="3" final="1">
       <bcf:sortitem order="1">sortkey</bcf:sortitem>
     </bcf:sort>
-    <bcf:sort order="3">
+    <bcf:sort order="4">
       <bcf:sortitem order="1">sortname</bcf:sortitem>
       <bcf:sortitem order="2">author</bcf:sortitem>
       <bcf:sortitem order="3">editor</bcf:sortitem>
@@ -2404,24 +2421,24 @@
       <bcf:sortitem order="5">sorttitle</bcf:sortitem>
       <bcf:sortitem order="6">title</bcf:sortitem>
     </bcf:sort>
-    <bcf:sort order="4">
-      <bcf:sortitem order="1">sorttitle</bcf:sortitem>
-      <bcf:sortitem order="2">title</bcf:sortitem>
-    </bcf:sort>
     <bcf:sort order="5">
       <bcf:sortitem order="1">sortyear</bcf:sortitem>
       <bcf:sortitem order="2">year</bcf:sortitem>
     </bcf:sort>
     <bcf:sort order="6">
+      <bcf:sortitem order="1">sorttitle</bcf:sortitem>
+      <bcf:sortitem order="2">title</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="7">
       <bcf:sortitem order="1">volume</bcf:sortitem>
       <bcf:sortitem literal="1" order="2">0</bcf:sortitem>
     </bcf:sort>
   </bcf:sortingtemplate>
   <!-- DATALISTS -->
   <bcf:datalist section="0"
-                name="nty/global//global/global/global"
+                name="anyt/global//global/global/global"
                 type="entry"
-                sortingtemplatename="nty"
+                sortingtemplatename="anyt"
                 sortingnamekeytemplatename="global"
                 labelprefix=""
                 uniquenametemplatename="global"

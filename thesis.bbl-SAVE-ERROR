@@ -19,6 +19,67 @@
 
 \refsection{0}
   \datalist[entry]{nty/global//global/global/global}
+    \entry{bertsekas1997nonlinear}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=9d82cb170e490607a367aba73aa5668c}{%
+           family={Bertsekas},
+           familyi={B\bibinitperiod},
+           given={Dimitri\bibnamedelima P},
+           giveni={D\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Taylor \& Francis}%
+      }
+      \strng{namehash}{9d82cb170e490607a367aba73aa5668c}
+      \strng{fullhash}{9d82cb170e490607a367aba73aa5668c}
+      \strng{fullhashraw}{9d82cb170e490607a367aba73aa5668c}
+      \strng{bibnamehash}{9d82cb170e490607a367aba73aa5668c}
+      \strng{authorbibnamehash}{9d82cb170e490607a367aba73aa5668c}
+      \strng{authornamehash}{9d82cb170e490607a367aba73aa5668c}
+      \strng{authorfullhash}{9d82cb170e490607a367aba73aa5668c}
+      \strng{authorfullhashraw}{9d82cb170e490607a367aba73aa5668c}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of the Operational Research Society}
+      \field{number}{3}
+      \field{title}{Nonlinear programming}
+      \field{volume}{48}
+      \field{year}{1997}
+    \endentry
+    \entry{blitzstein2019introduction}{book}{}{}
+      \name{author}{2}{}{%
+        {{hash=295407bf42e4f5cd54995a3fb13351d8}{%
+           family={Blitzstein},
+           familyi={B\bibinitperiod},
+           given={Joseph\bibnamedelima K},
+           giveni={J\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+        {{hash=57f3f25f58a60f557d446fcf3a27d81b}{%
+           family={Hwang},
+           familyi={H\bibinitperiod},
+           given={Jessica},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{publisher}{2}{%
+        {Chapman}%
+        {Hall/CRC}%
+      }
+      \strng{namehash}{14d466464b02dfd0b97fd181d95c1a31}
+      \strng{fullhash}{14d466464b02dfd0b97fd181d95c1a31}
+      \strng{fullhashraw}{14d466464b02dfd0b97fd181d95c1a31}
+      \strng{bibnamehash}{14d466464b02dfd0b97fd181d95c1a31}
+      \strng{authorbibnamehash}{14d466464b02dfd0b97fd181d95c1a31}
+      \strng{authornamehash}{14d466464b02dfd0b97fd181d95c1a31}
+      \strng{authorfullhash}{14d466464b02dfd0b97fd181d95c1a31}
+      \strng{authorfullhashraw}{14d466464b02dfd0b97fd181d95c1a31}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Introduction to probability}
+      \field{year}{2019}
+    \endentry
     \entry{Boyd_Vandenberghe_2004}{book}{}{}
       \name{author}{2}{}{%
         {{hash=ec94d94cc487dd71939a90cbeaaf47d0}{%
@@ -76,8 +137,6 @@
       \field{journaltitle}{The Annals of Mathematical Statistics}
       \field{title}{On a stochastic approximation method}
       \field{year}{1954}
-      \field{pages}{463\bibrangedash 483}
-      \range{pages}{21}
     \endentry
     \entry{cutler2023drift}{article}{}{}
       \name{author}{3}{}{%
@@ -114,8 +173,6 @@
       \field{title}{Stochastic Optimization under Distributional Drift}
       \field{volume}{24}
       \field{year}{2023}
-      \field{pages}{1\bibrangedash 56}
-      \range{pages}{56}
       \verb{urlraw}
       \verb http://jmlr.org/papers/v24/21-1410.html
       \endverb
@@ -147,8 +204,6 @@
       \field{title}{Introductory lectures on stochastic optimization}
       \field{volume}{25}
       \field{year}{2018}
-      \field{pages}{99\bibrangedash 186}
-      \range{pages}{88}
     \endentry
     \entry{durrett2019probability}{book}{}{}
       \name{author}{1}{}{%
@@ -176,6 +231,74 @@
       \field{title}{Probability: theory and examples}
       \field{volume}{49}
       \field{year}{2019}
+    \endentry
+    \entry{evans-control}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=b02337e8d429e1bbf5e6a12aec72d534}{%
+           family={Evans},
+           familyi={E\bibinitperiod},
+           given={Lawrence},
+           giveni={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{b02337e8d429e1bbf5e6a12aec72d534}
+      \strng{fullhash}{b02337e8d429e1bbf5e6a12aec72d534}
+      \strng{fullhashraw}{b02337e8d429e1bbf5e6a12aec72d534}
+      \strng{bibnamehash}{b02337e8d429e1bbf5e6a12aec72d534}
+      \strng{authorbibnamehash}{b02337e8d429e1bbf5e6a12aec72d534}
+      \strng{authornamehash}{b02337e8d429e1bbf5e6a12aec72d534}
+      \strng{authorfullhash}{b02337e8d429e1bbf5e6a12aec72d534}
+      \strng{authorfullhashraw}{b02337e8d429e1bbf5e6a12aec72d534}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{02}
+      \field{title}{An Introduction to Mathematical Optimal Control Theory Version 0.2}
+      \field{year}{2013}
+    \endentry
+    \entry{fercoq2019almost}{inproceedings}{}{}
+      \name{author}{4}{}{%
+        {{hash=44e09f1ded061bc654fe8f584fa9bf57}{%
+           family={Fercoq},
+           familyi={F\bibinitperiod},
+           given={Olivier},
+           giveni={O\bibinitperiod}}}%
+        {{hash=1ea701c9df5640695ed84456d0131700}{%
+           family={Alacaoglu},
+           familyi={A\bibinitperiod},
+           given={Ahmet},
+           giveni={A\bibinitperiod}}}%
+        {{hash=c40b5fed361d9dc00fc10014c1401482}{%
+           family={Necoara},
+           familyi={N\bibinitperiod},
+           given={Ion},
+           giveni={I\bibinitperiod}}}%
+        {{hash=3d62c5b86f1c1fd385a81d7f751ae855}{%
+           family={Cevher},
+           familyi={C\bibinitperiod},
+           given={Volkan},
+           giveni={V\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {PMLR}%
+      }
+      \strng{namehash}{0fb1c2891f31989ddfb1b57d47a666b2}
+      \strng{fullhash}{a5bdd1a5b4d6d9072ef661ab86f63aff}
+      \strng{fullhashraw}{a5bdd1a5b4d6d9072ef661ab86f63aff}
+      \strng{bibnamehash}{0fb1c2891f31989ddfb1b57d47a666b2}
+      \strng{authorbibnamehash}{0fb1c2891f31989ddfb1b57d47a666b2}
+      \strng{authornamehash}{0fb1c2891f31989ddfb1b57d47a666b2}
+      \strng{authorfullhash}{a5bdd1a5b4d6d9072ef661ab86f63aff}
+      \strng{authorfullhashraw}{a5bdd1a5b4d6d9072ef661ab86f63aff}
+      \field{sortinit}{F}
+      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{International Conference on Machine Learning}
+      \field{title}{Almost surely constrained convex optimization}
+      \field{year}{2019}
+      \field{pages}{1910\bibrangedash 1919}
+      \range{pages}{10}
     \endentry
     \entry{garrigos2023handbook}{article}{}{}
       \name{author}{2}{}{%
@@ -205,6 +328,177 @@
       \field{journaltitle}{arXiv preprint arXiv:2301.11235}
       \field{title}{Handbook of convergence theorems for (stochastic) gradient methods}
       \field{year}{2023}
+    \endentry
+    \entry{geiersbach2022optimality}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=f62b4370303d1864f65371b05d8bea61}{%
+           family={Geiersbach},
+           familyi={G\bibinitperiod},
+           given={Caroline},
+           giveni={C\bibinitperiod}}}%
+        {{hash=dd1462c8449f0d93707a2a574ae0fa01}{%
+           family={Hintermüller},
+           familyi={H\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {EDP Sciences}%
+      }
+      \strng{namehash}{a2e063f1dc65bd36a690903562a06abd}
+      \strng{fullhash}{a2e063f1dc65bd36a690903562a06abd}
+      \strng{fullhashraw}{a2e063f1dc65bd36a690903562a06abd}
+      \strng{bibnamehash}{a2e063f1dc65bd36a690903562a06abd}
+      \strng{authorbibnamehash}{a2e063f1dc65bd36a690903562a06abd}
+      \strng{authornamehash}{a2e063f1dc65bd36a690903562a06abd}
+      \strng{authorfullhash}{a2e063f1dc65bd36a690903562a06abd}
+      \strng{authorfullhashraw}{a2e063f1dc65bd36a690903562a06abd}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{ESAIM: Control, Optimisation and Calculus of Variations}
+      \field{title}{Optimality conditions and Moreau--Yosida regularization for almost sure state constraints}
+      \field{volume}{28}
+      \field{year}{2022}
+    \endentry
+    \entry{ghadimi2012optimal}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=5218be627b4c6445b64478f5686e3023}{%
+           family={Ghadimi},
+           familyi={G\bibinitperiod},
+           given={Saeed},
+           giveni={S\bibinitperiod}}}%
+        {{hash=775230a39f44f535164fa9b7cabb0ba6}{%
+           family={Lan},
+           familyi={L\bibinitperiod},
+           given={Guanghui},
+           giveni={G\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {SIAM}%
+      }
+      \strng{namehash}{5b3f62fb9a8b483e5ffcf08a3989cc3b}
+      \strng{fullhash}{5b3f62fb9a8b483e5ffcf08a3989cc3b}
+      \strng{fullhashraw}{5b3f62fb9a8b483e5ffcf08a3989cc3b}
+      \strng{bibnamehash}{5b3f62fb9a8b483e5ffcf08a3989cc3b}
+      \strng{authorbibnamehash}{5b3f62fb9a8b483e5ffcf08a3989cc3b}
+      \strng{authornamehash}{5b3f62fb9a8b483e5ffcf08a3989cc3b}
+      \strng{authorfullhash}{5b3f62fb9a8b483e5ffcf08a3989cc3b}
+      \strng{authorfullhashraw}{5b3f62fb9a8b483e5ffcf08a3989cc3b}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{SIAM Journal on Optimization}
+      \field{number}{4}
+      \field{title}{Optimal stochastic approximation algorithms for strongly convex stochastic composite optimization i: A generic algorithmic framework}
+      \field{volume}{22}
+      \field{year}{2012}
+    \endentry
+    \entry{hastie2004entire}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=0cb8fe4210baa81c4b0e67913b4d2768}{%
+           family={Hastie},
+           familyi={H\bibinitperiod},
+           given={Trevor},
+           giveni={T\bibinitperiod}}}%
+        {{hash=419317fdd051d6322062748170149516}{%
+           family={Rosset},
+           familyi={R\bibinitperiod},
+           given={Saharon},
+           giveni={S\bibinitperiod}}}%
+        {{hash=88eea600247d798f8b2ce0b2dc614492}{%
+           family={Tibshirani},
+           familyi={T\bibinitperiod},
+           given={Robert},
+           giveni={R\bibinitperiod}}}%
+        {{hash=885c2d20b53bf31151fa702f9fadcfe5}{%
+           family={Zhu},
+           familyi={Z\bibinitperiod},
+           given={Ji},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{45eb7d473651da447f1d77717e7f8650}
+      \strng{fullhash}{17eef244317f1984f741558b4142f716}
+      \strng{fullhashraw}{17eef244317f1984f741558b4142f716}
+      \strng{bibnamehash}{45eb7d473651da447f1d77717e7f8650}
+      \strng{authorbibnamehash}{45eb7d473651da447f1d77717e7f8650}
+      \strng{authornamehash}{45eb7d473651da447f1d77717e7f8650}
+      \strng{authorfullhash}{17eef244317f1984f741558b4142f716}
+      \strng{authorfullhashraw}{17eef244317f1984f741558b4142f716}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Machine Learning Research}
+      \field{number}{Oct}
+      \field{title}{The entire regularization path for the support vector machine}
+      \field{volume}{5}
+      \field{year}{2004}
+      \field{pages}{1391\bibrangedash 1415}
+      \range{pages}{25}
+    \endentry
+    \entry{hoffman2003approximate}{incollection}{}{}
+      \name{author}{1}{}{%
+        {{hash=ec929e099920301f79cf5c57d8dc8f53}{%
+           family={Hoffman},
+           familyi={H\bibinitperiod},
+           given={Alan\bibnamedelima J},
+           giveni={A\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {World Scientific}%
+      }
+      \strng{namehash}{ec929e099920301f79cf5c57d8dc8f53}
+      \strng{fullhash}{ec929e099920301f79cf5c57d8dc8f53}
+      \strng{fullhashraw}{ec929e099920301f79cf5c57d8dc8f53}
+      \strng{bibnamehash}{ec929e099920301f79cf5c57d8dc8f53}
+      \strng{authorbibnamehash}{ec929e099920301f79cf5c57d8dc8f53}
+      \strng{authornamehash}{ec929e099920301f79cf5c57d8dc8f53}
+      \strng{authorfullhash}{ec929e099920301f79cf5c57d8dc8f53}
+      \strng{authorfullhashraw}{ec929e099920301f79cf5c57d8dc8f53}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Selected Papers Of Alan J Hoffman: With Commentary}
+      \field{title}{On approximate solutions of systems of linear inequalities}
+      \field{year}{2003}
+    \endentry
+    \entry{nedic2020convergence}{inproceedings}{}{}
+      \name{author}{2}{}{%
+        {{hash=11d7eac1658fccdb099366faa2d366cd}{%
+           family={Nedić},
+           familyi={N\bibinitperiod},
+           given={Angelia},
+           giveni={A\bibinitperiod}}}%
+        {{hash=6f7baeb417f3d627c699f209020653ae}{%
+           family={Tatarenko},
+           familyi={T\bibinitperiod},
+           given={Tatiana},
+           giveni={T\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{d1fda26398247769951610233cdb97e9}
+      \strng{fullhash}{d1fda26398247769951610233cdb97e9}
+      \strng{fullhashraw}{d1fda26398247769951610233cdb97e9}
+      \strng{bibnamehash}{d1fda26398247769951610233cdb97e9}
+      \strng{authorbibnamehash}{d1fda26398247769951610233cdb97e9}
+      \strng{authornamehash}{d1fda26398247769951610233cdb97e9}
+      \strng{authorfullhash}{d1fda26398247769951610233cdb97e9}
+      \strng{authorfullhashraw}{d1fda26398247769951610233cdb97e9}
+      \field{sortinit}{N}
+      \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2020 59th IEEE Conference on Decision and Control (CDC)}
+      \field{title}{Convergence rate of a penalty method for strongly convex problems with linear constraints}
+      \field{year}{2020}
+      \field{pages}{372\bibrangedash 377}
+      \range{pages}{6}
     \endentry
     \entry{doi:10.1137/070704277}{article}{}{}
       \name{author}{4}{}{%
@@ -247,8 +541,6 @@
       \field{title}{Robust Stochastic Approximation Approach to Stochastic Programming}
       \field{volume}{19}
       \field{year}{2009}
-      \field{pages}{1574\bibrangedash 1609}
-      \range{pages}{36}
       \verb{doi}
       \verb 10.1137/070704277
       \endverb
@@ -261,6 +553,71 @@
       \verb{url}
       \verb https://doi.org/10.1137/070704277
       \endverb
+    \endentry
+    \entry{robbins1951stochastic}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=163566b92b332258782e61e3d217a2bb}{%
+           family={Robbins},
+           familyi={R\bibinitperiod},
+           given={Herbert},
+           giveni={H\bibinitperiod}}}%
+        {{hash=95751f7f614bc2af42f1a078b3e2ba61}{%
+           family={Monro},
+           familyi={M\bibinitperiod},
+           given={Sutton},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {JSTOR}%
+      }
+      \strng{namehash}{5d85b58c5cbfcc8fc266cf4f5f6fbdbb}
+      \strng{fullhash}{5d85b58c5cbfcc8fc266cf4f5f6fbdbb}
+      \strng{fullhashraw}{5d85b58c5cbfcc8fc266cf4f5f6fbdbb}
+      \strng{bibnamehash}{5d85b58c5cbfcc8fc266cf4f5f6fbdbb}
+      \strng{authorbibnamehash}{5d85b58c5cbfcc8fc266cf4f5f6fbdbb}
+      \strng{authornamehash}{5d85b58c5cbfcc8fc266cf4f5f6fbdbb}
+      \strng{authorfullhash}{5d85b58c5cbfcc8fc266cf4f5f6fbdbb}
+      \strng{authorfullhashraw}{5d85b58c5cbfcc8fc266cf4f5f6fbdbb}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The annals of mathematical statistics}
+      \field{title}{A stochastic approximation method}
+      \field{year}{1951}
+    \endentry
+    \entry{wright1999numerical}{article}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{2}{}{%
+        {{hash=7763509f7c4b10ac0b0770c30259cb1d}{%
+           family={Wright},
+           familyi={W\bibinitperiod},
+           given={Stephen},
+           giveni={S\bibinitperiod}}}%
+        {{hash=88a342d927bf795b0d92af8a5613da31}{%
+           family={Nocedal},
+           familyi={N\bibinitperiod},
+           given={Jorge},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{e3d1aa0ac6bd5eadca5874e2a121f229}
+      \strng{fullhash}{e3d1aa0ac6bd5eadca5874e2a121f229}
+      \strng{fullhashraw}{e3d1aa0ac6bd5eadca5874e2a121f229}
+      \strng{bibnamehash}{e3d1aa0ac6bd5eadca5874e2a121f229}
+      \strng{authorbibnamehash}{e3d1aa0ac6bd5eadca5874e2a121f229}
+      \strng{authornamehash}{e3d1aa0ac6bd5eadca5874e2a121f229}
+      \strng{authorfullhash}{e3d1aa0ac6bd5eadca5874e2a121f229}
+      \strng{authorfullhashraw}{e3d1aa0ac6bd5eadca5874e2a121f229}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Springer Science}
+      \field{number}{67-68}
+      \field{title}{Numerical optimization}
+      \field{volume}{35}
+      \field{year}{1999}
     \endentry
   \enddatalist
 \endrefsection

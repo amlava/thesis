@@ -1,20 +1,23 @@
 \babel@toc {english}{}\relax 
 \contentsline {chapter}{\numberline {1}Introduction}{3}{chapter.1}%
-\contentsline {chapter}{\numberline {2}Theory Background}{5}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Convex Optimization}{5}{section.2.1}%
-\contentsline {section}{\numberline {2.2}Probability Theory}{7}{section.2.2}%
-\contentsline {section}{\numberline {2.3}Stochastic Optimization}{10}{section.2.3}%
-\contentsline {section}{\numberline {2.4}Norms and Inequalities}{11}{section.2.4}%
-\contentsline {chapter}{\numberline {3}Sequential Penalty Methods}{12}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Consistency of Solutions}{12}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Sequential SGD}{15}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Bounding the surrogate error}{16}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}Bounding the tracking error}{18}{subsection.3.2.2}%
-\contentsline {subsection}{\numberline {3.2.3}Convergence rates}{20}{subsection.3.2.3}%
-\contentsline {subsection}{\numberline {3.2.4}Iterate averaging}{24}{subsection.3.2.4}%
-\contentsline {section}{\numberline {3.3}Fast Convergence with Iterate Moving Averages}{25}{section.3.3}%
-\contentsline {chapter}{\numberline {4}Applications \& Numerical Examples}{32}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Optimal Control}{32}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Reinforcement Learning}{32}{section.4.2}%
-\contentsline {chapter}{\numberline {5}Summary and Outlook}{33}{chapter.5}%
+\contentsline {chapter}{\numberline {2}Preliminaries}{7}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Convex Optimization}{7}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Probability Theory}{10}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Stochastic Optimization}{13}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Norms and Inequalities}{14}{section.2.4}%
+\contentsline {chapter}{\numberline {3}Penalty Methods for Smooth Objectives}{16}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Consistency of Solutions}{16}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Sequential SGD}{18}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Bounding the surrogate error}{20}{subsection.3.2.1}%
+\contentsline {subsubsection}{\nonumberline Bounding the distance-to-feasibility}{20}{subsubsection*.6}%
+\contentsline {subsection}{\numberline {3.2.2}Bounding the tracking error}{25}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Convergence rates}{28}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}Iterate averaging}{31}{subsection.3.2.4}%
+\contentsline {section}{\numberline {3.3}Exponential Moving Averages}{33}{section.3.3}%
+\contentsline {chapter}{\numberline {4}Prox-SGD for Simple Nonsmooth Objectives}{40}{chapter.4}%
+\contentsline {chapter}{\numberline {5}Numerical Examples}{41}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Inventory Control}{41}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Support Vector Machines}{41}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Sparse SVM}{41}{section.5.3}%
+\contentsline {chapter}{\numberline {6}Summary and Outlook}{42}{chapter.6}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
