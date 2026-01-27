@@ -1,0 +1,35 @@
+\documentclass{layout/thesisDocumentclass}
+
+% TO DO: Change to your name, study program etc.
+\newcommand{\name}{Amir Miri Lavasani} % Please enter your Name
+\newcommand{\studyprogram}{Mathematics} % Please enter your study program
+\newcommand{\Degree}{Master} % Please specify whether your thesis is at the master's or bachelor's level. Possible choices: Master or Bachelor
+\newcommand{\id}{7310114} % Please enter your student ID
+\newcommand{\firstReviewer}{Johannes Lederer} % Please enter your first reviewer
+\newcommand{\secondReviewer}{Caroline Geiersbach} % Please enter your second reviewer
+\newcommand{\docLanguage}{english} % Please enter in which language you will write your thesis. Possible choices: english or german
+\newcommand{\university}{UHH} % Please enter the university you are studying at. Possible choices: UHH or TUHH
+\newcommand{\submissionDate}{\specificDate{08.11.2024}} % Please enter the submission date of the thesis.
+
+\ifthenelse{\equal{\docLanguage}{english}}{\usepackage[english]{babel}}{\usepackage[ngerman]{babel}}
+\ifthenelse{\equal{\docLanguage}{english}}{\newdateformat{myformat}{\monthname[\THEMONTH] \THEDAY, \THEYEAR}}{\newdateformat{myformat}{\THEDAY. \monthname[\THEMONTH] \THEYEAR}}
+
+
+\begin{document}
+\include{layout/ThesisTitlepage.tex}
+% TO DO: go into the section folder (sec) and adjust the file abstract, so the abstract of your thesis will be displayed
+\include{sec/abstract}
+
+\include{layout/TableOfContentsAndListOfFigures}
+
+% TO DO: Add your chapters, you can add your chapters into the section folder (sec) and include them like it is done with the example chapters
+\include{sec/chapter1}
+\include{sec/chapter2}
+\include{sec/chapter3}
+\include{sec/chapter4}
+\include{sec/chapter5}
+
+\include{layout/thesisBibliography}
+\include{layout/thesisErklärung}
+
+\end{document}

@@ -1,0 +1,1765 @@
+\chapter{Sequential Proximal SGD Method}
+
+In this chapter we will analyze the convergence
+properties of \cref{alg:seqprox-sgd} applied to
+the constrained stochastic optimization problem
+\begin{equation}
+    \label{eq:main-problem-copy}
+    \tag{P}
+    \begin{aligned}
+    &\min_{x \in \mathbb{R}^n} \, \{\, f(x) := \E(F_\xi(x)) + r(x) \,\} \\
+    &\textup{s.\,t.} \quad A(\xi) x - b(\xi) \leq 0 \quad \textnormal{a.\,s.},
+    \end{aligned}
+\end{equation}
+where we implicitly assume the existence of a probability space
+$(\Omega, \mathcal{F}, \Prob)$ on which the random variable $\xi\colon\Omega\to\R^p$,
+as well as the expected value mapping,
+are defined.
+We denote the feasible set for \eqref{eq:main-problem-copy} as
+\[
+    \mathcal{X} := \{\, x\in\R^n \mid A(\xi)x - b(\xi) \leq 0 \enspace \textnormal{a.\,s.} \,\}.
+\]
+\begin{assumption}
+    \label{ass:basic-assumptions}
+    Throughout, we will make the following basic assumptions about problem \eqref{eq:main-problem}:
+    \begin{enumerate}
+        \item The function $x\mapsto F_\xi(x)$ is almost surely $L$-smooth for some $L\in(0,\infty)$,
+            and there exists a point $x\in\R^n$ such that $\E\norm{\nabla F_\xi(x)}^2 < \infty$.
+        Further, the expectation $x\mapsto \E(F_\xi(x))$ is $\mu$-strongly convex for some
+        $\mu\in(0, \infty)$.
+        \item The regularizer $r$ is convex and subdifferentiable with bounded subdifferential on compacta.
+            More precisely, for any compact set $C\subset\R^n$, it holds that
+            \[
+                \sup_{x\in C}\sup_{\tilde{\nabla}r(x)\in\partial r(x)} \norm{\tilde{\nabla}r(x)} < \infty.
+            \]
+            \textcolor{red}{TODO: This is not actually needed. Closed, proper, convex (on the domain) are enough.}
+        \item The matrix-valued map $A\colon\R^p\to\R^{m\times n}$, and the vector valued
+            map $b\colon\R^p\to\R^m$, are both (Borel-)measurable.
+        \item The random matrix $A(\xi)$ has bounded norm Frobenius norm, $\norm{A(\xi)}_F < \infty$, almost surely. \textcolor{red}{TODO: Remove this once you fixed the definition of $h_k$.}
+        \item The sequence $(\gamma_k)_{k\in\N}$ is nondecreasing and unbounded. 
+        \item There exists at least one feasible point $x\in\mathcal{X}$.
+    \end{enumerate}
+\end{assumption}
+\Cref{alg:seqprox-sgd} work with penalty functions $(\pi_k)_{k\in\N}$.
+These will always take the form $\pi_k(x) := \E(h_k(A(\xi)x - b(\xi)))$, where, for all $k\in\N$,
+we let $(h_k)_{k\in\N}$ be any sequence of functions $\R^m\to\R$ with the following properties:
+\begin{enumerate}
+    \item For all $k\in\N$, $h_k$ is convex and $L_{h_k}$-smooth for some $L_{h_k}\in(0,\infty)$ (\textcolor{red}{TODO: Think convex differentiable is enough}).
+    \item $h_k(x) \geq \norm{(x)_+}_1$ for all $x\in\R^m$ and $k\in\N$.
+    \item There exists a sequence $(\alpha_k)_{k\in\N}\subset(0,\infty)$ such that
+        $\sup_{k\in\N} \gamma_k\alpha_k < \infty$ and $h_k(x) \leq \alpha_k$ for all $x\in\R^m_{\leq 0}$.
+        In particular, for all feasible points $\tilde{x}\in\mathcal{X}$, it holds that $\pi_k(\tilde{x}) \leq \alpha_k$ for all $k\in\N$.
+    \item The gradients of $(h_k)_{k\in\N}$ are bounded uniformly:
+        \[
+            \sup_{k\in\N}\sup_{x\in\R^m}\nabla h_k(x) < \infty.
+        \]
+\end{enumerate}
+Finally, for all $k\in\N$, we define the sequence of unconstrained optimization problems
+\begin{equation}
+    \label{eq:main-problem-penalized}
+    \tag{$\textnormal{P}^\textnormal{k}$}
+    \min_{x\in\R^n}
+    \left\{\, f_k(x) := f(x) + \gamma_k \pi_k(x) \,\right\},
+\end{equation}
+where $\gamma_k\in(0,\infty)$.
+Since proximal methods seperate the smooth part of the above objective,
+given by $x\mapsto \E(F_\xi(x)) + \gamma_k \pi_k(x)$,
+from the nonsmooth part, $x\mapsto r(x)$, it is useful to also define the functions
+\[
+    \psi_k(x) := \E(F_\xi(x)) + \gamma_k \pi_k(x),
+\]
+for all $k\in\N$.
+
+\Cref{ass:basic-assumptions} has multiple useful implications, which are captured
+by the following lemma.
+\begin{lemma}
+    \label{lem:basic-properties}
+    \Cref{ass:basic-assumptions} implies the following:
+    \begin{enumerate}
+        \item The objective $f$ of \eqref{eq:main-problem-copy} is $\mu$-strongly convex and subdifferentiable. Further,
+            the subgradients of $f$ are bounded on compacta: For any compact set $C\in\R^n$, it holds that
+            \[
+                \sup_{x\in C}\sup_{\tilde{\nabla}f(x)\in\partial f(x)} \norm{\tilde{\nabla} f(x)} < \infty.
+            \]
+        \item The objectives $(f_k)_{k\in\N}$ of \eqref{eq:main-problem-penalized} are $\mu$-strongly convex
+            and subdifferentiable. Further, for any compact set $C\in\R^n$, it holds that
+            \[
+                \sup_{x\in C} \sup_{\tilde{\nabla}f_k(x)\in\partial f_k(x)} \norm{\tilde{\nabla} f_k(x)} = \mathcal{O}(\gamma_k),
+            \]
+            for all $k\in\N$.
+        \item The functions $(\psi_k)_{k\in\N}$ are $\mu$-strongly convex and
+            $L_k$-smooth, where $L_k := L + \gamma_kL_{h_k}$. Further,
+            for any compact set $C\subset\R^n$, it holds that
+            \[
+                \sup_{x\in C} \norm{\nabla \psi_k(x)} = \mathcal{O}(\gamma_k).
+            \]
+        \item The gradients of $(\pi_k)_{k\in\N}$ are uniformly bounded: There exists $G\in(0,\infty)$ such that
+            \[
+                \sup_{k\in\N} \sup_{x\in\R^n} \norm{\nabla \pi_k(x)} \leq G.
+            \]
+        \item There exists a unique solution $x^\star\in\mathcal{X}$ for \eqref{eq:main-problem-copy} and, for all $k\in\N$,
+            there exists a unique solution $x_k^\star\in\R^n$ for \eqref{eq:main-problem-penalized}.
+    \end{enumerate}
+\end{lemma}
+\begin{proof}
+    
+\end{proof}
+The fact that $x_k^\star$ must not be
+feasible introduces difficulties that prevent the use of
+standard arguments from the SGD literature to analyse convergence. Our proof
+methods combine approaches from recent works, mainly
+the already mentioned \cite{nedich2023huber}, as well as
+\cite{cutler2023stochastic}. The latter paper
+investiages \textit{stochastic optimization problems under distributional drift}.
+While these kinds of problems are not exactly the same as the ones we are
+working with, the two settings do indeed exhibit striking resemblences.
+Namely, Cutler et al. \cite{cutler2023stochastic} investigated a sequence of
+time-dependent composite problems of the form
+\[
+    \min_{x\in\R^n} g_t(x) + r_t(x),
+\]
+where, for all $t\in\N$, $g_t$ is smooth strongly convex, and $r_t$
+is convex. Comparing to our problem \eqref{eq:main-problem-penalized},
+rewritten as 
+\begin{equation}
+    \label{eq:main-problem-penalized-copy-with-psi}
+    \tag{$\textnormal{P}^\textnormal{k}$}
+    \min_{x\in\R^n}
+    \left\{\, f_k(x) = \psi_k(x) + r(x) \,\right\},
+\end{equation}
+we see that the two settings almost match, except for one important
+difference: Cutler et al. \cite{cutler2023stochastic}
+assume that the smoothness constant (as well as the strong convexity constant)
+of $g_t$ is independent of $t\in\N$ (\textcolor{red}{TODO: Change this when the smoothness
+assumption on $h_k$ is dropped}). In our case however,
+the smoothness constant of $\psi_k$ depends on $\gamma_k h_k$, and
+will generally grow over time. This will lead to a constraint
+on the decay rate of our step size schedule $(\eta_k)_{k\in\N}$.
+Namely, we will need $\eta_k\in (0, 1/L_k)$ with $L_k$
+the smoothness constant of $\psi_k$, for all $k\in\N$.
+Nevertheless, adapting the proof technique to our
+case will not be very complicated, and will help us
+establish a useful inequality. This inequality can then be used
+to adapt the proof strategy from Nedić et al. \cite{nedich2023huber}
+(where the authors did not use proximal maps in their algorithm)
+to our proximal method.
+
+\section{Almost sure convergence}
+\label{sec:almost-sure-convergence}
+
+In this section we will establish
+conditions under which we can guarantee almost sure convergence of the sequence of iterates $(x_k)_{k\in\N}$.
+The proof will also yield convergence in expectation of
+$(x_k)_{k\in\N}$ to $x^\star$ along a subsequence. The main use of the almost sure convergence
+result will be that we will have conditions on the stepsizes $(\eta_k)_{k\in\N}$ and the
+penalty parameters $(\gamma_k)_{k\in\N}$ to ensure that $(x_k)_{k\in\N}$ is bounded with
+probability one. This, together with some of the results we prove along the way, will
+come in very handy in the subsequent analysis of
+the quantitative convergence rates of our methods.
+
+The proof for almost sure convergence hinges on two technical lemmata. The first is the well-known
+Robbins-Siegmund lemma, which provides a general sufficient condition to guarantee almost sure
+convergence of so-called "almost supermartingales".
+\begin{lemma}[Robbins-Siegmund]
+    \label{lem:robbins-siegmund}
+    Let $(\mathcal{F}_n)_{n\in\N}$ be an increasing sequence of $\sigma$-algebras and $v_n, a_n,
+    b_n, c_n$ be nonnegative $\mathcal{F}_n$-measurable random variables. If, for all $n\in\N$,
+    \begin{equation}
+        \label{eq:lem:robbins-siegmund-almost-supermartingales}
+        \E(v_{n+1} \mid \mathcal{F}_n) \leq v_n(1+a_n) + b_n - c_n,        
+    \end{equation}
+    and $\sum_{n=1}^\infty a_n < \infty, \sum_{n=1}^\infty b_n < \infty$ a.\,s., then with probability
+    one, $(v_n)_{n\in\N}$ is convergent and it holds that $\sum_{n=1}^\infty c_n < \infty$.
+\end{lemma}
+\begin{proof}
+    See \cite{robbins1971convergence}.
+\end{proof}
+
+Our goal for the rest of this section is to derive a recursive inequality for the
+sequence $\norm{x_k - x^\star}^2$, which resembles \eqref{eq:lem:robbins-siegmund-almost-supermartingales}.
+In order to do this, we will first analyze the behavior of the
+sequence of solutions $(x_k^\star)_{k\in\N}$ to the sequence of unconstrained
+problems \eqref{eq:main-problem-penalized}. We can then use this to "build a bridge"
+between $(x_k)_{k\in\N}$ and $x^\star$, by considering their respective relationships to
+the sequence $(x_k^\star)_{k\in\N}$.
+
+The first step towards analyzing the convergence of $(x_k^\star)$
+will be to (locally) bound the distance $\dist(x,\mathcal{X})$
+by (a term proportional to) the penalty $\pi_k(x)$.
+We will rely on
+an extension of a classic result by Hoffman \cite{hoffman2003approximate},
+who analyzed the distance of points $x\in\R^n$ to the set of solutions of linear systems of inequalities
+$Ax \leq b$ with $A\in\R^{m\times n}$, $b\in\R^m$.
+Crucially, there always exists a constant $\tau\in(0,\infty)$, such that
+\[
+    \tau \dist(x, S) \leq \norm{(Ax - b)_+}_\infty,
+\]
+where $S := \{\, y\in\R^n \mid Ay \leq b \,\}$.
+In \cite{hu1989approximate}, this result was then extended to the case of infinte systems
+of linear inequalities, which is the setting that we are interested in.
+However, before we can apply this inequality, we will first need to impose two assumptions. The first one concerns
+the joint distribution of $A(\xi)$ and $b(\xi)$.
+For $i\in\{\, 1,\dots,m \,\}$, $z\in\R^p$, we let $a_i(z)\in\R^{n}$, resp. $b_i(z)\in\R$, denote
+the $i$-th row of $A(z)$, resp. $b(z)$.
+\begin{assumption}
+    \label{ass:compact-support-without-zero}
+    There exists a compact set $C\in\R^{n+1}$ such that $0\notin C$ and the set
+    \[
+        \{\, (a_i(\xi), b_i(\xi)) \mid i\in\{\, 1,\dots,m \,\} \,\}
+    \]
+    is contained in $C$ almost surely. \textcolor{red}{TODO: This implies the bounded second moment assumption
+    on $\E\norm{A(\xi)}_F^2$}.
+\end{assumption}
+
+The second assumption we make concerns the structure of the solution set $\mathcal{X}$
+and is a very common assumption in optimization.
+\begin{assumption}
+    \label{ass:slater-point}
+    There exists a \textit{Slater point}, i.\,e. a point $x\in\mathcal{X}$ such that $A(\xi)x < b(\xi)$
+    almost surely.
+\end{assumption}
+% Notably, it is here where we make use of 
+% our assumption that $(\pi_k)_{k\in\N}$ upperbounds
+% the hinge-penalty,
+% \[
+%     \pi_k(x) \geq \E\norm{(A(\xi)x - b(\xi))_+}_{1},
+% \]
+% for all $x\in\R^n$ and $k\in\N$.
+We will now formulate and prove the lemma.
+\begin{lemma}[Subfeasibility bound via penalty functions]
+    \label{lem:lower-bound-on-penalties-by-distance-to-feasibility}
+    Assume \cref{ass:compact-support-without-zero,ass:slater-point} hold,
+    let $B\subset\R^n$ be a bounded subset. Then
+    there exists a constant $\tau\in(0,\infty)$ such that
+    \[
+       \tau \dist(x, \mathcal{X}) \leq \pi_k(x),
+    \]
+    for all $x\in B$ and $k\in\N$.
+\end{lemma}
+\begin{proof}
+    % The projection map sends bounded sets to bounded sets. Indeed, if not,
+    % then there exists a sequence $(y_k)_{k\in\N}\in B$ such that $\lim_{k\to\infty} \norm{\proj(y_k)} = \infty$.
+    % But the projection map is contractive, hence, for any $x\in \mathcal{X}$,
+    % \[
+    %     \norm{y_k - x} \geq \norm{\proj(y_k) - x} \longrightarrow_{k\to\infty} \infty.
+    % \]
+    % This implies that $\lim_{k\to\infty}\norm{y_k} = \infty$, contradicting the assumption that $B$ is bounded.
+    % Thus, the set $S := \{\, \proj(x) \mid x\in B \,\} \subset \mathcal{X}$ is bounded.
+    % We begin by defining the following set:
+    % \[
+    %     \tilde{Y} := \{\, g_{(x, \lambda)}\colon\R^n\times\R\to \R \mid g_{(x, \lambda)}(a, b) := a^\top x - \lambda b
+    %         \enspace \forall (x, \lambda), (a,b) \in \R^n \times \R \,\}.
+    % \]
+    % $\tilde{Y}$ is a vector space, since sums and scalar multiples of affine maps are affine.
+    % It is also finite-dimensional, since for all $(x,\lambda)\in\R^n\times\R$, and standard basis vectors
+    % $(e_1, \dots, e_n, 1)$, there exist constants $\lambda_1,\dots,\lambda_n\in\R$,
+    % such that
+    % \[
+    %     g_{(x, \lambda)}(a, b) = a^\top x - \lambda b = \sum_{i=1}^n \lambda_i a^\top e_i - \lambda b = \sum_{i=1}^n \lambda_i g_{(e_i, 0)}(a, b) - \lambda g_{(0, 1)}(a, b).
+    % \]
+    % Thus, the family $\{\, g_{(e_i, 0)}, g_{(0, 1)} \mid i\in\{1,\dots,n+1\} \,\}$ forms a basis for $\tilde{Y}$.
+    % It also follows that the map
+    % \[
+    %     \tilde{T}\colon\R^{n}\times \R \to \tilde{Y}, \enspace \tilde{T}(x, \lambda) := g_{(x, \lambda)}
+    % \]
+    % defines a linear isomorphism.
+    % We further define the subset
+    % \[
+    %     \tilde{K} := \{\, g_{(x,\lambda)} \in \tilde{Y} \mid g_{(x,\lambda)}(a, b) \leq 0
+    %     \enspace \forall (a, b) \in C \,\}.
+    % \]
+    % $\tilde{K}$ is a closed (wrt. some arbitrary norm on $\tilde{Y}$) convex cone: The latter two properties are clear from
+    % the definition. For closedness, let $(x_k, \lambda_k)_{k\in\N}$ be a sequence in $\R^n\times\R$ such
+    % that the corresponding sequence of functions $(g_{(x_k, \lambda_k)})_{k\in\N}$ is a sequence in $\tilde{K}$ that
+    % converges to $g_{(x, \lambda)}\in\tilde{Y}$ for some $(x, \lambda)\in\R^n\times\R$.
+    % Since we have already established that $\tilde{Y}$ is isomorphic to $\R^{n+1}$ via $\tilde{T}$,
+    % the convergence of $(g_{(x_k, \lambda_k)})_{k\in\N}$ to $g_{(x, \lambda)}$ is equivalent to the convergence
+    % of $(x_k, \lambda_k)_{k\in\N}$ to $(x, \lambda)$ in $\R^n\times\R$.
+    % Therefore, we can conclude that for any $(a, b)\in\R^{n}\times\R$, we have
+    % \[
+    %     \lim_{k\to\infty} a^\top x_k - \lambda_k b = a^\top x - \lambda b,
+    % \]
+    % and $a^\top x - \lambda b$ must also be nonnegative, proving that $g_{(x,\lambda)}\in \tilde{K}$.
+    % Further, we define the maps
+    % \[
+    %     \tilde{A} \colon \R^n\to \tilde{Y}, \enspace \tilde{A}x := g_{(x, 0)},
+    % \]
+    % and
+    % \[
+    %     \tilde{b} := g_{(0, 1)}.
+    % \]
+    % For $x_0\in B$, we consider the optimization problem
+    % \begin{equation}
+    %     \label{eq:proof:lem:lower-bound-on-penalties-by-distance-to-feasibility}
+    %     \min_{x\in\mathcal{X}} \norm{x - x_0}
+    %     =
+    %     \min_{x\in\R^n, \, \tilde{A}x - \tilde{b} \in \tilde{K}} \norm{x - x_0},
+    % \end{equation}
+    % where the equality follows from the fact that $x\in\mathcal{X} \iff g_{(x, 1)}  = \tilde{A}x - \tilde{b} \in \tilde{K}$.
+    % Define the map
+    % We will now show that $\tilde{T}$ is a linear isomorphism: For $x,y\in\R^n$, and $\lambda,\mu\in\R$,
+    % it holds that
+    % \begin{align*}
+    %     \tilde{T}(x + y, \lambda + \mu)(a, b)
+    %     &= g_{(x + y, \lambda + \mu)}(a, b) \\
+    %     &= a^\top (x + y) - (\lambda + \mu)b \\
+    %     &= a^\top x - \lambda b + a^\top y - \mu b \\
+    %     &= g_{(x, \lambda)}(a, b) + g_{(y, \mu)}(a, b) \\
+    %     &= \tilde{T}(x, \lambda)(a, b) + \tilde{T}(y, \mu)(a, b),
+    % \end{align*}
+    % for all $(a,b)\in\R^{n}\times\R$. Further, for any $x\in\R^n$, $\lambda,\mu\in\R$,
+    % \begin{align*}
+    %     \tilde{T}(\mu x, \mu \lambda)(a, b) &= g_{(\mu x, \mu \lambda)}(a, b) \\
+    %                 &= a^\top (\mu x) - (\mu\lambda)b \\
+    %                 &= \mu( a^\top x - \lambda b ) \\
+    %                 &= \mu g_{(x, \lambda)} \\
+    %                 &= \mu \tilde{T}(x, \lambda)(a, b),
+    % \end{align*}
+    % for all  $(a,b)\in\R^{n}\times\R$. Thus, $\tilde{T}$ is linear. Now assume that
+    % \[
+    %     0 = \tilde{T}(x, \lambda)(a, b) = g_{(x, \lambda)}(a, b) = a^\top x - \lambda b \enspace \forall (a,b)\in\R^n\times\R
+    % \]
+    % for some $(x, \lambda) \in \R^n\times\R$. Then, in particular,
+    % \[
+    %     0 = g_{(x, \lambda)}(x, -\lambda) = \norm{x}^2 + \lambda^2,
+    % \]
+    % which implies that $x = 0$ and $\lambda = 0$. Thus, $\tilde{T}$ is injective, and since
+    % $\dim(\tilde{Y}) = n + 1$, it follows that $\tilde{T}$ must also be surjective, and hence $\tilde{T}$
+    % is an isomorphism. We can thus identify the set $\tilde{Y}$ with $\R^{n+1}$ via
+    % \[
+    %     Y := \tilde{T}^{-1}(\tilde{Y}) = \R^n \times \R \cong \R^{n+1},
+    % \]
+    % and we similarly identify $\tilde{K}$ with a subset of $\R^{n+1}$ via
+    % \[
+    %     K := \tilde{T}^{-1}(\tilde{K})
+    %     = \{\, (x, \lambda) \in \R^{n+1} \mid g_{x, \lambda}(a, b) \leq 0 \enspace \forall (a, b)\in\R^n\times\R \,\}.
+    % \]
+    % Note that $\tilde{A}x - \tilde{b} \in
+    % \tilde{K} \iff (\tilde{T}^{-1}\tilde{A})x - (\tilde{T}^{-1}\tilde{b}) \in \tilde{T}^{-1}(\tilde{K})$,
+    % which motivates the definitions (with slight abuse of notation)
+    % \[
+    %     A := \tilde{T}^{-1}\tilde{A}, \enspace \enspace b := \tilde{T}^{-1} \tilde{b}, \enspace \text{and} \enspace
+    %     K := \tilde{T}^{-1}(\tilde{K}).
+    % \]
+    % With this, the minimization problem \eqref{eq:proof:lem:lower-bound-on-penalties-by-distance-to-feasibility}
+    % can be rewritten as
+    % \[
+    %     \min_{x\in\mathcal{X}} \norm{x - x_0} = \min_{x\in\R^n, \, Ax - b \in K} \norm{x - x_0}.
+    % \]
+    % The advantage of this formulation as opposed to the one involving $\tilde{K}$ is that
+    % now the set $K$ is a genuine subset of $\R^{n+1}$, which will prove useful in the following.
+    % Not also that the set $K$ is a closed convex cone, since linear isomorphisms preserve all these properties and we
+    % have already shown that $\tilde{K}$ is a closed convex cone.
+\end{proof}
+\begin{theorem}[Convergence of $x_k^\star$]
+    \label{thm:distance-to-feasibility-bound}
+    Assume \cref{ass:slater-point,ass:compact-support-without-zero} hold.
+    Then, for all $k\in\N$, it holds that
+    \[
+        \frac{\mu}{2} |\!|x^\star - x_k^\star|\!|^2 + \frac{\mu}{2} |\!|x^\star - \proj(x_k^\star)|\!|^2
+        + (\tau\gamma_k - M) \, \dist(x_k^\star, \mathcal{X})
+        \leq
+        \gamma_k \alpha_k,
+    \]
+    where $M,\tau\in (0, \infty)$ are constants.
+    In particular,
+    \[
+        |\!|x^\star - x_k^\star|\!|^2 = \mathcal{O}(\gamma_k \alpha_k) \quad \textnormal{and} \quad
+        \dist(x_k^\star, \mathcal{X}) = \mathcal{O}(\alpha_k).
+    \]
+\end{theorem}
+\begin{proof}
+    Let $k\in\N$. By optimality of $x_k^\star$ for $f_k$, there exists
+    $0 \in \partial f_k(x_k^\star)$. Hence, by
+    strong convexity, we obtain
+    \begin{equation}
+        \label{proof:thm:surrogate-bound-for-huber-penalty:eq1}
+        \frac{\mu}{2} |\!|x^\star - x_k^\star|\!|^2
+        \leq f_k(x^\star) - f_k(x_k^\star)
+        = f(x^\star) - f(x_k^\star) + \gamma_k\pi_k(x^\star) - \gamma_k\pi_k(x_k^\star).
+    \end{equation}
+    We can write
+    \begin{align*}
+        f(x^\star) - f(x_k^\star) &= f(x^\star) - f(\proj(x_k^\star)) + f(\proj(x_k^\star)) - f(x_k^\star) \\
+                                  &\leq -\frac{\mu}{2} |\!|x^\star - \proj(x_k^\star)|\!|^2
+                                    - \langle \tilde{\nabla} f(x^\star), \proj(x_k^\star) - x^\star \rangle + f(\proj(x_k^\star)) - f(x_k^\star), 
+    \end{align*}
+    where we again used strong convexity in the second step.
+    Since $\proj(x_k^\star)\in\mathcal{X}$ and $x^\star$ is optimal for $f$ on $\mathcal{X}$,
+    it holds that
+    \[
+        \langle \tilde{\nabla} f(x^\star), \proj(x_k^\star) - x^\star \rangle \geq 0,
+    \]
+    and thus
+    \[
+        f(x^\star) - f(x_k^\star) \leq -\frac{\mu}{2} |\!|x^\star - \proj(x_k^\star)|\!|^2 + f(\proj(x_k^\star)) - f(x_k^\star).
+    \]
+    To continue with the proof, we will need to first show that $(x_k^\star)_{k\in\N}$
+    is bounded: By strong convexity and optimality of $x_k^\star$ for $f_k$, for any feasible $x\in\mathcal{X}$, it holds that
+    \begin{align*}
+        \frac{\mu}{2} \norm{x - x_k^\star}^2
+                &\leq f_k(x) - f_k(x_k^\star) \\
+                &= f(x) + \gamma_k\pi_k(x) - f_k(x^\star_k) \\
+                &\leq f(x) + \gamma_k \alpha_k - f_k(x^\star_k) \\
+                &\leq f(x) + \gamma_k \alpha_k - f_\text{min}\,,
+    \end{align*}
+    where $f_\text{min}$ is the minimum value of $f$, which exists by strong convexity.
+    Noting that $\lim_{k\to\infty} \gamma_k\alpha_k = 0$ per one of our assumptions, it follows
+    that $(x_k^\star)_{k\in\N}$ must be a bounded sequence.
+    It follows that $(\proj(x_k^\star))_{k\in\N}$ is bounded as well (continuous functions map compact sets to compact sets),
+    and therefore there exists a constant $M\in(0,\infty)$ such that $M = \sup_{k\in\N} \norm{\tilde{\nabla} f(\proj(x_k^\star))}$.
+    Hence, by
+    convexity of $f$ and Cauchy-Schwarz,
+    \[
+        f(\proj(x_k^\star)) - f(x_k^\star) \leq \langle \tilde{\nabla} f(\proj(x_k^\star)), \proj(x_k^\star) - x_k^\star \rangle
+                                    \leq M \dist(x_k^\star).
+    \]
+    We now obain
+    \[
+        f(x^\star) - f(x_k^\star) \leq -\frac{\mu}{2} |\!|x^\star - \proj(x_k^\star)|\!|^2 + M \dist(x_k^\star, \mathcal{X}).
+    \]
+    Plugging this into \eqref{proof:thm:surrogate-bound-for-huber-penalty:eq1}, we obtain
+    \[
+        \frac{\mu}{2} |\!|x^\star - x_k^\star|\!|^2
+        \leq
+        -\frac{\mu}{2} |\!|x^\star - \proj(x_k^\star)|\!|^2 + M \dist(x_k^\star, \mathcal{X})
+        + \gamma_k\pi_k(x^\star) - \gamma_k\pi_k(x_k^\star).
+    \]
+    Now, using our lower bound on $\pi_k(x_k^\star)$ from \cref{lem:lower-bound-on-penalties-by-distance-to-feasibility},
+    and combining terms, we arrive at the inequality
+    \[
+        \frac{\mu}{2} |\!|x^\star - x_k^\star|\!|^2
+        \leq
+        -\frac{\mu}{2} |\!|x^\star - \proj(x_k^\star)|\!|^2 + (M - \gamma_k\tau) \dist(x_k^\star, \mathcal{X})
+        + \gamma_k\pi_k(x^\star).
+    \]
+    Using $\pi_k(x^\star) \leq \alpha_k$ and rearranging, we obtain
+    \[
+        \frac{\mu}{2} |\!|x^\star - x_k^\star|\!|^2
+        +
+        \frac{\mu}{2} |\!|x^\star - \proj(x_k^\star)|\!|^2
+        +
+        (\gamma_k\tau - M) \dist(x_k^\star, \mathcal{X})
+        \leq
+        \gamma_k \alpha_k.
+    \]
+    The asymptotic rate for $|\!|x^\star - x_k^\star|\!|^2$ now follows.
+    For the bound on $\dist(x_k^\star, \mathcal{X})$, we let $K$ be large enough such that
+    $\gamma_k\tau > M$ for all $k \geq K$. Dividing by $\gamma_k$ on both sides and using the nonnegativity
+    of the other terms on the left-hand side, we get
+    \[
+        c \cdot \dist(x_k^\star, \mathcal{X})
+        \leq
+        \frac{\gamma_k\tau - M}{\gamma_k} \dist(x_k^\star, \mathcal{X})
+        \leq
+        \alpha_k,
+    \]
+    for all $k \geq K$ and some constant $c\in(0,1)$, as desired.
+\end{proof}
+
+Having established the convergence of the sequence $(x_k^\star)_{k\in\N}$
+to $x^\star$, we will now shift our attention to the iterates $(x_k)_{k\in\N}$
+of \cref{alg:seqprox-sgd}. We begin with the following
+fundamental recursive inequality.
+% \begin{lemma}[One-step improvement]
+%     \label{lem:one-step-improvement}
+%     Let $\eta_k\in(0, 1/L_k)$ for all $k\in\N$. Then
+%     the iterates $(x_k)_{k\in\N}$ generated by \cref{alg:seqprox-sgd} with step size
+%     schedule $(\eta_k)_{k\in\N}$ satisfy
+%     \[
+%         2\eta_k\E_k(f_k(x_{k+1}) - f_k(x))
+%         \leq
+%         (1-\mu\eta_k)\norm{x - x_k}^2
+%         - \E_k\norm{x - x_{k+1}}^2
+%         + \frac{\eta_k^2}{1 - L_k\eta_k}\Var_k(g_k),
+%     \]
+%     for all $x\in\R^n$ and $k\in\N$.
+% \end{lemma}
+% \begin{proof}
+%     This proof essentially follows the proof of lemma 23 in Cutler et al. \cite{cutler2023stochastic} verbatim,
+%     apart from some added details and the small difference that our smoothness constant is not independent of $k\in\N$.
+%     For $k\in\N$ we denote by $g_k$ the stochastic gradient of $\psi_k$ at $x_k$
+%     that is used in iteration $k$ of \cref{alg:seqprox-sgd}. By $L_k$ smoothness of $\psi_k$, we have
+%     \begin{align*}
+%         f_k(x_{k+1})
+%         &= \psi_k(x_{k+1}) + r(x_{k+1}) \\
+%         &\leq \psi_k(x_k) + \langle \nabla \psi_k(x_k), x_{k+1} - x_k \rangle + \frac{L_k}{2}\norm{x_{k+1} - x_k}^2 + r(x_{k+1}) \\
+%         &= \psi_k(x_k) + r(x_{k+1}) + \langle g_k, x_{k+1} - x_k \rangle
+%                          + \frac{L_k}{2}\norm{x_{k+1} - x_k}^2 + \langle z_k, x_{k+1} - x_k \rangle.
+%     \end{align*}
+%     By Cauchy-Schwarz and Young's inequality, we have
+%     \[
+%         \langle z_k, x_{k+1} - x_k \rangle \leq \frac{\delta_k}{2}\norm{z_k}^2 + \frac{1}{2\delta_k}\norm{x_{k+1} - x_k}^2
+%     \]
+%     for all $\delta_k\in(0,\infty)$. Therefore,
+%     \begin{align*}
+%         f_k(x_{k+1})
+%         &\leq \psi_k(x_k) + r(x_{k+1}) + \langle g_k, x_{k+1} - x_k \rangle
+%                          + \frac{L_k + \delta_k^{-1}}{2}\norm{x_{k+1} - x_k}^2
+%                          + \frac{\delta_k}{2}\norm{z_k}^2 \\
+%         &= \psi_k(x_k) + r(x_{k+1}) + \langle g_k, x_{k+1} - x_k \rangle
+%                          + \frac{1}{2\eta_k}\norm{x_{k+1} - x_k}^2 \\
+%                          &\phantom{===}+ \frac{L_k + \delta_k^{-1} - \eta_k^{-1}}{2}\norm{x_{k+1} - x_k}^2
+%                          + \frac{\delta_k}{2}\norm{z_k}^2.
+%     \end{align*}
+%     From the definition of the proximal map, it follows that
+%     \begin{align*}
+%         x_{k+1} &= \prox_{\eta_k r} (x_k - \eta_k g_k) \\
+%                 &= \argmin_{x\in\R^n} \Big\{\, r(x) + \frac{1}{2\eta_k}\norm{x - (x_k - \eta_k g_k)}^2 \,\Big\} \\
+%                 &= \argmin_{x\in\R^n} \Big\{\, r(x) + \langle g_k, x - x_k \rangle + \frac{1}{2\eta_k}\norm{x - x_k}^2 \,\Big\},
+%     \end{align*}
+%     where the last step follows from expanding the square and dropping
+%     the constant term $\eta_k^2 \norm{g_k}^2$ from the minimization.
+%     The function $x\mapsto r(x) + \langle g_k, x - x_k \rangle + \frac{1}{2\eta_k}\norm{x - x_k}^2$ is $(2\eta_k)^{-1}$-strongly convex. Thus,
+%     comparing with our previous bound on $f_k(x_{k+1})$,
+%     we can conclude
+%     \begin{align*}
+%         f_k(x_{k+1}) &\leq \psi_k(x_k) + r(x) + \langle g_k, x - x_k \rangle + \frac{1}{2\eta_k}\norm{x - x_k}^2 - \frac{1}{2\eta_k}\norm{x - x_{k+1}}^2 \\
+%         &\phantom{===} + \frac{L_k + \delta_k^{-1} - \eta_k^{-1}}{2}\norm{x_{k+1} - x_k}^2 + \frac{\delta_k}{2}\norm{z_k}^2,
+%     \end{align*}
+%     for all $x\in\R^n$. By $\mu$-strong convexity of $\psi_k$, we have
+%     \begin{align*}
+%         \psi_k(x_k) + r(x) + \langle g_k, x - x_k \rangle
+%         &=
+%         \psi_k(x_k) + r(x) + \langle \psi_k(x_k), x - x_k \rangle + \langle z_k, x_k - x \rangle \\
+%         &\leq
+%         \psi_k(x) - \frac{\mu}{2}\norm{x - x_k}^2 + r(x) + \langle z_k, x_k - x \rangle \\
+%         &=
+%         f_k(x) - \frac{\mu}{2}\norm{x - x_k}^2 + \langle z_k, x_k - x \rangle,
+%     \end{align*}
+%     for all $x\in\R^n$. Hence,
+%     \begin{align*}
+%         f_k(x_{k+1})
+%         &\leq f_k(x) + \Big(\frac{1}{2\eta_k} - \frac{\mu}{2}\Big)\norm{x - x_k}^2 + \langle z_k, x_k - x \rangle 
+%             - \frac{1}{2\eta_k}\norm{x - x_{k+1}}^2 \\
+%         &\phantom{===} + \frac{L_k + \delta_k^{-1} - \eta_k^{-1}}{2}\norm{x_{k+1}-x_k}^2 + \frac{\delta_k}{2}\norm{z_k}^2.
+%     \end{align*}
+%     Choosing $\delta_k := \eta_k(1 - L_k\eta_k)^{-1}$,
+%     we can drop the $\norm{x_{k+1} - x_k}^2$ term and get
+%     \begin{align*}
+%         f_k(x_{k+1})
+%         &\leq f_k(x) + \Big(\frac{1}{2\eta_k} - \frac{\mu}{2}\Big)\norm{x - x_k}^2 + \langle z_k, x_k - x \rangle 
+%             - \frac{1}{2\eta_k}\norm{x - x_{k+1}}^2 \\
+%         &\phantom{===} + \frac{\eta_k}{2(1 - L_k\eta_k)}\norm{z_k}^2.
+%     \end{align*}
+%     Subtracting by $f_k(x)$ and multiplying both sides by $2\eta_k$
+%     yields
+%     \begin{align*}
+%         2\eta_k(f_k(x_{k+1}) - f_k(x))
+%         &\leq ( 1 - \mu\eta_k ) \norm{x - x_k}^2 + 2\eta_k\langle z_k, x_k - x \rangle 
+%             - \norm{x - x_{k+1}}^2 \\
+%         &\phantom{===} + \frac{\eta_k^2}{1 - L_k\eta_k}\norm{z_k}^2.
+%     \end{align*}
+%     By properties of conditional expectation and the definition of
+%     stochastic gradients, we know that $\E_k \langle z_k, x_k - x \rangle = 0$, and
+%     thus, applying conditional expectations to both sides of the above
+%     inequality, we obtain
+%     \[
+%         2\eta_k\E_k(f_k(x_{k+1}) - f_k(x))
+%         \leq ( 1 - \mu\eta_k ) \norm{x - x_k}^2
+%             - \E_k\norm{x - x_{k+1}}^2 + \frac{\eta_k^2}{1 - L_k\eta_k}\E_k\norm{z_k}^2,
+%     \]
+%     for all $x\in\R^n$. Since $\E_k\norm{z_k}^2 = \E_k\norm{g_k - \nabla \psi_k(x_k)}^2$ and
+%     $\E_k(g_k) = \nabla \psi_k(x_k)$, it holds that $\E_k\norm{z_k}^2 = \Var_k(g_k)$,
+%     and we arrive at the desired result.
+% \end{proof}
+\begin{lemma}[One-step improvement]
+    \label{lem:one-step-improvement}
+    Let $\rho\in(0,1)$ and $\eta_k\in(0, \rho L^{-1}]$ for all $k\in\N$. Then
+    the iterates $(x_k)_{k\in\N}$ generated by \cref{alg:seqprox-sgd} with step size
+    schedule $(\eta_k)_{k\in\N}$ satisfy
+    \begin{align*}
+        2\eta_k\E_k(f_k(x_{k+1}) - f_k(x))
+        &\leq ( 1 - \mu\eta_k ) \norm{x - x_k}^2 - \E_k\norm{x - x_{k+1}}^2 + \frac{2\eta_k^2}{1 - \rho}\Var_k(g_k) \\
+        &\phantom{===} + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho}.
+    \end{align*}
+    for all $x\in\R^n$ and $k\in\N$.
+\end{lemma}
+\begin{proof}
+    For $k\in\N$ we denote by $g_k$ the stochastic gradient of $\psi_k$ at $x_k$
+    that is used in iteration $k$ of \cref{alg:seqprox-sgd}.
+    We also let $\psi(x) := \E(F_\xi(x))$ for $x\in\R^n$, so that
+    $\psi_k = \psi + \gamma_k\pi_k$ and
+    $\nabla \psi_k = \nabla \psi + \gamma_k \nabla\pi_k$. By $L$-smoothness of $\psi$ (\cref{ass:basic-assumptions}),
+    we have
+    \begin{align*}
+        f_k(x_{k+1})
+        &= \psi_k(x_{k+1}) + r(x_{k+1}) \\
+        &= \psi(x_{k+1}) + \gamma_k\pi_k(x_{k+1}) + r(x_{k+1}) \\
+        &\leq \psi(x_k) + \langle \nabla \psi(x_k), x_{k+1} - x_k \rangle + \frac{L}{2} \norm{x_{k+1} - x_k}^2 + \gamma_k\pi_k(x_{k+1}) + r(x_{k+1}) \\
+        &= \psi(x_k) + \langle \nabla \psi_k(x_k), x_{k+1} - x_k \rangle + \frac{L}{2} \norm{x_{k+1} - x_k}^2
+            + \gamma_k\pi_k(x_{k+1}) + r(x_{k+1}) \\
+        &\phantom{===}+ \gamma_k \langle \nabla \pi_k(x_k), x_k - x_{k+1} \rangle.
+    \end{align*}
+    By convexity of $\pi_k$, we further have
+    \[
+        \pi_k(x_{k+1}) \leq \pi_k(x_k) + \langle \nabla \pi_k(x_{k+1}), x_{k+1} - x_k \rangle,
+    \]
+    and an application of Cauchy-Schwarz and Young's inequality yields
+    \[
+        \pi_k(x_{k+1})
+        \leq \pi_k(x_k) + \frac{\epsilon_k^{-1}}{2} \norm{\nabla \pi_k(x_{k+1})}^2 + \frac{\epsilon_k}{2} \norm{x_{k+1} - x_k}^2,
+    \]
+    for any $\epsilon_k \in (0,\infty)$.
+    Note that the gradients $(\nabla \pi_k)_{k\in\N}$ are bounded uniformly (\cref{lem:basic-properties}),
+    hence there exists $G\in(0,\infty)$ such that
+    \[
+        \pi_k(x_{k+1})
+        \leq \pi_k(x_k) + \frac{\epsilon_k}{2} G^2 + \frac{\epsilon_k^{-1}}{2} \norm{x_{k+1} - x_k}^2,
+    \]
+    for any $\epsilon_k\in(0,\infty)$.
+    With this, we can further bound $f_k(x_{k+1})$ by
+    \begin{align*}
+        f_k(x_{k+1})
+        &\leq \psi(x_k) + \langle \nabla \psi_k(x_k), x_{k+1} - x_k \rangle + \frac{L}{2} \norm{x_{k+1} - x_k}^2 + r(x_{k+1}) \\
+        &\phantom{===}+ \gamma_k\Big( \pi_k(x_k) + \frac{\epsilon_k}{2} G^2 + \frac{\epsilon_k^{-1}}{2} \norm{x_{k+1} - x_k}^2 \Big)
+            + \gamma_k \langle \nabla \pi_k(x_k), x_k - x_{k+1} \rangle. \\
+        &= \psi_k(x_k) + \langle \nabla \psi_k(x_k), x_{k+1} - x_k \rangle + \frac{L + \gamma_k\epsilon_k^{-1}}{2} \norm{x_{k+1} - x_k}^2 + r(x_{k+1}) \\
+        &\phantom{===} + \frac{\gamma_k \epsilon_k G^2}{2} + \gamma_k \langle \nabla \pi_k(x_k), x_k - x_{k+1} \rangle.
+    \end{align*}
+    By another application of Cauchy-Schwarz and Young's inequality, we have for any $\epsilon_k\in(0,\infty)$
+    \[
+         \langle \nabla \pi_k(x_k), x_k - x_{k+1} \rangle \leq \frac{\epsilon_k}{2} G^2 + \frac{\epsilon_k^{-1}}{2} \norm{x_{k+1} - x_k}^2,
+    \]
+    where again used the bound $\sup_{k\in\N}\sup_{x\in\R^n}\nabla \pi_k(x) \leq G$, and therefore we obtain
+    \begin{align*}
+        f_k(x_{k+1})
+        &\leq \psi_k(x_k) + \langle \nabla \psi_k(x_k), x_{k+1} - x_k \rangle + \frac{L + 2\gamma_k\epsilon_k^{-1}}{2} \norm{x_{k+1} - x_k}^2 + r(x_{k+1}) \\
+        &\phantom{===} + \gamma_k \epsilon_k G^2
+    \end{align*}
+    for any $\epsilon_k\in(0,\infty)$. We let $z_k := \nabla \psi_k(x_k) - g_k$ be the error in the $k$-th
+    stochastic gradient. By adding and subtracting $\langle z_k, x_{k+1} - x_k \rangle$ in
+    the above inequality, we get
+    \begin{align*}
+        f_k(x_{k+1})
+        &\leq \psi_k(x_k) + \langle g_k, x_{k+1} - x_k \rangle + \frac{L + 2\gamma_k\epsilon_k^{-1}}{2} \norm{x_{k+1} - x_k}^2 + r(x_{k+1}) \\
+        &\phantom{===} + \gamma_k \epsilon_k G^2 + \langle z_k, x_{k+1} - x_k \rangle.
+    \end{align*}
+    By yet another application of Cauchy-Schwarz and Young's inequality, we have
+    \[
+        \langle z_k, x_{k+1} - x_k \rangle
+        \leq
+        \frac{\delta_k}{2}\norm{z_k}^2 + \frac{\delta_k^{-1}}{2}\norm{x_{k+1} - x_k}^2,
+    \]
+    for all $\delta_k\in(0,\infty)$, and therefore
+    \begin{align*}
+        f_k(x_{k+1})
+        &\leq \psi_k(x_k) + \langle g_k, x_{k+1} - x_k \rangle
+            + \frac{L + 2\gamma_k\epsilon_k^{-1} + \delta_k^{-1}}{2} \norm{x_{k+1} - x_k}^2 + r(x_{k+1}) \\
+        &\phantom{===} + \gamma_k \epsilon_k G^2 + \frac{\delta_k}{2} \norm{z_k}^2, \\
+        &= \psi_k(x_k) + r(x_{k+1}) + \langle g_k, x_{k+1} - x_k \rangle + \frac{1}{2\eta_k}\norm{x_{k+1} - x_k}^2 \\
+        &\phantom{===} + \frac{L + 2\gamma_k\epsilon_k^{-1} + \delta_k^{-1} - \eta_k^{-1}}{2} \norm{x_{k+1} - x_k}^2 + \gamma_k \epsilon_k G^2 + \frac{\delta_k}{2} \norm{z_k}^2,
+    \end{align*}
+    where in the last step we added and subtracted $(2\eta_k)^{-1} \norm{x_{k+1} - x_k}^2$ and moved $r(x_{k+1})$
+    further forward.
+    From the definition of the proximal operator, it follows that
+    \begin{align*}
+        x_{k+1} &= \prox_{\eta_k r} (x_k - \eta_k g_k) \\
+                &= \argmin_{x\in\R^n} \Big\{\, r(x) + \frac{1}{2\eta_k}\norm{x - (x_k - \eta_k g_k)}^2 \,\Big\} \\
+                &= \argmin_{x\in\R^n} \Big\{\, r(x) + \langle g_k, x - x_k \rangle + \frac{1}{2\eta_k}\norm{x - x_k}^2 \,\Big\},
+    \end{align*}
+    where the last step follows from expanding the square and dropping
+    the constant term $\eta_k^2 \norm{g_k}^2$ from the minimization.
+    The function $x\mapsto r(x) + \langle g_k, x - x_k \rangle + (2\eta_k)^{-1}\norm{x - x_k}^2$
+    is $(2\eta_k)^{-1}$-strongly convex and minimized by $x_{k+1}$. Thus,
+    comparing with our previous bound on $f_k(x_{k+1})$,
+    we can conclude
+    \begin{align*}
+        f_k(x_{k+1})
+        &\leq \psi_k(x_k) + r(x) + \langle g_k, x - x_k \rangle + \frac{1}{2\eta_k}\norm{x - x_k}^2
+            - \frac{1}{2\eta_k}\norm{x - x_{k+1}}^2 \\
+        &\phantom{===} + \frac{L + 2\gamma_k\epsilon_k^{-1} + \delta_k^{-1} - \eta_k^{-1}}{2} \norm{x_{k+1} - x_k}^2
+            + \gamma_k \epsilon_k G^2 + \frac{\delta_k}{2} \norm{z_k}^2,
+    \end{align*}
+    for all $x\in\R^n$. By $\mu$-strong convexity of $\psi_k$, we have
+    \begin{align*}
+        \psi_k(x_k) + r(x) + \langle g_k, x - x_k \rangle
+        &=
+        \psi_k(x_k) + r(x) + \langle \nabla \psi_k(x_k), x - x_k \rangle + \langle z_k, x_k - x \rangle \\
+        &\leq
+        \psi_k(x) - \frac{\mu}{2}\norm{x - x_k}^2 + r(x) + \langle z_k, x_k - x \rangle \\
+        &=
+        f_k(x) - \frac{\mu}{2}\norm{x - x_k}^2 + \langle z_k, x_k - x \rangle,
+    \end{align*}
+    for all $x\in\R^n$. Hence,
+    \begin{align}
+        \label{eq:proof:lem:one-step-improvement}
+        f_k(x_{k+1})
+        &\leq f_k(x) + \Big( \frac{1}{2\eta_k} - \frac{\mu}{2} \Big) \norm{x - x_k}^2 + \langle z_k, x_k - x \rangle 
+            - \frac{1}{2\eta_k}\norm{x - x_{k+1}}^2 \notag \\
+        &\phantom{===} + \frac{L + 2\gamma_k\epsilon_k^{-1} + \delta_k^{-1} - \eta_k^{-1}}{2} \norm{x_{k+1} - x_k}^2
+            + \gamma_k \epsilon_k G^2 + \frac{\delta_k}{2} \norm{z_k}^2,
+    \end{align}
+    Fix $\alpha \in (0, 1 - \rho)$ and define $\epsilon_k := 2\alpha^{-1}\eta_k\gamma_k$. Then
+    \[
+        (L + 2\gamma_k\epsilon_k^{-1})\eta_k
+        = \Big( L + 2\gamma_k \frac{\alpha}{2 \eta_k \gamma_k} \Big)\eta_k
+        = L\eta_k + \alpha \leq \rho + \alpha < 1,
+    \]
+    where we used that $\eta_k \leq \rho L^{-1}$, which holds per assumption.
+    Choosing
+    \[
+        \delta_k := \frac{\eta_k}{1 - (L\eta_k + \alpha)} \in (0,\infty)
+    \]
+    therefore yields
+    \[
+        L + 2\gamma_k\epsilon_k^{-1} + \delta_k^{-1} - \eta_k^{-1}
+        = L + \frac{\alpha}{\eta_k} - \frac{1 - (L\eta_k + \alpha)}{\eta_k} - \frac{1}{\eta_k}
+        = 0.
+    \]
+    Hence, we can drop the $\norm{x_{k+1} - x_k}^2$ term from \eqref{eq:proof:lem:one-step-improvement} and get
+    \begin{align*}
+        f_k(x_{k+1})
+        &\leq f_k(x) + \Big(\frac{1}{2\eta_k} - \frac{\mu}{2}\Big)\norm{x - x_k}^2 + \langle z_k, x_k - x \rangle 
+            - \frac{1}{2\eta_k}\norm{x - x_{k+1}}^2 \\
+        &\phantom{===} + 2 \alpha^{-1} \eta_k \gamma_k^2 G^2 + \frac{\eta_k}{2(1 - (L\eta_k + \alpha))}\norm{z_k}^2.
+    \end{align*}
+    Subtracting by $f_k(x)$ and multiplying both sides by $2\eta_k$
+    yields
+    \begin{align*}
+        2\eta_k(f_k(x_{k+1}) - f_k(x))
+        &\leq ( 1 - \mu\eta_k ) \norm{x - x_k}^2 + 2\eta_k\langle z_k, x_k - x \rangle 
+            - \norm{x - x_{k+1}}^2 \\
+        &\phantom{===} + 4 \alpha^{-1} \eta_k^2 \gamma_k^2 G^2 + \frac{\eta_k^2}{1 - (L\eta_k + \alpha)}\norm{z_k}^2.
+    \end{align*}
+    For the specifc choice $\alpha := (1 - \rho)/2$, it holds that $L\eta_k + \alpha \leq \rho + (1 - \rho)/2 = (1 + \rho)/2$.
+    Hence, we arrive at
+    \begin{align}
+        \label{eq:proof:lem:one-step-improvement-2}
+        2\eta_k(f_k(x_{k+1}) - f_k(x))
+        &\leq ( 1 - \mu\eta_k ) \norm{x - x_k}^2 + 2\eta_k\langle z_k, x_k - x \rangle 
+            - \norm{x - x_{k+1}}^2 \notag \\
+        &\phantom{===} +  \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho} + \frac{2\eta_k^2}{1 - \rho}\norm{z_k}^2.
+    \end{align}
+    By properties of conditional expectation and the definition of
+    stochastic gradients, we know that $\E_k \langle z_k, x_k - x \rangle = 0$, and
+    thus, applying conditional expectations to both sides of the above
+    inequality, we obtain
+    \begin{align*}
+        2\eta_k\E_k(f_k(x_{k+1}) - f_k(x))
+        &\leq ( 1 - \mu\eta_k ) \norm{x - x_k}^2 - \E_k\norm{x - x_{k+1}}^2 \\
+        &\phantom{===} + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho} + \frac{2\eta_k^2}{1 - \rho}\E_k\norm{z_k}^2.
+    \end{align*}
+    for all $x\in\R^n$. Since $\E_k\norm{z_k}^2 = \E_k\norm{g_k - \nabla \psi_k(x_k)}^2$ and
+    $\E_k(g_k) = \nabla \psi_k(x_k)$ per our definition of stochastic gradients, it holds that $\E_k\norm{z_k}^2 = \Var_k(g_k)$.
+    We have thus arrived at the desired result.
+\end{proof}
+
+After rearranging the inequality from \cref{lem:one-step-improvement}, setting $x = x^\star$, and
+dropping the $-\mu\eta_k$ term, we get
+\begin{equation}
+    \label{eq:sec:almost-sure-convergence}
+    \E_k\norm{x^\star - x_{k+1}}^2
+    \leq
+    \norm{x^\star - x_k}^2
+    + \frac{2\eta_k^2}{1 - \rho}\Var_k(g_k) + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho}
+    - 2\eta_k\E_k(f_k(x_{k+1}) - f_k(x^\star)).
+\end{equation}
+This is not yet quite in the form needed to apply \cref{lem:robbins-siegmund}. For one,
+we need to bound the noise term $\Var_k(g_k)$. Second, we cannot
+in general guarantee that $\E_k(f_k(x_{k+1}) - f_k(x^\star)) \geq 0$.
+However, as we show in the next lemma, we can find a lower bound that
+involves a nonnegative term plus a small negative term.
+% + \frac{2\eta_k^2}{1 - \rho}\Var_k(g_k) \\
+%         &\phantom{===} + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho}
+\begin{lemma}
+    \label{lem:recursion-for-almost-sure-convergence}
+    Assume that \cref{ass:slater-point,ass:compact-support-without-zero} hold, and
+    let $\eta_k\in(0,\rho L^{-1}]$ for all $k\in\N$ and some $\rho\in(0,1)$. Then the iterates $(x_k)_{k\in\N}$ generated
+    by \cref{alg:seqprox-sgd} with step size schedule $(\eta_k)_{k\in\N}$ satisfy
+    \begin{align*}
+        \E_k\norm{x^\star - x_{k+1}}^2
+        &\leq
+        (1-\mu\eta_k)\norm{x^\star - x_k}^2
+        + \frac{2\eta_k^2}{1 - \rho}\Var_k(g_k) + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho} \\
+        &\phantom{===} + \mathcal{O}(\eta_k\gamma_k\alpha_k)
+        - 2\eta_k\E_k(f_{k}(x_{k+1}) - f_{k}(x_k^\star)),
+    \end{align*}
+    for all $k\in\N$.
+\end{lemma}
+\begin{proof}
+    Let $k\in\N$. From \cref{lem:one-step-improvement}, we have
+    \begin{align*}
+        2\eta_k\E_k(f_k(x_{k+1}) - f_k(x^\star))
+        &\leq
+            (1-\mu\eta_k)\norm{x^\star - x_k}^2
+            - \E_k\norm{x^\star - x_{k+1}}^2
+            + \frac{2\eta_k^2}{1 - \rho}\Var_k(g_k)  \\
+        &\phantom{===} + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho}.
+    \end{align*}
+    Write
+    \begin{align}
+        \label{eq:proof:lem:recursion-for-almost-sure-convergence}
+        f_k(x_{k+1}) - f_k(x^\star)
+        &=
+       (f_k(x_{k+1}) - f_k(x_k^\star)) + (f_k(x_k^\star) - f_k(\proj(x_k^\star))) \\
+        &\phantom{===}+ (f_k(\proj(x_k^\star)) - f_k(x^\star)). \notag
+    \end{align}
+    By definition, it holds that
+    \begin{align*}
+        f_k(\proj(x_k^\star)) - f_k(x^\star)
+        &=
+        f(\proj(x_k^\star)) + \gamma_k \pi_k(\proj(x_k^\star)) - f(x^\star) - \gamma_k \pi_k(x^\star) \\
+        &\geq
+        f(\proj(x_k^\star)) - f(x^\star) - \gamma_k \pi_k(x^\star) \\
+        &\geq
+        - \gamma_k \pi_k(x^\star),
+    \end{align*}
+    where the last step follows from the fact that $x^\star$ minimizes $f$ on $\mathcal{X}$
+    and $\proj(x_k^\star)\in\mathcal{X}$. Further, feasibility implies $\pi_k(x^\star) \leq \alpha_k$.
+    Hence, combining with \eqref{eq:proof:lem:recursion-for-almost-sure-convergence}, we have
+    \[
+        f_k(x_{k+1}) - f_k(x^\star) \geq (f_k(x_{k+1}) - f_k(x_k^\star)) + f_k(x_k^\star) - f_k(\proj(x_k^\star)) - \gamma_k\alpha_k.
+    \]
+    To analyze $f_k(x_k^\star) - f_k(\proj(x_k^\star))$, we first use convexity and Cauchy-Schwarz to get
+    \[
+        f_k(x_k^\star) - f_k(\proj(x_k^\star))
+        \geq \langle \tilde{\nabla} f_k(\proj(x_k^\star)), x_k^\star - \proj(x_k^\star) \rangle
+        \geq -\norm{\tilde{\nabla} f_k(\proj(x_k^\star))} \dist(x_k^\star, \mathcal{X}).
+    \]
+    The sequence $(x_k^\star)_{k\in\N}$ converges to $x^\star$, which implies, by continuity
+    of the projection map, $\lim_{k\to\infty} \proj(x_k^\star) = \proj(x^\star) = x^\star$.
+    In particular, $(\proj(x_k^\star))_{k\in\N}$ is bounded, so by \cref{lem:basic-properties},
+    it follows that $\sup_{k\in\N} \norm{\tilde{\nabla} f_k(\proj(x_k^\star))} \leq c \gamma_k$
+    for some $c\in(0,\infty)$. Hence,
+    \[
+        f_k(x_k^\star) - f_k(\proj(x_k^\star)) \geq -c \gamma_k\, \dist(x_k^\star,\mathcal{X}).
+    \]
+    By \cref{thm:distance-to-feasibility-bound}, it holds that there exist
+    $K\in\N$ and $c^\prime\in(0,\infty)$ such that, for all $k\geq K$, $\dist(x_k^\star,\mathcal{X}) \leq c^\prime \, \alpha_k$.
+    Therefore,
+    \[
+        f_k(x_k^\star) - f_k(\proj(x_k^\star)) \geq -cc^\prime \cdot \gamma_k \alpha_k
+    \]
+    and
+    \begin{align*}
+        f_k(x_{k+1}) - f_k(x^\star)
+        &\geq
+        f_k(x_{k+1}) - f_k(x_k^\star)
+        -cc^\prime\cdot \gamma_k\alpha_k - \gamma_k\alpha_k \\
+        &=
+        f_k(x_{k+1}) - f_k(x_k^\star)
+        -(1 + cc^\prime) \, \gamma_k\alpha_k,
+    \end{align*}
+    for all $k\geq K$.
+    Plugging this into our original estimate, we have
+    % + \frac{2\eta_k^2}{1 - \rho}\Var_k(g_k) \\
+    %         &\phantom{===} + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho}
+    \begin{align*}
+        2\eta_k\big(\E_k(f_k(x_{k+1}) - f_k(x_k^\star))
+        - (1 + cc^\prime)\gamma_k\alpha_k\big)
+        &\leq
+        (1-\mu\eta_k)\norm{x^\star - x_k}^2
+        - \E_k\norm{x^\star - x_{k+1}}^2 \\
+        &\phantom{===} + \frac{2\eta_k^2}{1 - \rho}\Var_k(g_k) + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho},
+    \end{align*}
+    and thus
+    \begin{align*}
+        \E_k\norm{x^\star - x_{k+1}}^2
+        &\leq
+        (1-\mu\eta_k)\norm{x^\star - x_k}^2
+        + \frac{2\eta_k^2}{1 - \rho}\Var_k(g_k) + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho} \\
+        &\phantom{===} + 2(1 + cc^\prime)\,\eta_k\gamma_k\alpha_k
+        - 2\eta_k\E_k(f_k(x_{k+1}) - f_k(x_k^\star)),
+    \end{align*}
+    which directly implies the claim.
+\end{proof}
+Combining the above lemma with \eqref{eq:sec:almost-sure-convergence}, we now have
+\begin{align*}
+    \E_k\norm{x^\star - x_{k+1}}^2
+    &\leq
+    \norm{x^\star - x_k}^2
+    + \frac{2\eta_k^2}{1 - \rho}\Var_k(g_k) + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho}
+    + \mathcal{O}(\eta_k\gamma_k\alpha_k) \\
+    &\phantom{===}- 2\eta_k\E_k(f_k(x_{k+1}) - f_k(x_k^\star)).
+\end{align*}
+The term $2\eta_k\E_k(f_k(x_{k+1}) - f_k(x_k^\star))$ is indeed nonnegative by optimality of $x_k^\star$
+for $f_k$. Assuming that $\sum_{k=1}^\infty \eta_k\gamma_k\alpha_k < \infty$ and
+$\sum_{k=1}^\infty \eta_k^2 \gamma_k^2 < \infty$, we are almost ready
+to apply \cref{lem:robbins-siegmund}.
+The following lemma will give a bound on the gradient noise $\Var_k(g_k)$.
+\begin{lemma}[Bound on gradient noise]
+    \label{lem:bound-on-variance}
+    In the situation of \cref{alg:seqprox-sgd}, there
+    exists a constant $\sigma^2\in(0,\infty)$ such that
+    \[
+        \Var_k(g_k) \leq \frac{2L^2}{\beta_k} \norm{x_k - x^\star}^2 + \frac{1 + \gamma_k^2}{\beta_k} \sigma^2,
+    \]
+    for all $k\in\N$.
+\end{lemma}
+\begin{proof}
+    Let $k\in\N$ and define $\tilde{g}_k := \nabla F_\xi(x_k) + \gamma_k A(\xi)^\top \nabla h_k(A(\xi)x_k - b(\xi))$.
+    We have
+    \begin{align*}
+        \Var_k(g_k)
+        &=
+        \frac{1}{\beta_k} \Var_k(\tilde{g}_k) \\
+        &\leq
+        \frac{1}{\beta_k} \E_k\norm{\tilde{g}_k}^2 \\
+        &\leq
+        \frac{1}{\beta_k} \Big( \norm{\nabla F_\xi(x_k)}^2
+            + \gamma_k^2\, \E_k\norm{A(\xi)^\top \nabla h_k(A(\xi)x_k - b(\xi))}^2 \Big).
+    \end{align*}
+    Using the inequality $(a + b)^2 \leq 2a^2 + 2b^2 \enspace\forall a,b\in\R$, and the (almost sure)
+    $L$-smoothness of $x\mapsto F_\xi(x)$, we have
+    \begin{align*}
+        \norm{\nabla F_\xi(x_k)}^2
+        &=
+        \norm{\nabla F_\xi(x_k) - \nabla F_\xi(x^\star) + \nabla F_\xi(x^\star)}^2 \\
+        &\leq
+        2\Big( \norm{\nabla F_\xi(x_k) - \nabla F_\xi(x^\star)}^2 + \E_k\norm{\nabla F_\xi(x^\star)}^2 \Big) \\
+        &\leq 2 L^2\, \norm{x_k - x^\star}^2 + 2\,\E\norm{\nabla F_\xi(x^\star)}^2,
+    \end{align*}
+    where in the last step we also used that $x_k$ is $\mathcal{F}_k$-measurable and
+    $\xi$ is independent of $\mathcal{F}_k$.
+    By one of our assumptions, we can find a point $x\in\R^n$ such that
+    $\E\norm{F_\xi(x)}^2 < \infty$. Hence, using smoothness and the inequality
+    $(a + b)^2 \leq 2a^2 + 2b^2 \enspace\forall a,b\in\R$ again, there exists a constant
+    $M^2\in(0,\infty)$ such that
+    \begin{align*}
+        \E\norm{\nabla F_\xi(x^\star)}^2
+        &=
+        \E\norm{\nabla F_\xi(x^\star) - \nabla F_\xi(x) + \nabla F_\xi(x)}^2 \\
+        &\leq
+        2L^2\,\norm{x^\star - x}^2 + 2\,\E\norm{F_\xi(x)}^2 \\
+        &\leq
+        \frac{1}{2}M^2.
+    \end{align*}
+    Therefore, combining with the previous inequality, we get the bound
+    \[
+        \norm{\nabla F_\xi(x_k)}^2 \leq 2 L^2\, \norm{x_k - x^\star}^2 + M^2.
+    \]
+    Now, we can use the fact that $\norm{A v}\leq \norm{A}_F \norm{v}$ for any matrix
+    $A$ and vector $v$, to find
+    \[
+        \E_k\norm{A(\xi)^\top \nabla h_k(A(\xi)x_k - b(\xi))}^2
+        \leq
+        \E_k\Big( \norm{A(\xi)}_F^2\norm{\nabla h_k(A(\xi)x_k - b(\xi))}^2 \Big).
+    \]
+    Since, per assumption, it holds that a) the family $(h_k)_{k\in\N}$ has uniformly bounded gradients,
+    and b) $\E\norm{A(\xi)}_F^2 < \infty$,  there exists a constant
+    $\tilde{M}^2\in(0,\infty)$ such that
+    \[
+        \E_k\norm{A(\xi)^\top \nabla h_k(A(\xi)x_k - b(\xi))}^2 \leq \tilde{M}^2.
+    \]
+    Putting everything together, we obtain
+    \[
+        \Var_k(g_k)
+        \leq \frac{1}{\beta_k} \Big( 2 L^2\, \norm{x_k - x^\star}^2 + M^2
+            + \gamma_k^2 \tilde{M}^2 \Big)
+        = \frac{2L^2}{\beta_k} \norm{x_k - x^\star}^2
+            + \frac{1}{\beta_k} (M^2 + \gamma_k^2 \tilde{M}^2).
+    \]
+    Setting $\sigma^2 := \max(M^2, \tilde{M}^2)$ yields the desired result.
+\end{proof}
+
+We are now ready to prove the main theorem of this section.
+\begin{theorem}[Almost sure convergence]
+    \label{thm:almost-sure-convergence}
+    Assume \cref{ass:slater-point,ass:compact-support-without-zero} hold.
+    Let $(x_k)_{k\in\N}$ be a sequence generated by \cref{alg:seqprox-sgd} with
+    parameters $(\eta_k)_{k\in\N}$, $(\gamma_k)_{k\in\N}$, $(h_k)_{k\in\N}$ that satisfiy
+    \begin{enumerate}
+        \item $\sum_{k=1}^\infty \eta_k = \infty$ and there exists $\rho\in(0,1)$ such that $\eta_k \leq \rho L^{-1}$ for all $k\in\N$.
+        \item $\sum_{k=1}^\infty \eta_k\gamma_k\alpha_k < \infty$.
+        \item $\sum_{k=1}^\infty \eta_k^2 \gamma_k^2 < \infty$.
+    \end{enumerate}
+    Then $\norm{x_{k} - x^\star}$ converges almost surely and
+    $\liminf_{k\to\infty} \E\norm{x_{k} - x^\star}^2 = 0$.
+    In particular, $(x_k)_{k\in\N}$ is bounded almost surely.
+\end{theorem}
+\begin{proof}
+    By \cref{lem:recursion-for-almost-sure-convergence} (dropping the $-\mu\eta_k$ term), we have
+    \begin{align*}
+        \E_k\norm{x^\star - x_{k+1}}^2
+        &\leq
+        \norm{x^\star - x_k}^2
+        + \frac{2\eta_k^2}{1 - \rho}\Var_k(g_k) + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho} \\
+        &\phantom{===} + \mathcal{O}(\eta_k\gamma_k\alpha_k)
+        - 2\eta_k\E_k(f_{k}(x_{k+1}) - f_{k}(x_k^\star)),
+    \end{align*}
+    \Cref{lem:bound-on-variance} lets us bound
+    the variance by
+    \[
+        \Var_k(g_k) \leq \frac{2L^2}{\beta_k} \norm{x_k - x^\star}^2 + \frac{1 + \gamma_k^2}{\beta_k} \sigma^2,
+    \]
+    for a constant $M^2\in(0,\infty)$ and all $k\in\N$.
+    Thus, we have
+    \begin{align*}
+        \E_k\norm{x^\star - x_{k+1}}^2
+        &\leq
+        \norm{x^\star - x_k}^2
+        + \frac{2\eta_k^2}{1-\rho}\Big( \frac{2L^2}{\beta_k} \norm{x_k - x^\star}^2 + \frac{1 + \gamma_k^2}{\beta_k} \sigma^2 \Big) \\
+        &\phantom{===} + \mathcal{O}(\eta_k\gamma_k\alpha_k) - 2\eta_k\E_k(f_{k}(x_{k+1}) - f_{k}(x_k^\star))\\
+        &=
+        \Big( 1 + 4L^2(1-\rho)^{-1}\beta_k^{-1}\eta_k^2 \Big)\norm{x^\star - x_k}^2
+        + 2\eta_k^2(1-\rho)^{-1}\frac{1 + \gamma_k^2}{\beta_k} \sigma^2 \\
+        &\phantom{===} + \mathcal{O}(\eta_k\gamma_k\alpha_k) - 2\eta_k\E_k(f_{k}(x_{k+1}) - f_{k}(x_k^\star)),
+    \end{align*}
+    for all $k\in\N$.
+    Define the nonegative sequences $(a_k)_{k\in\N}, (b_k)_{k\in\N}, (c_k)_{k\in\N}$ by
+    \begin{align*}
+        a_k &:= 4L^2(1-\rho)^{-1}\beta_k^{-1}\eta_k^2 \\
+        b_k &:= 2\eta_k^2(1-\rho)^{-1}\frac{1 + \gamma_k^2}{\beta_k} \sigma^2 + \mathcal{O}(\eta_k\gamma_k\alpha_k)\ \\
+        c_k &:= 2\eta_k\E_k(f_{k}(x_{k+1}) - f_{k}(x_k^\star)).
+    \end{align*}
+    Note that $c_k$ is indeed nonnegative, since $x_k^\star$ minimizes $f_k$.
+    The above inequality now takes the form
+    \[
+        \E_k\norm{x^\star - x_{k+1}}^2
+        \leq
+        (1 + a_k)\norm{x^\star - x_k}^2
+        + b_k - c_k.
+    \]
+    Our assumptions imply that $\sum_{k=1}^{\infty} a_k < \infty$ and $\sum_{k=1}^\infty b_k < \infty$,
+    so we can apply
+    \cref{lem:robbins-siegmund}, which implies that with probability one the sequence
+    $\norm{x^\star - x_{k}}^2$ converges and
+    $\sum_{k=1}^\infty \eta_k\E_k(f_{k}(x_{k+1}) - f_{k}(x_k^\star)) < \infty$.
+    By the bounded convergence theorem (\textcolor{red}{TODO: add ref}), it further holds that
+    \begin{align*}
+        \infty > \E\Big( \sum_{k=1}^\infty \eta_k\E_k(f_{k}(x_{k+1}) - f_{k}(x_k^\star)) \Big)
+        &=
+        \sum_{k=1}^\infty \eta_k\E(\E_k(f_{k}(x_{k+1}) - f_{k}(x_k^\star))) \\
+        &=
+        \sum_{k=1}^\infty \eta_k\E(f_{k}(x_{k+1}) - f_{k}(x_k^\star)).
+    \end{align*}
+    Since $\sum_{k=1}^\infty \eta_k = \infty$, it must therefore hold that
+    \[
+        \liminf_{k\to\infty} \E(f_{k}(x_{k+1}) - f_{k}(x_k^\star)) = 0.
+    \]
+    Strong convexity of $f_k$ and optimaliy of $x_k^\star$ for $f_k$ imply
+    \[
+        f_{k}(x_{k+1}) - f_{k}(x_k^\star) \geq \frac{\mu}{2} \norm{x_{k+1} - x_k^\star}^2,
+    \]
+    and thus $\liminf_{k\to\infty} \E\norm{x_{k+1} - x_k^\star}^2 = 0$,
+    which implies that
+    \[
+        \liminf_{k\to\infty} \E\norm{x_{k} - x^\star}^2 = 0,
+    \]
+    since $x_k^\star$ converges to $x^\star$ (\cref{thm:distance-to-feasibility-bound}).
+\end{proof}
+
+
+\section{Convergence rates in expectation}
+
+% \begin{theorem}[Constant step size schedule]
+%     For all $k\in\N_0$, let $\eta_k \equiv \eta \in(0, 1/(2L)]$, $\gamma_k = \mathcal{O}(\log^e(1+k))$ for any $e\in(0, \infty)$,
+%     and $\beta_k := 8L\mu^{-1}(1+\gamma_k^2)$. Then, the iterates $(x_k)_{k\in\N}$ generated
+%     by \cref{alg:seqprox-sgd} with parameters $(\eta_k)_{k\in\N}$, $\gamma_k = \mathcal{O}(\log^e(k))$,
+%     $(\beta_k)_{k\in\N}$, and $(h_k)_{k\in\N}$ such that $\alpha_k = \mathcal{O}(k^{-a})$ for some $a\in(0,\infty)$,
+%     satisfy
+%     \[
+%         \E\norm{x_{k} - x_{k}^\star}^2
+%         \leq ( 1 - \mu\eta / 2 )^k \, \E\norm{x_{0} - x_{0}^\star}^2
+%             + \eta^2 \frac{\mu \sigma^2}{2 L}
+%     \]
+% \end{theorem}
+
+\begin{assumption}
+    \label{ass:step-sizes-and-penalties}
+    The sequence $(h_k)_{k\in\N}$
+    and the
+    parameters $(\eta_k)_{k\in\N}$, $(\gamma_k)_{k\in\N}$ from \cref{alg:seqprox-sgd} satisfiy
+    \begin{enumerate}
+        \item $\sum_{k=1}^\infty \eta_k = \infty$ and there exist constants $\rho\in(0,1)$ and $K\in\N$ such that $\eta_k \leq \rho L^{-1}$ for all $k\in\N, k\geq K$.
+        \item $\sum_{k=1}^\infty \eta_k\gamma_k\alpha_k < \infty$.
+        \item $\sum_{k=1}^\infty \eta_k^2 \gamma_k^2 < \infty$.
+    \end{enumerate}
+\end{assumption}
+
+\begin{lemma}
+    \label{lem:functional-upper-bound}
+    Let \cref{ass:compact-support-without-zero,ass:slater-point,ass:step-sizes-and-penalties} hold.
+    Then there exists a deterministic sequence $(M_k^2)_{k\in\N} \subset \R^n$ with
+    $M_k^2 = \mathcal{O}(\beta_k^{-1}(1 + \gamma_k^2) + \gamma_k^2)$, such that
+    \[
+        2\eta_k\E(f_k(x_{k}) - f_k(x))
+        \leq
+        (1-\mu\eta_k)\E\norm{x - x_k}^2 - \E \norm{x - x_{k+1}}^2 + \eta_k^2 M_k^2,
+    \]
+    for all $k\in\N$ and $x\in\R^n$.
+\end{lemma}
+\begin{proof}
+    Let $k\in\N, k\geq K$. Taking expectations on both sides of the inequality provided by
+    \cref{lem:one-step-improvement}, we get
+    \begin{align*}
+        2\eta_k\E(f_k(x_{k+1}) - f_k(x))
+        &\leq ( 1 - \mu\eta_k ) \E\norm{x - x_k}^2 - \E\norm{x - x_{k+1}}^2 + \frac{2\eta_k^2}{1 - \rho}\E(\Var_k(g_k)) \\
+        &\phantom{===} + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho},
+    \end{align*}
+    for all $x\in\R^n$. Recall that \cref{lem:bound-on-variance} lets us bound the conditional
+    variance $\Var_k(g_k)$ as follows:
+    \[
+        \Var_k(g_k) \leq \frac{2L^2}{\beta_k} \norm{x_k - x^\star}^2 + \frac{1 + \gamma_k^2}{\beta_k}\sigma^2,
+    \]
+    for a constant $\sigma^2\in(0,\infty)$.
+    \Cref{ass:step-sizes-and-penalties} and \cref{thm:almost-sure-convergence} imply that there exists
+    a constant $\tilde{\sigma}^2\in(0, \infty)$ such that $2L^2 \norm{x_k - x^\star}^2 \leq \tilde{\sigma}^2$
+    for all $k\in\N$ (almost surely).  We can assume without loss of generality that $\sigma^2 \leq \tilde{\sigma}^2$,
+    and since $1 + \gamma_k^2 > 1$, we have
+    \[
+        \Var_k(g_k) \leq \frac{1}{\beta_k} \tilde{\sigma}^2 + \frac{1 + \gamma_k^2}{\beta_k}\tilde{\sigma}^2
+        \leq \frac{2(1 + \gamma_k^2)}{\beta_k}\tilde{\sigma}^2,
+    \]
+    almost surely. Therefore, we obtain
+    \[
+        2\eta_k\E(f_k(x_{k+1}) - f_k(x))
+        \leq
+        (1-\mu\eta_k)\E\norm{x - x_k}^2
+        - \E \norm{x - x_{k+1}}^2
+        + \frac{4\eta_k^2 (1 + \gamma_k^2)}{(1-\rho)\beta_k}\tilde{\sigma}^2,
+    \]
+    for all $x\in\R^n$. By convexity of $f_k$ and Cauchy-Schwarz, we have
+    \[
+        f_k(x_{k+1})
+        \geq
+        f_k(x_k) + \langle \tilde{\nabla} f_k(x_k), x_{k+1} - x_k \rangle
+        \geq
+        f_k(x_k) - \norm{\tilde{\nabla} f_k(x_k)} \norm{x_{k+1} - x_k},
+    \]
+    hence
+    \begin{align*}
+        2\eta_k\E(f_k(x_{k}) - f_k(x))
+        &\leq
+        (1-\mu\eta_k)\E\norm{x - x_k}^2 - \E \norm{x - x_{k+1}}^2 + \frac{4\eta_k^2 (1 + \gamma_k^2)}{(1-\rho)\beta_k}\tilde{\sigma}^2 \\
+        &\phantom{===}+ 2\eta_k\E\left( \norm{\tilde{\nabla} f_k(x_k)} \norm{x_{k+1} - x_k} \right).
+    \end{align*}
+    By definition of $x_{k+1}$ as the solution to $\min_{x\in\R^n} \{ r(x) + (2\eta_k)^{-1} \norm{x - (x_k - \eta_k g_k)}^2 \}$,
+    with probability one there exists a subgradient $\tilde{\nabla} r(x_{k+1}) \in \partial r(x_{k+1})$, such that
+    \[
+        \tilde{\nabla}r(x_{k+1}) + \frac{1}{\eta_k} (x_{k+1} - x_k + \eta_k g_k) = 0
+        \iff
+        x_{k+1} - x_k = -\eta_k (\tilde{\nabla}r(x_{k+1}) + g_k)
+    \]
+    Therefore,
+    \[
+        \norm{x_{k+1} - x_k} \leq \eta_k \big( \norm{\tilde{\nabla}r(x_{k+1})} + \norm{g_k} \big) \enspace\text{(a.\,s.)}.
+    \]
+    Again using that $(x_{k})_{k\in\N}$ is bounded almost surely,
+    \cref{lem:basic-properties} implies
+    \[
+        \norm{g_k} = \norm{\nabla \psi_k(x_k)} = \mathcal{O}(\gamma_k),
+        \enspace
+        \sup_{k\in\N} \norm{\tilde{\nabla}r(x_{k})} < \infty,
+        \enspace \text{and} \enspace
+        \sup_{k\in\N} \norm{\tilde{\nabla} f_k(x_k)} = \mathcal{O}(\gamma_k),
+    \]
+    and thus $\norm{\tilde{\nabla} f_k(x_k)} \norm{x_{k+1} - x_k} = \eta_k \mathcal{O}(\gamma_k^2)$ almost surely.
+    It follows that
+    \begin{align*}
+        2\eta_k\E(f_k(x_{k}) - f_k(x))
+        &\leq
+        (1-\mu\eta_k)\E\norm{x - x_k}^2 - \E \norm{x - x_{k+1}}^2 + \frac{4\eta_k^2 (1 + \gamma_k^2)}{(1-\rho)\beta_k}\tilde{\sigma}^2 \\
+        &\phantom{===}+ 2\eta_k^2\mathcal{O}(\gamma_k^2).
+    \end{align*}
+    Therefore, there exists a sequence $(M_k^2)_{k\in\N} \subset \R_{\geq 0}$ such that
+    $M_k^2 = \mathcal{O}(\beta_k^{-1}(1 + \gamma_k^2) + \gamma_k^2)$ and
+    \[
+        2\eta_k\E(f_k(x_{k}) - f_k(x))
+        \leq
+        (1-\mu\eta_k)\E\norm{x - x_k}^2 - \E \norm{x - x_{k+1}}^2 + \eta_k^2 M_k^2,
+    \]
+    for all $x\in\R^n$, as desired.
+\end{proof}
+
+\begin{lemma}
+    \label{lem:valid-parameters}
+    Let $\eta_k := 2/(\mu k)$ for all $k\in\N$, $\eta_0 := 2/\mu$. Then, for any $e\in(0,\infty)$, there exist sequences
+    $(\gamma_k)_{k\in\N_0}$ and
+    $(h_k)_{k\in\N_0}$
+    such that $\gamma_k = \mathcal{O}(\log^{e}(k))$,
+    $\alpha_k = \mathcal{O}(1/k)$
+    and \cref{ass:step-sizes-and-penalties} holds.
+\end{lemma}
+\begin{proof}
+    
+\end{proof}
+
+\begin{lemma}
+    \label{lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)}
+    Let \cref{ass:compact-support-without-zero,ass:slater-point}
+    hold and define $\eta_k := 2/(\mu k)$ for all $k\in\N$, $\eta_0 := 2/\mu$.
+    Then there exists a constant $k_0\in\N$, as well as sequences $(M_k^2)_{k\in\N_0}\subset\R^n$,
+    $(\beta_k)_{k\in\N_0}$, $(\gamma_k)_{k\in\N_0}$, $(h_k)_{k\in\N_0}$
+    such that the iterates $(\bar{x}_k)_{k\in\N}$ generated by \cref{alg:seqprox-sgd}
+    with parameters $(\eta_k)_{k\in\N_0}$, $(\gamma_k)_{k\in\N_0}$, $(\beta_k)_{k\in\N_0}$
+    satisfy
+    \[
+        \E(f(\bar{x}_{K}) - f(x^\star))
+        \leq
+        \frac{S_{0, k_0}}{S_K} \E(f(\bar{x}_{0, k_0}) - f(x^\star)) +
+        \frac{e_{k_0}}{2S_K} + \frac{\sum_{k=k_0}^{K-1} M_k^2}{2S_K} + \frac{\sum_{k=k_0}^{K-1}\eta_k^{-1}\gamma_k\alpha_k}{S_K},
+    \]
+    for all $K\in\N$, where $S_K := \sum_{k=0}^{K-1} \eta_k^{-1}$,
+    $e_{k_0} := \eta_{k_0-1}^{-2} \E\norm{x^\star - x_{k_0}}^2$ and
+    $M_k^2 = \mathcal{O}(\beta_k^{-1}(1 + \gamma_k^2) + \gamma_k^2)$.
+    Furthermore, there exist constants $k_1\in\N$ and $\tau \in (0, \infty)$ such that
+    \[
+        \E(\dist(\bar{x}_K, \mathcal{X}))
+        \leq
+        \frac{S_{0, k_1}}{S_K} \E(\dist(\bar{x}_{0, k_1}))
+            + \frac{\tau^{-1}d_{k_1}}{S_{K}}
+            + \frac{\tau^{-1}\sum_{k=k_1}^{K - 1} \gamma_k^{-1}M_k^2}{S_{K}}
+            + \frac{2\tau^{-1}\sum_{k=k_1}^{K - 1}\eta_k^{-1}\alpha_k}{S_{K}},
+    \]
+    for all $K\in\N$ with $K \geq k_1$, where $d_{k_1} := \gamma_{k_1}^{-1} \eta_{k_1-1}^{-2} \E(\dist(x_{k_1}, \mathcal{X})^2)$.
+\end{lemma}
+
+\begin{proof}
+    Let $k_0\in\N$ be large enough such that $2/(\mu k_0) \leq 1/(2L)$ and fix
+    some $k\in\N$ with $k \geq k_0$.
+    \Cref{lem:valid-parameters} implies that there exist parameters $(\gamma_k)_{k\in\N_0}$ and
+    $(h_k)_{k\in\N_0}$ such that \cref{ass:step-sizes-and-penalties} holds.
+    Thus we can apply \cref{lem:functional-upper-bound}, which implies
+    \[
+        2\eta_k\E(f_k(x_{k}) - f_k(x))
+        \leq
+        (1-\mu\eta_k)\E\norm{x - x_k}^2 - \E \norm{x - x_{k+1}}^2 + \eta_k^2 M_k^2,
+    \]
+    for any $x\in\R^n$.
+    Assume now that $x\in\mathcal{X}$. By a property of $\pi_k$, the fact that
+    $(x_k)_{k\in\N}$ is bounded almost surely (\cref{thm:almost-sure-convergence}), and \cref{lem:lower-bound-on-penalties-by-distance-to-feasibility},
+    we can deduce that there exists $\tau\in(0,\infty)$ such that
+    \begin{align*}
+        f_k(x_{k}) - f_k(x)
+        &= f(x_k) - f(x) + \gamma_k (\pi_k(x_k) - \pi_k(x)) \\
+        &\geq f(x_k) - f(x) + \gamma_k (\tau\dist(x_k,\mathcal{X}) - \alpha_k)
+    \end{align*}
+    with probability one. Hence, we have
+    \begin{align}
+        \label{eq:lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)}
+        2\eta_k \E(f(x_{k}) - f(x))
+        &\leq
+        (1-\mu\eta_k)\E\norm{x - x_k}^2 - \E \norm{x - x_{k+1}}^2
+            + \eta_k^2 M_k^2 + 2\eta_k\gamma_k\alpha_k \notag \\
+            &\phantom{===} - 2\tau \eta_k \gamma_k \E(\dist(x_k, \mathcal{X})),
+    \end{align}
+    for all $x\in\mathcal{X}$.
+    We can now closely follow the proof stategy of lemma 13 in \cite{nedich2023huber} to arrive
+    at our desired result.
+    First, we will prove the inequality for $\E(f(x_k) - f(x^\star))$. Dropping the
+    $-\E(\dist(x_k,\mathcal{X}))$ term from \eqref{eq:lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)},
+    and multiplying both sides by $\eta_k^{-2}$, we get
+    \begin{align*}
+        2\eta_k^{-1} \E(f(x_{k}) - f(x^\star))
+        &\leq
+        \eta_k^{-2}(1-\mu\eta_k)\E\norm{x^\star - x_k}^2 - \eta_k^{-2}\E \norm{x^\star - x_{k+1}}^2 \\
+            &\phantom{===}+ M_k^2 + 2\eta_k^{-1}\gamma_k\alpha_k.
+    \end{align*}
+    For the choice of step size $\eta_k = 2/(\mu k)$, it holds that
+    \[
+        \frac{1 - \mu\eta_k}{\eta_k^2} = \frac{\mu^2 k^2 (1 - 2/k)}{4}
+        = \frac{\mu^2 (k^2 - 2k)}{4} = \frac{\mu^2 ((k - 1)^2 - 1)}{4}
+        \leq \frac{\mu^2 (k - 1)^2}{4}
+        = \eta_{k-1}^{-2}.
+    \]
+    Setting $e_j := \eta_{j-1}^{-2} \E\norm{x^\star - x_j}^2$ for all $j\in\N_0$, we have
+    \[
+        2\eta_k^{-1} \E(f(x_{k}) - f(x^\star))
+        \leq
+        e_k - e_{k+1} + M_k^2 + 2\eta_k^{-1}\gamma_k\alpha_k.  
+    \]
+    Summing both sides over $k = k_0,\dots,K-1$ for $K\in\N$ yields
+    \begin{align*}
+        2\sum_{k=k_0}^{K-1} \eta_k^{-1} \E(f(x_{k}) - f(x^\star))
+        &\leq
+        e_{k_0} - e_{K} + \sum_{k=k_0}^{K-1} M_k^2 + 2\sum_{k=k_0}^{K-1}\eta_k^{-1}\gamma_k\alpha_k \\
+        &\leq
+        e_{k_0} + \sum_{k=k_0}^{K-1} M_k^2 + 2\sum_{k=k_0}^{K-1}\eta_k^{-1}\gamma_k\alpha_k,
+    \end{align*}
+    where we used $e_K \geq 0$ in the second step.
+    We define $S_{t, k} := \sum_{i=t}^{k-1} \eta_i^{-1}$, $S_k := S_{0, k}$,
+    and $\bar{x}_{t, k} := S_{t, k}^{-1} \sum_{i=t}^{k-1} \eta_i^{-1} x_i$ for $t,k\in\N$.
+    Using convexity of $f$, we get
+    \begin{align*}
+        \E(f(\bar{x}_{k_0,K}) - f(x^\star))
+        &\leq
+        S_K^{-1}\sum_{k=k_0}^{K-1} \eta_k^{-1} \E(f(x_{k}) - f(x^\star)) \\
+        &\leq
+        \frac{e_{k_0}}{2S_{k_0, K}} + \frac{\sum_{k=k_0}^{K-1} M_k^2}{2S_{k_0, K}} + \frac{\sum_{k=k_0}^{K-1}\eta_k^{-1}\gamma_k\alpha_k}{S_{k_0, K}},
+    \end{align*}
+    for all $K\in\N$, as desired.
+    Note that 
+    % \[
+    %     S_K = S_{0, k_1} + S_{k_1, K}
+    %     \enspace\Longrightarrow\enspace
+    %     1 = \frac{S_{0, k_1}}{S_K} + \frac{S_{k_1, K}}{S_K},
+    % \]
+    % thus
+    \[
+        \bar{x}_K = \frac{S_{0, k_0}}{S_K} \bar{x}_{0, k_0} + \frac{S_{k_0, K}}{S_K} \bar{x}_{k_0, K}
+    \]
+    and
+    \[
+        \frac{S_{0, k_0}}{S_K} + \frac{S_{k_0, K}}{S_K} = 1,
+    \]
+    hence, using convexity of $f$ again, we have
+    \[
+        \E(f(\bar{x}_K) - f(x^\star)) \leq
+        \frac{S_{0, k_0}}{S_K} \E(f(\bar{x}_{0, k_0}) - f(x^\star))
+        + \frac{S_{k_0, K}}{S_K} \E(f(\bar{x}_{k_0, K}) - f(x^\star)).
+    \]
+    Combining with the latest bound on $\E(f(\bar{x}_{k_0, K}) - f(x^\star))$ yields
+    \[
+        \E(f(\bar{x}_K) - f(x^\star))
+        \leq
+        \frac{S_{0, k_0}}{S_K} \E(f(\bar{x}_{0, k_0}) - f(x^\star))
+        +
+        \frac{e_{k_0}}{2S_{K}} + \frac{\sum_{k=k_0}^{K-1} M_k^2}{2S_{K}} + \frac{\sum_{k=k_0}^{K-1}\eta_k^{-1}\gamma_k\alpha_k}{S_{K}}.
+    \]
+    Next, we will derive the desired bound for $\dist(x_k, \mathcal{X})$.
+    Again fix $k \geq K_0$.
+    For the choice $x := \proj(x_k)$, inequality \eqref{eq:lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)} gives us
+    \begin{align*}
+        2\eta_k\E(f(x_{k}) - f(\proj(x_k)))
+        &\leq
+        (1-\mu\eta_k)\E(\dist(x_k, \mathcal{X})^2) - \E\norm{\proj(x_k) - x_{k+1}}^2 \\
+            &\phantom{===}+ \eta_k^2 M_k^2 + 2\eta_k\gamma_k\alpha_k
+            - 2\tau \eta_k \gamma_k \E(\dist(x_k, \mathcal{X})).
+    \end{align*}
+    Note that $\E\norm{\proj(x_k) - x_{k+1}}^2 \geq \E(\dist(x_{k+1}, \mathcal{X})^2)$,
+    hence rearranging the above yields
+    \begin{align*}
+        \E(\dist(x_{k+1}, \mathcal{X})^2) &\leq
+        (1-\mu\eta_k)\E(\dist(x_k, \mathcal{X})^2) + \eta_k^2 M_k^2 + 2\eta_k\gamma_k\alpha_k \\
+            &\phantom{===} - 2\tau \eta_k \gamma_k \E(\dist(x_k, \mathcal{X})) + 2\eta_k\E(f(\proj(x_k)) - f(x_{k})).
+    \end{align*}
+    Using convexity of $f$, Cauchy-Schwarz, almost sure boundedness of $(x_k)_{k\in\N}$ (\cref{thm:almost-sure-convergence}), and the fact that
+    subgradients of $f$ are bounded on compacta (\cref{lem:basic-properties}), there exists a constant $M\in(0,\infty)$,
+    such that
+    \[
+        f(\proj(x_k)) - f(x_{k}) \leq \langle \tilde{\nabla} f(\proj(x_k)), \proj(x_k) - x_k \rangle
+                                \leq M \dist(x_k, \mathcal{X}).
+    \]
+    Combining with the previous inequality and gathering terms involving $\dist(x_k,\mathcal{X})$,
+    we arrive at
+    \begin{align*}
+        \E(\dist(x_{k+1}, \mathcal{X})^2) &\leq
+        (1-\mu\eta_k)\E(\dist(x_k, \mathcal{X})^2) + \eta_k^2 M_k^2 + 2\eta_k\gamma_k\alpha_k \\
+            &\phantom{===}
+            - 2\eta_k (\tau \gamma_k - M) \E(\dist(x_k, \mathcal{X})).
+    \end{align*}
+    Since $\gamma_k \uparrow \infty$, there exists $k_1\in\N$ such that
+    $\tau_k\gamma_k - M \geq \tau\gamma_k/2$ for all natural numbers $k\geq k_1$. Thus,
+    \begin{align*}
+        \E(\dist(x_{k+1}, \mathcal{X})^2) &\leq
+        (1-\mu\eta_k)\E(\dist(x_k, \mathcal{X})^2) + \eta_k^2 M_k^2 + 2\eta_k\gamma_k\alpha_k \\
+            &\phantom{===}
+            - \tau \eta_k\gamma_k \E(\dist(x_k, \mathcal{X})),
+    \end{align*}
+    for all $k \geq k_1$.
+    Multiplying both sides by $\gamma_k^{-1}\eta_k^{-2}$ yields
+    \begin{align*}
+        \gamma_k^{-1}\eta_k^{-2} \E(\dist(x_{k+1}, \mathcal{X})^2)
+        &\leq
+        \gamma_k^{-1}\eta_k^{-2}(1-\mu\eta_k)\E(\dist(x_k, \mathcal{X})^2) + \gamma_k^{-1} M_k^2 \\
+            &\phantom{===}
+            + 2\eta_k^{-1}\alpha_k - \tau \eta_k^{-1} \E(\dist(x_k, \mathcal{X})),
+    \end{align*}
+    for all $k \geq k_1$.
+    We have already shown that $\eta_k^{-2} (1 - \mu\eta_k) \leq \eta_{k-1}^2$ for all $k\in\N$.
+    Also, since $\gamma_k$ is nondecreasing, we have $\gamma_k^{-1} \geq \gamma_{k+1}^{-1}$ for all $k\in\N$.
+    Combining these two facts, we get
+    \begin{align*}
+        \gamma_{k+1}^{-1}\eta_k^{-2} \E(\dist(x_{k+1}, \mathcal{X})^2)
+        &\leq
+        \gamma_k^{-1}\eta_{k-1}^{-2}\E(\dist(x_k, \mathcal{X})^2) + \gamma_k^{-1} M_k^2 \\
+            &\phantom{===}
+            + 2\eta_k^{-1}\alpha_k - \tau \eta_k^{-1} \E(\dist(x_k, \mathcal{X})),
+    \end{align*}
+    for all $k\geq k_1$.
+    Setting $d_j := \gamma_j^{-1} \eta_{j-1}^{-2} \E(\dist(x_j, \mathcal{X})^2) \, \forall j\in\N$ and rearranging again, we obtain
+    \[
+        \tau \eta_k^{-1} \E(\dist(x_k, \mathcal{X}))
+        \leq
+        d_k - d_{k+1} + \gamma_k^{-1}M_k^2 + 2\eta_k^{-1}\alpha_k,
+    \]
+    for all $k\geq k_1$. Summing over $k=k_1,\dots, K - 1$ for $K\in\N$, we have
+    \begin{align*}
+        \tau \sum_{k=k_1}^{K - 1} \eta_k^{-1} \E(\dist(x_k, \mathcal{X}))
+        &\leq
+        \sum_{k=k_1}^{K - 1} (d_k - d_{k+1}) + \sum_{k=k_1}^{K - 1} \gamma_k^{-1}M_k^2 + 2 \sum_{k=k_1}^{K - 1}\eta_k^{-1}\alpha_k \\
+        &=
+        d_0 - d_K + \sum_{k=k_1}^{K - 1} \gamma_k^{-1}M_k^2 + 2 \sum_{k=k_1}^{K - 1}\eta_k^{-1}\alpha_k \\
+        &\leq
+        d_0 + \sum_{k=k_1}^{K - 1} \gamma_k^{-1}M_k^2 + 2 \sum_{k=k_1}^{K - 1}\eta_k^{-1}\alpha_k,
+    \end{align*}
+    where we used $d_K \geq 0$ in the last step.
+    The distance functional $x\mapsto\dist(x,\mathcal{X})$
+    is convex (\textcolor{red}{TODO: Show this in an example.}), so if we divide both sides of
+    the above inequality by $\tau \cdot S_{k_1, K}$, we obtain
+    \[
+        \E(\dist(\bar{x}_{k_1, K}))
+        \leq
+        \frac{\tau^{-1}d_{k_1}}{S_{k_1,K}}
+            + \frac{\tau^{-1}\sum_{k=k_1}^{K - 1} \gamma_k^{-1}M_k^2}{S_{k_1,K}}
+            + \frac{2\tau^{-1}\sum_{k=k_1}^{K - 1}\eta_k^{-1}\alpha_k}{S_{k_1,K}}.
+    \]
+    To derive a bound for $\E(\dist(\bar{x}_K))$, we proceed similarly as before. We have
+    % \[
+    %     S_K = S_{0, k_1} + S_{k_1, K}
+    %     \enspace\Longrightarrow\enspace
+    %     1 = \frac{S_{0, k_1}}{S_K} + \frac{S_{k_1, K}}{S_K},
+    % \]
+    % thus
+    \[
+        \bar{x}_K = \frac{S_{0, k_1}}{S_K} \bar{x}_{0, k_1} + \frac{S_{k_1, K}}{S_K} \bar{x}_{k_1, K}
+    \]
+    and
+    \[
+        \frac{S_{0, k_1}}{S_K} + \frac{S_{k_1, K}}{S_K} = 1.
+    \]
+    Combining with the latest bound on $\E(\dist(\bar{x}_{k_1, K}))$, we obtain the desired bound
+    \begin{align*}
+        \E(\dist(\bar{x}_{K}))
+        &\leq
+        \frac{S_{0, k_1}}{S_K} \E(\dist(\bar{x}_{0, k_1}))
+            + \frac{S_{k_1, K}}{S_K} \E(\dist(\bar{x}_{k_1, K})) \\
+        &\leq
+        \frac{S_{0, k_1}}{S_K} \E(\dist(\bar{x}_{0, k_1}))
+            + \frac{\tau^{-1}d_{k_1}}{S_{K}}
+            + \frac{\tau^{-1}\sum_{k=k_1}^{K - 1} \gamma_k^{-1}M_k^2}{S_{K}}
+            + \frac{2\tau^{-1}\sum_{k=k_1}^{K - 1}\eta_k^{-1}\alpha_k}{S_{K}}
+    \end{align*}
+    for all $K \geq k_1$.
+    This concludes the proof.
+\end{proof}
+
+\begin{theorem}[Convergence rates in expectation]
+    Let \cref{ass:compact-support-without-zero,ass:slater-point} hold
+    and define $\eta_k := 2/(\mu k)$ for all $k\in\N$, $\eta_0 := 2/\mu$.
+    Then, for any $e\in(0,\infty)$, there exist sequences $(\gamma_k)_{k\in\N_0}$,
+    $(h_k)_{k\in\N_0}$, $(\beta_k)_{k\in\N}$
+    such that the iterates $(\bar{x}_k)_{k\in\N}$
+    generated from \cref{alg:seqprox-sgd} with parameters $(\eta_k)_{k\in\N_{0}}$,
+    $(\gamma_k)_{k\in\N_0}$, $(h_k)_{k\in\N_0}$, $(\beta_k)_{k\in\N}$ satisfy
+    \[
+        \E(| f(\bar{x}_{K}) - f(x^\star) |) = \mathcal{O} ( \log^{2e}(K) / K ).
+    \]
+    Further, it also holds that
+    \[
+        \dist(\bar{x}_{K}, \mathcal{X}) = \mathcal{O} ( \log^{e}(K) / K ).
+    \]
+\end{theorem}
+\begin{proof}
+    \Cref{lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)} gives us an upper bound for $\E(f(\bar{x}_k) - f(x^\star))$.
+    By convexity, we have for all $k\in\N$
+    \begin{align*}
+        f(\bar{x}_k) - f(x^\star) &\geq \langle \tilde{\nabla} f(x^\star), \bar{x}_k - x^\star \rangle \\
+                            &= \langle \tilde{\nabla} f(x^\star), \bar{x}_k - \proj(\bar{x}_k) \rangle
+                                + \langle \tilde{\nabla} f(x^\star), \proj(\bar{x}_k) - x^\star \rangle,
+    \end{align*}
+    for any subgradient $\tilde{\nabla} f(x^\star) \in \partial f(x^\star)$. Optimimality of $x^\star$
+    for $f$ on $\mathcal{X}$ implies that there exists a subgradient
+    $\tilde{\nabla} f(x^\star) \in \partial f(x^\star)$ such that
+    $\langle \tilde{\nabla} f(x^\star), \proj(\bar{x}_k) - x^\star \rangle \geq 0$.
+    Furthermore, \cref{lem:basic-properties} implies that we can bound the subgradients
+    in $\partial f(x^\star)$ by a constant $M\in(0,\infty)$. Combining these facts
+    with the above inequality, and applying Cauchy-Schwarz,
+    we obtain
+    \[
+        f(\bar{x}_k) - f(x^\star) \geq - M \dist(\bar{x}_k),
+    \]
+    for all $k\in\N$. From \cref{lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)}
+    we know that there exists $k_1\in\N$ such that for all $K\in\N$ with $K\geq k_1$,
+    it holds that
+    \[
+        \E(\dist(\bar{x}_K, \mathcal{X}))
+        \leq
+        \frac{S_{0, k_1}}{S_K} \E(\dist(\bar{x}_{0, k_1}))
+            + \frac{\tau^{-1}d_{k_1}}{S_{K}}
+            + \frac{\tau^{-1}\sum_{k=k_1}^{K - 1} \gamma_k^{-1}M_k^2}{S_{K}}
+            + \frac{2\tau^{-1}\sum_{k=k_1}^{K - 1}\eta_k^{-1}\alpha_k}{S_{K}},
+    \]
+    where $S_K := \sum_{k=0}^{K-1} \eta_k^{-1}$ and $M_k^2 = \mathcal{O}(\beta_k^{-1}(1 + \gamma_k^2) + \gamma_k^2)$.
+    Since $\eta_k^{-1} = \mathcal{O}(k)$, it follows that $S_K = \mathcal{O}(K^2)$. Also, since
+    $\alpha_k = \mathcal{O}(k)$, we have $\eta_k^{-1} \alpha_k \leq c$ for some $c\in (0,\infty)$.
+    Further, $\gamma_k^{-1}M_k^2 = \mathcal{O}(\gamma_k)$. Therefore
+    \begin{align*}
+        \E(\dist(\bar{x}_K, \mathcal{X}))
+        &\leq
+        \mathcal{O}(K^{-2})
+            + \mathcal{O}\Big( K^{-2} \sum_{k=1}^{K - 1} \log^e(k) \Big)
+            + \mathcal{O}( K^{-1} ) \\
+        &=
+        \mathcal{O}(K^{-2})
+            + \mathcal{O}( \log^e(K) / K )
+            + \mathcal{O}( K^{-1} )  \\
+        &= \mathcal{O}( \log^e(K) / K ).
+    \end{align*}
+    Therefore,
+    \[
+        f(\bar{x}_k) - f(x^\star) \geq - M \cdot \mathcal{O}( \log^e(K) / K ).
+    \]
+    The upper bound from \cref{lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)} reads
+    \[
+        \E(f(\bar{x}_{K}) - f(x^\star))
+        \leq
+        \frac{S_{0, k_0}}{S_K} \E(f(\bar{x}_{0, k_0}) - f(x^\star)) +
+        \frac{e_{k_0}}{2S_K} + \frac{\sum_{k=k_0}^{K-1} M_k^2}{2S_K} + \frac{\sum_{k=k_0}^{K-1}\eta_k^{-1}\gamma_k\alpha_k}{S_K},
+    \]
+    and since $M_k^2 = \mathcal{O}(\log^{2e} k)$ and $\eta_k^{-1}\gamma_k\alpha_k = \mathcal{O}(\log^{e} k)$,
+    it follows that
+    \begin{align*}
+        \E(f(\bar{x}_{K}) - f(x^\star))
+        &\leq
+        \mathcal{O}(K^{-2})
+        + \mathcal{O} \Big( K^{-2} \sum_{k=1}^{K-1} \log^{2e}(k) \Big)
+        + \mathcal{O} \Big( K^{-2} \sum_{k=1}^{K-1} \log^{e}(k) \Big) \\
+        &=
+        \mathcal{O} ( \log^{2e}(K) / K ).
+    \end{align*}
+    Putting the two bounds together, we obtain
+    \[
+        \E(| f(\bar{x}_{K}) - f(x^\star) |) = \mathcal{O} ( \log^{2e}(K) / K ),
+    \]
+    as desired.
+\end{proof}
+
+\section{High-probability guarantees}
+
+In the previous sections we proved $\mathcal{O}(\log k / k)$ convergence to zero of the expected
+suboptimality, $\E|f(\bar{x}_k) - f(x^\star)|$, and the expected subfeasibility, $\dist(\bar{x}_k, \mathcal{X})$,
+of the sequence $(\bar{x}_{k})_{k\in\N}$ generated by \cref{alg:seqprox-sgd}, under
+suitable choice of parameters $(\eta_k)_{k\in\N_0}$, $(\gamma_k)_{k\in\N_0}$, $(\beta_k)_{k\in\N_0}$,
+and $(h_k)_{k\in\N_0}$.
+We will now turn our attention to establishing \textit{high-probability guarantees}, in contrast
+to guarantees that hold only in expectation. In particular, we will investigate under which
+conditions we can guarantee that an iterate $\bar{x}_k$ is both a) close to the feasible set
+and b) has function value close to the optimal value $f(x^\star)$ with high probability.
+This notion of "closeness with high probability" is formalized in the following definition.
+\begin{definition}[$(\epsilon, \delta)$-solution]
+    Let $\epsilon\in(0,\infty)$ and $\delta\in(0, 1)$.
+    We call a random variable $x\colon\Omega\to\R^n$ an \textbf{$(\epsilon, \delta)$-solution} of \eqref{eq:main-problem-copy},
+    if
+    \[
+        \Prob\Big( \max\big( | f(x) - f(x^\star) |, \dist(x,\mathcal{X}) \big) \geq \epsilon \Big) \leq \delta.
+    \]
+\end{definition}
+In other words, an iterate $x_k$ of \cref{alg:seqprox-sgd} is an $(\epsilon, \delta)$-solution, if we can guarantee that
+$| f(x_k) - f(x^\star) | < \epsilon$ and $\dist(x_k, \mathcal{X}) < \epsilon$ with probability
+greater than $1 - \delta$.
+% One thing to note is that the decision to consider $\pi(x)$
+% instead of $\dist(x, \mathcal{X})$ is purposeful, because
+% this allows $(\epsilon, \delta)$-solutions to exist even
+% if $\mathcal{X} = \emptyset$. On the other hand,
+% if $\mathcal{X} \neq \emptyset$ and $X$ is an $(\epsilon, \delta)$-solution,
+% it follows from \cref{lem:lower-bound-on-penalties-by-distance-to-feasibility}
+% that $\dist(X,\mathcal{X}) < c \cdot \epsilon$ with probability greater than $1 - \delta$
+% for some constant $c\in(0,\infty)$ independent of $\epsilon$.
+We can now state the central questions we aim to answer in this section as follows:
+\begin{enumerate}
+    \item For what choice of parameters can we guarantee that the sequence $(\bar{x}_k)_{k\in\N}$ generated by \cref{alg:seqprox-sgd}
+        reaches an $(\epsilon, \delta)$-solution of \eqref{eq:main-problem-copy} as quickly as possible,
+        for any given choice of $\epsilon$ and $\delta$?
+    \item What is the relatioship between $\epsilon,\delta$, and the number of iterations of \cref{alg:seqprox-sgd}
+        needed to reach an $(\epsilon, \delta)$-solution of \eqref{eq:main-problem-copy}?
+\end{enumerate}
+To resolve these questions, we will first need a more general version of \cref{lem:one-step-improvement}, which
+is established in the next lemma.
+We will then proceed similarly to how we did in the previous section,
+though we will need to carry around an extra term throughout the calculations.
+\begin{lemma}[One-step improvement II]
+    Let $\rho\in(0,1)$ and $\eta_k\in(0, \rho L^{-1}]$ for all $k\in\N_0$. Then
+    the iterates $(x_k)_{k\in\N}$ generated by \cref{alg:seqprox-sgd} with step size
+    schedule $(\eta_k)_{k\in\N_0}$ satisfy
+    \begin{align*}
+        2\eta_k(f_k(x_{k+1}) - f_k(x))
+        &\leq ( 1 - \mu\eta_k ) \norm{x - x_k}^2 + 2\eta_k\langle z_k, x_k - x \rangle 
+            - \norm{x - x_{k+1}}^2 \\
+        &\phantom{===} +  \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho} + \frac{2\eta_k^2}{1 - \rho}\norm{z_k}^2
+    \end{align*}
+    for all $k\in\N$.
+\end{lemma}
+\begin{proof}
+    This is just inequality \eqref{eq:proof:lem:one-step-improvement-2}. Since we
+    make the same assumptions in this lemma as in \cref{lem:one-step-improvement},
+    we can simply follow the exact same steps until we arrive at the desired result.
+\end{proof}
+\begin{lemma}
+    Let \cref{ass:step-sizes-and-penalties} hold.
+    For all $k\in\N$, it holds that
+    \[
+        \norm{z_k}^2 \leq 8\hat{L}^2 + 8\gamma_k^2N^2G^2,
+    \]
+    with probability one, where $\hat{L}, G, N\in(0,\infty)$.
+\end{lemma}
+\begin{proof}
+    Using the inequality $(a + b + c + d)^2 \leq 4 (a^2 + b^2 + c^2 + d^2)$ $\forall a,b,c,d\in\R$, we have
+    \begin{align*}
+        \norm{z_k}^2
+        &= \norm{g_k - \nabla \psi_k(x_k)}^2 \\
+        &= \norm{\nabla F_{\xi_k}(x_k) + \gamma_k A(\xi_k)^\top \nabla h_k(A(\xi_k) x_k - b(\xi_k))
+            + \nabla \E(F_{\xi_k}(x_k)) + \gamma_k \nabla \pi_k(x_k)}^2 \\
+        &\leq 4 \big( \norm{\nabla F_{\xi_k}(x_k)}^2 + \gamma_k^2 \norm{A(\xi_k)}_F^2\norm{\nabla h_k(A(\xi_k) x_k - b(\xi_k))}^2 \\
+            &\phantom{===}+ \norm{\nabla \E(F_{\xi_k}(x_k))}^2 + \gamma_k^2 \norm{\nabla \pi_k(x_k)}^2 \big)
+    \end{align*}
+    By almost sure $L$-smoothness of $x\mapsto F_\xi(x)$ and
+    $x\mapsto \E(F_\xi(x))$ (\cref{ass:basic-assumptions}),
+    as well as the fact that $(x_k)_{k\in\N}$ is almost surely bounded (\cref{thm:almost-sure-convergence}),
+    there exists a constant $\hat{L}\in(0,\infty)$ such that
+    \[
+        \norm{\nabla F_{\xi_k}(x_k)} \leq \hat{L}
+        \enspace
+        \text{and}
+        \enspace
+        \norm{\nabla \E(F_{\xi_k}(x_k))} \leq \hat{L}.
+    \]
+    Therefore,
+    \[
+        \norm{\nabla F_{\xi_k}(x_k) + \gamma_k A(\xi_k)^\top \nabla h_k(A(\xi_k) x_k - b(\xi_k))}
+        \leq
+        \hat{L} + \gamma_k N G.
+    \]
+    Further $\norm{A(\xi)}_F \leq N$ a.\,s. (\cref{ass:basic-assumptions}), and
+    \[
+        \sup_{k\in\N}\sup_{x\in\R^m} \norm{\nabla h_k(x)} \leq G
+        \enspace
+        \text{and}
+        \enspace
+        \sup_{k\in\N}\sup_{x\in\R^n} \norm{\nabla \pi_k(x)} \leq \E\norm{A(\xi)}_F G
+    \]
+    for a constant $G\in(0,\infty)$ (\cref{lem:basic-properties}).
+    We thus obtain
+    \[
+        \norm{z_k}^2
+        \leq
+        4(2 \hat{L}^2 + 2\gamma_k^2N^2G^2) = 8\hat{L}^2 + 8\gamma_k^2N^2G^2,
+    \]
+    as desired.
+\end{proof}
+
+\section{Infeasible problems}
+
+As we have seen in the SVM example (\textcolor{red}{TODO}), some problems
+of interest may not be feasible. Yet, our methods can still be applied in those cases.
+The question is then: What do the iterates converge to, if anything?
+\begin{definition}
+    Let $\delta \in [0,1]$. A point $x\in\R^n$ is called \textbf{$\delta$-feasible}, if
+    \[
+        \Prob(A(\xi)x - b(\xi) > 0) \leq \delta. 
+    \]
+    The \textbf{$\delta$-set}, denoted $\mathcal{X}_\delta$, is the set of all $\delta$-feasible points.
+    A point $x\in\R^n$ is called \textbf{maximally feasible}, if
+    there exists $\delta\in[0,1]$ such that $(x, \delta)$ solves
+    \[
+        \min_{(x, \delta)\in\R^n\times[0,1]} \delta \quad \text{s.\,t.} \enspace x\in \mathcal{X}_\delta.
+    \]
+\end{definition}
+\noindent
+\textbf{Conjecture:} Consider the following two statements:
+\begin{enumerate}
+    \item For any $\delta\in(0,1]$, the sequence of iterates $(x_k)_{k\in\N}$
+    is eventually contained in $\mathcal{X}_\delta$ in probability.
+    \item The sequence of iterates $(x_k)_{k\in\N}$ converges to a maximally feasible point in probability.
+\end{enumerate}
+At least one of these two statements must hold, regardless of whether \eqref{eq:main-problem-copy}
+is feasible or not. Both statements hold iff. problem \eqref{eq:main-problem-copy} is feasible.
+%\section{Exponential moving averages}
+
+
+% \section{A general consistency result}
+
+% In this section, we want to analyze general conditions that
+% ensure $\lim_{k\to\infty} x_k^\star = x^\star$, which we refer
+% to as consistency of the sequence $(x_k^\star)_{k\in\N}$.
+% This will help us in two ways: First, it gives a general
+% guide on what constitutes reasonable sequences $(\pi_k)_{k\in\N}$.
+% Second, in subsequent analysis, it will be highly useful
+% to have condtions that ensure consistency, because this
+% will allow us to use boundedness of the sequence $(x_k^\star)_{k\in\N}$
+% in our analysis.
+% The precise result that we will prove in this section is the following.
+% \begin{theorem}
+%     In problem \eqref{eq:main-problem}, assume that the following hold:
+%     \begin{enumerate}
+%         \item There exists $\mu\in(0,\infty)$ such that
+%             $f$ is $\mu$-strongly convex;
+%         \item The sequence $(\gamma_k)_{k\in\N}$
+%             is positive and unbounded;
+%         \item There exists
+%             at least one feasible point;
+%         \item $(\pi_k)_{k\in\N}$ is a sequence of
+%             nonnegative convex functions,
+%             such that $\gamma_{k+1}\,\pi^{k+1}(x) \geq \gamma_{k}\,\pi^{k}(x)$
+%             for all $x\in\R^d$ and $k\in\N$ (\textcolor{red}{TODO: NOT NEEDED ACTUALLY, assume
+%             instead existence of a sequence $c_k$ such that $\pi_k(x) \leq c_k$ for all feasible $x$,
+%             and $\gamma_k c_k \to 0$}),
+%             and $\lim_{k\to\infty} \gamma_k \pi_k(x) = 0$ for all feasible $x\in\R^d$. Moreover, we assume the existence
+%             of a continuous function $\pi^\infty\colon\R^d\to [0, \infty)$
+%             such that $\pi^\infty \leq \pi_k$ for all $k\in\N$
+%             and $\pi^\infty(x) = 0$ if and only if $x$ is feasible for \eqref{eq:new-model-problem}.
+%     \end{enumerate}
+%     Then, we have $\lim_{k\to\infty} x^\star_k = x^\star$ and
+%     $\lim_{k\to\infty} f^k(x^\star_k) = f(x^\star)$.
+% \end{theorem}
+
+% \begin{lemma}
+%     \label{lem:radially-unbounded-proper-cont-then-attains-minimum}
+%     Let $h\colon \R^d \to \R$ be a coercive and continuous function, and let $X \subset \R^d$ be nonempty
+%     and closed. Then $h$ attains a minimum over $X$, i.\,e.
+%     there exists $x^\star\in X$ such that $h(x^\star) = \inf_{x\in X} h(x)$.
+% \end{lemma}
+% \begin{proof}
+%     Let $x_0\in X$. Since $h$ is coercive, there exists $r > 0$
+%     such that $h(x) \geq h(x_0)$ for all $x\in\R^d$ with $|\!|x|\!| > r$,
+%     therefore any minimum of $h$ -- if it exists -- must be contained in the closed ball of
+%     radius $r$ around $0$, which we denote by
+%     $B_r$. In particular, for $C := X \cap B_r$ we have
+%     \[
+%         \inf_{x\in X} h(x) = \inf_{x\in C} h(x).
+%     \]
+%     By continuity of $h$, its domain must be a closed set, which implies that $C$ is compact.
+%     Assume now that $h$ does not attain a minimum on $C$.
+%     Then there must exist a sequence $(x_k)_{k\in\N} \subset C$
+%     such that $\lim_{k\to\infty} h(x_k) = \inf_{x\in C} h(x)$.
+%     Continuous functions map compact sets to compact sets,
+%     hence $\inf_{x\in C} h(x) \in h(C)$ and thus there must exist some
+%     $x^\star\in C$ such that $h(x^\star) = \inf_{x\in C} h(x)$.
+% \end{proof}
+% \begin{lemma}
+%     \label{lem:strongly-convex-implies-coercive}
+%     Let $h\colon\R^d\to\R$ be strongly convex and differentiable. Then $h$ is coercive.
+% \end{lemma}
+% \begin{proof}
+%     Let $x^\star$ be the minimizer of $h$ (\cref{prop:strongly-convex-implies-unique-minimizer}).
+%     By \cref{prop:strongly-convex-subdifferentiable-bound}, we have
+%     \[
+%         h(x) \geq h(x^\star) + \frac{\mu}{2}|\!|x-x^\star|\!|^2
+%     \]
+%     for all $x\in\R^d$ and some $\mu\in (0, \infty)$. Letting $|\!|x|\!|\to\infty$, we see that $h(x) \to \infty$.
+% \end{proof}
+% \begin{lemma}
+%     \label{lem:radially-unbounded-f-and-f(x^n)-bounded-implies-x^n-bounded}
+%     Let $h\colon \R^d \to \R$ be a coercive function
+%     If $\{\, h(u_k) \mid k\in\N \,\}$
+%     is bounded for some sequence
+%     $(u_k)_{k\in\N} \subset \R^d$, then $(u_k)_{k\in\N}$ must also be bounded.
+% \end{lemma}
+% \begin{proof}
+%     Assume $(u_k)_{k\in\N}$ is not bounded. Then there must exist some subsequence $(u_{k_r})_{r\in\N}$
+%     such that $|\!|u_{k_r}|\!| \to \infty$ for $r\to\infty$. By coercivity, this would
+%     imply that $\lim_{k\to\infty} h(u_k) = \infty$, contradicting our assumption
+%     that $\{\, h(u_k) \mid k\in\N \,\}$ is bounded. Hence, $(u_{k})_{k\in\N}$ must be bounded.
+% \end{proof}
+% \begin{lemma}
+%     \label{lem:if-every-subsequence-contains-convergent-subsequence-then-sequence-converges}
+%     Let $U := \{\, u_k \mid k\in\N \,\}$ be a subset of $\R^d$.
+%     Suppose that any subsequence of $U$ contains a subsequence
+%     that converges to $u\in\R^d$.
+%     Then $u_k \to u$ for $k\to\infty$.
+% \end{lemma}
+% \begin{proof}
+%     Assume that $u_k \not\to u$.
+%     Then there must exist some $\epsilon > 0$ and a sequence of natural numbers $k_1 < k_2 < \dots$ such that
+%     \begin{equation}
+%         \label{proof:lem:if-every-subsequence-contains-convergent-subsequence-then-sequence-converges:ineq}
+%         |\!|u_{k_r} - u|\!| \geq \epsilon
+%     \end{equation}
+%     for all $r\in\N$. However, as a subsequence of $U$, the sequence
+%     $(u_{k_r})_{r\in\N}$
+%     must simultanously contain a subsequence that converges to $u$, which contradicts
+%     \eqref{proof:lem:if-every-subsequence-contains-convergent-subsequence-then-sequence-converges:ineq}.
+%     Thus, our assumption $u_k \not\to u$ must be false.
+% \end{proof}

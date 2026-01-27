@@ -1,8 +1,8 @@
-PWD /Users/aml/uni/thesis
+PWD /Users/aml/uni/thesis/thesis
 INPUT /usr/local/texlive/2025/texmf.cnf
 INPUT /usr/local/texlive/2025/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT /Users/aml/uni/thesis/thesis.tex
+INPUT /Users/aml/uni/thesis/thesis/thesis.tex
 OUTPUT thesis.log
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/koma-script/scrreprt.cls
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/koma-script/scrreprt.cls
