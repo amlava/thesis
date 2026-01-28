@@ -17,7 +17,7 @@ as well as the expected value mapping,
 are defined.
 We denote the feasible set for \eqref{eq:main-problem-copy} as
 \[
-    \mathcal{X} := \{\, x\in\R^n \mid A(\xi)x - b(\xi) \leq 0 \enspace \textnormal{a.\,s.} \,\}.
+    \mathcal{X} := \{\, x\in\dom(f) \mid A(\xi)x - b(\xi) \leq 0 \enspace \textnormal{a.\,s.} \,\}.
 \]
 \begin{assumption}
     \label{ass:basic-assumptions}
@@ -27,12 +27,7 @@ We denote the feasible set for \eqref{eq:main-problem-copy} as
             and there exists a point $x\in\R^n$ such that $\E\norm{\nabla F_\xi(x)}^2 < \infty$.
         Further, the expectation $x\mapsto \E(F_\xi(x))$ is $\mu$-strongly convex for some
         $\mu\in(0, \infty)$.
-        \item The regularizer $r$ is convex and subdifferentiable with bounded subdifferential on compacta.
-            More precisely, for any compact set $C\subset\R^n$, it holds that
-            \[
-                \sup_{x\in C}\sup_{\tilde{\nabla}r(x)\in\partial r(x)} \norm{\tilde{\nabla}r(x)} < \infty.
-            \]
-            \textcolor{red}{TODO: This is not actually needed. Closed, proper, convex (on the domain) are enough.}
+        \item The function $r$ is proper, convex, and locally Lipschitz continuous.
         \item The matrix-valued map $A\colon\R^p\to\R^{m\times n}$, and the vector valued
             map $b\colon\R^p\to\R^m$, are both (Borel-)measurable.
         \item The random matrix $A(\xi)$ has bounded norm Frobenius norm, $\norm{A(\xi)}_F < \infty$, almost surely. \textcolor{red}{TODO: Remove this once you fixed the definition of $h_k$.}
@@ -76,23 +71,20 @@ by the following lemma.
     \label{lem:basic-properties}
     \Cref{ass:basic-assumptions} implies the following:
     \begin{enumerate}
-        \item The objective $f$ of \eqref{eq:main-problem-copy} is $\mu$-strongly convex and subdifferentiable. Further,
-            the subgradients of $f$ are bounded on compacta: For any compact set $C\in\R^n$, it holds that
-            \[
-                \sup_{x\in C}\sup_{\tilde{\nabla}f(x)\in\partial f(x)} \norm{\tilde{\nabla} f(x)} < \infty.
-            \]
-        \item The objectives $(f_k)_{k\in\N}$ of \eqref{eq:main-problem-penalized} are $\mu$-strongly convex
-            and subdifferentiable. Further, for any compact set $C\in\R^n$, it holds that
-            \[
-                \sup_{x\in C} \sup_{\tilde{\nabla}f_k(x)\in\partial f_k(x)} \norm{\tilde{\nabla} f_k(x)} = \mathcal{O}(\gamma_k),
-            \]
-            for all $k\in\N$.
+        \item The objective $f$ of \eqref{eq:main-problem-copy} is $\mu$-strongly convex, locally
+            Lipschitz continuous, and subdifferentiable.
+        \item The objectives $(f_k)_{k\in\N}$ of \eqref{eq:main-problem-penalized} are $\mu$-strongly convex, locally
+            Lipschitz continuous, and subdifferentiable.
         \item The functions $(\psi_k)_{k\in\N}$ are $\mu$-strongly convex and
-            $L_k$-smooth, where $L_k := L + \gamma_kL_{h_k}$. Further,
-            for any compact set $C\subset\R^n$, it holds that
-            \[
-                \sup_{x\in C} \norm{\nabla \psi_k(x)} = \mathcal{O}(\gamma_k).
-            \]
+            $L_k$-smooth, where $L_k := L + \gamma_kL_{h_k}$.
+            (\textcolor{red}{TODO: Remove smoothness when the assumption on $h_k$ is dropped.})
+        \item Let $B\subset\R^n$ be a bounded subset. Then, for all $x\in B,
+        \gamma\in[0,\infty), k\in\N$, the stochastic gradients
+        \[
+            g(x) := \nabla F_\xi(x) + \gamma \nabla h_k(A(\xi)x - b(\xi))
+        \]
+        satisfy $\sup_{x\in B} g(x) = \mathcal{O}(\gamma)$ almost surely.
+        (\textcolor{red}{TODO: Maybe not needed to mention this particular subgradinet, since we actually only care about $\E||g_k||$.})
         \item The gradients of $(\pi_k)_{k\in\N}$ are uniformly bounded: There exists $G\in(0,\infty)$ such that
             \[
                 \sup_{k\in\N} \sup_{x\in\R^n} \norm{\nabla \pi_k(x)} \leq G.
@@ -378,6 +370,8 @@ We will now formulate and prove the lemma.
         \leq f_k(x^\star) - f_k(x_k^\star)
         = f(x^\star) - f(x_k^\star) + \gamma_k\pi_k(x^\star) - \gamma_k\pi_k(x_k^\star).
     \end{equation}
+    For the rest of this proof, all subgradients of $f$ will refer to the
+    minimum-norm subgradient.
     We can write
     \begin{align*}
         f(x^\star) - f(x_k^\star) &= f(x^\star) - f(\proj(x_k^\star)) + f(\proj(x_k^\star)) - f(x_k^\star) \\
@@ -406,14 +400,12 @@ We will now formulate and prove the lemma.
     where $f_\text{min}$ is the minimum value of $f$, which exists by strong convexity.
     Noting that $\lim_{k\to\infty} \gamma_k\alpha_k = 0$ per one of our assumptions, it follows
     that $(x_k^\star)_{k\in\N}$ must be a bounded sequence.
-    It follows that $(\proj(x_k^\star))_{k\in\N}$ is bounded as well (continuous functions map compact sets to compact sets),
-    and therefore there exists a constant $M\in(0,\infty)$ such that $M = \sup_{k\in\N} \norm{\tilde{\nabla} f(\proj(x_k^\star))}$.
     Hence, by
-    convexity of $f$ and Cauchy-Schwarz,
+    local Lipschitz continuity of $f$ (\cref{lem:basic-properties}) and Cauchy-Schwarz, we have
     \[
-        f(\proj(x_k^\star)) - f(x_k^\star) \leq \langle \tilde{\nabla} f(\proj(x_k^\star)), \proj(x_k^\star) - x_k^\star \rangle
-                                    \leq M \dist(x_k^\star).
+        f(\proj(x_k^\star)) - f(x_k^\star) \leq M \dist(x_k^\star, \mathcal{X}),
     \]
+    for some constant $M\in[0,\infty)$
     We now obain
     \[
         f(x^\star) - f(x_k^\star) \leq -\frac{\mu}{2} |\!|x^\star - \proj(x_k^\star)|\!|^2 + M \dist(x_k^\star, \mathcal{X}).
@@ -811,6 +803,8 @@ involves a nonnegative term plus a small negative term.
     \[
         f_k(x_{k+1}) - f_k(x^\star) \geq (f_k(x_{k+1}) - f_k(x_k^\star)) + f_k(x_k^\star) - f_k(\proj(x_k^\star)) - \gamma_k\alpha_k.
     \]
+    For the next steps, we let $\tilde{\nabla} f(x)$ denote the minimum-norm subgradient
+    in $\partial f(x)$, for all $x\in\dom(f)$.
     To analyze $f_k(x_k^\star) - f_k(\proj(x_k^\star))$, we first use convexity and Cauchy-Schwarz to get
     \[
         f_k(x_k^\star) - f_k(\proj(x_k^\star))
@@ -819,27 +813,28 @@ involves a nonnegative term plus a small negative term.
     \]
     The sequence $(x_k^\star)_{k\in\N}$ converges to $x^\star$, which implies, by continuity
     of the projection map, $\lim_{k\to\infty} \proj(x_k^\star) = \proj(x^\star) = x^\star$.
-    In particular, $(\proj(x_k^\star))_{k\in\N}$ is bounded, so by \cref{lem:basic-properties},
-    it follows that $\sup_{k\in\N} \norm{\tilde{\nabla} f_k(\proj(x_k^\star))} \leq c \gamma_k$
-    for some $c\in(0,\infty)$. Hence,
+    In particular, $(\proj(x_k^\star))_{k\in\N}$ is bounded, so \cref{lem:basic-properties} implies
+    that there exists $K_1\in\N$ such that $\sup_{k\in\N} \norm{\tilde{\nabla} f_k(\proj(x_k^\star))}
+    \leq c \gamma_k$ for some $c_1\in(0,\infty)$ and all $k\geq K_1$. Hence,
     \[
-        f_k(x_k^\star) - f_k(\proj(x_k^\star)) \geq -c \gamma_k\, \dist(x_k^\star,\mathcal{X}).
+        f_k(x_k^\star) - f_k(\proj(x_k^\star)) \geq -c_1 \gamma_k\, \dist(x_k^\star,\mathcal{X}),
     \]
+    for all $k\geq K_1$.
     By \cref{thm:distance-to-feasibility-bound}, it holds that there exist
-    $K\in\N$ and $c^\prime\in(0,\infty)$ such that, for all $k\geq K$, $\dist(x_k^\star,\mathcal{X}) \leq c^\prime \, \alpha_k$.
-    Therefore,
+    $K_2\in\N$ and $c_2\in(0,\infty)$ such that, for all $k\geq K_2$, $\dist(x_k^\star,\mathcal{X}) \leq c_2 \, \alpha_k$.
+    Setting $K := \max(K_1, K_2)$, it therefore holds that
     \[
-        f_k(x_k^\star) - f_k(\proj(x_k^\star)) \geq -cc^\prime \cdot \gamma_k \alpha_k
+        f_k(x_k^\star) - f_k(\proj(x_k^\star)) \geq -c_1c_2 \cdot \gamma_k \alpha_k
     \]
     and
     \begin{align*}
         f_k(x_{k+1}) - f_k(x^\star)
         &\geq
         f_k(x_{k+1}) - f_k(x_k^\star)
-        -cc^\prime\cdot \gamma_k\alpha_k - \gamma_k\alpha_k \\
+        -c_1c_2\cdot \gamma_k\alpha_k - \gamma_k\alpha_k \\
         &=
         f_k(x_{k+1}) - f_k(x_k^\star)
-        -(1 + cc^\prime) \, \gamma_k\alpha_k,
+        -(1 + c_1c_2) \, \gamma_k\alpha_k,
     \end{align*}
     for all $k\geq K$.
     Plugging this into our original estimate, we have
@@ -847,7 +842,7 @@ involves a nonnegative term plus a small negative term.
     %         &\phantom{===} + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho}
     \begin{align*}
         2\eta_k\big(\E_k(f_k(x_{k+1}) - f_k(x_k^\star))
-        - (1 + cc^\prime)\gamma_k\alpha_k\big)
+        - (1 + c_1c_2)\gamma_k\alpha_k\big)
         &\leq
         (1-\mu\eta_k)\norm{x^\star - x_k}^2
         - \E_k\norm{x^\star - x_{k+1}}^2 \\
@@ -859,10 +854,10 @@ involves a nonnegative term plus a small negative term.
         &\leq
         (1-\mu\eta_k)\norm{x^\star - x_k}^2
         + \frac{2\eta_k^2}{1 - \rho}\Var_k(g_k) + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho} \\
-        &\phantom{===} + 2(1 + cc^\prime)\,\eta_k\gamma_k\alpha_k
+        &\phantom{===} + 2(1 + c_1c_2)\,\eta_k\gamma_k\alpha_k
         - 2\eta_k\E_k(f_k(x_{k+1}) - f_k(x_k^\star)),
     \end{align*}
-    which directly implies the claim.
+    for all $k\geq K$, which directly implies the claim.
 \end{proof}
 Combining the above lemma with \eqref{eq:sec:almost-sure-convergence}, we now have
 \begin{align*}
@@ -1110,7 +1105,8 @@ We are now ready to prove the main theorem of this section.
         - \E \norm{x - x_{k+1}}^2
         + \frac{4\eta_k^2 (1 + \gamma_k^2)}{(1-\rho)\beta_k}\tilde{\sigma}^2,
     \]
-    for all $x\in\R^n$. By convexity of $f_k$ and Cauchy-Schwarz, we have
+    for all $x\in\R^n$. Let $\tilde{\nabla} f_k(x_k)$ denote the minimum-norm subgradient
+    of $f_k$ at $x_k$. By convexity of $f_k$ and Cauchy-Schwarz, we have
     \[
         f_k(x_{k+1})
         \geq
@@ -1125,27 +1121,40 @@ We are now ready to prove the main theorem of this section.
         (1-\mu\eta_k)\E\norm{x - x_k}^2 - \E \norm{x - x_{k+1}}^2 + \frac{4\eta_k^2 (1 + \gamma_k^2)}{(1-\rho)\beta_k}\tilde{\sigma}^2 \\
         &\phantom{===}+ 2\eta_k\E\left( \norm{\tilde{\nabla} f_k(x_k)} \norm{x_{k+1} - x_k} \right).
     \end{align*}
-    By definition of $x_{k+1}$ as the solution to $\min_{x\in\R^n} \{ r(x) + (2\eta_k)^{-1} \norm{x - (x_k - \eta_k g_k)}^2 \}$,
-    with probability one there exists a subgradient $\tilde{\nabla} r(x_{k+1}) \in \partial r(x_{k+1})$, such that
+    Since $(x_k)_{k\in\N}$ is bounded almost surely (\cref{thm:almost-sure-convergence}),
+    we know from \cref{lem:basic-properties} that $\norm{\tilde{\nabla} f_k(x_k)} = \mathcal{O}(\gamma_k)$.
+    We will now analyze $\norm{x_{k+1} - x_k}$. Let $y_k := \prox_{\eta_k r} (x_k)$. Then, using
+    the triangle inequality and the nonexpansiveness property of the proximal operator (\textcolor{red}{TODO}),
+    we have
+    \begin{align*}
+        \norm{x_{k+1} - x_k} &= \norm{x_{k+1} - y_k + y_k - x_k} \\
+                            &= \norm{\prox(x_k - \eta_k g_k) - \prox(x_k)} + \norm{y_k - x_k} \\
+                            &\leq \eta_k \norm{g_k} + \norm{y_k - x_k}.
+    \end{align*}
+    By \cref{lem:basic-properties}, for the stochastic gradient it holds that $\norm{g_k} = \mathcal{O}(\gamma_k)$
+    almost surely. For the second term, we use the definition
+    of $y_k$ as the solution to $\min_{x\in\R^n} \{ r(x) + (2\eta_k)^{-1} \norm{x - x_k}^2 \}$.
+    By the first-order optimality condition, there exists a subgradient $\tilde{\nabla} r(y_k) \in \partial r(y_k)$ such that
     \[
-        \tilde{\nabla}r(x_{k+1}) + \frac{1}{\eta_k} (x_{k+1} - x_k + \eta_k g_k) = 0
-        \iff
-        x_{k+1} - x_k = -\eta_k (\tilde{\nabla}r(x_{k+1}) + g_k)
+        \tilde{\nabla} r(y_k) + \frac{y_k - x_k}{\eta_k} = 0 \enspace\iff\enspace \frac{x_k - y_k}{\eta_k} \in \partial r(y_k).
     \]
-    Therefore,
+    Since $x_k$ is in the domain of $r$ \textcolor{red}{(TODO)}, we can now use the above, together with convexity, to get
     \[
-        \norm{x_{k+1} - x_k} \leq \eta_k \big( \norm{\tilde{\nabla}r(x_{k+1})} + \norm{g_k} \big) \enspace\text{(a.\,s.)}.
+        r(x_k) - r(y_k) \geq \langle \eta_k^{-1} (x_k - y_k), x_k - y_k \rangle = \eta_k^{-1} \norm{x_k - y_k}^2.
     \]
-    Again using that $(x_{k})_{k\in\N}$ is bounded almost surely,
-    \cref{lem:basic-properties} implies
+    Finally, local Lipschitz continuity of $r$  (\cref{ass:basic-assumptions}) and yields (a.\,s.)
     \[
-        \norm{g_k} = \norm{\nabla \psi_k(x_k)} = \mathcal{O}(\gamma_k),
-        \enspace
-        \sup_{k\in\N} \norm{\tilde{\nabla}r(x_{k})} < \infty,
-        \enspace \text{and} \enspace
-        \sup_{k\in\N} \norm{\tilde{\nabla} f_k(x_k)} = \mathcal{O}(\gamma_k),
+        L_r \norm{x_k - y_k} \geq r(x_k) - r(y_k) \geq \eta_k^{-1} \norm{x_k - y_k}^2
+        \enspace\iff\enspace
+        \norm{x_k - y_k} \leq \eta_k L_r,
     \]
-    and thus $\norm{\tilde{\nabla} f_k(x_k)} \norm{x_{k+1} - x_k} = \eta_k \mathcal{O}(\gamma_k^2)$ almost surely.
+    for some $L_r \in (0,\infty)$, where we again used that $(x_k)_{k\in\N}$ is bounded almost surely
+    (\cref{thm:almost-sure-convergence})
+    and the prox operator is nonexpansive (\textcolor{red}{TODO}).
+    In total, we have thus shown
+    \[
+        \norm{x_k - x_{k+1}} = \mathcal{O}(\eta_k \gamma_k).
+    \]
     It follows that
     \begin{align*}
         2\eta_k\E(f_k(x_{k}) - f_k(x))
@@ -1308,6 +1317,8 @@ We are now ready to prove the main theorem of this section.
         +
         \frac{e_{k_0}}{2S_{K}} + \frac{\sum_{k=k_0}^{K-1} M_k^2}{2S_{K}} + \frac{\sum_{k=k_0}^{K-1}\eta_k^{-1}\gamma_k\alpha_k}{S_{K}}.
     \]
+    \textcolor{red}{TODO: $x_0$ need not be in the domain of $f$, so start the sum from $k_0 = 1$ to
+    apply convexity.}
     Next, we will derive the desired bound for $\dist(x_k, \mathcal{X})$.
     Again fix $k \geq K_0$.
     For the choice $x := \proj(x_k)$, inequality \eqref{eq:lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)} gives us
@@ -1325,12 +1336,12 @@ We are now ready to prove the main theorem of this section.
         (1-\mu\eta_k)\E(\dist(x_k, \mathcal{X})^2) + \eta_k^2 M_k^2 + 2\eta_k\gamma_k\alpha_k \\
             &\phantom{===} - 2\tau \eta_k \gamma_k \E(\dist(x_k, \mathcal{X})) + 2\eta_k\E(f(\proj(x_k)) - f(x_{k})).
     \end{align*}
-    Using convexity of $f$, Cauchy-Schwarz, almost sure boundedness of $(x_k)_{k\in\N}$ (\cref{thm:almost-sure-convergence}), and the fact that
-    subgradients of $f$ are bounded on compacta (\cref{lem:basic-properties}), there exists a constant $M\in(0,\infty)$,
+    Using almost sure boundedness of $(x_k)_{k\in\N}$,
+    local Lipschitz continuity of $f$ (\cref{lem:basic-properties}), and Cauchy-Schwarz,
+    there exists a constant $M\in[0,\infty)$,
     such that
     \[
-        f(\proj(x_k)) - f(x_{k}) \leq \langle \tilde{\nabla} f(\proj(x_k)), \proj(x_k) - x_k \rangle
-                                \leq M \dist(x_k, \mathcal{X}).
+        f(\proj(x_k)) - f(x_{k}) \leq M \dist(x_k, \mathcal{X}) \enspace (\text{a.\,s.}).
     \]
     Combining with the previous inequality and gathering terms involving $\dist(x_k,\mathcal{X})$,
     we arrive at
@@ -1454,12 +1465,11 @@ We are now ready to prove the main theorem of this section.
     for $f$ on $\mathcal{X}$ implies that there exists a subgradient
     $\tilde{\nabla} f(x^\star) \in \partial f(x^\star)$ such that
     $\langle \tilde{\nabla} f(x^\star), \proj(\bar{x}_k) - x^\star \rangle \geq 0$.
-    Furthermore, \cref{lem:basic-properties} implies that we can bound the subgradients
-    in $\partial f(x^\star)$ by a constant $M\in(0,\infty)$. Combining these facts
+    Combining these facts
     with the above inequality, and applying Cauchy-Schwarz,
     we obtain
     \[
-        f(\bar{x}_k) - f(x^\star) \geq - M \dist(\bar{x}_k),
+        f(\bar{x}_k) - f(x^\star) \geq - \norm{\nabla f(x^\star)} \dist(\bar{x}_k),
     \]
     for all $k\in\N$. From \cref{lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)}
     we know that there exists $k_1\in\N$ such that for all $K\in\N$ with $K\geq k_1$,

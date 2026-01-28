@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.10.28)  27 JAN 2026 17:31
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.10.28)  28 JAN 2026 00:29
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1051,7 +1051,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{ALG@line.8}) h
 <to be read again> 
                    \relax 
 l.256 \State
-             \Return $\bar{x}_{K}$)
+             \Return $\bar{x}_{K}$
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
@@ -1063,7 +1063,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[5]
+[5])
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1102,22 +1102,22 @@ Chapter 3.
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.58 \begin{equation}
+l.53 \begin{equation}
                      
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.58 \begin{equation}
+l.53 \begin{equation}
                      
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.58 \begin{equation}
+l.53 \begin{equation}
                      
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.58 \begin{equation}
+l.53 \begin{equation}
                      
 
 
@@ -1131,22 +1131,22 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.124 \begin{equation}
+l.116 \begin{equation}
                       
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.124 \begin{equation}
+l.116 \begin{equation}
                       
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.124 \begin{equation}
+l.116 \begin{equation}
                       
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.124 \begin{equation}
+l.116 \begin{equation}
                       
 
 
@@ -1160,22 +1160,22 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.167     \begin{equation}
+l.159     \begin{equation}
                           
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.167     \begin{equation}
+l.159     \begin{equation}
                           
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.167     \begin{equation}
+l.159     \begin{equation}
                           
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.167     \begin{equation}
+l.159     \begin{equation}
                           
 
 
@@ -1195,6 +1195,9 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [13]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1204,9 +1207,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [14]
-Underfull \vbox (badness 2020) has occurred while \output is active []
-
-
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1252,7 +1252,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [18]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 3009) has occurred while \output is active []
 
 
 
@@ -1264,9 +1264,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [19]
-Underfull \vbox (badness 1178) has occurred while \output is active []
-
-
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1276,7 +1273,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [20]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 2213) has occurred while \output is active []
 
 
 
@@ -1288,6 +1285,9 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [21]
+Underfull \vbox (badness 3803) has occurred while \output is active []
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1297,6 +1297,9 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [22]
+Underfull \vbox (badness 2005) has occurred while \output is active []
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1306,6 +1309,9 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [23]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1324,7 +1330,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [25]
-Underfull \vbox (badness 2689) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
@@ -1369,6 +1375,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [29]
+Overfull \hbox (1.22682pt too wide) in paragraph at lines 1338--1343
+\T1/zpltlf/m/n/12 Using al-most sure bound-ed-ness of $\LMS/npxsy/m/n/12 ¹\OML/npxmi/m/it/12 x[]\LMS/npxsy/m/n/12 º[]$\T1/zpltlf/m/n/12 , lo-cal Lip-s-chitz con-ti-nu-ity of $\OML/npxmi/m/it/12 f$ \T1/zpltlf/m/n/12 ([][]lemma 3.1[][]),
+ []
+
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
@@ -1393,6 +1404,9 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [31]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1429,20 +1443,27 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [35]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[36]
 \openout2 = `sec/chapter4.aux'.
 
  (./sec/chapter4.tex
+Chapter 4.
+)
 
-[36
+[37
 
 
 
 
 ]
-Chapter 4.
-)
-
-[37]
 \openout2 = `sec/chapter5.aux'.
 
  (./sec/chapter5.tex
@@ -1506,18 +1527,18 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 8051AEECB44945B8531035769B417FF7;3090.
  ) 
 Here is how much of TeX's memory you used:
- 20525 strings out of 473190
- 338592 string characters out of 5715799
- 833515 words of memory out of 5000000
- 43190 multiletter control sequences out of 15000+600000
+ 20528 strings out of 473190
+ 338606 string characters out of 5715799
+ 833529 words of memory out of 5000000
+ 43192 multiletter control sequences out of 15000+600000
  662770 words of font info for 172 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  94i,12n,107p,1052b,684s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/NewPXMI.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/NewPXMI_gnu.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/pxmiaX.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/pxsys.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/tex-gyre/qhvb.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/txexs.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/txsym.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/zplb.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/zplr.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/zplri.pfb>
-Output written on main.pdf (51 pages, 536687 bytes).
+Output written on main.pdf (51 pages, 538560 bytes).
 PDF statistics:
- 625 PDF objects out of 1000 (max. 8388607)
- 542 compressed objects within 6 object streams
- 147 named destinations out of 1000 (max. 500000)
+ 628 PDF objects out of 1000 (max. 8388607)
+ 545 compressed objects within 6 object streams
+ 148 named destinations out of 1000 (max. 500000)
  158 words of extra memory for PDF output out of 10000 (max. 10000000)
 

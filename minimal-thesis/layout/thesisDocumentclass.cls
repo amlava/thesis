@@ -169,7 +169,7 @@
 \DeclareMathOperator{\dist}{dist}
 \DeclareMathOperator{\prox}{prox}
 \DeclareMathOperator{\Var}{Var}
-
+\DeclareMathOperator{\dom}{dom}
 
 % Anpassung von \cleardoublepage
 \let\origdoublepage\cleardoublepage
