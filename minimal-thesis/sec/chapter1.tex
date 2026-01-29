@@ -30,8 +30,8 @@ In this thesis, we consider composite stochastic optimization problems of the fo
     \end{aligned}
 \end{equation}
 where $\xi$ is a random variable, and for any realization $z$ of $\xi$, $A(z)\in\R^{m\times n}$
-and $b(z)\in\R^m$. We assume that $\E(F_\xi)\colon\R^n\to\R$ is $\mu$-strongly convex and $L$-smooth, and
-that $r\colon\R^n\to\R$ is convex (but possibly nonsmooth). Examples of these problems
+and $b(z)\in\R^m$. We assume that $F_\xi$ is $L$-smooth, $\E(F_\xi)\colon\R^n\to\R$ is $\mu$-strongly convex, and
+that $r\colon\R^n\to\R$ is Lipschitz continuous convex (but possibly nonsmooth). Examples of these problems
 appear in numerous areas of applied mathematics. One such domain is optimal control,
 where the randomness often arises from some continuous uncertainty in some
 variables, which leads to an infinite amount of constraints.
@@ -239,6 +239,7 @@ instead of the full gradient, we will use a minibatch of samples
 and average over the resulting stochastic gradients to get
 a variance-reduced estimate of $\nabla \E(F_\xi(x)) + \gamma_k \nabla \pi_k(x)$.
 The pseudo-code for the full algorithm is presented in \cref{alg:seqprox-sgd}.
+\textcolor{red}{TODO: Sample two samples independently, one for constraint, one for objective.}
 \begin{algorithm}[t]
 \caption{Sequential Proximal Stochastic Gradient Descent (SeqProx-SGD)}
 \label{alg:seqprox-sgd}
@@ -247,8 +248,8 @@ The pseudo-code for the full algorithm is presented in \cref{alg:seqprox-sgd}.
 penalty weights $(\gamma_k)_{k\in\N_0}$, minibatch sizes $(\beta_k)_{k\in\N_0}$,
 smooth penalty functions $(h_k)_{k\in\N_0}$, sample oracle for distribution of $\xi$
 \For{$k = 0$ to $K-1$}
-    \State Sample minibatch $\{\, \xi_{1}^k,\dots, \xi_{\beta_k}^k \,\}$ from distribution of $\xi$
-    \State $g_k \gets  \beta_k^{-1} \sum_{i=1}^{\beta_k} \nabla F_{\xi_i^k}(x_{k}) + \gamma_k A(\xi_i^k)^\top \nabla h_k(A(\xi_i^k)x_k - b(\xi_i^k))$
+    \State Sample $\xi_1^k, \xi_2^k \sim \xi$
+    \State $g_k \gets \nabla F_{\xi_1^k}(x_{k}) + \gamma_k \nabla h_k(x_k; A(\xi_2^k), b(\xi_2^k))$
     \State $x_{k+1} \gets \textnormal{prox}_{\eta_k r} (x_k - \eta_k g_k$)
 \EndFor
 \State $S_K \gets \sum_{k=1}^{K} \eta_k^{-1}$

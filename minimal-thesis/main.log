@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.10.28)  28 JAN 2026 00:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.10.28)  29 JAN 2026 01:07
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -972,7 +972,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{equation.1.1})
                    \relax 
 l.86 \begin{equation}
                      
-Underfull \vbox (badness 7558) has occurred while \output is active []
+Underfull \vbox (badness 1331) has occurred while \output is active []
 
 
 
@@ -1000,7 +1000,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [3]
-Underfull \vbox (badness 1292) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
@@ -1015,42 +1015,42 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 pdfTeX warning (ext4): destination with the same identifier (name{ALG@line.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.249 \For
+l.250 \For
           {$k = 0$ to $K-1$}
 pdfTeX warning (ext4): destination with the same identifier (name{ALG@line.2}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.250     \State
-                 Sample minibatch $\{\, \xi_{1}^k,\dots, \xi_{\beta_k}^k \,\...
+l.251     \State
+                 Sample $\xi_1^k, \xi_2^k \sim \xi$
 pdfTeX warning (ext4): destination with the same identifier (name{ALG@line.3}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.251     \State
-                 $g_k \gets  \beta_k^{-1} \sum_{i=1}^{\beta_k} \nabla F_{\xi...
+l.252     \State
+                 $g_k \gets \nabla F_{\xi_1^k}(x_{k}) + \gamma_k \nabla h_k(...
 pdfTeX warning (ext4): destination with the same identifier (name{ALG@line.4}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.252     \State
+l.253     \State
                  $x_{k+1} \gets \textnormal{prox}_{\eta_k r} (x_k - \eta_k g...
 pdfTeX warning (ext4): destination with the same identifier (name{ALG@line.5}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.253 \EndFor
+l.254 \EndFor
              
 pdfTeX warning (ext4): destination with the same identifier (name{ALG@line.6}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.254 \State
+l.255 \State
              $S_K \gets \sum_{k=1}^{K} \eta_k^{-1}$
 pdfTeX warning (ext4): destination with the same identifier (name{ALG@line.7}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.255 \State
+l.256 \State
              $\bar{x}_K \gets S_K^{-1} \sum_{k=1}^{K} \eta_k^{-1} x_k$
 pdfTeX warning (ext4): destination with the same identifier (name{ALG@line.8}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.256 \State
+l.257 \State
              \Return $\bar{x}_{K}$
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -1102,22 +1102,22 @@ Chapter 3.
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.53 \begin{equation}
+l.54 \begin{equation}
                      
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.53 \begin{equation}
+l.54 \begin{equation}
                      
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.53 \begin{equation}
+l.54 \begin{equation}
                      
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.53 \begin{equation}
+l.54 \begin{equation}
                      
 
 
@@ -1131,22 +1131,22 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.116 \begin{equation}
+l.117 \begin{equation}
                       
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.116 \begin{equation}
+l.117 \begin{equation}
                       
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.116 \begin{equation}
+l.117 \begin{equation}
                       
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.116 \begin{equation}
+l.117 \begin{equation}
                       
 
 
@@ -1160,22 +1160,22 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.159     \begin{equation}
+l.160     \begin{equation}
                           
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.159     \begin{equation}
+l.160     \begin{equation}
                           
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.159     \begin{equation}
+l.160     \begin{equation}
                           
 pdfTeX warning (ext4): destination with the same identifier (name{equation.3.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.159     \begin{equation}
+l.160     \begin{equation}
                           
 
 
@@ -1285,9 +1285,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [21]
-Underfull \vbox (badness 3803) has occurred while \output is active []
-
-
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1297,9 +1294,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [22]
-Underfull \vbox (badness 2005) has occurred while \output is active []
-
-
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1363,19 +1357,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [28]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[29]
-Overfull \hbox (1.22682pt too wide) in paragraph at lines 1338--1343
+Overfull \hbox (1.22682pt too wide) in paragraph at lines 1333--1338
 \T1/zpltlf/m/n/12 Using al-most sure bound-ed-ness of $\LMS/npxsy/m/n/12 ¹\OML/npxmi/m/it/12 x[]\LMS/npxsy/m/n/12 º[]$\T1/zpltlf/m/n/12 , lo-cal Lip-s-chitz con-ti-nu-ity of $\OML/npxmi/m/it/12 f$ \T1/zpltlf/m/n/12 ([][]lemma 3.1[][]),
  []
 
@@ -1391,10 +1373,19 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[30]
+[29]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[30]
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1425,6 +1416,9 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [33]
+Underfull \vbox (badness 7433) has occurred while \output is active []
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1443,27 +1437,20 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [35]
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[36]
 \openout2 = `sec/chapter4.aux'.
 
  (./sec/chapter4.tex
-Chapter 4.
-)
 
-[37
+[36
 
 
 
 
 ]
+Chapter 4.
+)
+
+[37]
 \openout2 = `sec/chapter5.aux'.
 
  (./sec/chapter5.tex
@@ -1535,10 +1522,10 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  94i,12n,107p,1052b,684s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/NewPXMI.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/NewPXMI_gnu.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/pxmiaX.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/pxsys.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/tex-gyre/qhvb.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/txexs.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/txsym.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/zplb.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/zplr.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/zplri.pfb>
-Output written on main.pdf (51 pages, 538560 bytes).
+Output written on main.pdf (51 pages, 536288 bytes).
 PDF statistics:
- 628 PDF objects out of 1000 (max. 8388607)
- 545 compressed objects within 6 object streams
+ 627 PDF objects out of 1000 (max. 8388607)
+ 544 compressed objects within 6 object streams
  148 named destinations out of 1000 (max. 500000)
  158 words of extra memory for PDF output out of 10000 (max. 10000000)
 

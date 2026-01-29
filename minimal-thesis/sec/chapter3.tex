@@ -36,18 +36,19 @@ We denote the feasible set for \eqref{eq:main-problem-copy} as
     \end{enumerate}
 \end{assumption}
 \Cref{alg:seqprox-sgd} work with penalty functions $(\pi_k)_{k\in\N}$.
-These will always take the form $\pi_k(x) := \E(h_k(A(\xi)x - b(\xi)))$, where, for all $k\in\N$,
-we let $(h_k)_{k\in\N}$ be any sequence of functions $\R^m\to\R$ with the following properties:
+These will always take the form $\pi_k(x) := \E(h_k(x; A(\xi), b(\xi)))$, where, for all $k\in\N$,
+we let $(h_k)_{k\in\N}$ be any sequence of functions $\R^n\to\R$ with the following properties:
 \begin{enumerate}
     \item For all $k\in\N$, $h_k$ is convex and $L_{h_k}$-smooth for some $L_{h_k}\in(0,\infty)$ (\textcolor{red}{TODO: Think convex differentiable is enough}).
-    \item $h_k(x) \geq \norm{(x)_+}_1$ for all $x\in\R^m$ and $k\in\N$.
+    \item $h_k(x) \geq \norm{(x)_+}_1$ for all $x\in\R^n$ and $k\in\N$.
     \item There exists a sequence $(\alpha_k)_{k\in\N}\subset(0,\infty)$ such that
         $\sup_{k\in\N} \gamma_k\alpha_k < \infty$ and $h_k(x) \leq \alpha_k$ for all $x\in\R^m_{\leq 0}$.
         In particular, for all feasible points $\tilde{x}\in\mathcal{X}$, it holds that $\pi_k(\tilde{x}) \leq \alpha_k$ for all $k\in\N$.
     \item The gradients of $(h_k)_{k\in\N}$ are bounded uniformly:
         \[
-            \sup_{k\in\N}\sup_{x\in\R^m}\nabla h_k(x) < \infty.
+            \sup_{k\in\N}\sup_{x\in\R^n}\nabla h_k(x; A(\xi), b(\xi)) < \infty
         \]
+        almost surely.
 \end{enumerate}
 Finally, for all $k\in\N$, we define the sequence of unconstrained optimization problems
 \begin{equation}
@@ -81,7 +82,7 @@ by the following lemma.
         \item Let $B\subset\R^n$ be a bounded subset. Then, for all $x\in B,
         \gamma\in[0,\infty), k\in\N$, the stochastic gradients
         \[
-            g(x) := \nabla F_\xi(x) + \gamma \nabla h_k(A(\xi)x - b(\xi))
+            g(x) := \nabla F_\xi(x) + \gamma \nabla h_k(x; A(\xi), b(\xi))
         \]
         satisfy $\sup_{x\in B} g(x) = \mathcal{O}(\gamma)$ almost surely.
         (\textcolor{red}{TODO: Maybe not needed to mention this particular subgradinet, since we actually only care about $\E||g_k||$.})
@@ -883,7 +884,8 @@ The following lemma will give a bound on the gradient noise $\Var_k(g_k)$.
     for all $k\in\N$.
 \end{lemma}
 \begin{proof}
-    Let $k\in\N$ and define $\tilde{g}_k := \nabla F_\xi(x_k) + \gamma_k A(\xi)^\top \nabla h_k(A(\xi)x_k - b(\xi))$.
+    Let $k\in\N$ and define
+    $\tilde{g}_k := \nabla F_{\xi_1}(x_k) + \gamma_k \nabla h_k(x_k; A(\xi_2), b(\xi_2))$.
     We have
     \begin{align*}
         \Var_k(g_k)
@@ -892,17 +894,17 @@ The following lemma will give a bound on the gradient noise $\Var_k(g_k)$.
         &\leq
         \frac{1}{\beta_k} \E_k\norm{\tilde{g}_k}^2 \\
         &\leq
-        \frac{1}{\beta_k} \Big( \norm{\nabla F_\xi(x_k)}^2
-            + \gamma_k^2\, \E_k\norm{A(\xi)^\top \nabla h_k(A(\xi)x_k - b(\xi))}^2 \Big).
+        \frac{1}{\beta_k} \Big( \E_k\norm{\nabla F_\xi(x_k)}^2
+            + \gamma_k^2\, \E_k\norm{\nabla h_k(x_k; A(\xi), b(\xi))}^2 \Big).
     \end{align*}
     Using the inequality $(a + b)^2 \leq 2a^2 + 2b^2 \enspace\forall a,b\in\R$, and the (almost sure)
     $L$-smoothness of $x\mapsto F_\xi(x)$, we have
     \begin{align*}
-        \norm{\nabla F_\xi(x_k)}^2
+        \E_k\norm{\nabla F_\xi(x_k)}^2
         &=
-        \norm{\nabla F_\xi(x_k) - \nabla F_\xi(x^\star) + \nabla F_\xi(x^\star)}^2 \\
+        \E_k\norm{\nabla F_\xi(x_k) - \nabla F_\xi(x^\star) + \nabla F_\xi(x^\star)}^2 \\
         &\leq
-        2\Big( \norm{\nabla F_\xi(x_k) - \nabla F_\xi(x^\star)}^2 + \E_k\norm{\nabla F_\xi(x^\star)}^2 \Big) \\
+        2\Big( \E_k\norm{\nabla F_\xi(x_k) - \nabla F_\xi(x^\star)}^2 + \E\norm{\nabla F_\xi(x^\star)}^2 \Big) \\
         &\leq 2 L^2\, \norm{x_k - x^\star}^2 + 2\,\E\norm{\nabla F_\xi(x^\star)}^2,
     \end{align*}
     where in the last step we also used that $x_k$ is $\mathcal{F}_k$-measurable and
@@ -922,20 +924,13 @@ The following lemma will give a bound on the gradient noise $\Var_k(g_k)$.
     \end{align*}
     Therefore, combining with the previous inequality, we get the bound
     \[
-        \norm{\nabla F_\xi(x_k)}^2 \leq 2 L^2\, \norm{x_k - x^\star}^2 + M^2.
+        \E_k\norm{\nabla F_\xi(x_k)}^2 \leq 2 L^2\, \norm{x_k - x^\star}^2 + M^2.
     \]
-    Now, we can use the fact that $\norm{A v}\leq \norm{A}_F \norm{v}$ for any matrix
-    $A$ and vector $v$, to find
+    Since, per assumption, it holds that the family $(h_k)_{k\in\N}$ has uniformly bounded gradients,
+    there exists a constant
+    $\tilde{M}^2\in[0,\infty)$ such that
     \[
-        \E_k\norm{A(\xi)^\top \nabla h_k(A(\xi)x_k - b(\xi))}^2
-        \leq
-        \E_k\Big( \norm{A(\xi)}_F^2\norm{\nabla h_k(A(\xi)x_k - b(\xi))}^2 \Big).
-    \]
-    Since, per assumption, it holds that a) the family $(h_k)_{k\in\N}$ has uniformly bounded gradients,
-    and b) $\E\norm{A(\xi)}_F^2 < \infty$,  there exists a constant
-    $\tilde{M}^2\in(0,\infty)$ such that
-    \[
-        \E_k\norm{A(\xi)^\top \nabla h_k(A(\xi)x_k - b(\xi))}^2 \leq \tilde{M}^2.
+        \E_k\norm{\nabla h_k(x_k; A(\xi), b(\xi))}^2 \leq \tilde{M}^2.
     \]
     Putting everything together, we obtain
     \[
@@ -1450,7 +1445,7 @@ We are now ready to prove the main theorem of this section.
     \]
     Further, it also holds that
     \[
-        \dist(\bar{x}_{K}, \mathcal{X}) = \mathcal{O} ( \log^{e}(K) / K ).
+        \E(\dist(\bar{x}_{K}, \mathcal{X})) = \mathcal{O} ( \log^{e}(K) / K ).
     \]
 \end{theorem}
 \begin{proof}
@@ -1591,51 +1586,51 @@ though we will need to carry around an extra term throughout the calculations.
     Let \cref{ass:step-sizes-and-penalties} hold.
     For all $k\in\N$, it holds that
     \[
-        \norm{z_k}^2 \leq 8\hat{L}^2 + 8\gamma_k^2N^2G^2,
+        \norm{z_k}^2 \leq 8L^2 + 8\gamma_k^2G^2,
     \]
-    with probability one, where $\hat{L}, G, N\in(0,\infty)$.
+    with probability one, where $L, G, N\in(0,\infty)$.
 \end{lemma}
 \begin{proof}
     Using the inequality $(a + b + c + d)^2 \leq 4 (a^2 + b^2 + c^2 + d^2)$ $\forall a,b,c,d\in\R$, we have
     \begin{align*}
         \norm{z_k}^2
         &= \norm{g_k - \nabla \psi_k(x_k)}^2 \\
-        &= \norm{\nabla F_{\xi_k}(x_k) + \gamma_k A(\xi_k)^\top \nabla h_k(A(\xi_k) x_k - b(\xi_k))
+        &= \norm{\nabla F_{\xi_k}(x_k) + \gamma_k h_k(x_k; A(\xi), b(\xi))
             + \nabla \E(F_{\xi_k}(x_k)) + \gamma_k \nabla \pi_k(x_k)}^2 \\
-        &\leq 4 \big( \norm{\nabla F_{\xi_k}(x_k)}^2 + \gamma_k^2 \norm{A(\xi_k)}_F^2\norm{\nabla h_k(A(\xi_k) x_k - b(\xi_k))}^2 \\
+        &\leq 4 \big( \norm{\nabla F_{\xi_k}(x_k)}^2 + \gamma_k^2 \norm{\nabla h_k(x_k; A(\xi), b(\xi))}^2 \\
             &\phantom{===}+ \norm{\nabla \E(F_{\xi_k}(x_k))}^2 + \gamma_k^2 \norm{\nabla \pi_k(x_k)}^2 \big)
     \end{align*}
     By almost sure $L$-smoothness of $x\mapsto F_\xi(x)$ and
     $x\mapsto \E(F_\xi(x))$ (\cref{ass:basic-assumptions}),
     as well as the fact that $(x_k)_{k\in\N}$ is almost surely bounded (\cref{thm:almost-sure-convergence}),
-    there exists a constant $\hat{L}\in(0,\infty)$ such that
+    we can locally bound the gradients
     \[
-        \norm{\nabla F_{\xi_k}(x_k)} \leq \hat{L}
+        \norm{\nabla F_{\xi_k}(x_k)} \leq L
         \enspace
         \text{and}
         \enspace
-        \norm{\nabla \E(F_{\xi_k}(x_k))} \leq \hat{L}.
+        \norm{\nabla \E(F_{\xi_k}(x_k))} \leq L.
     \]
     Therefore,
     \[
-        \norm{\nabla F_{\xi_k}(x_k) + \gamma_k A(\xi_k)^\top \nabla h_k(A(\xi_k) x_k - b(\xi_k))}
+        \norm{\nabla F_{\xi_k}(x_k) + \gamma_k \nabla h_k(x_k; A(\xi), b(\xi))}
         \leq
-        \hat{L} + \gamma_k N G.
+        L + \gamma_k G
     \]
-    Further $\norm{A(\xi)}_F \leq N$ a.\,s. (\cref{ass:basic-assumptions}), and
+    as well as
     \[
-        \sup_{k\in\N}\sup_{x\in\R^m} \norm{\nabla h_k(x)} \leq G
+        \sup_{k\in\N}\sup_{x\in\R^n} \norm{\nabla h_k(x; A(\xi), b(\xi))} \leq G,
         \enspace
         \text{and}
         \enspace
-        \sup_{k\in\N}\sup_{x\in\R^n} \norm{\nabla \pi_k(x)} \leq \E\norm{A(\xi)}_F G
+        \sup_{k\in\N}\sup_{x\in\R^n} \norm{\nabla \pi_k(x)} \leq G
     \]
     for a constant $G\in(0,\infty)$ (\cref{lem:basic-properties}).
     We thus obtain
     \[
         \norm{z_k}^2
         \leq
-        4(2 \hat{L}^2 + 2\gamma_k^2N^2G^2) = 8\hat{L}^2 + 8\gamma_k^2N^2G^2,
+        4(2 L^2 + 2\gamma_k^2G^2) = 8L^2 + 8\gamma_k^2G^2,
     \]
     as desired.
 \end{proof}
