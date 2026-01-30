@@ -3,24 +3,46 @@
 \section{Problem statement and objective}
 
 
-Convex optimization is concerned with problems of the form
+Mathematical optimization is concerned with problems of the form
 \[
   \min_{x\in \mathcal{X}}  f(x),
 \]
-where $f\colon\R^n\to\R$ is a convex function and
-$\mathcal{X}\subset\R^n$ is a convex set.
+where $f\colon\R^n\to\R\cup\{\infty\}$ is a function and
+$\mathcal{X}\subset\dom(f)$ is a set.
 Typically, the set $\mathcal{X}$ is called the \textit{feasible set},
 elements $x\in\mathcal{X}$ are \textit{feasible points}, and $f$ is called the \textit{objective function},
 or simply \textit{objective}.
 Oftentimes, a point $x\in\R^n$ is referred to as a \textit{decision variable}.
-If there exists $x^\star\in\mathcal{X}$ such that $f(x^\star) \leq f(x)$ for all $x\in\mathcal{X}$,
+If $\mathcal{X}$ is nonempty, then the problem is called \textit{feasible}.
+In that case,
+if there exists $x^\star\in\mathcal{X}$ such that $f(x^\star) \leq f(x)$ for all $x\in\mathcal{X}$,
 then $x^\star$ is called \textit{solution}. The value $f(x^\star)$ is called
-\textit{optimal value}.
+\textit{optimal value} or \textit{minimal value}.
+In practice, the feasible set $\mathcal{X}$ is often defined implicitly through the use of auxillary functions,
+which yields to the formulation
+\begin{equation*}
+    \begin{aligned}
+    &\min_{x \in \mathbb{R}^n} f(x) \\
+    &\textup{subject to (s.\,t.)} \enspace &g(x) \leq 0 \\
+    &\phantom{\textup{s.\,t.}} \enspace &h(x) = 0
+    \end{aligned}
+\end{equation*}
+for functions $g\colon\R^n\to\R^m$, $h\colon\R^n\to\R^\ell$. The feasible
+set is then given by $\mathcal{X} = \{\, x\in\R^n \mid g(x) \leq 0 \text{ and } h(x) = 0 \,\}$.
+An important special case of optimization problems are
+\textit{convex optimization} problems, in which the objective $f$ and
+the map $g$ are convex functions, and $h$ is affine.
+Convex problems have (among other things) the highly desirable property that
+every local minimum is a global minimum, which makes
+optimization algorithms that only use local information (like gradients)
+work effectively.
 
-In practice, the feasible set $\mathcal{X}$ is often defined implicitly through the use of auxillary functions.
-Additionally, the constraints may involve random variables, which are supposed to capture
-uncertainty in the problem, which should be controlled.
-In this thesis, we consider composite stochastic optimization problems of the form
+In this work, we will condsider
+convex problems that are subject to randomness.
+Such \textit{stochastic optimization} problems
+arise in many applications (\textcolor{red}{TODO: add refs}).
+The problems we will analyze
+take the following general form
 \begin{equation}
     \label{eq:main-problem}
     \tag{P}
@@ -29,9 +51,16 @@ In this thesis, we consider composite stochastic optimization problems of the fo
     &\textup{s.\,t.} \quad A(\xi) x - b(\xi) \leq 0 \quad \textnormal{almost surely (a.\,s.)},
     \end{aligned}
 \end{equation}
-where $\xi$ is a random variable, and for any realization $z$ of $\xi$, $A(z)\in\R^{m\times n}$
-and $b(z)\in\R^m$. We assume that $F_\xi$ is $L$-smooth, $\E(F_\xi)\colon\R^n\to\R$ is $\mu$-strongly convex, and
-that $r\colon\R^n\to\R$ is Lipschitz continuous convex (but possibly nonsmooth). Examples of these problems
+where $\xi$ is a random variable that captures uncertainty and
+takes values in $\R^p$.
+The objective $f$ is composed of two functions: The expectation
+functional $\E(F_\xi)\colon\R^n\to\R$, which we assume to
+be smooth, and the potentially nonsmooth function $r\colon\R^n\to\R\cup\{\infty\}$,
+which we will refer to as the \textit{regularizer}.
+The constraints are affine inequalities with matrices $A(z)\in\R^{m\times n}$
+and $b(z)\in\R^m$ for $z\in\R^p$.
+
+Examples of these problems
 appear in numerous areas of applied mathematics. One such domain is optimal control,
 where the randomness often arises from some continuous uncertainty in some
 variables, which leads to an infinite amount of constraints.
@@ -48,21 +77,28 @@ and the decision variable $x$ represents parameters of some statistical model.
 Problem \eqref{eq:main-problem} then takes on the specific form
 \begin{equation*}
     \begin{aligned}
-    &\min_{x \in \R^n} \left\{\, f(x) = \frac{1}{n} \sum_{i=1}^n F_i(x) + r(x) \,\right\} \\
-    &\textup{s.\,t.} \quad A_i x - b_i \leq 0 \quad \textnormal{for all $i\in\{\, 1,\dots,N \,\}$}.
+    &\min_{x \in \R^n} \left\{\, f(x) = \frac{1}{N} \sum_{i=1}^N F_i(x) + r(x) \,\right\} \\
+    &\textup{s.\,t.} \quad A_j x - b_j \leq 0 \quad \textnormal{for all $j\in\{\, 1,\dots,N \,\}$}.
     \end{aligned}
 \end{equation*}
+Example problems that can be formulated in this way are support vector machines
+and logistic regression with fairness constraints (\textcolor{red}{TODO}).
 
 A classical approach to solve \eqref{eq:main-problem} is stochastic subgradient
 descent (SGD) \cite{robbins1951stochastic}: We start from an initial point $x_0\in\R^n$.
 In iteration $k\in\N$, we pick a \textit{step size} $\eta_k\in(0,\infty)$ and a
-\textit{stochastic subgradient} $g_k$ of $f$. Then we set $x_{k+1} = \proj(x_k - \eta_k g_k)$,
+\textit{stochastic subgradient} $g_k$ of $f$ at $x_k$.
+Then we set
+\[
+    x_{k+1} = \proj(x_k - \eta_k g_k)
+\]
 and repeat. The map $\proj\colon\R^n\to\R^n$ is the \textit{projection map onto} $\mathcal{X}$,
 which is defined as $\proj(x) := \argmin_{y\in\mathcal{X}} \norm{x - y}$, and
 ensures that the iterates stay in the feasible set $\mathcal{X}$. If $x^\star\in\mathcal{X}$
 solves \eqref{eq:main-problem}, then one can show that, under suitable
 choice of step sizes, $\norm{x_k - x^\star}^2$ converges to the solution
-of \eqref{eq:main-problem} with rate $\mathcal{O}(1/k)$ for strongly convex objectives.
+of \eqref{eq:main-problem} with rate $\mathcal{O}(1/k)$ for \textit{strongly convex} objectives
+(\textcolor{red}{TODO: add ref for strongly convex}).
 However, Nemirovski et al. \cite{nemirovski2009robust} showed that
 this convergence is highly dependent on knowing the strong convexity constant,
 and proposed a more robust version of the algorithm that utilizes suitable averages of the original
@@ -143,7 +179,7 @@ The authors then considered the sequence of unconstrained problems
     \min_{x\in\R^n} \left\{\, f_k(x) := f(x) + \gamma_k \pi_k^{\textnormal{hub}}(x) \,\right\},
 \end{equation}
 for $k\in\N$ and $\gamma_k\in(0,\infty)$.
-Where before we required $\pi(x) = 0$ for all feasible points,
+Whereas before we required $\pi(x) = 0$ for all feasible points,
 the inexact penalties only satisfy $\pi_k^\textnormal{hub}(x) \geq 0$ for feasible $x\in\R^n$.
 The crucial properties of the particular penalty sequence that the authors introduced
 were that the sequence a) majorizes the hinge penalty, $\pi_k^\textnormal{hub}(x) \geq \pi_{\ell_1}(x)$ for all $x\in\R^n$,
@@ -159,19 +195,30 @@ $\dist(x_K^\star, \mathcal{X}) := \inf_{x\in\mathcal{X}} \norm{x - x_K^\star} = 
 this approach manages to combine the highly desirable properties of smooth unconstrained problems
 with that of exact penalties.
 The authors then go on to present an iterative stochastic gradient algorithm (see \cref{alg:nedic-sgd}),
-which proceeds as follows: Start from an initial point $x_0\in\R^n$. Then, in iteration $k\in\N$:
-Compute a subgradient of $f$ at $x_k$, denoted by $\tilde{\nabla}f(x_k)$;
-sample a random index $i\in\{\,1,\dots,m\,\}$ and calculate the gradient $\nabla h_k^{\text{hub}}(x_k; a_i, b_i)$;
-finally, update $x_{k+1} := x_k - \eta_k(\tilde{\nabla}f(x_k) + \gamma_k \nabla h_k^{\text{hub}}(x_k; a_i, b_i))$.
-After a set amount of $K\in\N$ iterations, one computes a certain weighted average of
-the iterates, which yields the final output $\bar{x}_K$.
+which proceeds as follows: Start from an initial point $x_0\in\R^n$. Then, in iteration $k\in\N$,
+we compute a subgradient of $f$ at $x_k$, denoted by $\tilde{\nabla}f(x_k)$. Then we
+sample a random index $i\in\{\,1,\dots,m\,\}$ and calculate the gradient $\nabla h_k^{\text{hub}}(x_k; a_i, b_i)$.
+Finally, update 
+\[
+    x_{k+1} := x_k - \eta_k(\tilde{\nabla}f(x_k) + \gamma_k \nabla h_k^{\text{hub}}(x_k; a_i, b_i)).
+\]
+After a set amount of $K\in\N$ iterations, one then computes the weighted average
+\[
+    \bar{x}_K := \sum_{k=0}^K \eta_k^{-1}.
+\]
 For strongly convex objectives (that satisfy certain assumptions on the gradients),
 the authors show that, for any $\epsilon \in (0, \infty)$,
 one can choose $(\eta_k)_{k\in\N}, (\gamma_k)_{k\in\N}, (\delta_k)_{k\in\N}$ such that the
-sequece $(\bar{x}_k)_{k\in\N}$ satisfies
-$\dist(\bar{x}_k, \mathcal{X}) = \mathcal{O}(\log^{\epsilon} k/ k)$
-and $|f(\bar{x}_k) - f(x^\star)| = \mathcal{O}(\log^{\epsilon} k/ k)$,
-where $x^\star$ denotes the solution to \eqref{eq:nedic-problem}.
+sequece $\bar{x}_K$ satisfies
+\[
+    \dist(\bar{x}_K, \mathcal{X}) = \mathcal{O}\Big(\frac{\log^{\epsilon} K}{K}\Big)
+    \enspace
+    \text{and}
+    \enspace
+    |f(\bar{x}_K) - f(x^\star)| = \mathcal{O}\Big(\frac{\log^{2\epsilon} K}{K}\Big).
+\]
+Note that this asymptotic rate is essentially as good as it gets, as we have
+seen earlier that the projected gradient algorithm achieves the rate $\mathcal{O}(1 / K)$.
 \begin{algorithm}[t]
 \caption{Incremental Gradient Method (Nedić et al. \cite{nedich2023huber})}
 \label{alg:nedic-sgd}
@@ -183,8 +230,8 @@ penalty weights $(\gamma_k)_{k\in\N_0}$
     \State $g \gets \tilde{\nabla} f(x_{k}) + \gamma_k \nabla h_k^{\text{hub}} (x_k; a_i, b_i)$
     \State $x_{k+1} \gets x_k - \eta_k g$
 \EndFor
-\State $S_K \gets \sum_{k=0}^{K} \eta_k^{-1}$
-\State $\bar{x}_K \gets S_K^{-1} \sum_{k=0}^{K} \eta_k^{-1} x_k$
+\State $S_K \gets \sum_{k=1}^{K} \eta_k^{-1}$
+\State $\bar{x}_K \gets S_K^{-1} \sum_{k=1}^{K} \eta_k^{-1} x_k$
 \State \Return $\bar{x}_{K}$
 \end{algorithmic}
 \end{algorithm}
@@ -201,55 +248,59 @@ We keep the penalties $\pi_k(x)$ more generic, but assume that there
 exist smooth real-valued functions $(h_k)_{k\in\N}$ defined on $\R^m$,
 such that
 \[
-    \pi_k(x) = \E(h_k( A(\xi)x - b(\xi) )) \enspace\text{and}\enspace \pi_k(x) \downarrow_{k\to\infty} \pi_{\ell_1}(x)
+    \pi_k(x) = \E(h_k(x_k; A(\xi), b(\xi))) \enspace\text{and}\enspace \pi_k(x) \downarrow_{k\to\infty} \pi_{\ell_1}(x)
 \]
 for all $x\in\R^n$.
 This more general treatment allows for more flexibility in the design of the method,
 and includes the recent \textit{softplus penalty} introduced in \cite{li2025new}.
 
 As opposed to the setting of \cref{alg:nedic-sgd},
-we may not be able to calculate the gradient of our objective, $x\mapsto \E(F_\xi(x)) + r(x)$,
+we may not be able to calculate the gradient of our objective,
 because $r$ may be nonsmooth
 or because calculating the gradient of the
-expectation functional, $\E(F_\xi(x))$, may be infeasible. Say, for example, because the
+expectation functional, $\E(F_\xi)$, may be infeasible. Say, for example, because the
 distribution of $\xi$ is unknown or, in the case of large-scale machine learning,
 because the size of the dataset is too large to feasibly compute the full gradient of
 $\E(F_\xi(x))$ (which would require the evaluation of a very large sum) for
-multiple iterations or even just once.
+multiple iterations.
 Nedić et al. deal with nonsmoothness by using \textit{subgradients}
 instead of gradients, which are also defined at nondifferentiable
 points.
 However, in our approach we choose to instead use a \textit{proximal operator} \cite{parikh2014proximal} to deal
-with nonsmooth objectives: For $\eta\in(0, \infty)$ and $r\colon\R^n\to\R$,
+with nonsmooth objectives:
+For $\eta\in(0, \infty)$ and $r\colon\R^n\to\R\cup\{\infty\}$,
 the proximal operator $\prox_{\eta r}\colon\R^n\to\R^n$ is defined as
 \[
     \prox_{\eta r}(x) := \argmin_{u\in\R^n} \left\{\, r(u) + \frac{1}{2\eta} \norm{u - x}^2_2 \,\right\}.
 \]
-The proximal map allows us to only work with gradients of the differentiable terms in our objective.
+Under mild conditions on $r$, the proximal operator is well-defined and always
+yields a point in the domain of $f$.
+The proximal operator allows us to only work with gradients of the differentiable terms in our objective.
 To calculate these gradients for objectives involving intractable expectation functionals/large sums, we
 work with \textit{stochastic gradients} instead of regular (full) gradients.
 A stochastic gradient of a differentiable function $f$ at some point $x\in\R^n$
 is any random variable $g$ such that
 $\E(g) = \nabla f(x)$. In our case, we can calculate a stochastic gradient
-of $\E(F_\xi) + \gamma_k \pi_k$ at $x\in\R^n$ based on a sample
-$z$ from the distribution of $\xi$ as
-$\nabla F_z(x) + \gamma_k A^\top(z)\nabla h_k(A(z)x - b(z))$.
+of $\E(F_\xi) + \gamma_k \pi_k$ at $x\in\R^n$, based on a sample
+$z$ from the distribution of $\xi$, as
+\[
+    \nabla F_z(x) + \gamma_k A^\top(z)\nabla h_k(x; A(z), b(z)).
+\]
 To deal with the variance introduced by using a stochastic gradient
 instead of the full gradient, we will use a minibatch of samples
 and average over the resulting stochastic gradients to get
-a variance-reduced estimate of $\nabla \E(F_\xi(x)) + \gamma_k \nabla \pi_k(x)$.
+a variance-reduced estimate of $\E(\nabla F_\xi(x)) + \gamma_k \nabla \pi_k(x)$.
 The pseudo-code for the full algorithm is presented in \cref{alg:seqprox-sgd}.
-\textcolor{red}{TODO: Sample two samples independently, one for constraint, one for objective.}
 \begin{algorithm}[t]
 \caption{Sequential Proximal Stochastic Gradient Descent (SeqProx-SGD)}
 \label{alg:seqprox-sgd}
 \begin{algorithmic}[1] % [1] enables line numbers
 \Require Initial point $x_0\in\R^n$, step sizes $(\eta_k)_{k\in\N_0}$,
-penalty weights $(\gamma_k)_{k\in\N_0}$, minibatch sizes $(\beta_k)_{k\in\N_0}$,
+penalty weights $(\gamma_k)_{k\in\N_0}$,
 smooth penalty functions $(h_k)_{k\in\N_0}$, sample oracle for distribution of $\xi$
 \For{$k = 0$ to $K-1$}
-    \State Sample $\xi_1^k, \xi_2^k \sim \xi$
-    \State $g_k \gets \nabla F_{\xi_1^k}(x_{k}) + \gamma_k \nabla h_k(x_k; A(\xi_2^k), b(\xi_2^k))$
+    \State Sample $\xi_k$ from the distribution of $\xi$
+    \State $g_k \gets \nabla F_{\xi_k}(x_{k}) + \gamma_k \nabla h_k(x_k; A(\xi_k), b(\xi_k))$
     \State $x_{k+1} \gets \textnormal{prox}_{\eta_k r} (x_k - \eta_k g_k$)
 \EndFor
 \State $S_K \gets \sum_{k=1}^{K} \eta_k^{-1}$
