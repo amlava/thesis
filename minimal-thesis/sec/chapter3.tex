@@ -45,30 +45,30 @@ Finally, we denote the feasible set for problem \eqref{eq:main-problem-copy} as
         \item The function $r$ is proper, convex, and locally Lipschitz continuous on $\dom(r)$.
         \item The matrix-valued map $A\colon\R^p\to\R^{m\times n}$, and the vector valued
             map $b\colon\R^p\to\R^m$, are both (Borel-)measurable.
-        \item The sequence $(\gamma_k)_{k\in\N}$ is nondecreasing and unbounded. 
+        \item The sequence $(\gamma_k)_{k\in\N_0}$ is nondecreasing and unbounded. 
         \item There exists at least one feasible point.
     \end{enumerate}
 \end{assumption}
-\Cref{alg:seqprox-sgd} works with penalty functions $(\pi_k)_{k\in\N}$.
+\Cref{alg:seqprox-sgd} works with penalty functions $(\pi_k)_{k\in\N_0}$.
 These will always take the form
 \[
     \pi_k(x) := \E(h_k(x; A(\xi), b(\xi))),
 \]
-where, for all $k\in\N$,
-we let $(h_k)_{k\in\N}$ be any sequence of functions from
+where, for all $k\in\N_0$,
+we let $(h_k)_{k\in\N_0}$ be any sequence of functions from
 $\R^n \times \R^{m\times n} \times \R^m$ to $\R$ with the following properties:
 \begin{enumerate}
-    \item For all $k\in\N$, $h_k$ is convex and differentiable.
-    \item $\pi_k(x) \geq \E\norm{(A(\xi)x - b(\xi))_+}_1$ for all $x\in\R^n$ and $k\in\N$.
-    \item There exists a sequence $(\alpha_k)_{k\in\N}$ with $\lim_{k\to\infty} \alpha_k = 0$ such that
-    $\pi_k(\tilde{x}) \leq \alpha_k$ for all $k\in\N$ and all feasible points $\tilde{x}\in\mathcal{X}$.
-    \item The gradients of $(h_k)_{k\in\N}$ have uniformly bounded second moment:
+    \item For all $k\in\N_0$, $h_k$ is convex and differentiable.
+    \item $\pi_k(x) \geq \E\norm{(A(\xi)x - b(\xi))_+}_1$ for all $x\in\R^n$ and $k\in\N_0$.
+    \item There exists a sequence $(\alpha_k)_{k\in\N_0}$ with $\lim_{k\to\infty} \alpha_k = 0$ such that
+    $\pi_k(\tilde{x}) \leq \alpha_k$ for all $k\in\N_0$ and all feasible points $\tilde{x}\in\mathcal{X}$.
+    \item The gradients of $(h_k)_{k\in\N_0}$ have uniformly bounded second moment:
         \[
-            \sup_{k\in\N}\sup_{x\in\R^n} \E\norm{\nabla h_k(x; A(\xi), b(\xi))}^2 < \infty
+            \sup_{k\in\N_0}\sup_{x\in\R^n} \E\norm{\nabla h_k(x; A(\xi), b(\xi))}^2 < \infty
         \]
         almost surely.
 \end{enumerate}
-Finally, for all $k\in\N$, we define the sequence of unconstrained optimization problems
+Finally, for all $k\in\N_0$, we define the sequence of unconstrained optimization problems
 \begin{equation}
     \label{eq:main-problem-penalized}
     \tag{$\textnormal{P}^\textnormal{k}$}
@@ -82,7 +82,7 @@ from the nonsmooth part, $x\mapsto r(x)$, it is useful to also define the functi
 \[
     \psi_k(x) := \E(F_\xi(x)) + \gamma_k \pi_k(x),
 \]
-for all $k\in\N$.
+for all $k\in\N_0$.
 
 \Cref{ass:basic-assumptions} has multiple useful implications, which are captured
 by the following lemma.
@@ -92,18 +92,18 @@ by the following lemma.
     \begin{enumerate}
         \item The objective $f$ of \eqref{eq:main-problem-copy} is $\mu$-strongly convex, locally
             Lipschitz continuous, and subdifferentiable.
-        \item The objectives $(f_k)_{k\in\N}$ of \eqref{eq:main-problem-penalized} are $\mu$-strongly convex, locally
+        \item The objectives $(f_k)_{k\in\N_0}$ of \eqref{eq:main-problem-penalized} are $\mu$-strongly convex, locally
             Lipschitz continuous, and subdifferentiable.
-        \item The functions $(\psi_k)_{k\in\N}$ are $\mu$-strongly convex.
+        \item The functions $(\psi_k)_{k\in\N_0}$ are $\mu$-strongly convex.
         \item Let $B\subset\R^n$ be a bounded subset. Then, for all $x\in B,
-        \gamma\in[0,\infty), k\in\N$, the stochastic gradient
+        \gamma\in[0,\infty), k\in\N_0$, the stochastic gradient
         \[
             g(x) := \nabla F_\xi(x) + \gamma \nabla h_k(x; A(\xi), b(\xi))
         \]
         satisfies $\sup_{x\in B} g(x) = \mathcal{O}(\gamma)$ almost surely.
-        \item The gradients of $(\pi_k)_{k\in\N}$ are uniformly bounded: There exists $G\in(0,\infty)$ such that
+        \item The gradients of $(\pi_k)_{k\in\N_0}$ are uniformly bounded: There exists $G\in(0,\infty)$ such that
             \[
-                \sup_{k\in\N} \sup_{x\in\R^n} \norm{\nabla \pi_k(x)} \leq G.
+                \sup_{k\in\N_0} \sup_{x\in\R^n} \norm{\nabla \pi_k(x)} \leq G.
             \]
         \item There exists a unique solution $x^\star\in\mathcal{X}$ for \eqref{eq:main-problem-copy} and, for all $k\in\N$,
             there exists a unique solution $x_k^\star\in\R^n$ for \eqref{eq:main-problem-penalized}.
@@ -157,11 +157,11 @@ to our proximal method.
 \label{sec:almost-sure-convergence}
 
 In this section we will establish
-conditions under which we can guarantee almost sure convergence of the sequence of iterates $(x_k)_{k\in\N}$.
+conditions under which we can guarantee almost sure convergence of the sequence of iterates $(x_k)_{k\in\N_0}$.
 The proof will also yield convergence in expectation of
-$(x_k)_{k\in\N}$ to $x^\star$ along a subsequence. The main use of the almost sure convergence
-result will be that we will have conditions on the stepsizes $(\eta_k)_{k\in\N}$ and the
-penalty parameters $(\gamma_k)_{k\in\N}$ to ensure that $(x_k)_{k\in\N}$ is bounded with
+$(x_k)_{k\in\N_0}$ to $x^\star$ along a subsequence. The main use of the almost sure convergence
+result will be that we will have conditions on the stepsizes $(\eta_k)_{k\in\N_0}$ and the
+penalty parameters $(\gamma_k)_{k\in\N_0}$ to ensure that $(x_k)_{k\in\N_0}$ is bounded with
 probability one. This, together with some of the results we prove along the way, will
 come in very handy in the subsequent analysis of
 the quantitative convergence rates of our methods.
@@ -171,14 +171,14 @@ Robbins-Siegmund lemma, which provides a general sufficient condition to guarant
 convergence of so-called "almost supermartingales".
 \begin{lemma}[Robbins-Siegmund]
     \label{lem:robbins-siegmund}
-    Let $(\mathcal{F}_n)_{n\in\N}$ be an increasing sequence of $\sigma$-algebras and $v_n, a_n,
-    b_n, c_n$ be nonnegative $\mathcal{F}_n$-measurable random variables. If, for all $n\in\N$,
+    Let $(\mathcal{F}_k)_{k\in\N}$ be an increasing sequence of $\sigma$-algebras and $v_k, a_k,
+    b_k, c_k$ be nonnegative $\mathcal{F}_k$-measurable random variables. If, for all $k\in\N$,
     \begin{equation}
         \label{eq:lem:robbins-siegmund-almost-supermartingales}
-        \E(v_{n+1} \mid \mathcal{F}_n) \leq v_n(1+a_n) + b_n - c_n,        
+        \E(v_{k+1} \mid \mathcal{F}_k) \leq v_k(1+a_k) + b_k - c_k,        
     \end{equation}
-    and $\sum_{n=1}^\infty a_n < \infty, \sum_{n=1}^\infty b_n < \infty$ a.\,s., then with probability
-    one, $(v_n)_{n\in\N}$ is convergent and it holds that $\sum_{n=1}^\infty c_n < \infty$.
+    and $\sum_{k=1}^\infty a_k < \infty, \sum_{k=1}^\infty b_k < \infty$ a.\,s., then with probability
+    one, $(v_k)_{k\in\N}$ is convergent and it holds that $\sum_{k=1}^\infty c_k < \infty$.
 \end{lemma}
 \begin{proof}
     See \cite{robbins1971convergence}.
@@ -187,12 +187,12 @@ convergence of so-called "almost supermartingales".
 Our goal for the rest of this section is to derive a recursive inequality for the
 sequence $\norm{x_k - x^\star}^2$, which resembles \eqref{eq:lem:robbins-siegmund-almost-supermartingales}.
 In order to do this, we will first analyze the behavior of the
-sequence of solutions $(x_k^\star)_{k\in\N}$ of the sequence of unconstrained
+sequence of solutions $(x_k^\star)_{k\in\N_0}$ of the sequence of unconstrained
 problems \eqref{eq:main-problem-penalized}. We can then use this to "build a bridge"
-between $(x_k)_{k\in\N}$ and $x^\star$, by considering their respective relationships to
-the sequence $(x_k^\star)_{k\in\N}$.
+between $(x_k)_{k\in\N_0}$ and $x^\star$, by considering their respective relationships to
+the sequence $(x_k^\star)_{k\in\N_0}$.
 
-The first step towards analyzing the convergence of $(x_k^\star)$
+The first step towards analyzing the convergence of $(x_k^\star)_{k\in\N_0}$
 will be to (locally) bound the distance $\dist(x,\mathcal{X})$
 by (a term proportional to) the penalty $\pi_k(x)$.
 We will rely on
@@ -242,7 +242,7 @@ We will now formulate and prove the lemma.
     \[
        \tau \dist(x, \mathcal{X}) \leq \pi_k(x),
     \]
-    for all $x\in B$ and $k\in\N$.
+    for all $x\in B$ and $k\in\N_0$.
 \end{lemma}
 \begin{proof}
     % The projection map sends bounded sets to bounded sets. Indeed, if not,
@@ -362,7 +362,7 @@ We will now formulate and prove the lemma.
 \begin{theorem}[Convergence of $x_k^\star$]
     \label{thm:distance-to-feasibility-bound}
     Assume \cref{ass:basic-assumptions,ass:slater-point,ass:compact-support-without-zero} hold.
-    Then, for all $k\in\N$, it holds that
+    Then, for all $k\in\N_0$, it holds that
     \[
         \frac{\mu}{2} |\!|x^\star - x_k^\star|\!|^2 + \frac{\mu}{2} |\!|x^\star - \proj(x_k^\star)|\!|^2
         + (\tau\gamma_k - M) \, \dist(x_k^\star, \mathcal{X})
@@ -377,7 +377,7 @@ We will now formulate and prove the lemma.
     \]
 \end{theorem}
 \begin{proof}
-    Let $k\in\N$. By optimality of $x_k^\star$ for $f_k$, there exists
+    Let $k\in\N_0$. By optimality of $x_k^\star$ for $f_k$, there exists
     $0 \in \partial f_k(x_k^\star)$. Hence, by
     strong convexity, we obtain
     \begin{equation}
@@ -465,8 +465,8 @@ We will now formulate and prove the lemma.
     for all $k \geq K$ and some constant $c\in(0,1)$, as desired.
 \end{proof}
 
-Having established the convergence of the sequence $(x_k^\star)_{k\in\N}$
-to $x^\star$, we will now shift our attention to the iterates $(x_k)_{k\in\N}$
+Having established the convergence of the sequence $(x_k^\star)_{k\in\N_0}$
+to $x^\star$, we will now shift our attention to the iterates $(x_k)_{k\in\N_0}$
 of \cref{alg:seqprox-sgd}. We begin with the following
 fundamental recursive inequality.
 % \begin{lemma}[One-step improvement]
@@ -575,17 +575,17 @@ fundamental recursive inequality.
     \label{lem:one-step-improvement}
     Let \cref{ass:basic-assumptions} hold and
     let $\rho\in(0,1)$ and $\eta_k\in(0, \rho L^{-1}]$ for all $k\in\N$. Then
-    the iterates $(x_k)_{k\in\N}$ generated by \cref{alg:seqprox-sgd} with step size
-    schedule $(\eta_k)_{k\in\N}$ satisfy
+    the iterates $(x_k)_{k\in\N_0}$ generated by \cref{alg:seqprox-sgd} with step size
+    schedule $(\eta_k)_{k\in\N_0}$ satisfy
     \begin{align*}
         2\eta_k\E_k(f_k(x_{k+1}) - f_k(x))
         &\leq ( 1 - \mu\eta_k ) \norm{x - x_k}^2 - \E_k\norm{x - x_{k+1}}^2 + \frac{2\eta_k^2}{1 - \rho}\Var_k(g_k) \\
         &\phantom{===} + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho}.
     \end{align*}
-    for all $x\in\R^n$ and $k\in\N$.
+    for all $x\in\R^n$ and $k\in\N_0$.
 \end{lemma}
 \begin{proof}
-    For $k\in\N$ we denote by $g_k$ the stochastic gradient of $\psi_k$ at $x_k$
+    For $k\in\N_0$ we denote by $g_k$ the stochastic gradient of $\psi_k$ at $x_k$
     that is used in iteration $k$ of \cref{alg:seqprox-sgd}.
     We also let $\psi(x) := \E(F_\xi(x))$ for $x\in\R^n$, so that
     $\psi_k = \psi + \gamma_k\pi_k$ and
@@ -611,7 +611,7 @@ fundamental recursive inequality.
         \leq \pi_k(x_k) + \frac{\epsilon_k^{-1}}{2} \norm{\nabla \pi_k(x_{k+1})}^2 + \frac{\epsilon_k}{2} \norm{x_{k+1} - x_k}^2,
     \]
     for any $\epsilon_k \in (0,\infty)$.
-    Note that the gradients $(\nabla \pi_k)_{k\in\N}$ are bounded uniformly (\cref{lem:basic-properties}),
+    Note that the gradients $(\nabla \pi_k)_{k\in\N_0}$ are bounded uniformly (\cref{lem:basic-properties}),
     hence there exists $G\in(0,\infty)$ such that
     \[
         \pi_k(x_{k+1})
@@ -631,7 +631,7 @@ fundamental recursive inequality.
     \[
          \langle \nabla \pi_k(x_k), x_k - x_{k+1} \rangle \leq \frac{\epsilon_k}{2} G^2 + \frac{\epsilon_k^{-1}}{2} \norm{x_{k+1} - x_k}^2,
     \]
-    where again used the bound $\sup_{k\in\N}\sup_{x\in\R^n}\nabla \pi_k(x) \leq G$, and therefore we obtain
+    where again used the bound $\sup_{k\in\N_0}\sup_{x\in\R^n}\nabla \pi_k(x) \leq G$, and therefore we obtain
     \begin{align*}
         f_k(x_{k+1})
         &\leq \psi_k(x_k) + \langle \nabla \psi_k(x_k), x_{k+1} - x_k \rangle + \frac{L + 2\gamma_k\epsilon_k^{-1}}{2} \norm{x_{k+1} - x_k}^2 + r(x_{k+1}) \\
@@ -775,8 +775,9 @@ involves a nonnegative term plus a small negative term.
 \begin{lemma}
     \label{lem:recursion-for-almost-sure-convergence}
     Assume that \cref{ass:basic-assumptions,ass:slater-point,ass:compact-support-without-zero} hold, and
-    let $\eta_k\in(0,\rho L^{-1}]$ for all $k\in\N$ and some $\rho\in(0,1)$. Then the iterates $(x_k)_{k\in\N}$ generated
-    by \cref{alg:seqprox-sgd} with step size schedule $(\eta_k)_{k\in\N}$ satisfy
+    let $\eta_k\in(0,\rho L^{-1}]$ for all $k\in\N_0$ and some $\rho\in(0,1)$. Then the iterates
+    $(x_k)_{k\in\N_0}$ generated
+    by \cref{alg:seqprox-sgd} with step size schedule $(\eta_k)_{k\in\N_0}$ satisfy
     \begin{align*}
         \E_k\norm{x^\star - x_{k+1}}^2
         &\leq
@@ -785,10 +786,10 @@ involves a nonnegative term plus a small negative term.
         &\phantom{===} + \mathcal{O}(\eta_k\gamma_k\alpha_k)
         - 2\eta_k\E_k(f_{k}(x_{k+1}) - f_{k}(x_k^\star)),
     \end{align*}
-    for all $k\in\N$.
+    for all $k\in\N_0$.
 \end{lemma}
 \begin{proof}
-    Let $k\in\N$. From \cref{lem:one-step-improvement}, we have
+    Let $k\in\N_0$. From \cref{lem:one-step-improvement}, we have
     \begin{align*}
         2\eta_k\E_k(f_k(x_{k+1}) - f_k(x^\star))
         &\leq
@@ -887,8 +888,8 @@ Combining the above lemma with \eqref{eq:sec:almost-sure-convergence}, we now ha
     &\phantom{===}- 2\eta_k\E_k(f_k(x_{k+1}) - f_k(x_k^\star)).
 \end{align*}
 The term $2\eta_k\E_k(f_k(x_{k+1}) - f_k(x_k^\star))$ is indeed nonnegative by optimality of $x_k^\star$
-for $f_k$. Assuming that $\sum_{k=1}^\infty \eta_k\gamma_k\alpha_k < \infty$ and
-$\sum_{k=1}^\infty \eta_k^2 \gamma_k^2 < \infty$, we are almost ready
+for $f_k$. Assuming that $\sum_{k=0}^\infty \eta_k\gamma_k\alpha_k < \infty$ and
+$\sum_{k=0}^\infty \eta_k^2 \gamma_k^2 < \infty$, we are almost ready
 to apply \cref{lem:robbins-siegmund}.
 The following lemma will give a bound on the gradient noise $\Var_k(g_k)$.
 \begin{lemma}[Bound on gradient noise]
@@ -898,11 +899,11 @@ The following lemma will give a bound on the gradient noise $\Var_k(g_k)$.
     \[
         \Var_k(g_k) \leq \frac{2L^2}{\beta_k} \norm{x_k - x^\star}^2 + \frac{1 + \gamma_k^2}{\beta_k} \sigma^2,
     \]
-    for all $k\in\N$.
+    for all $k\in\N_0$.
 \end{lemma}
 \begin{proof}
-    Let $k\in\N$ and define
-    $\tilde{g}_k := \nabla F_{\xi_1}(x_k) + \gamma_k \nabla h_k(x_k; A(\xi_2), b(\xi_2))$.
+    Let $k\in\N_0$ and define
+    $\tilde{g}_k := \nabla F_{\xi_k}(x_k) + \gamma_k \nabla h_k(x_k; A(\xi_k), b(\xi_k))$.
     We have
     \begin{align*}
         \Var_k(g_k)
@@ -965,8 +966,8 @@ We are now ready to prove the main theorem of this section.
 \begin{theorem}[Almost sure convergence]
     \label{thm:almost-sure-convergence}
     Assume \cref{ass:basic-assumptions,ass:slater-point,ass:compact-support-without-zero} hold.
-    Let $(x_k)_{k\in\N}$ be a sequence generated by \cref{alg:seqprox-sgd} with
-    parameters $(\eta_k)_{k\in\N}$, $(\gamma_k)_{k\in\N}$, $(h_k)_{k\in\N}$ that satisfiy
+    Let $(x_k)_{k\in\N_0}$ be a sequence generated by \cref{alg:seqprox-sgd} with
+    parameters $(\eta_k)_{k\in\N_0}$, $(\gamma_k)_{k\in\N_0}$, $(h_k)_{k\in\N_0}$ that satisfiy
     \begin{enumerate}
         \item $\sum_{k=1}^\infty \eta_k = \infty$ and there exists $\rho\in(0,1)$ such that $\eta_k \leq \rho L^{-1}$ for all $k\in\N$.
         \item $\sum_{k=1}^\infty \eta_k\gamma_k\alpha_k < \infty$.
@@ -991,7 +992,7 @@ We are now ready to prove the main theorem of this section.
     \[
         \Var_k(g_k) \leq \frac{2L^2}{\beta_k} \norm{x_k - x^\star}^2 + \frac{1 + \gamma_k^2}{\beta_k} \sigma^2,
     \]
-    for a constant $M^2\in(0,\infty)$ and all $k\in\N$.
+    for a constant $M^2\in(0,\infty)$ and all $k\in\N_0$.
     Thus, we have
     \begin{align*}
         \E_k\norm{x^\star - x_{k+1}}^2
@@ -1004,8 +1005,8 @@ We are now ready to prove the main theorem of this section.
         + 2\eta_k^2(1-\rho)^{-1}\frac{1 + \gamma_k^2}{\beta_k} \sigma^2 \\
         &\phantom{===} + \mathcal{O}(\eta_k\gamma_k\alpha_k) - 2\eta_k\E_k(f_{k}(x_{k+1}) - f_{k}(x_k^\star)),
     \end{align*}
-    for all $k\in\N$.
-    Define the nonegative sequences $(a_k)_{k\in\N}, (b_k)_{k\in\N}, (c_k)_{k\in\N}$ by
+    for all $k\in\N_0$.
+    Define the nonegative sequences $(a_k)_{k\in\N_0}, (b_k)_{k\in\N_0}, (c_k)_{k\in\N_0}$ by
     \begin{align*}
         a_k &:= 4L^2(1-\rho)^{-1}\beta_k^{-1}\eta_k^2 \\
         b_k &:= 2\eta_k^2(1-\rho)^{-1}\frac{1 + \gamma_k^2}{\beta_k} \sigma^2 + \mathcal{O}(\eta_k\gamma_k\alpha_k)\ \\
@@ -1019,20 +1020,20 @@ We are now ready to prove the main theorem of this section.
         (1 + a_k)\norm{x^\star - x_k}^2
         + b_k - c_k.
     \]
-    Our assumptions imply that $\sum_{k=1}^{\infty} a_k < \infty$ and $\sum_{k=1}^\infty b_k < \infty$,
+    Our assumptions imply that $\sum_{k=0}^{\infty} a_k < \infty$ and $\sum_{k=0}^\infty b_k < \infty$,
     so we can apply
     \cref{lem:robbins-siegmund}, which implies that with probability one the sequence
     $\norm{x^\star - x_{k}}^2$ converges and
-    $\sum_{k=1}^\infty \eta_k\E_k(f_{k}(x_{k+1}) - f_{k}(x_k^\star)) < \infty$.
+    $\sum_{k=0}^\infty \eta_k\E_k(f_{k}(x_{k+1}) - f_{k}(x_k^\star)) < \infty$.
     By the bounded convergence theorem (\textcolor{red}{TODO: add ref}), it further holds that
     \begin{align*}
-        \infty > \E\Big( \sum_{k=1}^\infty \eta_k\E_k(f_{k}(x_{k+1}) - f_{k}(x_k^\star)) \Big)
+        \infty > \E\Big( \sum_{k=0}^\infty \eta_k\E_k(f_{k}(x_{k+1}) - f_{k}(x_k^\star)) \Big)
         &=
-        \sum_{k=1}^\infty \eta_k\E(\E_k(f_{k}(x_{k+1}) - f_{k}(x_k^\star))) \\
+        \sum_{k=0}^\infty \eta_k\E(\E_k(f_{k}(x_{k+1}) - f_{k}(x_k^\star))) \\
         &=
-        \sum_{k=1}^\infty \eta_k\E(f_{k}(x_{k+1}) - f_{k}(x_k^\star)).
+        \sum_{k=0}^\infty \eta_k\E(f_{k}(x_{k+1}) - f_{k}(x_k^\star)).
     \end{align*}
-    Since $\sum_{k=1}^\infty \eta_k = \infty$, it must therefore hold that
+    Since $\sum_{k=0}^\infty \eta_k = \infty$, it must therefore hold that
     \[
         \liminf_{k\to\infty} \E(f_{k}(x_{k+1}) - f_{k}(x_k^\star)) = 0.
     \]
@@ -1051,9 +1052,9 @@ We are now ready to prove the main theorem of this section.
 
 \section{Convergence rates in expectation}
 
-In the previous section, we established that the iterates $(x_k)_{k\in\N}$
+In the previous section, we established that the iterates $(x_k)_{k\in\N_0}$
 of \cref{alg:seqprox-sgd} are bounded with probability one,
-provided that the parameters $(h_k)_{k\in\N}$, $(\eta_k)_{k\in\N}$, $(\gamma_k)_{k\in\N}$
+provided that the parameters $(h_k)_{k\in\N_0}$, $(\eta_k)_{k\in\N_0}$, $(\gamma_k)_{k\in\N_0}$
 satisfy certain conditions, which are captured in the following assumption.
 
 % \begin{theorem}[Constant step size schedule]
@@ -1072,29 +1073,29 @@ satisfy certain conditions, which are captured in the following assumption.
 \begin{assumption}
     \label{ass:step-sizes-and-penalties}
     The parameters
-    $(h_k)_{k\in\N}$, $(\eta_k)_{k\in\N}$, $(\gamma_k)_{k\in\N}$ of \cref{alg:seqprox-sgd} satisfiy
+    $(h_k)_{k\in\N_0}$, $(\eta_k)_{k\in\N_0}$, $(\gamma_k)_{k\in\N_0}$ of \cref{alg:seqprox-sgd} satisfiy
     \begin{enumerate}
-        \item $\sum_{k=1}^\infty \eta_k = \infty$ and there exist constants $\rho\in(0,1)$ and $K\in\N$
+        \item $\sum_{k=0}^\infty \eta_k = \infty$ and there exist constants $\rho\in(0,1)$ and $K\in\N$
             such that $\eta_k \leq \rho L^{-1}$ for all $k\in\N, k\geq K$.
-        \item $\sum_{k=1}^\infty \eta_k\gamma_k\alpha_k < \infty$.
-        \item $\sum_{k=1}^\infty \eta_k^2 \gamma_k^2 < \infty$.
+        \item $\sum_{k=0}^\infty \eta_k\gamma_k\alpha_k < \infty$.
+        \item $\sum_{k=0}^\infty \eta_k^2 \gamma_k^2 < \infty$.
     \end{enumerate}
 \end{assumption}
 
 \begin{lemma}
     \label{lem:functional-upper-bound}
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point,ass:step-sizes-and-penalties} hold.
-    Then there exists a deterministic sequence $(M_k^2)_{k\in\N} \subset \R^n$ with
+    Then there exists a deterministic sequence $(M_k^2)_{k\in\N_0} \subset \R^n$ with
     $M_k^2 = \mathcal{O}(\beta_k^{-1}(1 + \gamma_k^2) + \gamma_k^2)$, such that
     \[
         2\eta_k\E(f_k(x_{k}) - f_k(x))
         \leq
         (1-\mu\eta_k)\E\norm{x - x_k}^2 - \E \norm{x - x_{k+1}}^2 + \eta_k^2 M_k^2,
     \]
-    for all $k\in\N$ and $x\in\R^n$.
+    for all $k\in\N_0$ and $x\in\R^n$.
 \end{lemma}
 \begin{proof}
-    Let $k\in\N$. Taking expectations on both sides of the inequality provided by
+    Let $k\in\N_0$. Taking expectations on both sides of the inequality provided by
     \cref{lem:one-step-improvement}, we get
     \begin{align*}
         2\eta_k\E(f_k(x_{k+1}) - f_k(x))
@@ -1109,7 +1110,7 @@ satisfy certain conditions, which are captured in the following assumption.
     for a constant $\sigma^2\in(0,\infty)$.
     \Cref{ass:step-sizes-and-penalties} and \cref{thm:almost-sure-convergence} imply that there exists
     a constant $\tilde{\sigma}^2\in(0, \infty)$ such that $2L^2 \norm{x_k - x^\star}^2 \leq \tilde{\sigma}^2$
-    for all $k\in\N$ (almost surely).  We can assume without loss of generality that $\sigma^2 \leq \tilde{\sigma}^2$,
+    for all $k\in\N_0$ (almost surely).  We can assume without loss of generality that $\sigma^2 \leq \tilde{\sigma}^2$,
     and since $1 + \gamma_k^2 > 1$, we have
     \[
         \Var_k(g_k) \leq \frac{1}{\beta_k} \tilde{\sigma}^2 + \frac{1 + \gamma_k^2}{\beta_k}\tilde{\sigma}^2
@@ -1139,7 +1140,7 @@ satisfy certain conditions, which are captured in the following assumption.
         (1-\mu\eta_k)\E\norm{x - x_k}^2 - \E \norm{x - x_{k+1}}^2 + \frac{4\eta_k^2 (1 + \gamma_k^2)}{(1-\rho)\beta_k}\tilde{\sigma}^2 \\
         &\phantom{===}+ 2\eta_k\E\left( \norm{\tilde{\nabla} f_k(x_k)} \norm{x_{k+1} - x_k} \right).
     \end{align*}
-    Since $(x_k)_{k\in\N}$ is bounded almost surely (\cref{thm:almost-sure-convergence}),
+    Since $(x_k)_{k\in\N_0}$ is bounded almost surely (\cref{thm:almost-sure-convergence}),
     we know from \cref{lem:basic-properties} that $\norm{\tilde{\nabla} f_k(x_k)} = \mathcal{O}(\gamma_k)$.
     We will now analyze $\norm{x_{k+1} - x_k}$. Let $y_k := \prox_{\eta_k r} (x_k)$. Then, using
     the triangle inequality and the nonexpansiveness property of the proximal operator (\textcolor{red}{TODO}),
@@ -1166,7 +1167,7 @@ satisfy certain conditions, which are captured in the following assumption.
         \enspace\iff\enspace
         \norm{x_k - y_k} \leq \eta_k L_r,
     \]
-    for some $L_r \in (0,\infty)$, where we again used that $(x_k)_{k\in\N}$ is bounded almost surely
+    for some $L_r \in (0,\infty)$, where we again used that $(x_k)_{k\in\N_0}$ is bounded almost surely
     (\cref{thm:almost-sure-convergence})
     and the prox operator is nonexpansive (\textcolor{red}{TODO}).
     In total, we have thus shown
@@ -1180,14 +1181,14 @@ satisfy certain conditions, which are captured in the following assumption.
         (1-\mu\eta_k)\E\norm{x - x_k}^2 - \E \norm{x - x_{k+1}}^2 + \frac{4\eta_k^2 (1 + \gamma_k^2)}{(1-\rho)\beta_k}\tilde{\sigma}^2 \\
         &\phantom{===}+ 2\eta_k^2\mathcal{O}(\gamma_k^2).
     \end{align*}
-    Therefore, there exists a sequence $(M_k^2)_{k\in\N} \subset \R_{\geq 0}$ such that
+    Therefore, there exists a sequence $(M_k^2)_{k\in\N_0} \subset \R_{\geq 0}$ such that
     $M_k^2 = \mathcal{O}(\beta_k^{-1}(1 + \gamma_k^2) + \gamma_k^2)$ and
     \[
         2\eta_k\E(f_k(x_{k}) - f_k(x))
         \leq
         (1-\mu\eta_k)\E\norm{x - x_k}^2 - \E \norm{x - x_{k+1}}^2 + \eta_k^2 M_k^2,
     \]
-    for all $x\in\R^n$, as desired.
+    for all $x\in\R^n, k\in\N_0$, as desired.
 \end{proof}
 
 \begin{lemma}
@@ -1210,7 +1211,7 @@ satisfy certain conditions, which are captured in the following assumption.
     Then there exists a constant $k_0\in\N$, as well as sequences $(M_k^2)_{k\in\N_0}\subset\R^n$,
     $(\beta_k)_{k\in\N_0}$, $(\gamma_k)_{k\in\N_0}$, $(h_k)_{k\in\N_0}$
     such that the iterates $(\bar{x}_k)_{k\in\N}$ generated by \cref{alg:seqprox-sgd}
-    with parameters $(\eta_k)_{k\in\N_0}$, $(\gamma_k)_{k\in\N_0}$, $(\beta_k)_{k\in\N_0}$
+    with parameters $(\eta_k)_{k\in\N_0}$, $(\gamma_k)_{k\in\N_0}$, $(h_k)_{k\in\N_0}$, $(\beta_k)_{k\in\N_0}$
     satisfy
     \[
         \E(f(\bar{x}_{K}) - f(x^\star))
@@ -1459,10 +1460,10 @@ satisfy certain conditions, which are captured in the following assumption.
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point} hold
     and define $\eta_k := 2/(\mu k)$ for all $k\in\N$, $\eta_0 := 2/\mu$.
     Then, for any $e\in(0,\infty)$, there exist sequences $(\gamma_k)_{k\in\N_0}$,
-    $(h_k)_{k\in\N_0}$, $(\beta_k)_{k\in\N}$
+    $(h_k)_{k\in\N_0}$, $(\beta_k)_{k\in\N_0}$
     such that the iterates $(\bar{x}_k)_{k\in\N}$
     generated from \cref{alg:seqprox-sgd} with parameters $(\eta_k)_{k\in\N_{0}}$,
-    $(\gamma_k)_{k\in\N_0}$, $(h_k)_{k\in\N_0}$, $(\beta_k)_{k\in\N}$ satisfy
+    $(\gamma_k)_{k\in\N_0}$, $(h_k)_{k\in\N_0}$, $(\beta_k)_{k\in\N_0}$ satisfy
     \[
         \E| f(\bar{x}_{K}) - f(x^\star) | = \mathcal{O} \Big( \frac{\log^{2e}(K)}{K} \Big).
     \]

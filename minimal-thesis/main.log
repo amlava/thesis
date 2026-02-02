@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.10.28)  2 FEB 2026 15:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.10.28)  2 FEB 2026 15:57
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1381,7 +1381,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [31]
-Overfull \hbox (1.22682pt too wide) in paragraph at lines 1355--1360
+Overfull \hbox (1.22682pt too wide) in paragraph at lines 1356--1361
 \T1/zpltlf/m/n/12 Using al-most sure bound-ed-ness of $\LMS/npxsy/m/n/12 ¹\OML/npxmi/m/it/12 x[]\LMS/npxsy/m/n/12 º[]$\T1/zpltlf/m/n/12 , lo-cal Lip-s-chitz con-ti-nu-ity of $\OML/npxmi/m/it/12 f$ \T1/zpltlf/m/n/12 ([][]lemma 3.1[][]),
  []
 
@@ -1541,7 +1541,7 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  94i,13n,107p,1052b,668s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/NewPXMI.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/NewPXMI_gnu.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/pxmiaX.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/pxsys.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/tex-gyre/qhvb.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/txexs.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/txsym.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/zplb.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/zplr.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/zplri.pfb>
-Output written on main.pdf (53 pages, 540403 bytes).
+Output written on main.pdf (53 pages, 541035 bytes).
 PDF statistics:
  637 PDF objects out of 1000 (max. 8388607)
  552 compressed objects within 6 object streams
