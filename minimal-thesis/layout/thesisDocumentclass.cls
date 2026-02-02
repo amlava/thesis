@@ -170,6 +170,9 @@
 \DeclareMathOperator{\prox}{prox}
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\graph}{graph}
+\DeclareMathOperator{\interior}{int}
+\DeclareMathOperator{\range}{range}
 
 % Anpassung von \cleardoublepage
 \let\origdoublepage\cleardoublepage

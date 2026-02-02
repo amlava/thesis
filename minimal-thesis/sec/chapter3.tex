@@ -204,23 +204,19 @@ Crucially, there always exists a constant $\tau\in(0,\infty)$, such that
     \tau \dist(x, S) \leq \norm{(Ax - b)_+}_\infty,
 \]
 where $S := \{\, y\in\R^n \mid Ay \leq b \,\}$.
-In \cite{hu1989approximate}, this result was then extended to the case of infinte systems
-of linear inequalities, which is the setting that we are interested in.
-However, before we can apply this inequality, we will first need to impose two assumptions. The first one concerns
-the joint distribution of $A(\xi)$ and $b(\xi)$.
-For $i\in\{\, 1,\dots,m \,\}$, $z\in\R^p$, we let $a_i(z)\in\R^{n}$, resp. $b_i(z)\in\R$, denote
-the $i$-th row of $A(z)$, resp. $b(z)$.
 \begin{assumption}
     \label{ass:compact-support-without-zero}
-    There exists a compact set $C\in\R^{n+1}$ such that $0\notin C$ and the set
-    \[
-        \{\, (a_i(\xi), b_i(\xi)) \mid i\in\{\, 1,\dots,m \,\} \,\}
-    \]
-    is contained in $C$ almost surely.
+    There exists a compact set $C_\xi\in\R^p$ such that $\xi$ is supported
+    on $C_\xi$ and $\Prob^\xi$ admits a Lebesgue-density $q$ such that
+    \begin{enumerate}
+        \item $q$ is continuous on $C_\xi$ and
+        \item $q(x) > 0$ for all $x\in C_\xi$.
+    \end{enumerate}
+    Further, we assume that $\int_{C_\xi} \norm{A(z)x - b(z)}_1 \, dz < \infty$ for all $x\in\R^n$.
 \end{assumption}
+A sufficient condition for the last part of the assumption is continuity of the maps $A$ and $b$
+on $C_\xi$.
 
-The second assumption we make concerns the structure of the solution set $\mathcal{X}$
-and is a very common assumption in optimization.
 \begin{assumption}
     \label{ass:slater-point}
     There exists a \textit{Slater point}, i.\,e. a point $x\in\mathcal{X}$ such that $A(\xi)x < b(\xi)$
@@ -236,15 +232,172 @@ and is a very common assumption in optimization.
 We will now formulate and prove the lemma.
 \begin{lemma}[Subfeasibility bound via penalty functions]
     \label{lem:lower-bound-on-penalties-by-distance-to-feasibility}
-    Assume \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point} hold,
-    let $B\subset\R^n$ be a bounded subset. Then
+    Assume \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point} hold
+    and let $C\subset\R^n$ be a compact subset. Then
     there exists a constant $\tau\in(0,\infty)$ such that
     \[
        \tau \dist(x, \mathcal{X}) \leq \pi_k(x),
     \]
-    for all $x\in B$ and $k\in\N_0$.
+    for all $x\in C$ and $k\in\N_0$.
 \end{lemma}
 \begin{proof}
+    We consider the function space $Y := L_1(C_\xi, \R^m)$ equipped with the norm
+    \[
+        \norm{y}_{Y} := \int_{C_\xi} \norm{y(z)}_1 \, dz.
+    \]
+    The distance map on $Y$, denoted $\dist_Y$, is then given by
+    \[
+        \dist_Y(y, S) := \inf_{y^\prime\in S} \norm{y - y^\prime}_Y
+    \]
+    for $y\in Y$ and $S\subset Y$.
+    We define the multifunction $\varPsi\colon \R^n \to 2^{Y}$ as
+    \[
+        \varPsi(x) := \{\, y\in Y \mid A(\xi)x - b(\xi) \leq y(\xi) \text{ \,a.\,s.} \,\}.
+    \]
+    This multifunction is closed and convex. Indeed, let $(x_k)_{k\in\N} \in \R^n$
+    be a sequence that converges to some $x\in\R^n$, and assume that there exists
+    a sequence $(y_k)_{k\in\N}$ with $y_k\in\varPsi(x_k)$ for all $k\in\N$, such that
+    $\lim_{k\to\infty} y_k = y \in Y$.
+    Then, with probability one,
+    \[
+        A(\xi)x - b(\xi) = \lim_{k\to\infty} A(\xi)x_k - b(\xi) \leq \lim_{k\to\infty} y_k(\xi) = y(\xi).
+    \]
+    Hence $y\in\varPsi(x)$, which proves closedness.
+    For convexity, let
+    $x_1, x_2 \in \R^n$ and $t\in [0, 1]$. Then
+    \begin{align*}
+        t\varPsi(x_1) + (1-t)\varPsi(x_2)
+        = \{\, y &\mid y = ty_1 + (1-t)y_2 \text{ for } y_1, y_2\in Y \\
+                &\phantom{===} \text{ such that } A(\xi)x_1 - b(\xi) \leq y_1(\xi) \text{ \,a.\,s.} \\
+                &\phantom{===} \text{ and } A(\xi)x_2 - b(\xi) \leq y_2(\xi) \text{ \,a.\,s.} \,\}.
+    \end{align*}
+    Let $x := t x_1 + (1-t) x_2$. Then, for any $y \in t\varPsi(x_1) + (1-t)\varPsi(x_2)$, there exist
+    $y_1, y_2\in Y$, such that
+    \[
+        A(\xi)x - b(\xi) = t(A(\xi)x_1 - b(\xi)) + (1-t)(A(\xi)x_2 - b(\xi)) \leq t y_1(\xi) + (1-t)y_2(\xi) = y(\xi).
+    \]
+    Hence,
+    \[
+        t\varPsi(x_1) + (1-t)\varPsi(x_2) \subset \varPsi(t x_1 + (1-t) x_2),
+    \]
+    proving convexity.
+    Now let $x_0\in C$ be some arbitrary point.
+    Per definition of the inverse $\varPsi^{-1}$, it holds that
+    \[
+        \varPsi^{-1}(0) = \{\, x\in\R^n \mid 0 \in \varPsi(x) \,\} = \{\, x\in\R^n \mid A(\xi)x - b(\xi) \leq 0 \text{ \,a.\,s.} \,\}
+        =
+        \mathcal{X}.
+    \]
+    Hence we can write $\dist(x, \mathcal{X}) = \dist(x, \varPsi^{-1}(0))$.
+    Note that \cref{ass:slater-point} implies $0 \in \interior(\range \varPsi )$. Therefore we
+    can apply \cref{prop:robinson-ursescu}, which guarantees the existence of a constant
+    $c\in\R_{\geq 0}$, such that
+    \[
+        \dist(x, \varPsi^{-1}(y)) \leq c \dist_Y(y, \varPsi(x))
+    \]
+    for all $(x, y)$ in some open neighborhood $U \subset \R^n\times Y$ containing $(x_0, 0)$.
+    In particular,
+    \begin{equation}
+        \label{eq:proof:lem:lower-bound-on-penalties-by-distance-to-feasibility-1}
+        \dist(x, \mathcal{X}) \leq c \dist_Y(0, \varPsi(x))        
+    \end{equation}
+    for all $x$ in the open set $U \cap (\R^n\times \{0\})$. Since $x_0$ is arbitrary,
+    we can derive a similar bound that holds around an open neighborhood $U_x \subset \R^n$ of a point $x\in C$, for any
+    $x\in C$, yielding corresponding constants $(c_x)_{x\in C}$.
+    By compactness of $C$, the open covering
+    \[
+        C \subset \bigcup_{x\in C} U_x
+    \]
+    has a finite subcovering
+    \[
+        C \subset \bigcup_{i=1}^\ell U_{x_i}
+    \]
+    with $(x_i)_{i\in\{\, 1,\dots, \ell \,\}} \subset C$. The corresponding constants
+    $(c_{x_i})_{i\in\{\, 1,\dots, \ell \,\}}$ have a maximum $c := \max_{i\in\{\, 1,\dots, \ell \,\}} c_{x_i}$.
+    Thus, we have shown that there exists $c\in\R_{\geq 0}$ such that
+    \[
+        \dist(x, \mathcal{X}) \leq c \dist_Y(0, \varPsi(x))
+    \]
+    for all $x\in C$. Next, we will show that
+    \begin{equation}
+        \label{eq:proof:lem:lower-bound-on-penalties-by-distance-to-feasibility-2}
+        \dist_Y(0, \varPsi(x))
+        = \int_{C_\xi} \norm{(A(z)x - b(z))_+}_1 \, dz = \norm{(Ax - b)_+}_Y
+    \end{equation}
+    for any $x\in C$.
+    Fix $x\in C$ and let $y\in \varPsi(x)$.
+    By definition of $\varPsi(x)$ and positivity of $q$ on $C_\xi$,
+    it holds that $y\in \varPsi(x) \iff A(z)x - b(z) \leq y(z)$ for all $z\in C_\xi$.
+    Set
+    \[
+        \phi(z) := (A(z)x - b(z))_+
+    \]
+    for $z\in C_\xi$. Clearly, $\phi \in \varPsi(x)$.
+    We will show that $\norm{\phi(z)} \leq \norm{y(z)}$
+    for all $z\in C_\xi$, via induction over $m$.
+    For the base case, $m = 1$, we have
+    \[
+        |\phi(z)| = \begin{cases}
+            0, &A(z)x - b(z) \leq 0 \\
+            A(z)x - b(z), &\text{else}
+        \end{cases}
+    \]
+    and thus
+    \[
+        |y| \geq \begin{cases}
+            A(z)x - b(z), &\text{if } A(z)x - b(z) \geq 0, \\
+            0, &\text{else.}
+        \end{cases}
+        \enspace =
+        |\phi(z)|.
+    \]
+    For general $m\in\N$, we define $\norm{v}_{1, m-1} := \sum_{i=1}^{m-1} |v_i|$
+    and
+    $v_{[m-1]} := (v_i)^\top_{i\in\{\,1,\dots, m-1\,\}}$,
+    for
+    $v = (v_i)_{i\in\{\,1,\dots, m\,\}} \in \R^m$. Using the induction hypothesis, we have
+    \begin{align*}
+        \norm{\phi(z)}_{1, m} &= \norm{\phi(z)_{[m-1]}}_{1, m - 1} + |\phi(z)_m| \\
+                              &\leq \norm{y_{[m-1]}}_{1, m - 1} + |y_m| \\
+                              &= \norm{y}_1,
+    \end{align*}
+    as desired. Therefore,
+    \[
+        \inf_{y \in \varPsi(x)} \int_{C_\xi} \norm{y}_1 \, dz
+        \geq
+        \int_{C_\xi} \norm{\phi(z)} \, dz,
+    \]
+    proving \eqref{eq:proof:lem:lower-bound-on-penalties-by-distance-to-feasibility-2}.
+    To finish the proof, we need to establish a relationship between
+    \eqref{eq:proof:lem:lower-bound-on-penalties-by-distance-to-feasibility-2}
+    and $\pi_k(x)$.
+    By compactness of $C_\xi$ and continuity of $q$, the image $q(C_\xi)$
+    must be compact.
+    In particular, since $q(x) > 0$ for all $x\in C_\xi$, there must
+    exist some uniform positive lower bound $c_q \in (0, \infty)$ such that $q(x) \geq c_q$
+    for all $x\in C_\xi$. If we denote the Lebesgue-measure by $\lambda$, we see that
+    \[
+        \Prob^\xi(A) = \int_{A} q(z) \, dz \geq c_q \lambda (A),
+    \]
+    for all measurable $A \subset C_\xi$.
+    Therefore, $\Prob^\xi$ and $\lambda$ are equivalent on $C_\xi$, and
+    $q^{-1}$ is a $\Prob^\xi$-density of $\lambda$.
+    We thus have
+    \begin{align*}
+        \norm{y}_Y &= \int_{z\in C_\xi} \norm{y(z)}_1 \, dz \\
+        &= \int_{z\in C_\xi} \norm{y(z)}_1 q^{-1}(z) \, \Prob^\xi(dz) \\
+        &\leq c_q^{-1} \int_{z\in C_\xi} \norm{y(z)}_1 \, \Prob^\xi(dz) \\
+        &= c_q^{-1} \int \norm{y(\xi)}_1 \, d\Prob \\
+        &= c_q^{-1} \, \E\norm{y(\xi)}_1.
+    \end{align*}
+    Combining with \eqref{eq:proof:lem:lower-bound-on-penalties-by-distance-to-feasibility-1}
+    and \eqref{eq:proof:lem:lower-bound-on-penalties-by-distance-to-feasibility-2}, we
+    obtain
+    \[
+        \dist(x, \mathcal{X}) \leq c c_q^{-1} \E\norm{(A(\xi)x - b(\xi))_+}_1.
+    \]
+    The claim follows after setting $\tau := c^{-1} c_q$
+    and applying one of the defining properties of $(\pi_k)_{k\in\N}$.
     % The projection map sends bounded sets to bounded sets. Indeed, if not,
     % then there exists a sequence $(y_k)_{k\in\N}\in B$ such that $\lim_{k\to\infty} \norm{\proj(y_k)} = \infty$.
     % But the projection map is contractive, hence, for any $x\in \mathcal{X}$,

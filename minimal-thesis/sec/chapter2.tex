@@ -6,3 +6,39 @@
 \subsection{Convex optimization}
 \subsection{Stochastic optimization}
 \subsection{Multifunctions and metric regularity}
+
+% \begin{definition}
+%     We say that the multifunction $\varPsi\colon X \to 2^Y$ is open at a point
+% \end{definition}
+\begin{definition}
+    Let $X$ and $Y$ be Banach spaces. A function $\varPsi\colon X\to 2^Y$
+    is called \textbf{multifunction}. The \textbf{domain} and the \textbf{range}
+    of a multifunction $\varPsi\colon X\to 2^Y$ are defined as
+    \begin{align*}
+        \dom(\varPsi) &:= \{\, x\in X \mid \varPsi(x) \neq \emptyset \,\}, \\
+        \range(\varPsi) &:= \{\, y\in Y \mid y\in \varPsi(x) \text{ for some $x\in X$} \,\}.
+    \end{align*}
+    The \textbf{graph} of $\varPsi$ is
+    \[
+        \graph(\varPsi) := \{\, (x, y) \in X\times Y \mid y\in\varPsi(x), x\in X \,\}.
+    \]
+    The \textbf{(graph) inverse} $\varPsi^{-1}\colon Y \to 2^X$ of $\varPsi$ is defined as
+    \[
+        \varPsi^{-1}(y) := \{\, x\in X \mid y\in\varPsi(x) \,\}.
+    \]
+\end{definition}
+\begin{definition}
+    We say that the multifunction $\varPsi\colon X\to 2^Y$ is \textbf{metric regular} at a point
+    $(x_0,y_0)\in\graph(\varPsi)$ at rate $c\in\R_{\geq 0}$, if there
+    exists a neighborhood $U\subset X\times Y$ containing $(x_0,y_0)$, such that
+    \[
+        \dist(x, \varPsi^{-1}(y)) \leq c \dist(y, \varPsi(x)),
+    \]
+    for all $(x, y)\in U$.
+\end{definition}
+\begin{proposition}[Robinson-Ursescu stability theorem]
+    \label{prop:robinson-ursescu}
+    Let $\varPsi\colon X\to 2^Y$ be a closed convex multifunction. Then $\varPsi$
+    is metric regular at $(x_0, y_0) \in \graph(\varPsi)$ if and only if the regularity
+    condition $y_0 \in \interior (\range \varPsi)$ holds.
+\end{proposition}
