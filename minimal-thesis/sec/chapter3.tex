@@ -58,7 +58,7 @@ where, for all $k\in\N$,
 we let $(h_k)_{k\in\N}$ be any sequence of functions from
 $\R^n \times \R^{m\times n} \times \R^m$ to $\R$ with the following properties:
 \begin{enumerate}
-    \item For all $k\in\N$, $h_k$ is convex and $L_{h_k}$-smooth for some $L_{h_k}\in(0,\infty)$ (\textcolor{red}{TODO: Think convex differentiable is enough}).
+    \item For all $k\in\N$, $h_k$ is convex and differentiable.
     \item $\pi_k(x) \geq \E\norm{(A(\xi)x - b(\xi))_+}_1$ for all $x\in\R^n$ and $k\in\N$.
     \item There exists a sequence $(\alpha_k)_{k\in\N}$ with $\lim_{k\to\infty} \alpha_k = 0$ such that
     $\pi_k(\tilde{x}) \leq \alpha_k$ for all $k\in\N$ and all feasible points $\tilde{x}\in\mathcal{X}$.
@@ -94,16 +94,13 @@ by the following lemma.
             Lipschitz continuous, and subdifferentiable.
         \item The objectives $(f_k)_{k\in\N}$ of \eqref{eq:main-problem-penalized} are $\mu$-strongly convex, locally
             Lipschitz continuous, and subdifferentiable.
-        \item The functions $(\psi_k)_{k\in\N}$ are $\mu$-strongly convex and
-            $L_k$-smooth, where $L_k := L + \gamma_kL_{h_k}$.
-            (\textcolor{red}{TODO: Remove smoothness when the assumption on $h_k$ is dropped.})
+        \item The functions $(\psi_k)_{k\in\N}$ are $\mu$-strongly convex.
         \item Let $B\subset\R^n$ be a bounded subset. Then, for all $x\in B,
         \gamma\in[0,\infty), k\in\N$, the stochastic gradient
         \[
             g(x) := \nabla F_\xi(x) + \gamma \nabla h_k(x; A(\xi), b(\xi))
         \]
         satisfies $\sup_{x\in B} g(x) = \mathcal{O}(\gamma)$ almost surely.
-        (\textcolor{red}{TODO: Maybe not needed to mention this particular subgradient, since we actually only care about $\E||g_k||$.})
         \item The gradients of $(\pi_k)_{k\in\N}$ are uniformly bounded: There exists $G\in(0,\infty)$ such that
             \[
                 \sup_{k\in\N} \sup_{x\in\R^n} \norm{\nabla \pi_k(x)} \leq G.
@@ -138,15 +135,20 @@ rewritten as
     \min_{x\in\R^n}
     \left\{\, f_k(x) = \psi_k(x) + r(x) \,\right\},
 \end{equation}
-we see that the two settings almost match, except for one important
-difference: Cutler et al. \cite{cutler2023stochastic}
-assume that the smoothness constant (as well as the strong convexity constant)
-of $g_t$ is independent of $t\in\N$ (\textcolor{red}{TODO: Change this when the smoothness
-assumption on $h_k$ is dropped}). In our case however,
-the smoothness constant of $\psi_k$ depends on $\gamma_k h_k$, and
-will generally grow over time.
-Nevertheless, with some care it is possible to adapt the proof technique to our
-case and derive a very useful inequality. This inequality can then be used
+we see that the two settings almost match, except for smoothness properties. Namely,
+we do not need the family $(\psi_k)_{k\in\N}$ itself to be smooth, but only that
+it is composed of an $L$-smooth function and a differentiable one
+with uniformly bounded gradients. Even though it would be realistic to
+assume Lipschitz smoothness of the penalties $\pi_k$, this would
+lead to smoothness constants that blow up for $k\to\infty$, in order to
+satisfy the convergence assumption $\lim_{k\to\infty} \pi_k = \pi_{\ell_1}$.
+A naive application of the techniques in Cutler et al. \cite{cutler2023stochastic}
+would then lead to a restriction on the step sizes $(\eta_k)_{k\in\N}$ of
+the form $\eta_k \in (0, 1/L_k)$ with $L_k$ the smoothness constant of $\psi_k$.
+With some care however, we manage to circumvent this restriction, as well as
+the Lipschitz assumption on $\nabla \pi_k$, and only require $\eta_k\in(0, 1/L)$,
+which allows for a lot more freedom in the choice of step sizes.
+The resulting inequality can then be used
 to adapt the proof strategy from Nedić et al. \cite{nedich2023huber}
 (where the authors did not use proximal maps in their algorithm)
 to our proximal method.
@@ -214,8 +216,7 @@ the $i$-th row of $A(z)$, resp. $b(z)$.
     \[
         \{\, (a_i(\xi), b_i(\xi)) \mid i\in\{\, 1,\dots,m \,\} \,\}
     \]
-    is contained in $C$ almost surely. \textcolor{red}{TODO: This implies the bounded second moment assumption
-    on $\E\norm{A(\xi)}_F^2$}.
+    is contained in $C$ almost surely.
 \end{assumption}
 
 The second assumption we make concerns the structure of the solution set $\mathcal{X}$
@@ -1214,21 +1215,22 @@ satisfy certain conditions, which are captured in the following assumption.
     \[
         \E(f(\bar{x}_{K}) - f(x^\star))
         \leq
-        \frac{S_{0, k_0}}{S_K} \E(f(\bar{x}_{0, k_0}) - f(x^\star)) +
-        \frac{e_{k_0}}{2S_K} + \frac{\sum_{k=k_0}^{K-1} M_k^2}{2S_K} + \frac{\sum_{k=k_0}^{K-1}\eta_k^{-1}\gamma_k\alpha_k}{S_K},
+        \frac{S_{1, k_0-1}}{S_K} \E(f(\bar{x}_{1, k_0-1}) - f(x^\star))
+        +
+        \frac{e_{k_0}}{2S_{K}} + \frac{\sum_{k=k_0}^{K} M_k^2}{2S_{K}} + \frac{\sum_{k=k_0}^{K}\eta_k^{-1}\gamma_k\alpha_k}{S_{K}},
     \]
-    for all $K\in\N$, where $S_K := \sum_{k=0}^{K-1} \eta_k^{-1}$,
+    for all $K\in\N$, where $S_K := \sum_{k=1}^{K} \eta_k^{-1}$,
     $e_{k_0} := \eta_{k_0-1}^{-2} \E\norm{x^\star - x_{k_0}}^2$ and
     $M_k^2 = \mathcal{O}(\beta_k^{-1}(1 + \gamma_k^2) + \gamma_k^2)$.
     Furthermore, there exist constants $k_1\in\N$ and $\tau \in (0, \infty)$ such that
-    \[
+    \begin{align*}
         \E(\dist(\bar{x}_K, \mathcal{X}))
-        \leq
-        \frac{S_{0, k_1}}{S_K} \E(\dist(\bar{x}_{0, k_1}))
+        &\leq
+        \frac{S_{1, k_1-1}}{S_K} \E(\dist(\bar{x}_{1, k_1-1}))
             + \frac{\tau^{-1}d_{k_1}}{S_{K}}
-            + \frac{\tau^{-1}\sum_{k=k_1}^{K - 1} \gamma_k^{-1}M_k^2}{S_{K}}
-            + \frac{2\tau^{-1}\sum_{k=k_1}^{K - 1}\eta_k^{-1}\alpha_k}{S_{K}},
-    \]
+            + \frac{\tau^{-1}\sum_{k=k_1}^{K} \gamma_k^{-1}M_k^2}{S_{K}} \\
+        &\phantom{===}+ \frac{2\tau^{-1}\sum_{k=k_1}^{K}\eta_k^{-1}\alpha_k}{S_{K}},
+    \end{align*}
     for all $K\in\N$ with $K \geq k_1$, where $d_{k_1} := \gamma_{k_1}^{-1} \eta_{k_1-1}^{-2} \E(\dist(x_{k_1}, \mathcal{X})^2)$.
 \end{lemma}
 
@@ -1280,30 +1282,30 @@ satisfy certain conditions, which are captured in the following assumption.
         \leq \frac{\mu^2 (k - 1)^2}{4}
         = \eta_{k-1}^{-2}.
     \]
-    Setting $e_j := \eta_{j-1}^{-2} \E\norm{x^\star - x_j}^2$ for all $j\in\N_0$, we thus have
+    Setting $e_j := \eta_{j-1}^{-2} \E\norm{x^\star - x_j}^2$ for all $j\in\N$, we thus have
     \[
         2\eta_k^{-1} \E(f(x_{k}) - f(x^\star))
         \leq
         e_k - e_{k+1} + M_k^2 + 2\eta_k^{-1}\gamma_k\alpha_k.  
     \]
-    Summing both sides over $k = k_0,\dots,K-1$ for $K\in\N$ yields
+    Summing both sides over $k = k_0,\dots,K$ for $K\in\N$ yields
     \begin{align*}
-        2\sum_{k=k_0}^{K-1} \eta_k^{-1} \E(f(x_{k}) - f(x^\star))
+        2\sum_{k=k_0}^{K} \eta_k^{-1} \E(f(x_{k}) - f(x^\star))
         &\leq
-        e_{k_0} - e_{K} + \sum_{k=k_0}^{K-1} M_k^2 + 2\sum_{k=k_0}^{K-1}\eta_k^{-1}\gamma_k\alpha_k \\
+        e_{k_0} - e_{K} + \sum_{k=k_0}^{K} M_k^2 + 2\sum_{k=k_0}^{K}\eta_k^{-1}\gamma_k\alpha_k \\
         &\leq
-        e_{k_0} + \sum_{k=k_0}^{K-1} M_k^2 + 2\sum_{k=k_0}^{K-1}\eta_k^{-1}\gamma_k\alpha_k,
+        e_{k_0} + \sum_{k=k_0}^{K} M_k^2 + 2\sum_{k=k_0}^{K}\eta_k^{-1}\gamma_k\alpha_k,
     \end{align*}
     where we used $e_K \geq 0$ in the second step.
-    We define $S_{t, k} := \sum_{i=t}^{k-1} \eta_i^{-1}$, $S_k := S_{0, k}$,
-    and $\bar{x}_{t, k} := S_{t, k}^{-1} \sum_{i=t}^{k-1} \eta_i^{-1} x_i$ for $t,k\in\N$.
+    We define $S_{t, k} := \sum_{i=t}^{k} \eta_i^{-1}$, $S_k := S_{1, k}$,
+    and $\bar{x}_{t, k} := S_{t, k}^{-1} \sum_{i=t}^{k} \eta_i^{-1} x_i$ for $t,k\in\N$.
     Using convexity of $f$, we get
     \begin{align*}
         \E(f(\bar{x}_{k_0,K}) - f(x^\star))
         &\leq
-        S_K^{-1}\sum_{k=k_0}^{K-1} \eta_k^{-1} \E(f(x_{k}) - f(x^\star)) \\
+        S_K^{-1}\sum_{k=k_0}^{K} \eta_k^{-1} \E(f(x_{k}) - f(x^\star)) \\
         &\leq
-        \frac{e_{k_0}}{2S_{k_0, K}} + \frac{\sum_{k=k_0}^{K-1} M_k^2}{2S_{k_0, K}} + \frac{\sum_{k=k_0}^{K-1}\eta_k^{-1}\gamma_k\alpha_k}{S_{k_0, K}},
+        \frac{e_{k_0}}{2S_{k_0, K}} + \frac{\sum_{k=k_0}^{K} M_k^2}{2S_{k_0, K}} + \frac{\sum_{k=k_0}^{K}\eta_k^{-1}\gamma_k\alpha_k}{S_{k_0, K}},
     \end{align*}
     for all $K\in\N$, as desired.
     Note that 
@@ -1314,30 +1316,28 @@ satisfy certain conditions, which are captured in the following assumption.
     % \]
     % thus
     \[
-        \bar{x}_K = \frac{S_{0, k_0}}{S_K} \bar{x}_{0, k_0} + \frac{S_{k_0, K}}{S_K} \bar{x}_{k_0, K}
+        \bar{x}_K = \frac{S_{1, k_0-1}}{S_K} \bar{x}_{1, k_0-1} + \frac{S_{k_0, K}}{S_K} \bar{x}_{k_0, K}
     \]
     and
     \[
-        \frac{S_{0, k_0}}{S_K} + \frac{S_{k_0, K}}{S_K} = 1,
+        \frac{S_{1, k_0-1}}{S_K} + \frac{S_{k_0, K}}{S_K} = 1,
     \]
     hence, using convexity of $f$ again, we have
     \[
         \E(f(\bar{x}_K) - f(x^\star)) \leq
-        \frac{S_{0, k_0}}{S_K} \E(f(\bar{x}_{0, k_0}) - f(x^\star))
+        \frac{S_{1, k_0-1}}{S_K} \E(f(\bar{x}_{1, k_0-1}) - f(x^\star))
         + \frac{S_{k_0, K}}{S_K} \E(f(\bar{x}_{k_0, K}) - f(x^\star)).
     \]
     Combining with the latest bound on $\E(f(\bar{x}_{k_0, K}) - f(x^\star))$ yields
     \[
         \E(f(\bar{x}_K) - f(x^\star))
         \leq
-        \frac{S_{0, k_0}}{S_K} \E(f(\bar{x}_{0, k_0}) - f(x^\star))
+        \frac{S_{1, k_0-1}}{S_K} \E(f(\bar{x}_{1, k_0-1}) - f(x^\star))
         +
-        \frac{e_{k_0}}{2S_{K}} + \frac{\sum_{k=k_0}^{K-1} M_k^2}{2S_{K}} + \frac{\sum_{k=k_0}^{K-1}\eta_k^{-1}\gamma_k\alpha_k}{S_{K}}.
+        \frac{e_{k_0}}{2S_{K}} + \frac{\sum_{k=k_0}^{K} M_k^2}{2S_{K}} + \frac{\sum_{k=k_0}^{K}\eta_k^{-1}\gamma_k\alpha_k}{S_{K}}.
     \]
-    \textcolor{red}{TODO: $x_0$ need not be in the domain of $f$, so start the sum from $k_0 = 1$ to
-    apply convexity.}
     Next, we will derive the desired bound for $\dist(x_k, \mathcal{X})$.
-    Again fix $k \geq K_0$.
+    Again fix $k \geq k_0$.
     For the choice $x := \proj(x_k)$, inequality \eqref{eq:lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)} gives us
     \begin{align*}
         2\eta_k\E(f(x_{k}) - f(\proj(x_k)))
@@ -1403,15 +1403,15 @@ satisfy certain conditions, which are captured in the following assumption.
         \leq
         d_k - d_{k+1} + \gamma_k^{-1}M_k^2 + 2\eta_k^{-1}\alpha_k,
     \]
-    for all $k\geq k_1$. Summing over $k=k_1,\dots, K - 1$ for $K\in\N$, we have
+    for all $k\geq k_1$. Summing over $k=k_1,\dots, K$ for $K\in\N$, we have
     \begin{align*}
-        \tau \sum_{k=k_1}^{K - 1} \eta_k^{-1} \E(\dist(x_k, \mathcal{X}))
+        \tau \sum_{k=k_1}^{K} \eta_k^{-1} \E(\dist(x_k, \mathcal{X}))
         &\leq
-        \sum_{k=k_1}^{K - 1} (d_k - d_{k+1}) + \sum_{k=k_1}^{K - 1} \gamma_k^{-1}M_k^2 + 2 \sum_{k=k_1}^{K - 1}\eta_k^{-1}\alpha_k \\
+        \sum_{k=k_1}^{K} (d_k - d_{k+1}) + \sum_{k=k_1}^{K} \gamma_k^{-1}M_k^2 + 2 \sum_{k=k_1}^{K}\eta_k^{-1}\alpha_k \\
         &=
-        d_0 - d_K + \sum_{k=k_1}^{K - 1} \gamma_k^{-1}M_k^2 + 2 \sum_{k=k_1}^{K - 1}\eta_k^{-1}\alpha_k \\
+        d_0 - d_K + \sum_{k=k_1}^{K} \gamma_k^{-1}M_k^2 + 2 \sum_{k=k_1}^{K}\eta_k^{-1}\alpha_k \\
         &\leq
-        d_0 + \sum_{k=k_1}^{K - 1} \gamma_k^{-1}M_k^2 + 2 \sum_{k=k_1}^{K - 1}\eta_k^{-1}\alpha_k,
+        d_0 + \sum_{k=k_1}^{K} \gamma_k^{-1}M_k^2 + 2 \sum_{k=k_1}^{K}\eta_k^{-1}\alpha_k,
     \end{align*}
     where we used $d_K \geq 0$ in the last step.
     The distance functional $x\mapsto\dist(x,\mathcal{X})$
@@ -1421,8 +1421,8 @@ satisfy certain conditions, which are captured in the following assumption.
         \E(\dist(\bar{x}_{k_1, K}))
         \leq
         \frac{\tau^{-1}d_{k_1}}{S_{k_1,K}}
-            + \frac{\tau^{-1}\sum_{k=k_1}^{K - 1} \gamma_k^{-1}M_k^2}{S_{k_1,K}}
-            + \frac{2\tau^{-1}\sum_{k=k_1}^{K - 1}\eta_k^{-1}\alpha_k}{S_{k_1,K}}.
+            + \frac{\tau^{-1}\sum_{k=k_1}^{K } \gamma_k^{-1}M_k^2}{S_{k_1,K}}
+            + \frac{2\tau^{-1}\sum_{k=k_1}^{K}\eta_k^{-1}\alpha_k}{S_{k_1,K}}.
     \]
     To derive a bound for $\E(\dist(\bar{x}_K))$, we proceed similarly as before. We have
     % \[
@@ -1432,23 +1432,23 @@ satisfy certain conditions, which are captured in the following assumption.
     % \]
     % thus
     \[
-        \bar{x}_K = \frac{S_{0, k_1}}{S_K} \bar{x}_{0, k_1} + \frac{S_{k_1, K}}{S_K} \bar{x}_{k_1, K}
+        \bar{x}_K = \frac{S_{1, k_1-1}}{S_K} \bar{x}_{1, k_1-1} + \frac{S_{k_1, K}}{S_K} \bar{x}_{k_1, K}
     \]
     and
     \[
-        \frac{S_{0, k_1}}{S_K} + \frac{S_{k_1, K}}{S_K} = 1.
+        \frac{S_{1, k_1-1}}{S_K} + \frac{S_{k_1, K}}{S_K} = 1.
     \]
     Combining with the latest bound on $\E(\dist(\bar{x}_{k_1, K}))$, we obtain the desired bound
     \begin{align*}
         \E(\dist(\bar{x}_{K}))
         &\leq
-        \frac{S_{0, k_1}}{S_K} \E(\dist(\bar{x}_{0, k_1}))
+        \frac{S_{1, k_1-1}}{S_K} \E(\dist(\bar{x}_{1, k_1-1}))
             + \frac{S_{k_1, K}}{S_K} \E(\dist(\bar{x}_{k_1, K})) \\
         &\leq
-        \frac{S_{0, k_1}}{S_K} \E(\dist(\bar{x}_{0, k_1}))
+        \frac{S_{1, k_1-1}}{S_K} \E(\dist(\bar{x}_{1, k_1-1}))
             + \frac{\tau^{-1}d_{k_1}}{S_{K}}
-            + \frac{\tau^{-1}\sum_{k=k_1}^{K - 1} \gamma_k^{-1}M_k^2}{S_{K}}
-            + \frac{2\tau^{-1}\sum_{k=k_1}^{K - 1}\eta_k^{-1}\alpha_k}{S_{K}}
+            + \frac{\tau^{-1}\sum_{k=k_1}^{K} \gamma_k^{-1}M_k^2}{S_{K}}
+            + \frac{2\tau^{-1}\sum_{k=k_1}^{K}\eta_k^{-1}\alpha_k}{S_{K}}
     \end{align*}
     for all $K \geq k_1$.
     This concludes the proof.
@@ -1496,7 +1496,7 @@ satisfy certain conditions, which are captured in the following assumption.
     \[
         \E(\dist(\bar{x}_K, \mathcal{X}))
         \leq
-        \frac{S_{0, k_1}}{S_K} \E(\dist(\bar{x}_{0, k_1}))
+        \frac{S_{1, k_1}}{S_K} \E(\dist(\bar{x}_{0, k_1}))
             + \frac{\tau^{-1}d_{k_1}}{S_{K}}
             + \frac{\tau^{-1}\sum_{k=k_1}^{K - 1} \gamma_k^{-1}M_k^2}{S_{K}}
             + \frac{2\tau^{-1}\sum_{k=k_1}^{K - 1}\eta_k^{-1}\alpha_k}{S_{K}},
@@ -1526,7 +1526,7 @@ satisfy certain conditions, which are captured in the following assumption.
     \[
         \E(f(\bar{x}_{K}) - f(x^\star))
         \leq
-        \frac{S_{0, k_0}}{S_K} \E(f(\bar{x}_{0, k_0}) - f(x^\star)) +
+        \frac{S_{1, k_0}}{S_K} \E(f(\bar{x}_{0, k_0}) - f(x^\star)) +
         \frac{e_{k_0}}{2S_K} + \frac{\sum_{k=k_0}^{K-1} M_k^2}{2S_K} + \frac{\sum_{k=k_0}^{K-1}\eta_k^{-1}\gamma_k\alpha_k}{S_K},
     \]
     and since $M_k^2 = \mathcal{O}(\log^{2e} k)$ and $\eta_k^{-1}\gamma_k\alpha_k = \mathcal{O}(\log^{e} k)$,
