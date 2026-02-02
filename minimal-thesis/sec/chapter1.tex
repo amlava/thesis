@@ -204,7 +204,7 @@ Finally, update
 \]
 After a set amount of $K\in\N$ iterations, one then computes the weighted average
 \[
-    \bar{x}_K := \sum_{k=0}^K \eta_k^{-1}.
+    \bar{x}_K := \sum_{k=0}^K \eta_k^{-1} x_k.
 \]
 For strongly convex objectives (that satisfy certain assumptions on the gradients),
 the authors show that, for any $\epsilon \in (0, \infty)$,
@@ -284,7 +284,7 @@ $\E(g) = \nabla f(x)$. In our case, we can calculate a stochastic gradient
 of $\E(F_\xi) + \gamma_k \pi_k$ at $x\in\R^n$, based on a sample
 $z$ from the distribution of $\xi$, as
 \[
-    \nabla F_z(x) + \gamma_k A^\top(z)\nabla h_k(x; A(z), b(z)).
+    \nabla F_z(x) + \gamma_k \nabla h_k(x; A(z), b(z)).
 \]
 To deal with the variance introduced by using a stochastic gradient
 instead of the full gradient, we will use a minibatch of samples
