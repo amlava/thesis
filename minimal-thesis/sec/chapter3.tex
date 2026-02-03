@@ -204,18 +204,22 @@ Crucially, there always exists a constant $\tau\in(0,\infty)$, such that
     \tau \dist(x, S) \leq \norm{(Ax - b)_+}_\infty,
 \]
 where $S := \{\, y\in\R^n \mid Ay \leq b \,\}$.
+Since we are essentially dealing with infnitely long matrices,
+we cannot directly apply Hoffman's lemma. Instead,
+we will use the theory of metric subregularity.
+Before we proceed, we make two more assumptions.
 \begin{assumption}
     \label{ass:compact-support-without-zero}
-    There exists a compact set $C_\xi\in\R^p$ such that $\xi$ is supported
-    on $C_\xi$ and $\Prob^\xi$ admits a Lebesgue-density $q$ such that
+    There exists a compact set $\Xi\in\R^p$ such that $\xi$ is supported
+    on $\Xi$ and $\Prob^\xi$ admits a Lebesgue-density $q$ such that
     \begin{enumerate}
-        \item $q$ is continuous on $C_\xi$ and
-        \item $q(x) > 0$ for all $x\in C_\xi$.
+        \item $q$ is continuous on $\Xi$ and
+        \item $q(x) > 0$ for all $x\in \Xi$.
     \end{enumerate}
-    Further, we assume that $\int_{C_\xi} \norm{A(z)x - b(z)}_1 \, dz < \infty$ for all $x\in\R^n$.
+    Further, we assume that $\int_{\Xi} \norm{A(z)x - b(z)}_1 \, dz < \infty$ for all $x\in\R^n$.
 \end{assumption}
-A sufficient condition for the last part of the assumption is continuity of the maps $A$ and $b$
-on $C_\xi$.
+A simple sufficient condition for the last part of the assumption is continuity of the maps $A$ and $b$
+on $\Xi$.
 
 \begin{assumption}
     \label{ass:slater-point}
@@ -241,9 +245,9 @@ We will now formulate and prove the lemma.
     for all $x\in C$ and $k\in\N_0$.
 \end{lemma}
 \begin{proof}
-    We consider the function space $Y := L_1(C_\xi, \R^m)$ equipped with the norm
+    We consider the Banach space $Y := L_1(\Xi, \R^m)$ equipped with the norm
     \[
-        \norm{y}_{Y} := \int_{C_\xi} \norm{y(z)}_1 \, dz.
+        \norm{y}_{Y} := \int_{\Xi} \norm{y(z)}_1 \, dz.
     \]
     The distance map on $Y$, denoted $\dist_Y$, is then given by
     \[
@@ -322,71 +326,68 @@ We will now formulate and prove the lemma.
     \begin{equation}
         \label{eq:proof:lem:lower-bound-on-penalties-by-distance-to-feasibility-2}
         \dist_Y(0, \varPsi(x))
-        = \int_{C_\xi} \norm{(A(z)x - b(z))_+}_1 \, dz = \norm{(Ax - b)_+}_Y
+        = \int_{\Xi} \norm{(A(z)x - b(z))_+}_1 \, dz = \norm{(Ax - b)_+}_Y
     \end{equation}
     for any $x\in C$.
     Fix $x\in C$ and let $y\in \varPsi(x)$.
-    By definition of $\varPsi(x)$ and positivity of $q$ on $C_\xi$,
-    it holds that $y\in \varPsi(x) \iff A(z)x - b(z) \leq y(z)$ for all $z\in C_\xi$.
+    By definition of $\varPsi(x)$ and positivity of $q$ on $\Xi$,
+    it holds that $y\in \varPsi(x) \iff A(z)x - b(z) \leq y(z)$ for all $z\in \Xi$.
     Set
     \[
         \phi(z) := (A(z)x - b(z))_+
     \]
-    for $z\in C_\xi$. Clearly, $\phi \in \varPsi(x)$.
+    for $z\in \Xi$. Clearly, $\phi \in \varPsi(x)$.
     We will show that $\norm{\phi(z)} \leq \norm{y(z)}$
-    for all $z\in C_\xi$, via induction over $m$.
-    For the base case, $m = 1$, we have
+    for all $z\in \Xi$. We denote by $\phi_i(z), a_i(z), b_i(z), y_i$, the $i$th
+    row of $\phi(z), A(z), b(z), y$. We have
     \[
-        |\phi(z)| = \begin{cases}
-            0, &A(z)x - b(z) \leq 0 \\
-            A(z)x - b(z), &\text{else}
+        |\phi_i(z)| = \begin{cases}
+            0, &a_i (z)x - b_i(z) \leq 0 \\
+            a_i (z)x - b_i(z), &\text{else}
         \end{cases}
     \]
     and thus
     \[
-        |y| \geq \begin{cases}
-            A(z)x - b(z), &\text{if } A(z)x - b(z) \geq 0, \\
+        |y_i| \geq \begin{cases}
+            a_i(z)x - b_i(z), &\text{if } a_i(z)x - b_i(z) \geq 0, \\
             0, &\text{else.}
         \end{cases}
         \enspace =
-        |\phi(z)|.
+        |\phi_i(z)|,
     \]
-    For general $m\in\N$, we define $\norm{v}_{1, m-1} := \sum_{i=1}^{m-1} |v_i|$
-    and
-    $v_{[m-1]} := (v_i)^\top_{i\in\{\,1,\dots, m-1\,\}}$,
-    for
-    $v = (v_i)_{i\in\{\,1,\dots, m\,\}} \in \R^m$. Using the induction hypothesis, we have
+    for all $i\in\{\,1,\dots,m\,\}$.
+    It follows that
     \begin{align*}
-        \norm{\phi(z)}_{1, m} &= \norm{\phi(z)_{[m-1]}}_{1, m - 1} + |\phi(z)_m| \\
-                              &\leq \norm{y_{[m-1]}}_{1, m - 1} + |y_m| \\
-                              &= \norm{y}_1,
+        \norm{\phi(z)}_1 &= \sum_{i=1}^m |\phi_i(z)| \\
+                      &\leq \sum_{i=1}^m |y_i| \\
+                      &= \norm{y}_1,
     \end{align*}
-    as desired. Therefore,
+    and therefore,
     \[
-        \inf_{y \in \varPsi(x)} \int_{C_\xi} \norm{y}_1 \, dz
+        \inf_{y \in \varPsi(x)} \int_{\Xi} \norm{y}_1 \, dz
         \geq
-        \int_{C_\xi} \norm{\phi(z)} \, dz,
+        \int_{\Xi} \norm{\phi(z)} \, dz,
     \]
     proving \eqref{eq:proof:lem:lower-bound-on-penalties-by-distance-to-feasibility-2}.
     To finish the proof, we need to establish a relationship between
     \eqref{eq:proof:lem:lower-bound-on-penalties-by-distance-to-feasibility-2}
     and $\pi_k(x)$.
-    By compactness of $C_\xi$ and continuity of $q$, the image $q(C_\xi)$
+    By compactness of $\Xi$ and continuity of $q$, the image $q(\Xi)$
     must be compact.
-    In particular, since $q(x) > 0$ for all $x\in C_\xi$, there must
+    In particular, since $q(x) > 0$ for all $x\in \Xi$, there must
     exist some uniform positive lower bound $c_q \in (0, \infty)$ such that $q(x) \geq c_q$
-    for all $x\in C_\xi$. If we denote the Lebesgue-measure by $\lambda$, we see that
+    for all $x\in \Xi$. If we denote the Lebesgue-measure by $\lambda$, we see that
     \[
         \Prob^\xi(A) = \int_{A} q(z) \, dz \geq c_q \lambda (A),
     \]
-    for all measurable $A \subset C_\xi$.
-    Therefore, $\Prob^\xi$ and $\lambda$ are equivalent on $C_\xi$, and
+    for all measurable $A \subset \Xi$.
+    Therefore, $\Prob^\xi$ and $\lambda$ are equivalent on $\Xi$, and
     $q^{-1}$ is a $\Prob^\xi$-density of $\lambda$.
     We thus have
     \begin{align*}
-        \norm{y}_Y &= \int_{z\in C_\xi} \norm{y(z)}_1 \, dz \\
-        &= \int_{z\in C_\xi} \norm{y(z)}_1 q^{-1}(z) \, \Prob^\xi(dz) \\
-        &\leq c_q^{-1} \int_{z\in C_\xi} \norm{y(z)}_1 \, \Prob^\xi(dz) \\
+        \norm{y}_Y &= \int_{z\in \Xi} \norm{y(z)}_1 \, dz \\
+        &= \int_{z\in \Xi} \norm{y(z)}_1 q^{-1}(z) \, \Prob^\xi(dz) \\
+        &\leq c_q^{-1} \int_{z\in \Xi} \norm{y(z)}_1 \, \Prob^\xi(dz) \\
         &= c_q^{-1} \int \norm{y(\xi)}_1 \, d\Prob \\
         &= c_q^{-1} \, \E\norm{y(\xi)}_1.
     \end{align*}
@@ -397,120 +398,7 @@ We will now formulate and prove the lemma.
         \dist(x, \mathcal{X}) \leq c c_q^{-1} \E\norm{(A(\xi)x - b(\xi))_+}_1.
     \]
     The claim follows after setting $\tau := c^{-1} c_q$
-    and applying one of the defining properties of $(\pi_k)_{k\in\N}$.
-    % The projection map sends bounded sets to bounded sets. Indeed, if not,
-    % then there exists a sequence $(y_k)_{k\in\N}\in B$ such that $\lim_{k\to\infty} \norm{\proj(y_k)} = \infty$.
-    % But the projection map is contractive, hence, for any $x\in \mathcal{X}$,
-    % \[
-    %     \norm{y_k - x} \geq \norm{\proj(y_k) - x} \longrightarrow_{k\to\infty} \infty.
-    % \]
-    % This implies that $\lim_{k\to\infty}\norm{y_k} = \infty$, contradicting the assumption that $B$ is bounded.
-    % Thus, the set $S := \{\, \proj(x) \mid x\in B \,\} \subset \mathcal{X}$ is bounded.
-    % We begin by defining the following set:
-    % \[
-    %     \tilde{Y} := \{\, g_{(x, \lambda)}\colon\R^n\times\R\to \R \mid g_{(x, \lambda)}(a, b) := a^\top x - \lambda b
-    %         \enspace \forall (x, \lambda), (a,b) \in \R^n \times \R \,\}.
-    % \]
-    % $\tilde{Y}$ is a vector space, since sums and scalar multiples of affine maps are affine.
-    % It is also finite-dimensional, since for all $(x,\lambda)\in\R^n\times\R$, and standard basis vectors
-    % $(e_1, \dots, e_n, 1)$, there exist constants $\lambda_1,\dots,\lambda_n\in\R$,
-    % such that
-    % \[
-    %     g_{(x, \lambda)}(a, b) = a^\top x - \lambda b = \sum_{i=1}^n \lambda_i a^\top e_i - \lambda b = \sum_{i=1}^n \lambda_i g_{(e_i, 0)}(a, b) - \lambda g_{(0, 1)}(a, b).
-    % \]
-    % Thus, the family $\{\, g_{(e_i, 0)}, g_{(0, 1)} \mid i\in\{1,\dots,n+1\} \,\}$ forms a basis for $\tilde{Y}$.
-    % It also follows that the map
-    % \[
-    %     \tilde{T}\colon\R^{n}\times \R \to \tilde{Y}, \enspace \tilde{T}(x, \lambda) := g_{(x, \lambda)}
-    % \]
-    % defines a linear isomorphism.
-    % We further define the subset
-    % \[
-    %     \tilde{K} := \{\, g_{(x,\lambda)} \in \tilde{Y} \mid g_{(x,\lambda)}(a, b) \leq 0
-    %     \enspace \forall (a, b) \in C \,\}.
-    % \]
-    % $\tilde{K}$ is a closed (wrt. some arbitrary norm on $\tilde{Y}$) convex cone: The latter two properties are clear from
-    % the definition. For closedness, let $(x_k, \lambda_k)_{k\in\N}$ be a sequence in $\R^n\times\R$ such
-    % that the corresponding sequence of functions $(g_{(x_k, \lambda_k)})_{k\in\N}$ is a sequence in $\tilde{K}$ that
-    % converges to $g_{(x, \lambda)}\in\tilde{Y}$ for some $(x, \lambda)\in\R^n\times\R$.
-    % Since we have already established that $\tilde{Y}$ is isomorphic to $\R^{n+1}$ via $\tilde{T}$,
-    % the convergence of $(g_{(x_k, \lambda_k)})_{k\in\N}$ to $g_{(x, \lambda)}$ is equivalent to the convergence
-    % of $(x_k, \lambda_k)_{k\in\N}$ to $(x, \lambda)$ in $\R^n\times\R$.
-    % Therefore, we can conclude that for any $(a, b)\in\R^{n}\times\R$, we have
-    % \[
-    %     \lim_{k\to\infty} a^\top x_k - \lambda_k b = a^\top x - \lambda b,
-    % \]
-    % and $a^\top x - \lambda b$ must also be nonnegative, proving that $g_{(x,\lambda)}\in \tilde{K}$.
-    % Further, we define the maps
-    % \[
-    %     \tilde{A} \colon \R^n\to \tilde{Y}, \enspace \tilde{A}x := g_{(x, 0)},
-    % \]
-    % and
-    % \[
-    %     \tilde{b} := g_{(0, 1)}.
-    % \]
-    % For $x_0\in B$, we consider the optimization problem
-    % \begin{equation}
-    %     \label{eq:proof:lem:lower-bound-on-penalties-by-distance-to-feasibility}
-    %     \min_{x\in\mathcal{X}} \norm{x - x_0}
-    %     =
-    %     \min_{x\in\R^n, \, \tilde{A}x - \tilde{b} \in \tilde{K}} \norm{x - x_0},
-    % \end{equation}
-    % where the equality follows from the fact that $x\in\mathcal{X} \iff g_{(x, 1)}  = \tilde{A}x - \tilde{b} \in \tilde{K}$.
-    % Define the map
-    % We will now show that $\tilde{T}$ is a linear isomorphism: For $x,y\in\R^n$, and $\lambda,\mu\in\R$,
-    % it holds that
-    % \begin{align*}
-    %     \tilde{T}(x + y, \lambda + \mu)(a, b)
-    %     &= g_{(x + y, \lambda + \mu)}(a, b) \\
-    %     &= a^\top (x + y) - (\lambda + \mu)b \\
-    %     &= a^\top x - \lambda b + a^\top y - \mu b \\
-    %     &= g_{(x, \lambda)}(a, b) + g_{(y, \mu)}(a, b) \\
-    %     &= \tilde{T}(x, \lambda)(a, b) + \tilde{T}(y, \mu)(a, b),
-    % \end{align*}
-    % for all $(a,b)\in\R^{n}\times\R$. Further, for any $x\in\R^n$, $\lambda,\mu\in\R$,
-    % \begin{align*}
-    %     \tilde{T}(\mu x, \mu \lambda)(a, b) &= g_{(\mu x, \mu \lambda)}(a, b) \\
-    %                 &= a^\top (\mu x) - (\mu\lambda)b \\
-    %                 &= \mu( a^\top x - \lambda b ) \\
-    %                 &= \mu g_{(x, \lambda)} \\
-    %                 &= \mu \tilde{T}(x, \lambda)(a, b),
-    % \end{align*}
-    % for all  $(a,b)\in\R^{n}\times\R$. Thus, $\tilde{T}$ is linear. Now assume that
-    % \[
-    %     0 = \tilde{T}(x, \lambda)(a, b) = g_{(x, \lambda)}(a, b) = a^\top x - \lambda b \enspace \forall (a,b)\in\R^n\times\R
-    % \]
-    % for some $(x, \lambda) \in \R^n\times\R$. Then, in particular,
-    % \[
-    %     0 = g_{(x, \lambda)}(x, -\lambda) = \norm{x}^2 + \lambda^2,
-    % \]
-    % which implies that $x = 0$ and $\lambda = 0$. Thus, $\tilde{T}$ is injective, and since
-    % $\dim(\tilde{Y}) = n + 1$, it follows that $\tilde{T}$ must also be surjective, and hence $\tilde{T}$
-    % is an isomorphism. We can thus identify the set $\tilde{Y}$ with $\R^{n+1}$ via
-    % \[
-    %     Y := \tilde{T}^{-1}(\tilde{Y}) = \R^n \times \R \cong \R^{n+1},
-    % \]
-    % and we similarly identify $\tilde{K}$ with a subset of $\R^{n+1}$ via
-    % \[
-    %     K := \tilde{T}^{-1}(\tilde{K})
-    %     = \{\, (x, \lambda) \in \R^{n+1} \mid g_{x, \lambda}(a, b) \leq 0 \enspace \forall (a, b)\in\R^n\times\R \,\}.
-    % \]
-    % Note that $\tilde{A}x - \tilde{b} \in
-    % \tilde{K} \iff (\tilde{T}^{-1}\tilde{A})x - (\tilde{T}^{-1}\tilde{b}) \in \tilde{T}^{-1}(\tilde{K})$,
-    % which motivates the definitions (with slight abuse of notation)
-    % \[
-    %     A := \tilde{T}^{-1}\tilde{A}, \enspace \enspace b := \tilde{T}^{-1} \tilde{b}, \enspace \text{and} \enspace
-    %     K := \tilde{T}^{-1}(\tilde{K}).
-    % \]
-    % With this, the minimization problem \eqref{eq:proof:lem:lower-bound-on-penalties-by-distance-to-feasibility}
-    % can be rewritten as
-    % \[
-    %     \min_{x\in\mathcal{X}} \norm{x - x_0} = \min_{x\in\R^n, \, Ax - b \in K} \norm{x - x_0}.
-    % \]
-    % The advantage of this formulation as opposed to the one involving $\tilde{K}$ is that
-    % now the set $K$ is a genuine subset of $\R^{n+1}$, which will prove useful in the following.
-    % Not also that the set $K$ is a closed convex cone, since linear isomorphisms preserve all these properties and we
-    % have already shown that $\tilde{K}$ is a closed convex cone.
+    and applying one of the defining properties of $(\pi_k)_{k\in\N_0}$.
 \end{proof}
 \begin{theorem}[Convergence of $x_k^\star$]
     \label{thm:distance-to-feasibility-bound}
@@ -1122,9 +1010,9 @@ We are now ready to prove the main theorem of this section.
     Let $(x_k)_{k\in\N_0}$ be a sequence generated by \cref{alg:seqprox-sgd} with
     parameters $(\eta_k)_{k\in\N_0}$, $(\gamma_k)_{k\in\N_0}$, $(h_k)_{k\in\N_0}$ that satisfiy
     \begin{enumerate}
-        \item $\sum_{k=1}^\infty \eta_k = \infty$ and there exists $\rho\in(0,1)$ such that $\eta_k \leq \rho L^{-1}$ for all $k\in\N$.
-        \item $\sum_{k=1}^\infty \eta_k\gamma_k\alpha_k < \infty$.
-        \item $\sum_{k=1}^\infty \eta_k^2 \gamma_k^2 < \infty$.
+        \item $\sum_{k=0}^\infty \eta_k = \infty$ and there exists $\rho\in(0,1)$ such that $\eta_k \leq \rho L^{-1}$ for all $k\in\N$.
+        \item $\sum_{k=0}^\infty \eta_k\gamma_k\alpha_k < \infty$.
+        \item $\sum_{k=0}^\infty \eta_k^2 \gamma_k^2 < \infty$.
     \end{enumerate}
     Then $\norm{x_{k} - x^\star}$ converges almost surely and
     $\liminf_{k\to\infty} \E\norm{x_{k} - x^\star}^2 = 0$.
@@ -1314,7 +1202,7 @@ satisfy certain conditions, which are captured in the following assumption.
     \[
         r(x_k) - r(y_k) \geq \langle \eta_k^{-1} (x_k - y_k), x_k - y_k \rangle = \eta_k^{-1} \norm{x_k - y_k}^2.
     \]
-    Finally, local Lipschitz continuity of $r$  (\cref{ass:basic-assumptions}) and yields (a.\,s.)
+    Finally, local Lipschitz continuity of $r$  (\cref{ass:basic-assumptions}) yields (a.\,s.)
     \[
         L_r \norm{x_k - y_k} \geq r(x_k) - r(y_k) \geq \eta_k^{-1} \norm{x_k - y_k}^2
         \enspace\iff\enspace
