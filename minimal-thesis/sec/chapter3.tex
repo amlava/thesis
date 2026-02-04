@@ -64,9 +64,8 @@ $\R^n \times \R^{m\times n} \times \R^m$ to $\R$ with the following properties:
     $\pi_k(\tilde{x}) \leq \alpha_k$ for all $k\in\N_0$ and all feasible points $\tilde{x}\in\mathcal{X}$.
     \item The gradients of $(h_k)_{k\in\N_0}$ have uniformly bounded second moment:
         \[
-            \sup_{k\in\N_0}\sup_{x\in\R^n} \E\norm{\nabla h_k(x; A(\xi), b(\xi))}^2 < \infty
+            \sup_{k\in\N_0}\sup_{x\in\R^n} \E\norm{\nabla h_k(x; A(\xi), b(\xi))}^2 < \infty.
         \]
-        almost surely.
 \end{enumerate}
 Finally, for all $k\in\N_0$, we define the sequence of unconstrained optimization problems
 \begin{equation}
@@ -90,27 +89,72 @@ by the following lemma.
     \label{lem:basic-properties}
     \Cref{ass:basic-assumptions} implies the following:
     \begin{enumerate}
-        \item The objective $f$ of \eqref{eq:main-problem-copy} is $\mu$-strongly convex, locally
-            Lipschitz continuous, and subdifferentiable.
-        \item The objectives $(f_k)_{k\in\N_0}$ of \eqref{eq:main-problem-penalized} are $\mu$-strongly convex, locally
-            Lipschitz continuous, and subdifferentiable.
-        \item The functions $(\psi_k)_{k\in\N_0}$ are $\mu$-strongly convex.
-        \item Let $B\subset\R^n$ be a bounded subset. Then, for all $x\in B,
-        \gamma\in[0,\infty), k\in\N_0$, the stochastic gradient
-        \[
-            g(x) := \nabla F_\xi(x) + \gamma \nabla h_k(x; A(\xi), b(\xi))
-        \]
-        satisfies $\sup_{x\in B} g(x) = \mathcal{O}(\gamma)$ almost surely.
         \item The gradients of $(\pi_k)_{k\in\N_0}$ are uniformly bounded: There exists $G\in(0,\infty)$ such that
             \[
                 \sup_{k\in\N_0} \sup_{x\in\R^n} \norm{\nabla \pi_k(x)} \leq G.
             \]
-        \item There exists a unique solution $x^\star\in\mathcal{X}$ for \eqref{eq:main-problem-copy} and, for all $k\in\N$,
-            there exists a unique solution $x_k^\star\in\R^n$ for \eqref{eq:main-problem-penalized}.
+            In particular, $\pi_k$ is Lipschitz continuous for all $k\in\N$.
+        \item The objective $f$ of \eqref{eq:main-problem-copy} is $\mu$-strongly convex, locally
+            Lipschitz continuous, and subdifferentiable on $\dom(f)$.
+        \item The objectives $(f_k)_{k\in\N_0}$ of \eqref{eq:main-problem-penalized} are $\mu$-strongly convex, locally
+            Lipschitz continuous, and subdifferentiable on $\dom(f_k)$.
+        \item The functions $(\psi_k)_{k\in\N_0}$ are $\mu$-strongly convex and differentiable.
+        \item Let $B\subset\R^n$ be a bounded subset. Then, for all $x\in B, k\in\N_0$, the stochastic gradient
+        \[
+            g_k(x) := \nabla F_\xi(x) + \gamma_k \nabla h_k(x; A(\xi), b(\xi))
+        \]
+        satisfies $\sup_{x\in B} \E\norm{g_k(x)} = \mathcal{O}(\gamma_k)$ almost surely.
+        \item There exists a unique solution $x^\star\in\mathcal{X}$ for \eqref{eq:main-problem-copy} and, for all $k\in\N_0$,
+            there exists a unique solution $x_k^\star\in\dom(f_k)$ for \eqref{eq:main-problem-penalized}.
     \end{enumerate}
 \end{lemma}
 \begin{proof}
-    
+    \begin{enumerate}
+        \item Per definition, for all $k\in\N_0$,
+        \[
+            \nabla \pi_k(x) = \nabla \E(h_k(x; A(\xi), b(\xi))) = \E(\nabla h_k(x; A(\xi), b(\xi))),
+        \]
+        hence
+        \[
+            \norm{\nabla \pi_k(x)}^2 \leq (\E\norm{\nabla h_k(x; A(\xi), b(\xi))})^2 \leq \E\norm{\nabla h_k(x; A(\xi), b(\xi))}^2,
+        \]
+        where the last step follows from Jensen's inequality.
+        The claim follows by our assumption that
+        \[
+            \sup_{k\in\N_0}\sup_{x\in\R^n} \E\norm{\nabla h_k(x; A(\xi), b(\xi))}^2< \infty.
+        \]
+        In particular, $\pi_k$ is Lipschitz continuous for all $k\in\N_0$.
+        \item By $L$-smoothness of $F_\xi$, the expectation $\E(F_\xi)$ is also $L$-smooth, thus
+            locally Lipschitz. By local Lipschitz continuity of $r$, it follows that $f = \E(F_\xi) + r$ is also
+            locally Lipschitz. Similarly, as the sum of a $\mu$-strongly convex function and a convex
+            function, $f$ is $\mu$-strongly convex. Finally, any proper, convex, and continuous function
+            is subdifferentiable.
+        \item By the above, $f$ is $\mu$-strongly convex, locally
+            Lipschitz continuous, and subdifferentiable on $\dom(f)$. Combining this with the fact that
+            $\pi_k$ is convex, Lipschitz continuous, and differentiable, as well as $\gamma_k > 0$,
+            it follows that $f_k = f + \gamma_k \pi_k$
+            is also $\mu$-strongly convex, locally
+            Lipschitz continuous, and subdifferentiable on $\dom(f)$, for all $k\in\N_0$. Finally, the claim follows from
+            $\dom(f) = \dom(f_k) \enspace \forall k\in\N_0$.
+        \item For all $k\in\N_0$, $\psi_k$ is the sum of two differentiable functions, one $\mu$-strongly convex, the other convex.
+            Hence, $\psi_k$ is $\mu$-strongly convex and differentiable for all $k\in\N_0$.
+        \item Let $B\subset \R^n$ be bounded. By the triangle inequality,
+            \[
+                \E\norm{g_k(x)} \leq \E\norm{\nabla F_\xi(x)} + \gamma_k \E\norm{\nabla h_k(x; A(\xi), b(\xi))}.
+            \]
+            for all $x\in B$.
+            The claim now follows from local Lipschitz continuity of $F_\xi$ (a.\,s.), and
+            the assumption $\sup_{x\in B} \E\norm{\nabla h_k(x; A(\xi), b(\xi))}^2 < \infty \enspace \forall k\in\N_0$,
+            together with Jensen's inequality.
+        \item As we have already shown, $f$ is strongly convex.
+            The set $\mathcal{X}$ is the intersection of the closed convex sets
+            $\{\, x\in\dom(f) \mid A(z)x - b(z) \leq 0 \,\}$ over $z$ in the support of $\xi$.
+            Thus, $\mathcal{X}$ is itself closed and convex, which implies that $f$
+            attains a unique minimizer on $\mathcal{X}$. We have also shown that
+            $f_k$ is strongly convex for all $k\in\N_0$, which implies that $f_k$ has a unique
+            unconstrained minimizer $x_k^\star$, for all $k\in\N_0$.
+    \end{enumerate}
+    This concludes the proof.
 \end{proof}
 The fact that $x_k^\star$ must not be
 feasible introduces difficulties that prevent the use of
@@ -183,7 +227,6 @@ convergence of so-called "almost supermartingales".
 \begin{proof}
     See \cite{robbins1971convergence}.
 \end{proof}
-
 Our goal for the rest of this section is to derive a recursive inequality for the
 sequence $\norm{x_k - x^\star}^2$, which resembles \eqref{eq:lem:robbins-siegmund-almost-supermartingales}.
 In order to do this, we will first analyze the behavior of the
@@ -220,19 +263,11 @@ Before we proceed, we make two more assumptions.
 \end{assumption}
 A simple sufficient condition for the last part of the assumption is continuity of the maps $A$ and $b$
 on $\Xi$.
-
 \begin{assumption}
     \label{ass:slater-point}
     There exists a \textit{Slater point}, i.\,e. a point $x\in\mathcal{X}$ such that $A(\xi)x < b(\xi)$
     almost surely.
 \end{assumption}
-% Notably, it is here where we make use of 
-% our assumption that $(\pi_k)_{k\in\N}$ upperbounds
-% the hinge-penalty,
-% \[
-%     \pi_k(x) \geq \E\norm{(A(\xi)x - b(\xi))_+}_{1},
-% \]
-% for all $x\in\R^n$ and $k\in\N$.
 We will now formulate and prove the lemma.
 \begin{lemma}[Subfeasibility bound via penalty functions]
     \label{lem:lower-bound-on-penalties-by-distance-to-feasibility}
@@ -505,113 +540,10 @@ We will now formulate and prove the lemma.
     \]
     for all $k \geq K$ and some constant $c\in(0,1)$, as desired.
 \end{proof}
-
 Having established the convergence of the sequence $(x_k^\star)_{k\in\N_0}$
 to $x^\star$, we will now shift our attention to the iterates $(x_k)_{k\in\N_0}$
 of \cref{alg:seqprox-sgd}. We begin with the following
 fundamental recursive inequality.
-% \begin{lemma}[One-step improvement]
-%     \label{lem:one-step-improvement}
-%     Let $\eta_k\in(0, 1/L_k)$ for all $k\in\N$. Then
-%     the iterates $(x_k)_{k\in\N}$ generated by \cref{alg:seqprox-sgd} with step size
-%     schedule $(\eta_k)_{k\in\N}$ satisfy
-%     \[
-%         2\eta_k\E_k(f_k(x_{k+1}) - f_k(x))
-%         \leq
-%         (1-\mu\eta_k)\norm{x - x_k}^2
-%         - \E_k\norm{x - x_{k+1}}^2
-%         + \frac{\eta_k^2}{1 - L_k\eta_k}\Var_k(g_k),
-%     \]
-%     for all $x\in\R^n$ and $k\in\N$.
-% \end{lemma}
-% \begin{proof}
-%     This proof essentially follows the proof of lemma 23 in Cutler et al. \cite{cutler2023stochastic} verbatim,
-%     apart from some added details and the small difference that our smoothness constant is not independent of $k\in\N$.
-%     For $k\in\N$ we denote by $g_k$ the stochastic gradient of $\psi_k$ at $x_k$
-%     that is used in iteration $k$ of \cref{alg:seqprox-sgd}. By $L_k$ smoothness of $\psi_k$, we have
-%     \begin{align*}
-%         f_k(x_{k+1})
-%         &= \psi_k(x_{k+1}) + r(x_{k+1}) \\
-%         &\leq \psi_k(x_k) + \langle \nabla \psi_k(x_k), x_{k+1} - x_k \rangle + \frac{L_k}{2}\norm{x_{k+1} - x_k}^2 + r(x_{k+1}) \\
-%         &= \psi_k(x_k) + r(x_{k+1}) + \langle g_k, x_{k+1} - x_k \rangle
-%                          + \frac{L_k}{2}\norm{x_{k+1} - x_k}^2 + \langle z_k, x_{k+1} - x_k \rangle.
-%     \end{align*}
-%     By Cauchy-Schwarz and Young's inequality, we have
-%     \[
-%         \langle z_k, x_{k+1} - x_k \rangle \leq \frac{\delta_k}{2}\norm{z_k}^2 + \frac{1}{2\delta_k}\norm{x_{k+1} - x_k}^2
-%     \]
-%     for all $\delta_k\in(0,\infty)$. Therefore,
-%     \begin{align*}
-%         f_k(x_{k+1})
-%         &\leq \psi_k(x_k) + r(x_{k+1}) + \langle g_k, x_{k+1} - x_k \rangle
-%                          + \frac{L_k + \delta_k^{-1}}{2}\norm{x_{k+1} - x_k}^2
-%                          + \frac{\delta_k}{2}\norm{z_k}^2 \\
-%         &= \psi_k(x_k) + r(x_{k+1}) + \langle g_k, x_{k+1} - x_k \rangle
-%                          + \frac{1}{2\eta_k}\norm{x_{k+1} - x_k}^2 \\
-%                          &\phantom{===}+ \frac{L_k + \delta_k^{-1} - \eta_k^{-1}}{2}\norm{x_{k+1} - x_k}^2
-%                          + \frac{\delta_k}{2}\norm{z_k}^2.
-%     \end{align*}
-%     From the definition of the proximal map, it follows that
-%     \begin{align*}
-%         x_{k+1} &= \prox_{\eta_k r} (x_k - \eta_k g_k) \\
-%                 &= \argmin_{x\in\R^n} \Big\{\, r(x) + \frac{1}{2\eta_k}\norm{x - (x_k - \eta_k g_k)}^2 \,\Big\} \\
-%                 &= \argmin_{x\in\R^n} \Big\{\, r(x) + \langle g_k, x - x_k \rangle + \frac{1}{2\eta_k}\norm{x - x_k}^2 \,\Big\},
-%     \end{align*}
-%     where the last step follows from expanding the square and dropping
-%     the constant term $\eta_k^2 \norm{g_k}^2$ from the minimization.
-%     The function $x\mapsto r(x) + \langle g_k, x - x_k \rangle + \frac{1}{2\eta_k}\norm{x - x_k}^2$ is $(2\eta_k)^{-1}$-strongly convex. Thus,
-%     comparing with our previous bound on $f_k(x_{k+1})$,
-%     we can conclude
-%     \begin{align*}
-%         f_k(x_{k+1}) &\leq \psi_k(x_k) + r(x) + \langle g_k, x - x_k \rangle + \frac{1}{2\eta_k}\norm{x - x_k}^2 - \frac{1}{2\eta_k}\norm{x - x_{k+1}}^2 \\
-%         &\phantom{===} + \frac{L_k + \delta_k^{-1} - \eta_k^{-1}}{2}\norm{x_{k+1} - x_k}^2 + \frac{\delta_k}{2}\norm{z_k}^2,
-%     \end{align*}
-%     for all $x\in\R^n$. By $\mu$-strong convexity of $\psi_k$, we have
-%     \begin{align*}
-%         \psi_k(x_k) + r(x) + \langle g_k, x - x_k \rangle
-%         &=
-%         \psi_k(x_k) + r(x) + \langle \psi_k(x_k), x - x_k \rangle + \langle z_k, x_k - x \rangle \\
-%         &\leq
-%         \psi_k(x) - \frac{\mu}{2}\norm{x - x_k}^2 + r(x) + \langle z_k, x_k - x \rangle \\
-%         &=
-%         f_k(x) - \frac{\mu}{2}\norm{x - x_k}^2 + \langle z_k, x_k - x \rangle,
-%     \end{align*}
-%     for all $x\in\R^n$. Hence,
-%     \begin{align*}
-%         f_k(x_{k+1})
-%         &\leq f_k(x) + \Big(\frac{1}{2\eta_k} - \frac{\mu}{2}\Big)\norm{x - x_k}^2 + \langle z_k, x_k - x \rangle 
-%             - \frac{1}{2\eta_k}\norm{x - x_{k+1}}^2 \\
-%         &\phantom{===} + \frac{L_k + \delta_k^{-1} - \eta_k^{-1}}{2}\norm{x_{k+1}-x_k}^2 + \frac{\delta_k}{2}\norm{z_k}^2.
-%     \end{align*}
-%     Choosing $\delta_k := \eta_k(1 - L_k\eta_k)^{-1}$,
-%     we can drop the $\norm{x_{k+1} - x_k}^2$ term and get
-%     \begin{align*}
-%         f_k(x_{k+1})
-%         &\leq f_k(x) + \Big(\frac{1}{2\eta_k} - \frac{\mu}{2}\Big)\norm{x - x_k}^2 + \langle z_k, x_k - x \rangle 
-%             - \frac{1}{2\eta_k}\norm{x - x_{k+1}}^2 \\
-%         &\phantom{===} + \frac{\eta_k}{2(1 - L_k\eta_k)}\norm{z_k}^2.
-%     \end{align*}
-%     Subtracting by $f_k(x)$ and multiplying both sides by $2\eta_k$
-%     yields
-%     \begin{align*}
-%         2\eta_k(f_k(x_{k+1}) - f_k(x))
-%         &\leq ( 1 - \mu\eta_k ) \norm{x - x_k}^2 + 2\eta_k\langle z_k, x_k - x \rangle 
-%             - \norm{x - x_{k+1}}^2 \\
-%         &\phantom{===} + \frac{\eta_k^2}{1 - L_k\eta_k}\norm{z_k}^2.
-%     \end{align*}
-%     By properties of conditional expectation and the definition of
-%     stochastic gradients, we know that $\E_k \langle z_k, x_k - x \rangle = 0$, and
-%     thus, applying conditional expectations to both sides of the above
-%     inequality, we obtain
-%     \[
-%         2\eta_k\E_k(f_k(x_{k+1}) - f_k(x))
-%         \leq ( 1 - \mu\eta_k ) \norm{x - x_k}^2
-%             - \E_k\norm{x - x_{k+1}}^2 + \frac{\eta_k^2}{1 - L_k\eta_k}\E_k\norm{z_k}^2,
-%     \]
-%     for all $x\in\R^n$. Since $\E_k\norm{z_k}^2 = \E_k\norm{g_k - \nabla \psi_k(x_k)}^2$ and
-%     $\E_k(g_k) = \nabla \psi_k(x_k)$, it holds that $\E_k\norm{z_k}^2 = \Var_k(g_k)$,
-%     and we arrive at the desired result.
-% \end{proof}
 \begin{lemma}[One-step improvement]
     \label{lem:one-step-improvement}
     Let \cref{ass:basic-assumptions} hold and
@@ -811,8 +743,6 @@ we need to bound the noise term $\Var_k(g_k)$. Second, we cannot
 in general guarantee that $\E_k(f_k(x_{k+1}) - f_k(x^\star)) \geq 0$.
 However, as we show in the next lemma, we can find a lower bound that
 involves a nonnegative term plus a small negative term.
-% + \frac{2\eta_k^2}{1 - \rho}\Var_k(g_k) \\
-%         &\phantom{===} + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho}
 \begin{lemma}
     \label{lem:recursion-for-almost-sure-convergence}
     Assume that \cref{ass:basic-assumptions,ass:slater-point,ass:compact-support-without-zero} hold, and
@@ -898,8 +828,6 @@ involves a nonnegative term plus a small negative term.
     \end{align*}
     for all $k\geq K$.
     Plugging this into our original estimate, we have
-    % + \frac{2\eta_k^2}{1 - \rho}\Var_k(g_k) \\
-    %         &\phantom{===} + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho}
     \begin{align*}
         2\eta_k\big(\E_k(f_k(x_{k+1}) - f_k(x_k^\star))
         - (1 + c_1c_2)\gamma_k\alpha_k\big)
@@ -1002,7 +930,6 @@ The following lemma will give a bound on the gradient noise $\Var_k(g_k)$.
     \]
     Setting $\sigma^2 := \max(M^2, \tilde{M}^2)$ yields the desired result.
 \end{proof}
-
 We are now ready to prove the main theorem of this section.
 \begin{theorem}[Almost sure convergence]
     \label{thm:almost-sure-convergence}
@@ -1097,27 +1024,13 @@ In the previous section, we established that the iterates $(x_k)_{k\in\N_0}$
 of \cref{alg:seqprox-sgd} are bounded with probability one,
 provided that the parameters $(h_k)_{k\in\N_0}$, $(\eta_k)_{k\in\N_0}$, $(\gamma_k)_{k\in\N_0}$
 satisfy certain conditions, which are captured in the following assumption.
-
-% \begin{theorem}[Constant step size schedule]
-%     For all $k\in\N_0$, let $\eta_k \equiv \eta \in(0, 1/(2L)]$, $\gamma_k = \mathcal{O}(\log^e(1+k))$ for any $e\in(0, \infty)$,
-%     and $\beta_k := 8L\mu^{-1}(1+\gamma_k^2)$. Then, the iterates $(x_k)_{k\in\N}$ generated
-%     by \cref{alg:seqprox-sgd} with parameters $(\eta_k)_{k\in\N}$, $\gamma_k = \mathcal{O}(\log^e(k))$,
-%     $(\beta_k)_{k\in\N}$, and $(h_k)_{k\in\N}$ such that $\alpha_k = \mathcal{O}(k^{-a})$ for some $a\in(0,\infty)$,
-%     satisfy
-%     \[
-%         \E\norm{x_{k} - x_{k}^\star}^2
-%         \leq ( 1 - \mu\eta / 2 )^k \, \E\norm{x_{0} - x_{0}^\star}^2
-%             + \eta^2 \frac{\mu \sigma^2}{2 L}
-%     \]
-% \end{theorem}
-
 \begin{assumption}
     \label{ass:step-sizes-and-penalties}
     The parameters
     $(h_k)_{k\in\N_0}$, $(\eta_k)_{k\in\N_0}$, $(\gamma_k)_{k\in\N_0}$ of \cref{alg:seqprox-sgd} satisfiy
     \begin{enumerate}
         \item $\sum_{k=0}^\infty \eta_k = \infty$ and there exist constants $\rho\in(0,1)$ and $K\in\N$
-            such that $\eta_k \leq \rho L^{-1}$ for all $k\in\N, k\geq K$.
+            such that $\eta_k \leq \rho L^{-1}$ for all $k\in\N$ with $k\geq K$.
         \item $\sum_{k=0}^\infty \eta_k\gamma_k\alpha_k < \infty$.
         \item $\sum_{k=0}^\infty \eta_k^2 \gamma_k^2 < \infty$.
     \end{enumerate}
@@ -1181,19 +1094,27 @@ satisfy certain conditions, which are captured in the following assumption.
         (1-\mu\eta_k)\E\norm{x - x_k}^2 - \E \norm{x - x_{k+1}}^2 + \frac{4\eta_k^2 (1 + \gamma_k^2)}{(1-\rho)\beta_k}\tilde{\sigma}^2 \\
         &\phantom{===}+ 2\eta_k\E\left( \norm{\tilde{\nabla} f_k(x_k)} \norm{x_{k+1} - x_k} \right).
     \end{align*}
-    Since $(x_k)_{k\in\N_0}$ is bounded almost surely (\cref{thm:almost-sure-convergence}),
-    we know from \cref{lem:basic-properties} that $\norm{\tilde{\nabla} f_k(x_k)} = \mathcal{O}(\gamma_k)$.
-    We will now analyze $\norm{x_{k+1} - x_k}$. Let $y_k := \prox_{\eta_k r} (x_k)$. Then, using
+    We know from \cref{lem:basic-properties} that both $f$ and $\pi_k$ are locally Lipschitz continuous.
+    Combining with the fact that $(x_k)_{k\in\N_0}$ is bounded almost surely (\cref{thm:almost-sure-convergence}),
+    it follows that
+    \[
+        \norm{\tilde{\nabla} f_k(x_k)} \leq \norm{\tilde{\nabla} f(x_k)} + \gamma_k \norm{\nabla \pi_k(x_k)} = \mathcal{O}(\gamma_k)
+    \]
+    almost surely.
+    We will now analyze $\E\norm{x_{k+1} - x_k}$. Let $y_k := \prox_{\eta_k r} (x_k)$. Then, using
     the triangle inequality and the nonexpansiveness property of the proximal operator (\textcolor{red}{TODO}),
     we have
     \begin{align*}
-        \norm{x_{k+1} - x_k} &= \norm{x_{k+1} - y_k + y_k - x_k} \\
-                            &\leq \norm{\prox_{\eta_k r}(x_k - \eta_k g_k) - \prox_{\eta_k r}(x_k)} + \norm{y_k - x_k} \\
-                            &\leq \eta_k \norm{g_k} + \norm{y_k - x_k}.
+        \E\norm{x_{k+1} - x_k} &= \E\norm{x_{k+1} - y_k + y_k - x_k} \\
+                            &\leq \E\norm{\prox_{\eta_k r}(x_k - \eta_k g_k) - \prox_{\eta_k r}(x_k)} + \E\norm{y_k - x_k} \\
+                            &\leq \eta_k \E\norm{g_k} + \E\norm{y_k - x_k}.
     \end{align*}
-    By \cref{lem:basic-properties}, for the stochastic gradient it holds that $\norm{g_k} = \mathcal{O}(\gamma_k)$
-    almost surely. For the second term, we use the definition
-    of $y_k$ as the solution to $\min_{x\in\R^n} \{ r(x) + (2\eta_k)^{-1} \norm{x - x_k}^2 \}$.
+    By \cref{lem:basic-properties}, for the stochastic gradient it holds that $\E\norm{g_k} = \mathcal{O}(\gamma_k)$
+    almost surely, where we again used a.\,s. boundedness of $(x_k)_{k\in\N_0}$. For the second term, we use the definition
+    of $y_k$ as the solution to
+    \[
+        \min_{x\in\R^n} \{ r(x) + (2\eta_k)^{-1} \norm{x - x_k}^2 \}.
+    \]
     By the first-order optimality condition, there exists a subgradient $\tilde{\nabla} r(y_k) \in \partial r(y_k)$ such that
     \[
         \tilde{\nabla} r(y_k) + \frac{y_k - x_k}{\eta_k} = 0 \enspace\iff\enspace \frac{x_k - y_k}{\eta_k} \in \partial r(y_k).
@@ -1213,7 +1134,7 @@ satisfy certain conditions, which are captured in the following assumption.
     and the prox operator is nonexpansive (\textcolor{red}{TODO}).
     In total, we have thus shown
     \[
-        \norm{x_k - x_{k+1}} = \mathcal{O}(\eta_k \gamma_k).
+        \E\norm{x_k - x_{k+1}} = \mathcal{O}(\eta_k \gamma_k).
     \]
     It follows that
     \begin{align*}
@@ -1351,12 +1272,6 @@ satisfy certain conditions, which are captured in the following assumption.
     \end{align*}
     for all $K\in\N$, as desired.
     Note that 
-    % \[
-    %     S_K = S_{0, k_1} + S_{k_1, K}
-    %     \enspace\Longrightarrow\enspace
-    %     1 = \frac{S_{0, k_1}}{S_K} + \frac{S_{k_1, K}}{S_K},
-    % \]
-    % thus
     \[
         \bar{x}_K = \frac{S_{1, k_0-1}}{S_K} \bar{x}_{1, k_0-1} + \frac{S_{k_0, K}}{S_K} \bar{x}_{k_0, K}
     \]
@@ -1467,12 +1382,6 @@ satisfy certain conditions, which are captured in the following assumption.
             + \frac{2\tau^{-1}\sum_{k=k_1}^{K}\eta_k^{-1}\alpha_k}{S_{k_1,K}}.
     \]
     To derive a bound for $\E(\dist(\bar{x}_K))$, we proceed similarly as before. We have
-    % \[
-    %     S_K = S_{0, k_1} + S_{k_1, K}
-    %     \enspace\Longrightarrow\enspace
-    %     1 = \frac{S_{0, k_1}}{S_K} + \frac{S_{k_1, K}}{S_K},
-    % \]
-    % thus
     \[
         \bar{x}_K = \frac{S_{1, k_1-1}}{S_K} \bar{x}_{1, k_1-1} + \frac{S_{k_1, K}}{S_K} \bar{x}_{k_1, K}
     \]
@@ -1543,7 +1452,7 @@ satisfy certain conditions, which are captured in the following assumption.
             + \frac{\tau^{-1}\sum_{k=k_1}^{K - 1} \gamma_k^{-1}M_k^2}{S_{K}}
             + \frac{2\tau^{-1}\sum_{k=k_1}^{K - 1}\eta_k^{-1}\alpha_k}{S_{K}},
     \]
-    where $S_K := \sum_{k=0}^{K-1} \eta_k^{-1}$ and $M_k^2 = \mathcal{O}(\beta_k^{-1}(1 + \gamma_k^2) + \gamma_k^2)$.
+    where $S_K := \sum_{k=1}^{K} \eta_k^{-1}$ and $M_k^2 = \mathcal{O}(\beta_k^{-1}(1 + \gamma_k^2) + \gamma_k^2)$.
     Since $\eta_k^{-1} = (\mu k)/2$, it follows that $S_K = \mathcal{O}(K^2)$. Also, since
     $\alpha_k = \mathcal{O}(k)$, we have $\eta_k^{-1} \alpha_k \leq c$ for some $c\in (0,\infty)$.
     Together with $\gamma_k^{-1}M_k^2 = \mathcal{O}(\gamma_k)$, we therefore have
@@ -1551,7 +1460,7 @@ satisfy certain conditions, which are captured in the following assumption.
         \E(\dist(\bar{x}_K, \mathcal{X}))
         &=
         \mathcal{O}(K^{-2})
-            + \mathcal{O}\Big( K^{-2} \sum_{k=1}^{K - 1} \log^e(k) \Big)
+            + \mathcal{O}\Big( K^{-2} \sum_{k=1}^{K} \log^e(k) \Big)
             + \mathcal{O}( K^{-1} ) \\
         &=
         \mathcal{O}(K^{-2})
@@ -1577,8 +1486,8 @@ satisfy certain conditions, which are captured in the following assumption.
         \E(f(\bar{x}_{K}) - f(x^\star))
         &=
         \mathcal{O}(K^{-2})
-        + \mathcal{O} \Big( K^{-2} \sum_{k=1}^{K-1} \log^{2e}(k) \Big)
-        + \mathcal{O} \Big( K^{-2} \sum_{k=1}^{K-1} \log^{e}(k) \Big) \\
+        + \mathcal{O} \Big( K^{-2} \sum_{k=1}^{K} \log^{2e}(k) \Big)
+        + \mathcal{O} \Big( K^{-2} \sum_{k=1}^{K} \log^{e}(k) \Big) \\
         &=
         \mathcal{O} \Big( \frac{\log^{2e}(K)}{K} \Big).
     \end{align*}
@@ -1591,7 +1500,7 @@ satisfy certain conditions, which are captured in the following assumption.
 
 \section{High-probability guarantees}
 
-In the previous sections we proved $\mathcal{O}(\log k / k)$ convergence to zero of the expected
+In the previous sections we proved $\mathcal{O}(\log^e k / k)$ convergence of the expected
 suboptimality, $\E|f(\bar{x}_k) - f(x^\star)|$, and the expected subfeasibility, $\dist(\bar{x}_k, \mathcal{X})$,
 of the sequence $(\bar{x}_{k})_{k\in\N}$ generated by \cref{alg:seqprox-sgd}, under
 suitable choice of parameters $(\eta_k)_{k\in\N_0}$, $(\gamma_k)_{k\in\N_0}$, $(\beta_k)_{k\in\N_0}$,
@@ -1612,14 +1521,6 @@ This notion of "closeness with high probability" is formalized in the following 
 In other words, an iterate $x_k$ of \cref{alg:seqprox-sgd} is an $(\epsilon, \delta)$-solution, if we can guarantee that
 $| f(x_k) - f(x^\star) | < \epsilon$ and $\dist(x_k, \mathcal{X}) < \epsilon$ with probability
 greater than $1 - \delta$.
-% One thing to note is that the decision to consider $\pi(x)$
-% instead of $\dist(x, \mathcal{X})$ is purposeful, because
-% this allows $(\epsilon, \delta)$-solutions to exist even
-% if $\mathcal{X} = \emptyset$. On the other hand,
-% if $\mathcal{X} \neq \emptyset$ and $X$ is an $(\epsilon, \delta)$-solution,
-% it follows from \cref{lem:lower-bound-on-penalties-by-distance-to-feasibility}
-% that $\dist(X,\mathcal{X}) < c \cdot \epsilon$ with probability greater than $1 - \delta$
-% for some constant $c\in(0,\infty)$ independent of $\epsilon$.
 We can now state the central questions we aim to answer in this section as follows:
 \begin{enumerate}
     \item For what choice of parameters can we guarantee that the sequence $(\bar{x}_k)_{k\in\N}$ generated by \cref{alg:seqprox-sgd}
@@ -1634,7 +1535,7 @@ We will then proceed similarly to how we did in the previous section,
 though we will need to carry around an extra term throughout the calculations.
 \begin{lemma}[One-step improvement II]
     Let $\rho\in(0,1)$ and $\eta_k\in(0, \rho L^{-1}]$ for all $k\in\N_0$. Then
-    the iterates $(x_k)_{k\in\N}$ generated by \cref{alg:seqprox-sgd} with step size
+    the iterates $(x_k)_{k\in\N_0}$ generated by \cref{alg:seqprox-sgd} with step size
     schedule $(\eta_k)_{k\in\N_0}$ satisfy
     \begin{align*}
         2\eta_k(f_k(x_{k+1}) - f_k(x))
@@ -1642,7 +1543,7 @@ though we will need to carry around an extra term throughout the calculations.
             - \norm{x - x_{k+1}}^2 \\
         &\phantom{===} +  \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho} + \frac{2\eta_k^2}{1 - \rho}\norm{z_k}^2
     \end{align*}
-    for all $k\in\N$.
+    for all $k\in\N_0$.
 \end{lemma}
 \begin{proof}
     This is just inequality \eqref{eq:proof:lem:one-step-improvement-2}. Since we
@@ -1651,11 +1552,11 @@ though we will need to carry around an extra term throughout the calculations.
 \end{proof}
 \begin{lemma}
     Let \cref{ass:step-sizes-and-penalties} hold.
-    For all $k\in\N$, it holds that
+    For all $k\in\N_0$, it holds that
     \[
-        \norm{z_k}^2 \leq 8L^2 + 8\gamma_k^2G^2,
+        \norm{z_k}^2 \leq 8L_{\text{loc}}^2 + 8\gamma_k^2G^2,
     \]
-    with probability one, where $L, G\in(0,\infty)$.
+    with probability one, where $L_{\text{loc}}, G\in(0,\infty)$.
 \end{lemma}
 \begin{proof}
     Using the inequality $(a + b + c + d)^2 \leq 4 (a^2 + b^2 + c^2 + d^2)$ $\forall a,b,c,d\in\R$, we have
@@ -1726,110 +1627,3 @@ The question is then: What do the iterates converge to, if anything?
 \end{enumerate}
 At least one of these two statements must hold, regardless of whether \eqref{eq:main-problem-copy}
 is feasible or not. Both statements hold iff. problem \eqref{eq:main-problem-copy} is feasible.
-%\section{Exponential moving averages}
-
-
-% \section{A general consistency result}
-
-% In this section, we want to analyze general conditions that
-% ensure $\lim_{k\to\infty} x_k^\star = x^\star$, which we refer
-% to as consistency of the sequence $(x_k^\star)_{k\in\N}$.
-% This will help us in two ways: First, it gives a general
-% guide on what constitutes reasonable sequences $(\pi_k)_{k\in\N}$.
-% Second, in subsequent analysis, it will be highly useful
-% to have condtions that ensure consistency, because this
-% will allow us to use boundedness of the sequence $(x_k^\star)_{k\in\N}$
-% in our analysis.
-% The precise result that we will prove in this section is the following.
-% \begin{theorem}
-%     In problem \eqref{eq:main-problem}, assume that the following hold:
-%     \begin{enumerate}
-%         \item There exists $\mu\in(0,\infty)$ such that
-%             $f$ is $\mu$-strongly convex;
-%         \item The sequence $(\gamma_k)_{k\in\N}$
-%             is positive and unbounded;
-%         \item There exists
-%             at least one feasible point;
-%         \item $(\pi_k)_{k\in\N}$ is a sequence of
-%             nonnegative convex functions,
-%             such that $\gamma_{k+1}\,\pi^{k+1}(x) \geq \gamma_{k}\,\pi^{k}(x)$
-%             for all $x\in\R^d$ and $k\in\N$ (\textcolor{red}{TODO: NOT NEEDED ACTUALLY, assume
-%             instead existence of a sequence $c_k$ such that $\pi_k(x) \leq c_k$ for all feasible $x$,
-%             and $\gamma_k c_k \to 0$}),
-%             and $\lim_{k\to\infty} \gamma_k \pi_k(x) = 0$ for all feasible $x\in\R^d$. Moreover, we assume the existence
-%             of a continuous function $\pi^\infty\colon\R^d\to [0, \infty)$
-%             such that $\pi^\infty \leq \pi_k$ for all $k\in\N$
-%             and $\pi^\infty(x) = 0$ if and only if $x$ is feasible for \eqref{eq:new-model-problem}.
-%     \end{enumerate}
-%     Then, we have $\lim_{k\to\infty} x^\star_k = x^\star$ and
-%     $\lim_{k\to\infty} f^k(x^\star_k) = f(x^\star)$.
-% \end{theorem}
-
-% \begin{lemma}
-%     \label{lem:radially-unbounded-proper-cont-then-attains-minimum}
-%     Let $h\colon \R^d \to \R$ be a coercive and continuous function, and let $X \subset \R^d$ be nonempty
-%     and closed. Then $h$ attains a minimum over $X$, i.\,e.
-%     there exists $x^\star\in X$ such that $h(x^\star) = \inf_{x\in X} h(x)$.
-% \end{lemma}
-% \begin{proof}
-%     Let $x_0\in X$. Since $h$ is coercive, there exists $r > 0$
-%     such that $h(x) \geq h(x_0)$ for all $x\in\R^d$ with $|\!|x|\!| > r$,
-%     therefore any minimum of $h$ -- if it exists -- must be contained in the closed ball of
-%     radius $r$ around $0$, which we denote by
-%     $B_r$. In particular, for $C := X \cap B_r$ we have
-%     \[
-%         \inf_{x\in X} h(x) = \inf_{x\in C} h(x).
-%     \]
-%     By continuity of $h$, its domain must be a closed set, which implies that $C$ is compact.
-%     Assume now that $h$ does not attain a minimum on $C$.
-%     Then there must exist a sequence $(x_k)_{k\in\N} \subset C$
-%     such that $\lim_{k\to\infty} h(x_k) = \inf_{x\in C} h(x)$.
-%     Continuous functions map compact sets to compact sets,
-%     hence $\inf_{x\in C} h(x) \in h(C)$ and thus there must exist some
-%     $x^\star\in C$ such that $h(x^\star) = \inf_{x\in C} h(x)$.
-% \end{proof}
-% \begin{lemma}
-%     \label{lem:strongly-convex-implies-coercive}
-%     Let $h\colon\R^d\to\R$ be strongly convex and differentiable. Then $h$ is coercive.
-% \end{lemma}
-% \begin{proof}
-%     Let $x^\star$ be the minimizer of $h$ (\cref{prop:strongly-convex-implies-unique-minimizer}).
-%     By \cref{prop:strongly-convex-subdifferentiable-bound}, we have
-%     \[
-%         h(x) \geq h(x^\star) + \frac{\mu}{2}|\!|x-x^\star|\!|^2
-%     \]
-%     for all $x\in\R^d$ and some $\mu\in (0, \infty)$. Letting $|\!|x|\!|\to\infty$, we see that $h(x) \to \infty$.
-% \end{proof}
-% \begin{lemma}
-%     \label{lem:radially-unbounded-f-and-f(x^n)-bounded-implies-x^n-bounded}
-%     Let $h\colon \R^d \to \R$ be a coercive function
-%     If $\{\, h(u_k) \mid k\in\N \,\}$
-%     is bounded for some sequence
-%     $(u_k)_{k\in\N} \subset \R^d$, then $(u_k)_{k\in\N}$ must also be bounded.
-% \end{lemma}
-% \begin{proof}
-%     Assume $(u_k)_{k\in\N}$ is not bounded. Then there must exist some subsequence $(u_{k_r})_{r\in\N}$
-%     such that $|\!|u_{k_r}|\!| \to \infty$ for $r\to\infty$. By coercivity, this would
-%     imply that $\lim_{k\to\infty} h(u_k) = \infty$, contradicting our assumption
-%     that $\{\, h(u_k) \mid k\in\N \,\}$ is bounded. Hence, $(u_{k})_{k\in\N}$ must be bounded.
-% \end{proof}
-% \begin{lemma}
-%     \label{lem:if-every-subsequence-contains-convergent-subsequence-then-sequence-converges}
-%     Let $U := \{\, u_k \mid k\in\N \,\}$ be a subset of $\R^d$.
-%     Suppose that any subsequence of $U$ contains a subsequence
-%     that converges to $u\in\R^d$.
-%     Then $u_k \to u$ for $k\to\infty$.
-% \end{lemma}
-% \begin{proof}
-%     Assume that $u_k \not\to u$.
-%     Then there must exist some $\epsilon > 0$ and a sequence of natural numbers $k_1 < k_2 < \dots$ such that
-%     \begin{equation}
-%         \label{proof:lem:if-every-subsequence-contains-convergent-subsequence-then-sequence-converges:ineq}
-%         |\!|u_{k_r} - u|\!| \geq \epsilon
-%     \end{equation}
-%     for all $r\in\N$. However, as a subsequence of $U$, the sequence
-%     $(u_{k_r})_{r\in\N}$
-%     must simultanously contain a subsequence that converges to $u$, which contradicts
-%     \eqref{proof:lem:if-every-subsequence-contains-convergent-subsequence-then-sequence-converges:ineq}.
-%     Thus, our assumption $u_k \not\to u$ must be false.
-% \end{proof}
