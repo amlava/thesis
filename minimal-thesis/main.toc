@@ -16,5 +16,5 @@
 \contentsline {section}{\numberline {3.2}Convergence rates in expectation}{31}{section.3.2}%
 \contentsline {section}{\numberline {3.3}High-probability guarantees}{40}{section.3.3}%
 \contentsline {section}{\numberline {3.4}Infeasible problems}{42}{section.3.4}%
-\contentsline {chapter}{\numberline {4}Numerical Examples}{43}{chapter.4}%
-\contentsline {chapter}{\numberline {5}Summary and Outlook}{45}{chapter.5}%
+\contentsline {chapter}{\numberline {4}Numerical Examples}{45}{chapter.4}%
+\contentsline {chapter}{\numberline {5}Summary and Outlook}{47}{chapter.5}%
