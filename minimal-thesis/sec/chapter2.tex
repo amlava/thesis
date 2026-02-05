@@ -10,7 +10,7 @@
 % \begin{definition}
 %     We say that the multifunction $\varPsi\colon X \to 2^Y$ is open at a point
 % \end{definition}
-\begin{definition}
+\begin{definition}[Multifunctions]
     Let $X$ and $Y$ be Banach spaces. A function $\varPsi\colon X\to 2^Y$
     is called \textbf{multifunction}. The \textbf{domain} and the \textbf{range}
     of a multifunction $\varPsi\colon X\to 2^Y$ are defined as
@@ -26,8 +26,16 @@
     \[
         \varPsi^{-1}(y) := \{\, x\in X \mid y\in\varPsi(x) \,\}.
     \]
+    The multifunction $\varPsi$ is said to be \textbf{closed at a point} $x\in X$ if
+    $x_k \to x$, $y_k\in \varPsi(x_k)$, and $y_k \to y$ imply that $y\in\varPsi(x)$.
+    If $\varPsi$ is closed at all points $x\in X$, then $\varPsi$ is said to be \textbf{closed}.
+    Finally, it is said that $\varPsi$ is \textbf{convex} if, for any $x_1,x_2\in X$ and
+    $t\in [0, 1]$,
+    \[
+        t \varPsi(x_1) + (1 - t) \varPsi(x_2) \subset \varPsi(t x_1 + (1 - t) x_2).
+    \]
 \end{definition}
-\begin{definition}
+\begin{definition}[Metric regularity]
     We say that the multifunction $\varPsi\colon X\to 2^Y$ is \textbf{metric regular} at a point
     $(x_0,y_0)\in\graph(\varPsi)$ at rate $c\in\R_{\geq 0}$, if there
     exists a neighborhood $U\subset X\times Y$ containing $(x_0,y_0)$, such that
