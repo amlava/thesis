@@ -62,9 +62,9 @@ $\R^n \times \R^{m\times n} \times \R^m$ to $\R$ with the following properties:
     \item $\pi_k(x) \geq \E\norm{(A(\xi)x - b(\xi))_+}_1$ for all $x\in\R^n$ and $k\in\N_0$.
     \item There exists a sequence $(\alpha_k)_{k\in\N_0}$ with $\lim_{k\to\infty} \alpha_k = 0$ such that
     $\pi_k(\tilde{x}) \leq \alpha_k$ for all $k\in\N_0$ and all feasible points $\tilde{x}\in\mathcal{X}$.
-    \item The gradients of $(h_k)_{k\in\N_0}$ have uniformly bounded second moment:
+    \item The gradients of $(h_k)_{k\in\N_0}$ have uniformly bounded gradient norm:
         \[
-            \sup_{k\in\N_0}\sup_{x\in\R^n} \E\norm{\nabla h_k(x; A(\xi), b(\xi))}^2 < \infty.
+            \sup_{k\in\N_0}\sup_{x\in\R^n} \norm{\nabla h_k(x; A(\xi), b(\xi))} < \infty.
         \]
 \end{enumerate}
 Finally, for all $k\in\N_0$, we define the sequence of unconstrained optimization problems
@@ -99,11 +99,13 @@ by the following lemma.
         \item The objectives $(f_k)_{k\in\N_0}$ of \eqref{eq:main-problem-penalized} are $\mu$-strongly convex, locally
             Lipschitz continuous, and subdifferentiable on $\dom(f_k)$.
         \item The functions $(\psi_k)_{k\in\N_0}$ are $\mu$-strongly convex and differentiable.
-        \item Let $B\subset\R^n$ be a bounded subset. Then, for all $x\in B, k\in\N_0$, the stochastic gradient
+        \item Let $B\subset\R^n$ be a bounded subset. Then, for all $k\in\N_0$, the stochastic gradients
+        defined by
         \[
-            g_k(x) := \nabla F_\xi(x) + \gamma_k \nabla h_k(x; A(\xi), b(\xi))
+            g_k(x) := \nabla F_\xi(x) + \gamma_k \nabla h_k(x; A(\xi), b(\xi)),
         \]
-        satisfies $\sup_{x\in B} \E\norm{g_k(x)} = \mathcal{O}(\gamma_k)$ almost surely.
+        for $x\in\R^n$,
+        satisfy $\sup_{x\in B} \norm{g_k(x)} = \mathcal{O}(\gamma_k)$ almost surely.
         \item There exists a unique solution $x^\star\in\mathcal{X}$ for \eqref{eq:main-problem-copy} and, for all $k\in\N_0$,
             there exists a unique solution $x_k^\star\in\dom(f_k)$ for \eqref{eq:main-problem-penalized}.
     \end{enumerate}
@@ -116,13 +118,14 @@ by the following lemma.
         \]
         hence
         \[
-            \norm{\nabla \pi_k(x)}^2 \leq (\E\norm{\nabla h_k(x; A(\xi), b(\xi))})^2 \leq \E\norm{\nabla h_k(x; A(\xi), b(\xi))}^2,
+            \norm{\nabla \pi_k(x)} \leq \E\norm{\nabla h_k(x; A(\xi), b(\xi))},
         \]
         where the last step follows from Jensen's inequality.
         The claim follows by our assumption that
         \[
-            \sup_{k\in\N_0}\sup_{x\in\R^n} \E\norm{\nabla h_k(x; A(\xi), b(\xi))}^2< \infty.
+            \sup_{k\in\N_0}\sup_{x\in\R^n} \norm{\nabla h_k(x; A(\xi), b(\xi))} < \infty
         \]
+        almost surely.
         In particular, $\pi_k$ is Lipschitz continuous for all $k\in\N_0$.
         \item By $L$-smoothness of $F_\xi$, the expectation $\E(F_\xi)$ is also $L$-smooth, thus
             locally Lipschitz. By local Lipschitz continuity of $r$, it follows that $f = \E(F_\xi) + r$ is also
@@ -140,12 +143,12 @@ by the following lemma.
             Hence, $\psi_k$ is $\mu$-strongly convex and differentiable for all $k\in\N_0$.
         \item Let $B\subset \R^n$ be bounded. By the triangle inequality,
             \[
-                \E\norm{g_k(x)} \leq \E\norm{\nabla F_\xi(x)} + \gamma_k \E\norm{\nabla h_k(x; A(\xi), b(\xi))}.
+                \norm{g_k(x)} \leq \norm{\nabla F_\xi(x)} + \gamma_k \norm{\nabla h_k(x; A(\xi), b(\xi))}.
             \]
             for all $x\in B$.
             The claim now follows from local Lipschitz continuity of $F_\xi$ (a.\,s.), and
-            the assumption $\sup_{x\in B} \E\norm{\nabla h_k(x; A(\xi), b(\xi))}^2 < \infty \enspace \forall k\in\N_0$,
-            together with Jensen's inequality.
+            the assumption $\sup_{x\in B} \norm{\nabla h_k(x; A(\xi), b(\xi))} < \infty
+            \enspace \text{(a.\,s.)} \enspace \forall k\in\N_0$.
         \item As we have already shown, $f$ is strongly convex.
             The set $\mathcal{X}$ is the intersection of the closed convex sets
             $\{\, x\in\dom(f) \mid A(z)x - b(z) \leq 0 \,\}$ over $z$ in the support of $\xi$.
@@ -1038,82 +1041,63 @@ satisfy certain conditions, which are captured in the following assumption.
         \item $\sum_{k=0}^\infty \eta_k^2 \gamma_k^2 < \infty$.
     \end{enumerate}
 \end{assumption}
-
 \begin{lemma}
     \label{lem:functional-upper-bound}
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point,ass:step-sizes-and-penalties} hold.
-    Then there exists a deterministic sequence $(M_k^2)_{k\in\N_0} \subset \R^n$ with
-    $M_k^2 = \mathcal{O}(\beta_k^{-1}(1 + \gamma_k^2) + \gamma_k^2)$, such that
-    \[
-        2\eta_k\E(f_k(x_{k}) - f_k(x))
-        \leq
-        (1-\mu\eta_k)\E\norm{x - x_k}^2 - \E \norm{x - x_{k+1}}^2 + \eta_k^2 M_k^2,
-    \]
-    for all $k\in\N_0$ and $x\in\R^n$.
+    Then, for all $k\in\N$, it holds that
+    \begin{align*}
+        2\eta_k(f_k(x_k) - f_k(x))
+        &\leq ( 1 - \mu\eta_k ) \norm{x - x_k}^2 + 2\eta_k\langle z_k, x_k - x \rangle 
+            - \norm{x - x_{k+1}}^2 \notag \\
+        &\phantom{===} + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho}
+            + \frac{2\eta_k^2}{1 - \rho}\norm{z_k}^2
+            + \eta_k^2 \mathcal{O}(\gamma_k^2)
+    \end{align*}
+    almost surely.
 \end{lemma}
 \begin{proof}
-    Let $k\in\N_0$. Taking expectations on both sides of the inequality provided by
-    \cref{lem:one-step-improvement}, we get
-    \begin{align*}
-        2\eta_k\E(f_k(x_{k+1}) - f_k(x))
-        &\leq ( 1 - \mu\eta_k ) \E\norm{x - x_k}^2 - \E\norm{x - x_{k+1}}^2 + \frac{2\eta_k^2}{1 - \rho}\E(\Var_k(g_k)) \\
-        &\phantom{===} + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho},
-    \end{align*}
-    for all $x\in\R^n$. Recall that \cref{lem:bound-on-variance} lets us bound the conditional
-    variance $\Var_k(g_k)$ as follows:
-    \[
-        \Var_k(g_k) \leq \frac{2L^2}{\beta_k} \norm{x_k - x^\star}^2 + \frac{1 + \gamma_k^2}{\beta_k}\sigma^2,
-    \]
-    for a constant $\sigma^2\in(0,\infty)$.
-    \Cref{ass:step-sizes-and-penalties} and \cref{thm:almost-sure-convergence} imply that there exists
-    a constant $\tilde{\sigma}^2\in(0, \infty)$ such that $2L^2 \norm{x_k - x^\star}^2 \leq \tilde{\sigma}^2$
-    for all $k\in\N_0$ (almost surely).  We can assume without loss of generality that $\sigma^2 \leq \tilde{\sigma}^2$,
-    and since $1 + \gamma_k^2 > 1$, we have
-    \[
-        \Var_k(g_k) \leq \frac{1}{\beta_k} \tilde{\sigma}^2 + \frac{1 + \gamma_k^2}{\beta_k}\tilde{\sigma}^2
-        \leq \frac{2(1 + \gamma_k^2)}{\beta_k}\tilde{\sigma}^2,
-    \]
-    almost surely. Therefore, we obtain
-    \[
-        2\eta_k\E(f_k(x_{k+1}) - f_k(x))
-        \leq
-        (1-\mu\eta_k)\E\norm{x - x_k}^2
-        - \E \norm{x - x_{k+1}}^2
-        + \frac{4\eta_k^2 (1 + \gamma_k^2)}{(1-\rho)\beta_k}\tilde{\sigma}^2,
-    \]
-    for all $x\in\R^n$. Let $\tilde{\nabla} f_k(x_k)$ denote the minimum-norm subgradient
+    By \cref{lem:one-step-improvement},
+    \begin{align}
+        2\eta_k(f_k(x_{k+1}) - f_k(x))
+        &\leq ( 1 - \mu\eta_k ) \norm{x - x_k}^2 + 2\eta_k\langle z_k, x_k - x \rangle 
+            - \norm{x - x_{k+1}}^2 \notag \\
+        &\phantom{===} +  \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho} + \frac{2\eta_k^2}{1 - \rho}\norm{z_k}^2
+    \end{align}
+    almost surely, for all $k\in\N_0$ and $x\in\R^n$.
+    Let $\tilde{\nabla} f_k(x_k)$ denote a subgradient
     of $f_k$ at $x_k$. By convexity of $f_k$ and Cauchy-Schwarz, we have
     \[
         f_k(x_{k+1})
         \geq
         f_k(x_k) + \langle \tilde{\nabla} f_k(x_k), x_{k+1} - x_k \rangle
         \geq
-        f_k(x_k) - \norm{\tilde{\nabla} f_k(x_k)} \norm{x_{k+1} - x_k},
+        f_k(x_k) - \norm{\tilde{\nabla} f_k(x_k)} \norm{x_{k+1} - x_k}.
     \]
-    hence
-    \begin{align*}
-        2\eta_k\E(f_k(x_{k}) - f_k(x))
-        &\leq
-        (1-\mu\eta_k)\E\norm{x - x_k}^2 - \E \norm{x - x_{k+1}}^2 + \frac{4\eta_k^2 (1 + \gamma_k^2)}{(1-\rho)\beta_k}\tilde{\sigma}^2 \\
-        &\phantom{===}+ 2\eta_k\E\left( \norm{\tilde{\nabla} f_k(x_k)} \norm{x_{k+1} - x_k} \right).
-    \end{align*}
-    We know from \cref{lem:basic-properties} that both $f$ and $\pi_k$ are locally Lipschitz continuous.
-    Combining with the fact that $(x_k)_{k\in\N_0}$ is bounded almost surely (\cref{thm:almost-sure-convergence}),
-    it follows that
+    Therefore,
+    \begin{align}
+        \label{eq:proof:lem:functional-upper-bound}
+        2\eta_k(f_k(x_k) - f_k(x))
+        &\leq ( 1 - \mu\eta_k ) \norm{x - x_k}^2 + 2\eta_k\langle z_k, x_k - x \rangle 
+            - \norm{x - x_{k+1}}^2 \notag \\
+        &\phantom{===} + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho}
+            + \frac{2\eta_k^2}{1 - \rho}\norm{z_k}^2 + 2\eta_k \norm{\tilde{\nabla} f_k(x_k)}\norm{x_{k+1} - x_k}
+    \end{align}
+    almost surely, for all $x\in\R^n$.
+    The sequence $(x_k)_{k\in\N_0}$ is bounded almost surely (\cref{thm:almost-sure-convergence}),
+    hence \cref{lem:basic-properties} implies
     \[
-        \norm{\tilde{\nabla} f_k(x_k)} \leq \norm{\tilde{\nabla} f(x_k)} + \gamma_k \norm{\nabla \pi_k(x_k)} = \mathcal{O}(\gamma_k)
+        \norm{\tilde{\nabla} f_k(x_k)} = \mathcal{O}(\gamma_k)
     \]
     almost surely.
-    We will now analyze $\E\norm{x_{k+1} - x_k}$. Let $y_k := \prox_{\eta_k r} (x_k)$. Then, using
+    We will now analyze $\norm{x_{k+1} - x_k}$. Let $y_k := \prox_{\eta_k r} (x_k)$. Then, using
     the triangle inequality and the nonexpansiveness property of the proximal operator (\textcolor{red}{TODO}),
     we have
     \begin{align*}
-        \E\norm{x_{k+1} - x_k} &= \E\norm{x_{k+1} - y_k + y_k - x_k} \\
-                            &\leq \E\norm{\prox_{\eta_k r}(x_k - \eta_k g_k) - \prox_{\eta_k r}(x_k)} + \E\norm{y_k - x_k} \\
-                            &\leq \eta_k \E\norm{g_k} + \E\norm{y_k - x_k}.
+        \norm{x_{k+1} - x_k} &= \norm{x_{k+1} - y_k + y_k - x_k} \\
+                            &\leq \norm{\prox_{\eta_k r}(x_k - \eta_k g_k) - \prox_{\eta_k r}(x_k)} + \E\norm{y_k - x_k} \\
+                            &\leq \eta_k \norm{g_k} + \norm{y_k - x_k}.
     \end{align*}
-    By \cref{lem:basic-properties}, for the stochastic gradient it holds that $\E\norm{g_k} = \mathcal{O}(\gamma_k)$
-    almost surely, where we again used a.\,s. boundedness of $(x_k)_{k\in\N_0}$. For the second term, we use the definition
+    For the second term, we use the definition
     of $y_k$ as the solution to
     \[
         \min_{x\in\R^n} r(x) + \frac{1}{2\eta_k} \norm{x - x_k}^2.
@@ -1122,10 +1106,12 @@ satisfy certain conditions, which are captured in the following assumption.
     \[
         \tilde{\nabla} r(y_k) + \frac{y_k - x_k}{\eta_k} = 0 \enspace\iff\enspace \frac{x_k - y_k}{\eta_k} \in \partial r(y_k).
     \]
-    Since $x_k$ is in the domain of $r$ \textcolor{red}{(TODO)}, we can now use the above, together with convexity, to get
+    Since $x_k$ is in the domain of $r$ for all $k\in\N$ \textcolor{red}{(TODO)} (not necessarily
+    for $k=0$), we can now use the above, together with convexity, to get
     \[
-        r(x_k) - r(y_k) \geq \langle \eta_k^{-1} (x_k - y_k), x_k - y_k \rangle = \eta_k^{-1} \norm{x_k - y_k}^2.
+        r(x_k) - r(y_k) \geq \langle \eta_k^{-1} (x_k - y_k), x_k - y_k \rangle = \eta_k^{-1} \norm{x_k - y_k}^2,
     \]
+    for all $k\in\N$.
     Finally, local Lipschitz continuity of $r$  (\cref{ass:basic-assumptions}) yields (a.\,s.)
     \[
         L_r \norm{x_k - y_k} \geq r(x_k) - r(y_k) \geq \eta_k^{-1} \norm{x_k - y_k}^2
@@ -1135,27 +1121,28 @@ satisfy certain conditions, which are captured in the following assumption.
     for some $L_r \in (0,\infty)$, where we again used that $(x_k)_{k\in\N_0}$ is bounded almost surely
     (\cref{thm:almost-sure-convergence})
     and the prox operator is nonexpansive (\textcolor{red}{TODO}).
-    In total, we have thus shown
-    \[
-        \E\norm{x_k - x_{k+1}} = \mathcal{O}(\eta_k \gamma_k).
-    \]
-    It follows that
+    Combining with \cref{eq:proof:lem:functional-upper-bound}, we therefore obtain
     \begin{align*}
-        2\eta_k\E(f_k(x_{k}) - f_k(x))
-        &\leq
-        (1-\mu\eta_k)\E\norm{x - x_k}^2 - \E \norm{x - x_{k+1}}^2 + \frac{4\eta_k^2 (1 + \gamma_k^2)}{(1-\rho)\beta_k}\tilde{\sigma}^2 \\
-        &\phantom{===}+ 2\eta_k^2\mathcal{O}(\gamma_k^2).
+        2\eta_k(f_k(x_k) - f_k(x))
+        &\leq ( 1 - \mu\eta_k ) \norm{x - x_k}^2 + 2\eta_k\langle z_k, x_k - x \rangle 
+            - \norm{x - x_{k+1}}^2 \notag \\
+        &\phantom{===} + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho}
+            + \frac{2\eta_k^2}{1 - \rho}\norm{z_k}^2
+            + \eta_k^2 \mathcal{O}(\gamma_k) \big( \norm{g_k} + L_r \big),
     \end{align*}
-    Therefore, there exists a sequence $(M_k^2)_{k\in\N_0} \subset \R_{\geq 0}$ such that
-    $M_k^2 = \mathcal{O}(\beta_k^{-1}(1 + \gamma_k^2) + \gamma_k^2)$ and
-    \[
-        2\eta_k\E(f_k(x_{k}) - f_k(x))
-        \leq
-        (1-\mu\eta_k)\E\norm{x - x_k}^2 - \E \norm{x - x_{k+1}}^2 + \eta_k^2 M_k^2,
-    \]
-    for all $x\in\R^n, k\in\N_0$, as desired.
+    almost surely, for all $k\in\N$.
+    Finally, we can use \cref{lem:basic-properties}, which tells us that $\norm{g_k} = \mathcal{O}(\gamma_k)$
+    almost surely (again using boundedness of $(x_k)_{k\in\N_0}$), hence we arrive at
+    \begin{align*}
+        2\eta_k(f_k(x_k) - f_k(x))
+        &\leq ( 1 - \mu\eta_k ) \norm{x - x_k}^2 + 2\eta_k\langle z_k, x_k - x \rangle 
+            - \norm{x - x_{k+1}}^2 \notag \\
+        &\phantom{===} + \frac{8 G^2\eta_k^2\gamma_k^2}{1 - \rho}
+            + \frac{2\eta_k^2}{1 - \rho}\norm{z_k}^2
+            + \eta_k^2 \mathcal{O}(\gamma_k^2),
+    \end{align*}
+    as desired.
 \end{proof}
-
 \begin{lemma}
     \label{lem:valid-parameters}
     Let $\eta_k := 2/(\mu k)$ for all $k\in\N$, $\eta_0 := 2/\mu$. Then,
@@ -1214,15 +1201,16 @@ satisfy certain conditions, which are captured in the following assumption.
 \begin{proof}
     Let $k_0\in\N$ be large enough such that $2/(\mu k_0) \leq 1/(2L)$ and fix
     some $k\in\N$ with $k \geq k_0$.
-    \Cref{lem:valid-parameters} implies that there exist parameters $(\gamma_k)_{k\in\N_0}$ and
-    $(h_k)_{k\in\N_0}$ such that \cref{ass:step-sizes-and-penalties} holds.
+    \Cref{lem:valid-parameters} implies that the parameters
+    $(\eta_k)_{k\in\N_0}, (\gamma_k)_{k\in\N_0}, (h_k)_{k\in\N_0}$ satisfy
+    \cref{ass:step-sizes-and-penalties}.
     Thus we can apply \cref{lem:functional-upper-bound}, which implies
     \[
         2\eta_k\E(f_k(x_{k}) - f_k(x))
         \leq
-        (1-\mu\eta_k)\E\norm{x - x_k}^2 - \E \norm{x - x_{k+1}}^2 + \eta_k^2 M_k^2,
+        (1-\mu\eta_k)\E\norm{x - x_k}^2 - \E \norm{x - x_{k+1}}^2 + \eta_k^2 M_k^2
     \]
-    for any $x\in\R^n$.
+    with $M_k^2 = \mathcal{O}(\beta_k^{-1}(1 + \gamma_k^2) + \gamma_k^2)$, for any $x\in\R^n$.
     Assume now that $x\in\mathcal{X}$. By a property of $\pi_k$, the fact that
     $(x_k)_{k\in\N}$ is bounded almost surely (\cref{thm:almost-sure-convergence}), and \cref{lem:lower-bound-on-penalties-by-distance-to-feasibility},
     we can deduce that there exists $\tau\in(0,\infty)$ such that
