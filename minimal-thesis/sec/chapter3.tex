@@ -1249,7 +1249,7 @@ satisfy certain conditions, which are captured in the following assumption.
     \begin{align*}
         \dist(\bar{x}_K, \mathcal{X})
         &\leq
-        \frac{S_{1, k_1-1}}{S_K} \dist(\bar{x}_{1, k_1-1})
+        \frac{S_{1, k_1-1}}{S_K} \dist(\bar{x}_{1, k_1-1}, \mathcal{X})
             + \frac{d_{k_1}}{\tau S_K}
             + \frac{\sum_{k=k_1}^{K} \mathcal{O}(\gamma_k)}{\tau S_K}
             + 2 \frac{\sum_{k=k_1}^{K}\eta_k^{-1}\alpha_k}{\tau S_K} \\
@@ -1486,7 +1486,7 @@ satisfy certain conditions, which are captured in the following assumption.
             + 2 \frac{\sum_{k=k_1}^{K}\eta_k^{-1}\alpha_k}{\tau S_{k_1, K}} \\
         &\phantom{===} + 2 \frac{\sum_{k=k_1}^K \gamma_k^{-1}\eta_k^{-1} \langle z_k, x_k - \proj(x_k) \rangle}{\tau S_{k_1, K}}.
     \end{align*} 
-    To derive a bound for $\dist(\bar{x}_K)$, we proceed similarly as before. We have
+    To derive a bound for $\dist(\bar{x}_K, \mathcal{X})$, we proceed similarly as before. We have
     \[
         \bar{x}_K = \frac{S_{1, k_1-1}}{S_K} \bar{x}_{1, k_1-1} + \frac{S_{k_1, K}}{S_K} \bar{x}_{k_1, K}
     \]
@@ -1494,7 +1494,7 @@ satisfy certain conditions, which are captured in the following assumption.
     \[
         \frac{S_{1, k_1-1}}{S_K} + \frac{S_{k_1, K}}{S_K} = 1.
     \]
-    Combining with the latest bound on $\dist(\bar{x}_{k_1, K})$, we obtain the desired bound
+    Combining with the latest bound on $\dist(\bar{x}_{k_1, K}, \mathcal{X})$, we obtain the desired bound
     \begin{align*}
         \dist(\bar{x}_K, \mathcal{X})
         &\leq
