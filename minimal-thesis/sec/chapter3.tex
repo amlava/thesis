@@ -1797,15 +1797,15 @@ the almost-sure bounds we derived in the previous sections.
     \[
         c_k
         = \nu_k \norm{z_k} \norm{x_k - x^\star}
-        \leq \frac{M R \log^e(K)}{K}
+        \leq \frac{M R \log^e(K)}{K},
     \]
-    almost surely.
-    This implies
+    which implies
     \[
         \sum_{k=1}^K c_k^2
         \leq \sum_{k=1}^K \frac{M^2 R^2 \log^{2e}(K)}{K^2}
-        = \frac{M^2 R^2 \log^{2e}(K)}{K}.
+        = \frac{M^2 R^2 \log^{2e}(K)}{K}
     \]
+    almost surely.
     Hence, it holds that
     \[
         \Prob\Big( \sum_{i=1}^K \nu_k \langle z_k, x_k - x^\star \rangle \geq t \Big)
