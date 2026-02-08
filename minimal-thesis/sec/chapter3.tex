@@ -1654,7 +1654,7 @@ In other words, an iterate $x_k$ of \cref{alg:seqprox-sgd} is an $(\epsilon, \de
 $| f(x_k) - f(x^\star) | < \epsilon$ and $\dist(x_k, \mathcal{X}) < \epsilon$ with probability
 greater than $1 - \delta$.
 We can now state the central question we aim to answer in this section as follows:
-\begin{list}{}%
+\begin{list}{}
   {
     \leftmargin=5pt
     \rightmargin=5pt
@@ -1781,7 +1781,7 @@ the almost-sure bounds we derived in the previous sections.
     %     \leq
     %     \delta.
     % \]
-    By \cref{lem:bound-on-norm(zk)}, it holds that $\norm{z_k} \leq M \log^e(k)$ for $M := \sqrt{8}\max{L_\text{loc} G}$,
+    By \cref{lem:bound-on-norm(zk)}, it holds that $\norm{z_k} \leq M \log^e(k)$ for $M := 4\max(L_\text{loc}, G)$,
     and \cref{thm:almost-sure-convergence} implies that there exists $R\in(0,\infty)$
     such that $\sup_{k\in\N} \norm{x_k - x^\star} \leq R$
     almost surely. Further, we have
