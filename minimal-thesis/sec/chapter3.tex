@@ -262,7 +262,11 @@ Before we proceed, we make two more assumptions.
         \item $q$ is continuous on $\Xi$ and
         \item $q(x) > 0$ for all $x\in \Xi$.
     \end{enumerate}
-    Further, we assume that $\int_{\Xi} \norm{A(z)x - b(z)}_1 \, dz < \infty$ for all $x\in\R^n$.
+    Further, we assume that
+    \[
+        \int_{\Xi} \norm{A(z)x - b(z)}_1 \, dz < \infty,
+    \]
+    for all $x\in\R^n$.
 \end{assumption}
 A simple sufficient condition for the last part of the assumption is continuity of the maps $A$ and $b$
 on $\Xi$.
@@ -1674,7 +1678,7 @@ the almost-sure bounds we derived in the previous sections.
     \label{lem:xk-is-martingale}
     Let $(\nu_k)_{k\in\N}$ be an arbitrary sequence of real numbers
     and let $(Y_k)_{k\in\N}$ be a bounded sequence of random variables such that
-    $Y_k$ is $\sigma(x_0, \dots, x_{k-1})$-measurable for all $k\in\N$.
+    $Y_k$ is a function of $x_k$ for all $k\in\N$.
     Then the stochastic process $(X_k)_{k\in\N_0}$, where $X_0 := 0$
     and
     \[
@@ -1698,7 +1702,7 @@ the almost-sure bounds we derived in the previous sections.
     is also a function of $z_0,z_1,\dots,z_{k-1}$, hence $Y_k$ is $\sigma(z_0, \dots, z_{k-1})$-measurable.
     Thus, the process $(X_k)_{k\in\N_0}$
     is adapted to the filtration $\mathcal{G}$.
-    With probability one, we also have, for all $k\in\N_0$,
+    With probability one we also have, for all $k\in\N_0$,
     \[
         |X_k|
         \leq \sum_{i=1}^k |\nu_i \langle z_i, Y_i \rangle|
@@ -1726,19 +1730,22 @@ the almost-sure bounds we derived in the previous sections.
     Therefore, $(X_k)_{k\in\N_0}$ is a martingale.
 \end{proof}
 \begin{theorem}
+    \label{thm:high-probability-bounds}
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point,ass:step-sizes-and-penalties}
-    hold. Then, for arbitrary $\delta\in(0,\infty)$ and all $K\in\N$, the bounds
+    hold, and
+    let $\alpha_{\tau^{-1}} := \max\big( \norm{\tilde{\nabla} f(x^\star)} (\tau\gamma_0)^{-1}, 1 \big)$.
+    Then, for arbitrary $\delta\in(0,\infty)$ and all $K\in\N$, the bounds
     \[
-        f(\bar{x}_K) - f(x^\star)
+        |f(\bar{x}_K) - f(x^\star)|
         \leq
-        \mathcal{O}\Big( \frac{\log^{2e}(K)}{K} \Big)
-            + 2\delta \frac{MR\log^e(K)}{\sqrt{K}}
+        \tau^{-1} \mathcal{O}\Big( \frac{\log^{2e}(K)}{K} \Big)
+            + 2 \delta \alpha_{\tau^{-1}} \frac{M R \log^{e}(K)}{\sqrt{K}}
     \]
     and
     \[
         \dist(\bar{x}_K, \mathcal{X})
         \leq \tau^{-1} \, \mathcal{O}\Big( \frac{\log^e(K)}{K} \Big)
-        + 2\delta (\tau\gamma_0)^{-1} \frac{M\tilde{R} \log^{e}(K)}{\sqrt{K}}
+        + 2\delta \tau^{-1} \gamma_0^{-1} \frac{M R \log^{e}(K)}{\sqrt{K}}
     \]
     hold with probability at least $1 - \exp(-\delta^2 / 2)$.
 \end{theorem}
@@ -1822,9 +1829,7 @@ the almost-sure bounds we derived in the previous sections.
     % \end{align*}
     % where we used that $x_k$ is a function of $z_{0}, \dots, z_{k-1}$ and,
     % per definition of stochastic gradients, $\E(z_k \mid x_k) = 0$.
-    The sequence $(x_k)_{k\in\N_0}$ is bounded a.\,s. by \cref{thm:almost-sure-convergence}
-    and $x_k$ is a function of $z_0, \dots, z_{k-1}$ for all $k\in\N$ (see first
-    part of proof of \cref{lem:xk-is-martingale}).
+    The sequence $(x_k)_{k\in\N_0}$ is bounded a.\,s. by \cref{thm:almost-sure-convergence}.
     Therefore, \cref{lem:xk-is-martingale} implies that $(X_k)_{k\in\N_0}$ is a martingale, and
     we also have
     \[
@@ -1884,25 +1889,27 @@ the almost-sure bounds we derived in the previous sections.
     almost surely.
     Hence, it holds that
     \[
-        \Prob\Big( \sum_{i=1}^K \nu_k \langle z_k, x_k - x^\star \rangle \geq t \Big)
+        \Prob\Big( \sum_{k=1}^K \nu_k \langle z_k, x_k - x^\star \rangle \geq t \Big)
         \leq
         \exp\Big( \frac{-t^2 K}{2 M^2 R^2 \log^{2e}(K)} \Big),
     \]
     for all $t \in (0,\infty)$. Substituting $t := \delta MR \log^e(K) / \sqrt{K}$ for arbitrary $\delta \in (0, 1)$, we obtain
     \[
-        \Prob\Big( \sum_{i=1}^K \nu_k \langle z_k, x_k - x^\star \rangle \geq \delta \frac{MR\log^e(K)}{\sqrt{K}} \Big)
+        \Prob\Big( \sum_{k=1}^K \nu_k \langle z_k, x_k - x^\star \rangle \geq \delta \frac{MR\log^e(K)}{\sqrt{K}} \Big)
         \leq
         \exp\Big( -\frac{1}{2} \delta^2 \Big).  
     \]
     Therefore,
-    \[
+    \begin{equation}
+        \label{eq:proof:thm:high-probability-bounds:upper-bound-on-f}
         f(\bar{x}_K) - f(x^\star)
         \leq
         \mathcal{O}\Big( \frac{\log^{2e}(K)}{K} \Big)
-            + 2 \frac{\delta MR\log^e(K)}{\sqrt{K}}
-    \]
+            + 2 \delta \frac{MR\log^e(K)}{\sqrt{K}}
+    \end{equation}
     with probability at least $1 - \exp(-\delta^2/2)$.
-    For the second claim, we proceed similarly. For $k\in\N$, define
+    To derive a lower bound, we will first prove the second claim, which follows
+    essentially the same argument. For $k\in\N$, define
     \[
         \tilde{\nu}_k := \frac{\gamma_k^{-1}\eta_k^{-1}}{\tau S_K}
     \]
@@ -1911,14 +1918,14 @@ the almost-sure bounds we derived in the previous sections.
         \tilde{X}_k := \sum_{k=1}^K \tilde{\nu}_k \langle z_k, x_k - \proj(x_k) \rangle,
     \]
     as well as $\tilde{X}_0 := 0$.
-    The process $(x_k - \proj(x_k))_{k\in\N}$ is bounded by \cref{thm:almost-sure-convergence},
-    and a function of $z_0, \dots, z_{k-1}$, as shown in the proof of \cref{lem:xk-is-martingale}.
+    The process $(x_k - \proj(x_k))_{k\in\N}$ is
+    a function of $x_k$, and bounded by \cref{thm:almost-sure-convergence}.
     Hence, applying \cref{lem:xk-is-martingale}, we find that $(\tilde{X}_k)_{k\in\N_0}$ is a martingale.
     Further, we have
     \[
         |\tilde{X}_k - \tilde{X}_{k-1}|
         = \tilde{\nu}_k |\langle z_k, x_k - \proj(x_k) \rangle|
-        \leq \tilde{\nu}_k \norm{z_k} \norm{x_k - \proj(x_k)} =: d_k,
+        \leq \tilde{\nu}_k \norm{z_k} \dist(x_k,\mathcal{X}) =: d_k,
     \]
     for all $k\in\N$.
     It holds that
@@ -1930,14 +1937,14 @@ the almost-sure bounds we derived in the previous sections.
     \]
     for all $k\in\N$.
     Letting $\tilde{R}\in(0,\infty)$ be large enough such that
-    $\sup_{k\in\N} \norm{x_k - \proj(x_k)} \leq \tilde{R}$ a.\,s., we have
+    $\sup_{k\in\N} \dist(x_k, \mathcal{X}) \leq \tilde{R}$ a.\,s., we have
     \[
         d_k \leq \frac{M \tilde{R} \log^e(K)}{\tau\gamma_0 K},
     \]
     for all $k\in\N$. Applying the Azuma-Hoeffding inequality (\cref{prop:azuma-hoeffding}),
     we obtain
     \[
-        \Prob\Big( \sum_{i=1}^K \tilde{\nu}_k \langle z_k, x_k - \proj(x_k) \rangle \geq t \Big)
+        \Prob\Big( \sum_{k=1}^K \tilde{\nu}_k \langle z_k, x_k - \proj(x_k) \rangle \geq t \Big)
         \leq
         \exp\Big( \frac{-t^2}{2\sum_{k=1}^K d_k^2} \Big)
         \leq
@@ -1947,17 +1954,49 @@ the almost-sure bounds we derived in the previous sections.
     $t := \delta M\tilde{R} \log^{e}(K) / \tau\gamma_0\sqrt{K}$ for arbitrary $\delta\in(0, \infty)$,
     we obtain
     \[
-        \Prob\Big( \sum_{i=1}^K \tilde{\nu}_k \langle z_k, x_k - \proj(x_k) \rangle
+        \Prob\Big( \sum_{k=1}^K \tilde{\nu}_k \langle z_k, x_k - \proj(x_k) \rangle
                 \geq \delta (\tau\gamma_0)^{-1} \frac{M\tilde{R} \log^{e}(K)}{\sqrt{K}} \Big)
         \leq
         \exp\Big( -\frac{1}{2}\delta^2 \Big).
     \]
     for all $K\in\N$. We therefore have, for any $\delta\in(0,\infty)$ and $K\in\N$,
-    \[
+    \begin{equation}
+        \label{eq:proof:thm:high-probability-bounds}
         \dist(\bar{x}_K, \mathcal{X})
         \leq \tau^{-1} \, \mathcal{O}\Big( \frac{\log^e(K)}{K} \Big) + 2\delta (\tau\gamma_0)^{-1} \frac{M\tilde{R} \log^{e}(K)}{\sqrt{K}}
+    \end{equation}
+    with probability at least $1 - \exp(-\delta^2/2)$.
+    Note that for any valid choice of $R$, we can choose $\tilde{R}$ such that 
+    $\tilde{R} \leq R$, which brings us to the desired bound.
+    We can derive a lower bound on $f(\bar{x}_K) - f(x^\star)$ via
+    \begin{align*}
+        f(\bar{x}_K) - f(x^\star) &\geq \langle \tilde{\nabla} f(x^\star), \bar{x}_K - x^\star \rangle \\
+                            &= \langle \tilde{\nabla} f(x^\star), \bar{x}_K - \proj(\bar{x}_K) \rangle
+                                + \langle \tilde{\nabla} f(x^\star), \proj(\bar{x}_K) - x^\star \rangle \\
+                            &\geq \langle \tilde{\nabla} f(x^\star), \bar{x}_K - \proj(\bar{x}_K) \rangle,
+    \end{align*}
+    where the first step follows from convexity, and the second from optimality of $x^\star$ on $\mathcal{X}$.
+    Cauchy-Schwarz now implies
+    \[
+        f(\bar{x}_K) - f(x^\star) \geq - \norm{\tilde{\nabla} f(x^\star)} \dist(\bar{x}_K, \mathcal{X}).
     \]
-    with probability at least $1 - \exp(-\delta/2)$.
+    Combining with the high-probability bound \eqref{eq:proof:thm:high-probability-bounds}, we have,
+    for any $\delta\in(0, \infty)$,
+    \[
+        f(\bar{x}_K) - f(x^\star)
+        \geq - \tau^{-1} \norm{\tilde{\nabla} f(x^\star)}
+            \Big( \mathcal{O}\Big( \frac{\log^e(K)}{K} \Big) + 2 \delta \gamma_0^{-1} \frac{M\tilde{R} \log^{e}(K)}{\sqrt{K}} \Big)
+    \]
+    with probability at least $1 - \exp(-\delta^2/2)$. Note that we can choose $\tilde{R} \leq R$
+    without loss of generality. Hence, by combining with the upper bound \eqref{eq:proof:thm:high-probability-bounds:upper-bound-on-f},
+    we have for any $\delta\in(0,\infty)$ and all $K\in\N$,
+    \[
+        |f(\bar{x}_K) - f(x^\star)|
+        \leq
+        \tau^{-1} \mathcal{O}\Big( \frac{\log^{2e}(K)}{K} \Big)
+            + 2 \delta \max\big( \norm{\tilde{\nabla} f(x^\star)} (\tau\gamma_0)^{-1}, 1 \big) \frac{M R \log^{e}(K)}{\sqrt{K}}
+    \]
+    with probability at least $1 - \exp(-\delta^2/2)$, as desired.
 \end{proof}
 
 \section{Infeasible problems}
