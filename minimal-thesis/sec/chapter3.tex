@@ -1729,8 +1729,8 @@ the almost-sure bounds we derived in the previous sections.
     per definition of stochastic gradients, $\E(z_k \mid x_k) = 0$.
     Therefore, $(X_k)_{k\in\N_0}$ is a martingale.
 \end{proof}
-\begin{theorem}
-    \label{thm:high-probability-bounds}
+\begin{theorem}[Convergence with high probability]
+    \label{thm:convergence-with-high-probability}
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point,ass:step-sizes-and-penalties}
     hold, and
     let $\alpha_{\tau^{-1}} := \max\big( \norm{\tilde{\nabla} f(x^\star)} (\tau\gamma_0)^{-1}, 1 \big)$.
@@ -1901,7 +1901,7 @@ the almost-sure bounds we derived in the previous sections.
     \]
     Therefore,
     \begin{equation}
-        \label{eq:proof:thm:high-probability-bounds:upper-bound-on-f}
+        \label{eq:proof:thm:convergence-with-high-probability:upper-bound-on-f}
         f(\bar{x}_K) - f(x^\star)
         \leq
         \mathcal{O}\Big( \frac{\log^{2e}(K)}{K} \Big)
@@ -1961,7 +1961,7 @@ the almost-sure bounds we derived in the previous sections.
     \]
     for all $K\in\N$. We therefore have, for any $\delta\in(0,\infty)$ and $K\in\N$,
     \begin{equation}
-        \label{eq:proof:thm:high-probability-bounds}
+        \label{eq:proof:thm:convergence-with-high-probability}
         \dist(\bar{x}_K, \mathcal{X})
         \leq \tau^{-1} \, \mathcal{O}\Big( \frac{\log^e(K)}{K} \Big) + 2\delta (\tau\gamma_0)^{-1} \frac{M\tilde{R} \log^{e}(K)}{\sqrt{K}}
     \end{equation}
@@ -1980,7 +1980,7 @@ the almost-sure bounds we derived in the previous sections.
     \[
         f(\bar{x}_K) - f(x^\star) \geq - \norm{\tilde{\nabla} f(x^\star)} \dist(\bar{x}_K, \mathcal{X}).
     \]
-    Combining with the high-probability bound \eqref{eq:proof:thm:high-probability-bounds}, we have,
+    Combining with the high-probability bound \eqref{eq:proof:thm:convergence-with-high-probability}, we have,
     for any $\delta\in(0, \infty)$,
     \[
         f(\bar{x}_K) - f(x^\star)
@@ -1988,7 +1988,7 @@ the almost-sure bounds we derived in the previous sections.
             \Big( \mathcal{O}\Big( \frac{\log^e(K)}{K} \Big) + 2 \delta \gamma_0^{-1} \frac{M\tilde{R} \log^{e}(K)}{\sqrt{K}} \Big)
     \]
     with probability at least $1 - \exp(-\delta^2/2)$. Note that we can choose $\tilde{R} \leq R$
-    without loss of generality. Hence, by combining with the upper bound \eqref{eq:proof:thm:high-probability-bounds:upper-bound-on-f},
+    without loss of generality. Hence, by combining with the upper bound \eqref{eq:proof:thm:convergence-with-high-probability:upper-bound-on-f},
     we have for any $\delta\in(0,\infty)$ and all $K\in\N$,
     \[
         |f(\bar{x}_K) - f(x^\star)|
