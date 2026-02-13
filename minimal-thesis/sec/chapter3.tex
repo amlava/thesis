@@ -1121,7 +1121,7 @@ satisfy certain conditions, which are captured in the following assumption.
     for some $L_r \in (0,\infty)$, where we again used that $(x_k)_{k\in\N_0}$ is bounded almost surely
     (\cref{thm:almost-sure-convergence})
     and the prox operator is nonexpansive (\textcolor{red}{TODO}).
-    Combining with \cref{eq:proof:lem:functional-upper-bound}, we therefore obtain
+    Combining with \eqref{eq:proof:lem:functional-upper-bound}, we therefore obtain
     \begin{align*}
         2\eta_k(f_k(x_k) - f_k(x))
         &\leq ( 1 - \mu\eta_k ) \norm{x - x_k}^2 + 2\eta_k\langle z_k, x_k - x \rangle 
@@ -1521,11 +1521,11 @@ satisfy certain conditions, which are captured in the following assumption.
     generated from \cref{alg:seqprox-sgd} with parameters $(\eta_k)_{k\in\N_{0}}$,
     $(\gamma_k)_{k\in\N_0}$, $(h_k)_{k\in\N_0}$ satisfy
     \[
-        \E| f(\bar{x}_{K}) - f(x^\star) | = \mathcal{O} \Big( \frac{\log^{2e}(K)}{K} \Big).
+        \E| f(\bar{x}_{K}) - f(x^\star) | = \max(1, \tau^{-1}) \, \mathcal{O} \Big( \frac{\log^{2e}(K)}{K} \Big).
     \]
     Further, it also holds that
     \[
-        \E(\dist(\bar{x}_{K}, \mathcal{X})) = \mathcal{O} \Big( \frac{\log^{e}(K)}{K} \Big).
+        \E(\dist(\bar{x}_{K}, \mathcal{X})) = \tau^{-1} \, \mathcal{O} \Big( \frac{\log^{e}(K)}{K} \Big).
     \]
 \end{theorem}
 \begin{proof}
@@ -1600,15 +1600,15 @@ satisfy certain conditions, which are captured in the following assumption.
             + \mathcal{O}\Big( K^{-2} \sum_{k=1}^{K} \log^e(k) \Big)
             + \mathcal{O}( K^{-1} ) \\
         &=
-        \mathcal{O}(K^{-2})
-            + \mathcal{O}( \log^e(K) / K )
-            + \mathcal{O}( K^{-1} )  \\
-        &= \mathcal{O} \Big( \frac{\log^{e}(K)}{K} \Big).
+        \mathcal{O}(\tau^{-1} K^{-2})
+            + \mathcal{O}( \tau^{-1} \log^e(K) / K )
+            + \mathcal{O}( \tau^{-1} K^{-1} )  \\
+        &= \tau^{-1} \, \mathcal{O} \Big( \frac{\log^{e}(K)}{K} \Big).
     \end{align*}
     Combining with \eqref{eq:proof:thm:convergence-rates-in-expectation}, we obtain
     \[
         \E( f(\bar{x}_k) - f(x^\star) )
-        \geq - \norm{\nabla f(x^\star)} \cdot \mathcal{O} \Big( \frac{\log^{2e}(K)}{K} \Big).
+        \geq - \norm{\nabla f(x^\star)} \cdot \mathcal{O} \Big( \frac{\log^{2e}(K)}{\tau K} \Big).
     \]
     Note that $\mathcal{O}(\gamma_k^2) = \mathcal{O}(\log^{2e}(k))$ and
     $\eta_k^{-1}\gamma_k\alpha_k = \mathcal{O}(\log^e(k))$,
@@ -1624,7 +1624,8 @@ satisfy certain conditions, which are captured in the following assumption.
     \end{align*} 
     Putting the two bounds together, we obtain
     \[
-        \E| f(\bar{x}_{K}) - f(x^\star) | = \mathcal{O} \Big( \frac{\log^{2e}(K)}{K} \Big),
+        \E| f(\bar{x}_{K}) - f(x^\star) |
+        = \max(1, \tau^{-1}) \, \mathcal{O} \Big( \frac{\log^{2e}(K)}{K} \Big),
     \]
     as desired.
 \end{proof}
@@ -1726,7 +1727,7 @@ the almost-sure bounds we derived in the previous sections.
 \end{proof}
 \begin{theorem}
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point,ass:step-sizes-and-penalties}
-    hold. Then, for arbitrary $\delta\in(0,\infty)$ and all $K\in\N$, the inequalities
+    hold. Then, for arbitrary $\delta\in(0,\infty)$ and all $K\in\N$, the bounds
     \[
         f(\bar{x}_K) - f(x^\star)
         \leq
@@ -1736,7 +1737,7 @@ the almost-sure bounds we derived in the previous sections.
     and
     \[
         \dist(\bar{x}_K, \mathcal{X})
-        \leq \mathcal{O}\Big( \frac{\log^e(K)}{K} \Big)
+        \leq \tau^{-1} \, \mathcal{O}\Big( \frac{\log^e(K)}{K} \Big)
         + 2\delta (\tau\gamma_0)^{-1} \frac{M\tilde{R} \log^{e}(K)}{\sqrt{K}}
     \]
     hold with probability at least $1 - \exp(-\delta^2 / 2)$.
@@ -1954,7 +1955,7 @@ the almost-sure bounds we derived in the previous sections.
     for all $K\in\N$. We therefore have, for any $\delta\in(0,\infty)$ and $K\in\N$,
     \[
         \dist(\bar{x}_K, \mathcal{X})
-        \leq \mathcal{O}\Big( \frac{\log^e(K)}{K} \Big) + 2\delta (\tau\gamma_0)^{-1} \frac{M\tilde{R} \log^{e}(K)}{\sqrt{K}}
+        \leq \tau^{-1} \, \mathcal{O}\Big( \frac{\log^e(K)}{K} \Big) + 2\delta (\tau\gamma_0)^{-1} \frac{M\tilde{R} \log^{e}(K)}{\sqrt{K}}
     \]
     with probability at least $1 - \exp(-\delta/2)$.
 \end{proof}
