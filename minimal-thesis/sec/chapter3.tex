@@ -1150,7 +1150,7 @@ satisfy certain conditions, which are captured in the following assumption.
     \[
         \norm{z_k}^2 \leq 8L_{\text{loc}}^2 + 8\gamma_k^2G^2,
     \]
-    with probability one, where $L_{\text{loc}}\in(0,\infty)$.
+    with probability one, where $L_{\text{loc}} \in (0,\infty)$.
 \end{lemma}
 \begin{proof}
     Using the inequality $(a + b + c + d)^2 \leq 4 (a^2 + b^2 + c^2 + d^2)$ $\forall a,b,c,d\in\R$, we have
@@ -1669,8 +1669,77 @@ We can now state the central question we aim to answer in this section as follow
 Our approach to answer this question is standard. We rely
 on the Azuma-Hoeffding inequality (\cref{prop:azuma-hoeffding}) and
 the almost-sure bounds we derived in the previous sections.
+\begin{lemma}
+    \label{lem:xk-is-martingale}
+    Let $(\nu_k)_{k\in\N}$ be an arbitrary sequence of real numbers
+    and let $(Y_k)_{k\in\N}$ be a bounded sequence of random variables such that
+    $Y_k$ is $\sigma(x_0, \dots, x_{k-1})$-measurable for all $k\in\N$.
+    Then the stochastic process $(X_k)_{k\in\N_0}$, where $X_0 := 0$
+    and
+    \[
+        X_k := \sum_{i=1}^k \nu_i \langle z_i, Y_i \rangle
+    \]
+    for $k\in\N$, is a martingale with respect to the filtration $(\mathcal{G}_k)_{k\in\N_0}$
+    defined by $\mathcal{G}_k := \sigma(z_0, \dots, z_k) \, \forall k\in\N_0$. 
+\end{lemma}
+\begin{proof}
+    First, note that $Y_k$ is a function of $z_{0}, z_1 \dots, z_{k-1}$
+    for all $k\in\N$. Indeed, for $k = 1$, we have
+    \[
+        x_{1} = x_0 + \eta_0 g_0 = x_0 + \eta_0 (z_0 + \nabla \psi_0(x_0)),
+    \]
+    and $x_0, \nabla \psi_0(x_0), \eta_0$ are deterministic quantities. Assuming that
+    $x_k$ is a function of $z_0, z_{1}, \dots, z_{k-1}$, it follows inductively that
+    \[
+        x_{k+1} = x_{k} + \eta_k g_k = x_{k} + \eta_k (z_k + \nabla \psi_k(x_k))
+    \]
+    is a function of $z_{1}, \dots, z_{k}$. It follows that $Y_k$, as a function of $x_k$,
+    is also a function of $z_0,z_1,\dots,z_{k-1}$, hence $Y_k$ is $\sigma(z_0, \dots, z_{k-1})$-measurable.
+    Thus, the process $(X_k)_{k\in\N_0}$
+    is adapted to the filtration $\mathcal{G}$.
+    With probability one, we also have, for all $k\in\N_0$,
+    \[
+        |X_k|
+        \leq \sum_{i=1}^k |\nu_i \langle z_i, Y_i \rangle|
+        \leq \sum_{i=1}^k \nu_i \norm{z_i} \norm{Y_i}
+        = \sum_{i=1}^k \nu_i \mathcal{O}(\gamma_i) \mathcal{O}(1) \leq \nu_k \mathcal{O}(k \gamma_k),
+    \]
+    where the third step follows from \cref{lem:bound-on-norm(zk)} and the assumption that
+    $(Y_k)_{k\in\N}$ is bounded.
+    In particular,
+    \[
+        \E|X_k| < \infty
+    \]
+    for all $k\in\N_0$.
+    Finally, we have
+    \begin{align*}
+        \E(X_{k} \mid \mathcal{G}_{k-1})
+            &= \E\big( \nu_k \langle z_k, Y_k \rangle + X_{k - 1} \mid \mathcal{G}_{k-1} \big) \\
+            &= \nu_k \E\big( \langle z_k, Y_k \rangle \mid \mathcal{G}_{k-1} \big) + X_{k - 1} \\
+            &= \nu_k \big\langle \E(z_k \mid \mathcal{G}_{k-1}), Y_k \big\rangle + X_{k - 1} \\
+            &= \nu_k \big\langle \E(z_k \mid x_k), Y_k \big\rangle + X_{k - 1} \\
+            &= X_{k - 1},
+    \end{align*}
+    where we used that $x_k$ is a function of $z_{0}, \dots, z_{k-1}$ and,
+    per definition of stochastic gradients, $\E(z_k \mid x_k) = 0$.
+    Therefore, $(X_k)_{k\in\N_0}$ is a martingale.
+\end{proof}
 \begin{theorem}
-    
+    Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point,ass:step-sizes-and-penalties}
+    hold. Then, for arbitrary $\delta\in(0,\infty)$ and all $K\in\N$, the inequalities
+    \[
+        f(\bar{x}_K) - f(x^\star)
+        \leq
+        \mathcal{O}\Big( \frac{\log^{2e}(K)}{K} \Big)
+            + 2\delta \frac{MR\log^e(K)}{\sqrt{K}}
+    \]
+    and
+    \[
+        \dist(\bar{x}_K, \mathcal{X})
+        \leq \mathcal{O}\Big( \frac{\log^e(K)}{K} \Big)
+        + 2\delta (\tau\gamma_0)^{-1} \frac{M\tilde{R} \log^{e}(K)}{\sqrt{K}}
+    \]
+    hold with probability at least $1 - \exp(-\delta^2 / 2)$.
 \end{theorem}
 \begin{proof}
     Let $K\in\N$.
@@ -1714,45 +1783,49 @@ the almost-sure bounds we derived in the previous sections.
     \[
         \nu_k := \frac{\eta_k^{-1}}{S_K}.
     \]
-    First, note that $x_k$ is a function of $z_{0}, z_1 \dots, z_{k-1}$. Indeed, for $k = 1$, we have
-    \[
-        x_{1} = x_0 + \eta_0 g_0 = x_0 + \eta_0 (z_0 + \nabla \psi_0(x_0)),
-    \]
-    and $x_0, \nabla \psi_0(x_0), \eta_0$ are deterministic quantities. Assuming that
-    $x_k$ is a function of $z_0, z_{1}, \dots, z_{k-1}$, it follows inductively that
-    \[
-        x_{k+1} = x_{k} + \eta_k g_k = x_{k} + \eta_k (z_k + \nabla \psi_k(x_k))
-    \]
-    is a function of $z_{1}, \dots, z_{k}$.
-    Thus, the process
-    \[
-        X_k := \sum_{i=1}^k \nu_i \langle z_i, x_i - x^\star \rangle
-    \]
-    is adapted to the filtration $\mathcal{G} := (\mathcal{G}_k)_{k\in\N_0}$, $\mathcal{G}_k := \sigma(z_0, z_1, \dots, z_k)$.
-    With probability one, we also have, for all $k\in\N_0$,
-    \[
-        |X_k|
-        \leq \sum_{i=1}^k |\nu_i \langle z_i, x_i - x^\star \rangle|
-        \leq \sum_{i=1}^k \nu_i \norm{z_i} \norm{x_i - x^\star}
-        = \sum_{i=1}^k \nu_i \mathcal{O}(\gamma_i) \mathcal{O}(1) \leq \nu_k \mathcal{O}(k \gamma_k),
-    \]
-    where the third step follows from \cref{thm:almost-sure-convergence,lem:bound-on-norm(zk)}.
-    In particular,
-    \[
-        \E|X_k| < \infty
-    \]
-    for all $k\in\N_0$. Finally, we have
-    \begin{align*}
-        \E(X_{k} \mid \mathcal{G}_{k-1})
-            &= \E\big( \nu_k \langle z_k, x_k - x^\star \rangle + X_{k - 1} \mid \mathcal{G}_{k-1} \big) \\
-            &= \nu_k \E\big( \langle z_k, x_k - x^\star \rangle \mid \mathcal{G}_{k-1} \big) + X_{k - 1} \\
-            &= \nu_k \langle \E(z_k \mid \mathcal{G}_{k-1}), x_k - x^\star \rangle + X_{k - 1} \\
-            &= \nu_k \langle \E(z_k \mid x_k ), x_k - x^\star \rangle + X_{k - 1} \\
-            &= X_{k - 1},
-    \end{align*}
-    where we used that $x_k$ is a function of $z_{0}, \dots, z_{k-1}$ and,
-    per definition of stochastic gradients, $\E(z_k \mid x_k) = 0$.
-    Therefore, $(X_k)_{k\in\N_0}$ is a martingale with
+    % First, note that $x_k$ is a function of $z_{0}, z_1 \dots, z_{k-1}$. Indeed, for $k = 1$, we have
+    % \[
+    %     x_{1} = x_0 + \eta_0 g_0 = x_0 + \eta_0 (z_0 + \nabla \psi_0(x_0)),
+    % \]
+    % and $x_0, \nabla \psi_0(x_0), \eta_0$ are deterministic quantities. Assuming that
+    % $x_k$ is a function of $z_0, z_{1}, \dots, z_{k-1}$, it follows inductively that
+    % \[
+    %     x_{k+1} = x_{k} + \eta_k g_k = x_{k} + \eta_k (z_k + \nabla \psi_k(x_k))
+    % \]
+    % is a function of $z_{1}, \dots, z_{k}$.
+    % Thus, the process
+    % \[
+    %     X_k := \sum_{i=1}^k \nu_i \langle z_i, x_i - x^\star \rangle
+    % \]
+    % is adapted to the filtration $\mathcal{G} := (\mathcal{G}_k)_{k\in\N_0}$, $\mathcal{G}_k := \sigma(z_0, z_1, \dots, z_k)$.
+    % With probability one, we also have, for all $k\in\N_0$,
+    % \[
+    %     |X_k|
+    %     \leq \sum_{i=1}^k |\nu_i \langle z_i, x_i - x^\star \rangle|
+    %     \leq \sum_{i=1}^k \nu_i \norm{z_i} \norm{x_i - x^\star}
+    %     = \sum_{i=1}^k \nu_i \mathcal{O}(\gamma_i) \mathcal{O}(1) \leq \nu_k \mathcal{O}(k \gamma_k),
+    % \]
+    % where the third step follows from \cref{thm:almost-sure-convergence,lem:bound-on-norm(zk)}.
+    % In particular,
+    % \[
+    %     \E|X_k| < \infty
+    % \]
+    % for all $k\in\N_0$. Finally, we have
+    % \begin{align*}
+    %     \E(X_{k} \mid \mathcal{G}_{k-1})
+    %         &= \E\big( \nu_k \langle z_k, x_k - x^\star \rangle + X_{k - 1} \mid \mathcal{G}_{k-1} \big) \\
+    %         &= \nu_k \E\big( \langle z_k, x_k - x^\star \rangle \mid \mathcal{G}_{k-1} \big) + X_{k - 1} \\
+    %         &= \nu_k \big\langle \E(z_k \mid \mathcal{G}_{k-1}), x_k - x^\star \big\rangle + X_{k - 1} \\
+    %         &= \nu_k \big\langle \E(z_k \mid x_k ), x_k - x^\star \big\rangle + X_{k - 1} \\
+    %         &= X_{k - 1},
+    % \end{align*}
+    % where we used that $x_k$ is a function of $z_{0}, \dots, z_{k-1}$ and,
+    % per definition of stochastic gradients, $\E(z_k \mid x_k) = 0$.
+    The sequence $(x_k)_{k\in\N_0}$ is bounded a.\,s. by \cref{thm:almost-sure-convergence}
+    and $x_k$ is a function of $z_0, \dots, z_{k-1}$ for all $k\in\N$ (see first
+    part of proof of \cref{lem:xk-is-martingale}).
+    Therefore, \cref{lem:xk-is-martingale} implies that $(X_k)_{k\in\N_0}$ is a martingale, and
+    we also have
     \[
         |X_{k} - X_{k-1}| = \nu_k |\langle z_k, x_k - x^\star \rangle| \leq \nu_k \norm{z_k} \norm{x_k - x^\star}
         =: c_k
@@ -1781,10 +1854,8 @@ the almost-sure bounds we derived in the previous sections.
     %     \leq
     %     \delta.
     % \]
-    By \cref{lem:bound-on-norm(zk)}, it holds that $\norm{z_k} \leq M \log^e(k)$ for $M := 4\max(L_\text{loc}, G)$,
-    and \cref{thm:almost-sure-convergence} implies that there exists $R\in(0,\infty)$
-    such that $\sup_{k\in\N} \norm{x_k - x^\star} \leq R$
-    almost surely. Further, we have
+    By \cref{lem:bound-on-norm(zk)}, it holds that $\norm{z_k} \leq M \log^e(k) \, \forall k\in\N_0$, where
+    $~M := 4\max(1, \min_{k\in\N_0}\gamma_k)\max(L_\text{loc}, G)$. Further, we have
     \[
         \nu_k
         = \frac{\eta_k^{-1}}{S_K}
@@ -1793,7 +1864,11 @@ the almost-sure bounds we derived in the previous sections.
         \leq \frac{1}{K},
     \]
     for all $k\in \{\, 1,\dots K \,\}$.
-    Therefore, we obtain
+    Let
+    $R\in(0,\infty)$ be large enough
+    such that $\sup_{k\in\N} \norm{x_k - x^\star} \leq R$
+    almost surely. 
+    We obtain
     \[
         c_k
         = \nu_k \norm{z_k} \norm{x_k - x^\star}
@@ -1818,6 +1893,70 @@ the almost-sure bounds we derived in the previous sections.
         \leq
         \exp\Big( -\frac{1}{2} \delta^2 \Big).  
     \]
+    Therefore,
+    \[
+        f(\bar{x}_K) - f(x^\star)
+        \leq
+        \mathcal{O}\Big( \frac{\log^{2e}(K)}{K} \Big)
+            + 2 \frac{\delta MR\log^e(K)}{\sqrt{K}}
+    \]
+    with probability at least $1 - \exp(-\delta^2/2)$.
+    For the second claim, we proceed similarly. For $k\in\N$, define
+    \[
+        \tilde{\nu}_k := \frac{\gamma_k^{-1}\eta_k^{-1}}{\tau S_K}
+    \]
+    and
+    \[
+        \tilde{X}_k := \sum_{k=1}^K \tilde{\nu}_k \langle z_k, x_k - \proj(x_k) \rangle,
+    \]
+    as well as $\tilde{X}_0 := 0$.
+    The process $(x_k - \proj(x_k))_{k\in\N}$ is bounded by \cref{thm:almost-sure-convergence},
+    and a function of $z_0, \dots, z_{k-1}$, as shown in the proof of \cref{lem:xk-is-martingale}.
+    Hence, applying \cref{lem:xk-is-martingale}, we find that $(\tilde{X}_k)_{k\in\N_0}$ is a martingale.
+    Further, we have
+    \[
+        |\tilde{X}_k - \tilde{X}_{k-1}|
+        = \tilde{\nu}_k |\langle z_k, x_k - \proj(x_k) \rangle|
+        \leq \tilde{\nu}_k \norm{z_k} \norm{x_k - \proj(x_k)} =: d_k,
+    \]
+    for all $k\in\N$.
+    It holds that
+    \[
+        \tilde{\nu}_k = \frac{\gamma_k^{-1}\eta_k^{-1}}{\tau S_K}
+        \leq (\tau\gamma_0)^{-1}\frac{\eta_k^{-1}}{S_K}
+        = (\tau\gamma_0)^{-1}\nu_k
+        \leq (\tau\gamma_0)^{-1} \frac{1}{K},
+    \]
+    for all $k\in\N$.
+    Letting $\tilde{R}\in(0,\infty)$ be large enough such that
+    $\sup_{k\in\N} \norm{x_k - \proj(x_k)} \leq \tilde{R}$ a.\,s., we have
+    \[
+        d_k \leq \frac{M \tilde{R} \log^e(K)}{\tau\gamma_0 K},
+    \]
+    for all $k\in\N$. Applying the Azuma-Hoeffding inequality (\cref{prop:azuma-hoeffding}),
+    we obtain
+    \[
+        \Prob\Big( \sum_{i=1}^K \tilde{\nu}_k \langle z_k, x_k - \proj(x_k) \rangle \geq t \Big)
+        \leq
+        \exp\Big( \frac{-t^2}{2\sum_{k=1}^K d_k^2} \Big)
+        \leq
+        \exp\Big( \frac{-t^2 \tau^2 \gamma_0^2 K}{2M^2\tilde{R}^2\log^{2e}(K)} \Big),
+    \]
+    for all $t\in(0, \infty)$ and $K\in\N$. Substituting
+    $t := \delta M\tilde{R} \log^{e}(K) / \tau\gamma_0\sqrt{K}$ for arbitrary $\delta\in(0, \infty)$,
+    we obtain
+    \[
+        \Prob\Big( \sum_{i=1}^K \tilde{\nu}_k \langle z_k, x_k - \proj(x_k) \rangle
+                \geq \delta (\tau\gamma_0)^{-1} \frac{M\tilde{R} \log^{e}(K)}{\sqrt{K}} \Big)
+        \leq
+        \exp\Big( -\frac{1}{2}\delta^2 \Big).
+    \]
+    for all $K\in\N$. We therefore have, for any $\delta\in(0,\infty)$ and $K\in\N$,
+    \[
+        \dist(\bar{x}_K, \mathcal{X})
+        \leq \mathcal{O}\Big( \frac{\log^e(K)}{K} \Big) + 2\delta (\tau\gamma_0)^{-1} \frac{M\tilde{R} \log^{e}(K)}{\sqrt{K}}
+    \]
+    with probability at least $1 - \exp(-\delta/2)$.
 \end{proof}
 
 \section{Infeasible problems}
