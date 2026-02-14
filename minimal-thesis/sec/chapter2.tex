@@ -1,0 +1,74 @@
+\chapter{Theory Background}
+
+\section{Probability theory}
+
+\subsection{Measure and integration}
+
+\subsection{Random variables, expected value, and variance}
+
+\subsection{Densities}
+
+\subsection{Conditioning}
+
+\subsection{Martingales}
+
+\begin{proposition}[Azuma-Hoeffding inequality]
+    \label{prop:azuma-hoeffding}
+    Let $(X_k)_{k\in\N_0}$ be a martingale and
+    let $(c_k)_{k\in\N}$ be a sequence such that
+    \[
+        |X_k - X_{k-1}| \leq c_k
+    \]
+    almost surely, for all $k\in\N$. Then, for all $K\in\N$
+    and all $\epsilon\in (0, \infty)$,
+    \[
+        \Prob(X_K - X_0 \geq \epsilon) \leq \exp\Big( \frac{-\epsilon^2}{2 \sum_{k=1}^K c_k^2} \Big).
+    \]
+\end{proposition}
+
+\section{Optimization theory}
+\subsection{Lipschitz functions}
+\subsection{Convex optimization}
+\subsection{Stochastic optimization}
+\subsection{Multifunctions and metric regularity}
+
+\begin{definition}[Multifunctions]
+    Let $X$ and $Y$ be Banach spaces. A function $\varPsi\colon X\to 2^Y$
+    is called \textbf{multifunction}. The \textbf{domain} and the \textbf{range}
+    of a multifunction $\varPsi\colon X\to 2^Y$ are defined as
+    \begin{align*}
+        \dom(\varPsi) &:= \{\, x\in X \mid \varPsi(x) \neq \emptyset \,\}, \\
+        \range(\varPsi) &:= \{\, y\in Y \mid y\in \varPsi(x) \text{ for some $x\in X$} \,\}.
+    \end{align*}
+    The \textbf{graph} of $\varPsi$ is
+    \[
+        \graph(\varPsi) := \{\, (x, y) \in X\times Y \mid y\in\varPsi(x), x\in X \,\}.
+    \]
+    The \textbf{(graph) inverse} $\varPsi^{-1}\colon Y \to 2^X$ of $\varPsi$ is defined as
+    \[
+        \varPsi^{-1}(y) := \{\, x\in X \mid y\in\varPsi(x) \,\}.
+    \]
+    The multifunction $\varPsi$ is said to be \textbf{closed at a point} $x\in X$ if
+    $x_k \to x$, $y_k\in \varPsi(x_k)$, and $y_k \to y$ imply that $y\in\varPsi(x)$.
+    If $\varPsi$ is closed at all points $x\in X$, then $\varPsi$ is said to be \textbf{closed}.
+    Finally, it is said that $\varPsi$ is \textbf{convex} if, for any $x_1,x_2\in X$ and
+    $t\in [0, 1]$,
+    \[
+        t \varPsi(x_1) + (1 - t) \varPsi(x_2) \subset \varPsi(t x_1 + (1 - t) x_2).
+    \]
+\end{definition}
+\begin{definition}[Metric regularity]
+    We say that the multifunction $\varPsi\colon X\to 2^Y$ is \textbf{metric regular} at a point
+    $(x_0,y_0)\in\graph(\varPsi)$ at rate $c\in\R_{\geq 0}$, if there
+    exists a neighborhood $U\subset X\times Y$ containing $(x_0,y_0)$, such that
+    \[
+        \dist(x, \varPsi^{-1}(y)) \leq c \dist(y, \varPsi(x)),
+    \]
+    for all $(x, y)\in U$.
+\end{definition}
+\begin{proposition}[Robinson-Ursescu stability theorem]
+    \label{prop:robinson-ursescu}
+    Let $\varPsi\colon X\to 2^Y$ be a closed convex multifunction. Then $\varPsi$
+    is metric regular at $(x_0, y_0) \in \graph(\varPsi)$ if and only if the regularity
+    condition $y_0 \in \interior (\range \varPsi)$ holds.
+\end{proposition}
