@@ -1731,15 +1731,18 @@ the almost-sure bounds we derived in the previous sections.
 \end{proof}
 \begin{theorem}[Convergence with high probability]
     \label{thm:convergence-with-high-probability}
-    Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point,ass:step-sizes-and-penalties}
-    hold, and
-    let $\alpha_{\tau^{-1}} := \max\big( \norm{\tilde{\nabla} f(x^\star)} (\tau\gamma_0)^{-1}, 1 \big)$.
+    Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point}
+    hold, and define $\eta_k := 2/(\mu k)$ for all $k\in\N$, $\eta_0 := 2/\mu$.
+    Let $(\gamma_k)_{k\in\N_0}$, $(h_k)_{k\in\N_0}$ satisfy
+    $\gamma_k = \mathcal{O}(\log^{e}(k))$ for any $e\in(0,\infty)$ and
+    $\alpha_k = \mathcal{O}(1/k)$. Further, let
+    $a_{\tau^{-1}} := \max\big( \norm{\tilde{\nabla} f(x^\star)} (\tau\gamma_0)^{-1}, 1 \big)$.
     Then, for arbitrary $\delta\in(0,\infty)$ and all $K\in\N$, the bounds
     \[
         |f(\bar{x}_K) - f(x^\star)|
         \leq
         \tau^{-1} \mathcal{O}\Big( \frac{\log^{2e}(K)}{K} \Big)
-            + 2 \delta \alpha_{\tau^{-1}} \frac{M R \log^{e}(K)}{\sqrt{K}}
+            + 2 \delta a_{\tau^{-1}} \frac{M R \log^{e}(K)}{\sqrt{K}}
     \]
     and
     \[
