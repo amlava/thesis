@@ -14,7 +14,11 @@
 \contentsline {chapter}{\numberline {3}Sequential Proximal SGD Method}{11}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Almost sure convergence}{16}{section.3.1}%
 \contentsline {section}{\numberline {3.2}Convergence rates in expectation}{32}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Convex case}{35}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Strongly convex case}{35}{subsection.3.2.2}%
 \contentsline {section}{\numberline {3.3}High-probability guarantees}{43}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Convex case}{45}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Strongly convex case}{45}{subsection.3.3.2}%
 \contentsline {section}{\numberline {3.4}Infeasible problems}{48}{section.3.4}%
 \contentsline {chapter}{\numberline {4}Numerical Examples}{51}{chapter.4}%
 \contentsline {chapter}{\numberline {5}Summary and Outlook}{53}{chapter.5}%

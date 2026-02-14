@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.10.28)  14 FEB 2026 21:31
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.10.28)  14 FEB 2026 21:35
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -775,7 +775,7 @@ Package hyperref Info: Link coloring ON on input line 18.
 \openout2 = `layout/ThesisTitlepage.aux'.
 
  (./layout/ThesisTitlepage.tex
-<pic/UHH_Logo.jpg, id=80, 2827.56375pt x 946.28531pt>
+<pic/UHH_Logo.jpg, id=96, 2827.56375pt x 946.28531pt>
 File: pic/UHH_Logo.jpg Graphic file (type jpg)
 <use pic/UHH_Logo.jpg>
 Package pdftex.def Info: pic/UHH_Logo.jpg  used on input line 7.
@@ -1421,9 +1421,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [35]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1523,9 +1520,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [44]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1651,21 +1645,21 @@ L3 programming layer <2020/03/25>
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 8051AEECB44945B8531035769B417FF7;3090.
+(rerunfilecheck)             Checksum: EBB87B07BD2A950A1C4B1ED55DD086CC;3666.
  ) 
 Here is how much of TeX's memory you used:
- 20590 strings out of 473190
- 339998 string characters out of 5715799
- 832668 words of memory out of 5000000
- 43221 multiletter control sequences out of 15000+600000
+ 20598 strings out of 473190
+ 340134 string characters out of 5715799
+ 832624 words of memory out of 5000000
+ 43225 multiletter control sequences out of 15000+600000
  662770 words of font info for 172 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  94i,13n,107p,1052b,676s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/NewPXMI.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/NewPXMI_gnu.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/pxmiaX.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/pxsys.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/tex-gyre/qhvb.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/txexs.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/txsym.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/zplb.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/zplr.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/zplri.pfb>
-Output written on main.pdf (65 pages, 586552 bytes).
+Output written on main.pdf (65 pages, 587082 bytes).
 PDF statistics:
- 738 PDF objects out of 1000 (max. 8388607)
- 640 compressed objects within 7 object streams
- 181 named destinations out of 1000 (max. 500000)
- 158 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 758 PDF objects out of 1000 (max. 8388607)
+ 660 compressed objects within 7 object streams
+ 185 named destinations out of 1000 (max. 500000)
+ 190 words of extra memory for PDF output out of 10000 (max. 10000000)
 

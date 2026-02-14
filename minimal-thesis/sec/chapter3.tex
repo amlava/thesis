@@ -906,7 +906,7 @@ involves a nonnegative term plus a small negative term.
     of the projection map, $\lim_{k\to\infty} \proj(x_k^\star) = \proj(x^\star) = x^\star$.
     In particular, $(\proj(x_k^\star))_{k\in\N}$ is bounded, so \cref{lem:basic-properties} implies
     that there exists $K_1\in\N$ such that $\sup_{k\in\N} \norm{\tilde{\nabla} f_k(\proj(x_k^\star))}
-    \leq c \gamma_k$ for some $c_1\in(0,\infty)$ and all $k\geq K_1$. Hence,
+    \leq c_1 \gamma_k$ for some $c_1\in(0,\infty)$ and all $k\geq K_1$. Hence,
     \[
         f_k(x_k^\star) - f_k(\proj(x_k^\star)) \geq -c_1 \gamma_k\, \dist(x_k^\star,\mathcal{X}),
     \]
@@ -1292,6 +1292,11 @@ satisfy certain conditions, which are captured in the following assumption.
     \]
     as desired.
 \end{proof}
+
+\subsection{Convex case}
+
+\subsection{Strongly convex case}
+
 \begin{lemma}
     \label{lem:valid-parameters}
     In the setting $\mu > 0$,
@@ -1821,6 +1826,11 @@ the almost-sure bounds we derived in the previous sections.
     per definition of stochastic gradients, $\E(z_k \mid x_k) = 0$.
     Therefore, $(X_k)_{k\in\N_0}$ is a martingale.
 \end{proof}
+
+\subsection{Convex case}
+
+\subsection{Strongly convex case}
+
 \begin{theorem}[Convergence with high probability - strongly convex case]
     \label{thm:convergence-with-high-probability}
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point}
