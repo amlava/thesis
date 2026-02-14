@@ -634,7 +634,7 @@ We will now formulate and prove the lemma.
     \]
     for all $k \geq K$ and some constant $c\in(0,1)$, as desired.
 \end{proof}
-Having established the convergence of the sequence $(x_k^\star)_{k\in\N_0}$
+Having established the convergence of the sequences $(x_k^\star)_{k\in\N_0}$
 to the feasible set $\mathcal{X}$, we will now shift our attention to the iterates $(x_k)_{k\in\N_0}$
 of \cref{alg:seqprox-sgd}. We begin with the following
 fundamental recursive inequality.
@@ -800,7 +800,7 @@ fundamental recursive inequality.
             - \norm{x - x_{k+1}}^2 \\
         &\phantom{===} + 4 \alpha^{-1} \eta_k^2 \gamma_k^2 G^2 + \frac{\eta_k^2}{1 - (L\eta_k + \alpha)}\norm{z_k}^2.
     \end{align*}
-    For the specifc choice $\alpha := (1 - \rho)/2$, it holds that $L\eta_k + \alpha \leq \rho + (1 - \rho)/2 = (1 + \rho)/2$.
+    For the specific choice $\alpha := (1 - \rho)/2$, it holds that $L\eta_k + \alpha \leq \rho + (1 - \rho)/2 = (1 + \rho)/2$.
     Hence, we arrive at
     \begin{align*}
         %\label{eq:proof:lem:one-step-improvement-2}
@@ -1038,9 +1038,10 @@ We are now ready to prove the main theorem of this section.
         \item $\sum_{k=0}^\infty \eta_k\gamma_k\alpha_k < \infty$.
         \item $\sum_{k=0}^\infty \eta_k^2 \gamma_k^2 < \infty$.
     \end{enumerate}
-    Then $\norm{x_{k} - x^\star}$ converges almost surely and
+    Then $\norm{x_{k} - x^\star}$ converges almost surely and,
+    in particular, $(x_k)_{k\in\N}$ is bounded almost surely.
+    In the case $\mu > 0$, it further holds that
     $\liminf_{k\to\infty} \E\norm{x_{k} - x^\star}^2 = 0$.
-    In particular, $(x_k)_{k\in\N}$ is bounded almost surely.
 \end{theorem}
 \begin{proof}
     By \cref{lem:recursion-for-almost-sure-convergence} (dropping the $-\mu\eta_k$ term), we have
@@ -1104,14 +1105,15 @@ We are now ready to prove the main theorem of this section.
     \]
     Strong convexity of $f_k$ and optimaliy of $x_k^\star$ for $f_k$ imply
     \[
-        f_{k}(x_{k+1}) - f_{k}(x_k^\star) \geq \frac{\mu}{2} \norm{x_{k+1} - x_k^\star}^2,
+        f_{k}(x_{k+1}) - f_{k}(x_k^\star) \geq \frac{\mu}{2} \norm{x_{k+1} - x_k^\star}^2.
     \]
-    and thus $\liminf_{k\to\infty} \E\norm{x_{k+1} - x_k^\star}^2 = 0$,
+    If $\mu > 0$, we therefore have $\liminf_{k\to\infty} \E\norm{x_{k+1} - x_k^\star}^2 = 0$,
     which implies that
     \[
         \liminf_{k\to\infty} \E\norm{x_{k} - x^\star}^2 = 0,
     \]
-    since $x_k^\star$ converges to $x^\star$ (\cref{thm:distance-to-feasibility-bound}).
+    since we also know that $x_k^\star$ converges to $x^\star$
+    in the case $\mu > 0$, by \cref{thm:distance-to-feasibility-bound}.
 \end{proof}
 
 
