@@ -13,8 +13,8 @@
 \contentsline {subsection}{\numberline {2.2.3}Multifunctions and metric regularity}{9}{subsection.2.2.3}%
 \contentsline {chapter}{\numberline {3}Sequential Proximal SGD Method}{11}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Almost sure convergence}{16}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Convergence rates in expectation}{33}{section.3.2}%
+\contentsline {section}{\numberline {3.2}Convergence rates in expectation}{32}{section.3.2}%
 \contentsline {section}{\numberline {3.3}High-probability guarantees}{43}{section.3.3}%
 \contentsline {section}{\numberline {3.4}Infeasible problems}{48}{section.3.4}%
-\contentsline {chapter}{\numberline {4}Numerical Examples}{51}{chapter.4}%
-\contentsline {chapter}{\numberline {5}Summary and Outlook}{53}{chapter.5}%
+\contentsline {chapter}{\numberline {4}Numerical Examples}{49}{chapter.4}%
+\contentsline {chapter}{\numberline {5}Summary and Outlook}{51}{chapter.5}%

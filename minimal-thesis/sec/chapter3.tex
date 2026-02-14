@@ -534,15 +534,16 @@ We will now formulate and prove the lemma.
 \end{proof}
 \begin{theorem}[Convergence of $x_k^\star$]
     \label{thm:distance-to-feasibility-bound}
-    Assume \cref{ass:basic-assumptions,ass:slater-point,ass:compact-support-without-zero} hold.
-    Then, for all $k\in\N_0$, it holds that
+    Assume \cref{ass:basic-assumptions,ass:slater-point,ass:compact-support-without-zero} hold
+    and let $x^\star\in\mathcal{X}^\star$.
+    Then, there exist constants $M, \tau\in (0,\infty)$, such that
     \[
         \frac{\mu}{2} |\!|x^\star - x_k^\star|\!|^2 + \frac{\mu}{2} |\!|x^\star - \proj(x_k^\star)|\!|^2
         + (\tau\gamma_k - M) \, \dist(x_k^\star, \mathcal{X})
         \leq
         \gamma_k \alpha_k,
     \]
-    where $M,\tau\in (0, \infty)$ are constants.
+    for all $k\in\N_0$ and $x_k^\star\in\mathcal{X}^\star_k$.
     In particular,
     \[
         \dist(x_k^\star, \mathcal{X}) = \mathcal{O}(\alpha_k)
@@ -553,7 +554,7 @@ We will now formulate and prove the lemma.
     \]
 \end{theorem}
 \begin{proof}
-    Let $k\in\N_0$. By optimality of $x_k^\star$ for $f_k$, there exists
+    Let $k\in\N_0$ and $x_k^\star\in\mathcal{X}_k^\star$. By optimality of $x_k^\star$ for $f_k$, there exists
     $0 \in \partial f_k(x_k^\star)$. Hence, by
     strong convexity, we obtain
     \begin{equation}
@@ -578,24 +579,18 @@ We will now formulate and prove the lemma.
     \[
         f(x^\star) - f(x_k^\star) \leq -\frac{\mu}{2} |\!|x^\star - \proj(x_k^\star)|\!|^2 + f(\proj(x_k^\star)) - f(x_k^\star).
     \]
-    To continue with the proof, we will need to first show that $(x_k^\star)_{k\in\N}$
-    is bounded: By strong convexity and optimality of $x_k^\star$ for $f_k$, for any feasible $x\in\mathcal{X}$, it holds that
-    \begin{align*}
-        \frac{\mu}{2} \norm{x - x_k^\star}^2
-                &\leq f_k(x) - f_k(x_k^\star) \\
-                &= f(x) + \gamma_k\pi_k(x) - f_k(x^\star_k) \\
-                &\leq f(x) + \gamma_k \alpha_k - f_k(x^\star_k) \\
-                &\leq f(x) + \gamma_k \alpha_k - f_\text{min}\,,
-    \end{align*}
-    where $f_\text{min}$ is the minimum value of $f$, which exists by convexity.
-    Noting that $\lim_{k\to\infty} \gamma_k\alpha_k = 0$ per one of our assumptions, it follows
-    that $(x_k^\star)_{k\in\N}$ must be a bounded sequence.
+    By \cref{lem:basic-properties}, we know that the
+    family $(\mathcal{X}_k^\star)_{k\in\N_0}$ is uniformly bounded and
+    \[
+        \sup_{k\in\N_0} \sup_{x_k^\star\in\mathcal{X}_k^\star} \norm{\Pi_\mathcal{X}(x_k^\star)} < \infty.
+    \]
     Hence, by
-    local Lipschitz continuity of $f$ (\cref{lem:basic-properties}) and Cauchy-Schwarz, we have
+    local Lipschitz continuity of $f$ (\cref{lem:basic-properties}) and Cauchy-Schwarz,
+    there exists a constant $M\in (0,\infty)$, such that
     \[
         f(\proj(x_k^\star)) - f(x_k^\star) \leq M \dist(x_k^\star, \mathcal{X}),
     \]
-    for some constant $M\in[0,\infty)$.
+    for all $k\in\N_0$ and $x_k^\star \in \mathcal{X}_k^\star$.
     We now obain
     \[
         f(x^\star) - f(x_k^\star) \leq -\frac{\mu}{2} |\!|x^\star - \proj(x_k^\star)|\!|^2 + M \dist(x_k^\star, \mathcal{X}).

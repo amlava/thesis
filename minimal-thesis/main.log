@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.10.28)  14 FEB 2026 20:58
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.10.28)  14 FEB 2026 21:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1289,9 +1289,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [22]
-Underfull \vbox (badness 1394) has occurred while \output is active []
-
-
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1337,9 +1334,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [26]
-Underfull \vbox (badness 5771) has occurred while \output is active []
-
-
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1349,7 +1343,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [27]
-Underfull \vbox (badness 4060) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
@@ -1379,6 +1373,9 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [30]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1388,9 +1385,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [31]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1409,9 +1403,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [33]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1421,9 +1412,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [34]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1433,6 +1421,9 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [35]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1571,34 +1562,23 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [48]
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[49]
 \openout2 = `sec/chapter4.aux'.
 
  (./sec/chapter4.tex
+Chapter 4.
+)
 
-[50
+[49
 
 
 
 
 ]
-Chapter 4.
-)
-
-[51]
 \openout2 = `sec/chapter5.aux'.
 
  (./sec/chapter5.tex
 
-[52
+[50
 
 
 
@@ -1607,12 +1587,12 @@ Chapter 4.
 Chapter 5.
 )
 
-[53]
+[51]
 \openout2 = `layout/thesisBibliography.aux'.
 
  (./layout/thesisBibliography.tex (./main.bbl
 
-[54
+[52
 
 
 
@@ -1626,12 +1606,12 @@ LaTeX Font Info:    Font shape `TS1/zpltlf/m/it' will be
 (Font)              scaled to size 12.0pt on input line 26.
 )
 
-[55{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/newpx/zpl_TOsF.enc}])
+[53{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/newpx/zpl_TOsF.enc}])
 \openout2 = `layout/thesisErklärung.aux'.
 
  (./layout/thesisErklärung.tex
 
-[56
+[54
 
 
 
@@ -1644,7 +1624,7 @@ Overfull \hbox (7.2775pt too wide) in paragraph at lines 3--6
 
 
 
-[57]) (./main.aux (./layout/ThesisTitlepage.aux) (./sec/abstract.aux) (./layout/TableOfContentsAndListOfFigures.aux) (./sec/chapter1.aux) (./sec/chapter2.aux) (./sec/chapter3.aux) (./sec/chapter4.aux) (./sec/chapter5.aux) (./layout/thesisBibliography.aux) (./layout/thesisErklärung.aux))
+[55]) (./main.aux (./layout/ThesisTitlepage.aux) (./sec/abstract.aux) (./layout/TableOfContentsAndListOfFigures.aux) (./sec/chapter1.aux) (./sec/chapter2.aux) (./sec/chapter3.aux) (./sec/chapter4.aux) (./sec/chapter5.aux) (./layout/thesisBibliography.aux) (./layout/thesisErklärung.aux))
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2020/03/25>
@@ -1657,18 +1637,18 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 8051AEECB44945B8531035769B417FF7;3090.
  ) 
 Here is how much of TeX's memory you used:
- 20590 strings out of 473190
- 339998 string characters out of 5715799
- 831622 words of memory out of 5000000
+ 20588 strings out of 473190
+ 339984 string characters out of 5715799
+ 832622 words of memory out of 5000000
  43221 multiletter control sequences out of 15000+600000
  662770 words of font info for 172 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  94i,13n,107p,1052b,676s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/NewPXMI.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/NewPXMI_gnu.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/pxmiaX.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/pxsys.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/tex-gyre/qhvb.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/txexs.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/txsym.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/zplb.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/zplr.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/newpx/zplri.pfb>
-Output written on main.pdf (65 pages, 585749 bytes).
+Output written on main.pdf (63 pages, 585796 bytes).
 PDF statistics:
- 735 PDF objects out of 1000 (max. 8388607)
- 637 compressed objects within 7 object streams
- 181 named destinations out of 1000 (max. 500000)
+ 726 PDF objects out of 1000 (max. 8388607)
+ 630 compressed objects within 7 object streams
+ 179 named destinations out of 1000 (max. 500000)
  158 words of extra memory for PDF output out of 10000 (max. 10000000)
 
