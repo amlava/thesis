@@ -1294,7 +1294,8 @@ satisfy certain conditions, which are captured in the following assumption.
 \end{proof}
 \begin{lemma}
     \label{lem:valid-parameters}
-    Let $\eta_k := 2/(\mu k)$ for all $k\in\N$, $\eta_0 := 2/\mu$. Then,
+    In the setting $\mu > 0$,
+    let $\eta_k := 2/(\mu k)$ for all $k\in\N$, $\eta_0 := 2/\mu$. Then,
     for any $e\in(0,\infty)$, and any sequences $(\gamma_k)_{k\in\N_0}$,
     $(h_k)_{k\in\N_0}$
     with $\gamma_k = \mathcal{O}(\log^{e}(k))$,
@@ -1317,7 +1318,8 @@ satisfy certain conditions, which are captured in the following assumption.
 \begin{lemma}
     \label{lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)}
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point}
-    hold. Define $\eta_k := 2/(\mu k)$ for all $k\in\N$, $\eta_0 := 2/\mu$ and
+    hold, and assume that we are in the setting $\mu > 0$.
+    Define $\eta_k := 2/(\mu k)$ for all $k\in\N$, $\eta_0 := 2/\mu$ and
     $S_K := \sum_{k=1}^{K} \eta_k^{-1}$.
     Let $(\gamma_k)_{k\in\N_0}$, $(h_k)_{k\in\N_0}$ satisfy
     $\gamma_k = \mathcal{O}(\log^{e}(k))$ for any $e\in(0,\infty)$ and
@@ -1603,10 +1605,11 @@ satisfy certain conditions, which are captured in the following assumption.
     This concludes the proof.
 \end{proof}
 
-\begin{theorem}[Convergence rates in expectation]
+\begin{theorem}[Convergence rates in expectation - strongly convex case]
     \label{thm:convergence-rates-in-expectation}
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point} hold
-    and define $\eta_k := 2/(\mu k)$ for all $k\in\N$, $\eta_0 := 2/\mu$.
+    and assume that we are in the setting $\mu > 0$.
+    Define $\eta_k := 2/(\mu k)$ for all $k\in\N$, $\eta_0 := 2/\mu$.
     Let $(\gamma_k)_{k\in\N_0}$, $(h_k)_{k\in\N_0}$ satisfy
     $\gamma_k = \mathcal{O}(\log^{e}(k))$ for any $e\in(0,\infty)$ and
     $\alpha_k = \mathcal{O}(1/k)$.
@@ -1818,15 +1821,16 @@ the almost-sure bounds we derived in the previous sections.
     per definition of stochastic gradients, $\E(z_k \mid x_k) = 0$.
     Therefore, $(X_k)_{k\in\N_0}$ is a martingale.
 \end{proof}
-\begin{theorem}[Convergence with high probability]
+\begin{theorem}[Convergence with high probability - strongly convex case]
     \label{thm:convergence-with-high-probability}
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point}
-    hold, and define $\eta_k := 2/(\mu k)$ for all $k\in\N$, $\eta_0 := 2/\mu$.
+    hold and assume that we are in the setting $\mu > 0$.
+    Define $\eta_k := 2/(\mu k)$ for all $k\in\N$, $\eta_0 := 2/\mu$.
     Let $(\gamma_k)_{k\in\N_0}$, $(h_k)_{k\in\N_0}$ satisfy
     $\gamma_k = \mathcal{O}(\log^{e}(k))$ for any $e\in(0,\infty)$ and
     $\alpha_k = \mathcal{O}(1/k)$. Further, let
     $a_{\tau^{-1}} := \max\big( \norm{\tilde{\nabla} f(x^\star)} (\tau\gamma_0)^{-1}, 1 \big)$.
-    Then, for arbitrary $\delta\in(0,\infty)$ and all $K\in\N$, the bounds
+    Then, for arbitrary $\delta\in(0,\infty)$ and $K\in\N$, the bounds
     \[
         |f(\bar{x}_K) - f(x^\star)|
         \leq
