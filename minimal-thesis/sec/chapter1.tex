@@ -292,7 +292,7 @@ and average over the resulting stochastic gradients to get
 a variance-reduced estimate of $\E(\nabla F_\xi(x)) + \gamma_k \nabla \pi_k(x)$.
 The pseudo-code for the full algorithm is presented in \cref{alg:seqprox-sgd}.
 \begin{algorithm}[t]
-\caption{Sequential Proximal Stochastic Gradient Descent (SeqProx-SGD)}
+\caption{Stochastic Inexact Penalty Method}
 \label{alg:seqprox-sgd}
 \begin{algorithmic}[1] % [1] enables line numbers
 \Require Initial point $x_0\in\R^n$, step sizes $(\eta_k)_{k\in\N_0}$,
