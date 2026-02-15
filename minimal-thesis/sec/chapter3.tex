@@ -1333,12 +1333,11 @@ satisfy certain conditions, which are captured in the following assumption.
         f(\bar{x}_K) - f(x^\star)
         &\leq
         \frac{S_{1, k_0-1}}{S_K} (f(\bar{x}_{1, k_0-1}) - f(x^\star))
-        +
-        \frac{\norm{x^\star - x_{k_0}}^2}{2S_K}
-            + \frac{\sum_{k=k_0}^K \eta_k\langle z_k, x_k - x^\star \rangle}{S_K} \notag \\
+        + \frac{\norm{x^\star - x_{k_0}}^2}{2S_K}
+        + \frac{\sum_{k=k_0}^{K} \eta_k^2\mathcal{O}(\gamma_k^2)}{2 S_K} \notag \\
         &\phantom{===}
             + \frac{\sum_{k=k_0}^K \eta_k\gamma_k\alpha_k}{S_K}
-            + \frac{\sum_{k=k_0}^{K} \eta_k^2\mathcal{O}(\gamma_k^2)}{2 S_K}
+            + \frac{\sum_{k=k_0}^K \eta_k\langle z_k, x_k - x^\star \rangle}{S_K}
     \end{align*}
     almost surely,
     for all $K\in\N$ with $K \geq k_0$, where $S_K := \sum_{k=1}^K w_k$.
@@ -1346,6 +1345,12 @@ satisfy certain conditions, which are captured in the following assumption.
     \begin{align*}
         \dist(\bar{x}_K, \mathcal{X})
         &\leq
+        \frac{S_{1, k_1-1}}{S_K} \dist(\bar{x}_{1, k_1-1}, \mathcal{X})
+            + \frac{\gamma_{k_1}^{-1}\norm{x^\star - x_{k_1}}^2}{\tau S_K}
+            + \frac{\sum_{k=k_1}^{K} \eta_k^2\mathcal{O}(\gamma_k)}{\tau S_K} \\
+        &\phantom{===}
+            + 2 \frac{\sum_{k=k_1}^{K}\eta_k\alpha_k}{\tau S_K}
+            + 2 \frac{\sum_{k=k_1}^K \gamma_k^{-1}\eta_k \langle z_k, x_k - \proj(x_k) \rangle}{\tau S_K}
     \end{align*} 
     almost surely, for all $K\in\N$ with $K \geq k_1$.
 \end{lemma}
@@ -1449,6 +1454,129 @@ satisfy certain conditions, which are captured in the following assumption.
             + \frac{\sum_{k=k_0}^{K} \eta_k^2\mathcal{O}(\gamma_k^2)}{2 S_K}
     \end{align*}
     almost surely.
+        Next, we will derive the desired bound for $\dist(\bar{x}_K, \mathcal{X})$.
+    Again fix $k \geq k_0$.
+    For the choice $x := \proj(x_k)$,
+    inequality \eqref{eq:lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)} gives us
+    \begin{align*}
+        2\eta_k (f(x_{k}) - f(\proj(x_k)))
+        &\leq
+        (1-\mu\eta_k)\dist(x_k, \mathcal{X})^2 - \norm{\proj(x_k) - x_{k+1}}^2
+            + \eta_k^2 \mathcal{O}(\gamma_k^2) \notag \\
+            &\phantom{===} + 2\eta_k\langle z_k, x_k - \proj(x_k) \rangle
+                    + 2\eta_k\gamma_k\alpha_k - 2\tau \eta_k \gamma_k \dist(x_k, \mathcal{X}).
+    \end{align*}
+    Note that $\norm{\proj(x_k) - x_{k+1}} \geq \dist(x_{k+1}, \mathcal{X})$,
+    hence, after additionally rearranging, we obtain
+    \begin{align*}
+        \dist(x_{k+1}, \mathcal{X})^2
+        &\leq
+        (1-\mu\eta_k)\dist(x_k, \mathcal{X})^2
+            + \eta_k^2 \mathcal{O}(\gamma_k^2) + 2\eta_k\langle z_k, x_k - \proj(x_k) \rangle \notag \\
+            &\phantom{===}
+                    + 2\eta_k\gamma_k\alpha_k - 2\tau \eta_k \gamma_k \dist(x_k, \mathcal{X}) + 2\eta_k (f(\proj(x_k)) - f(x_{k})).
+    \end{align*}
+    Almost sure boundedness of $(x_k)_{k\in\N}$ (\cref{thm:almost-sure-convergence})
+    implies that $(\Pi_\mathcal{X}(x_k))_{k\in\N_0}$ is also
+    bounded almost surely, since continuous functions map compacta to compacta.
+    Therefore, by
+    local Lipschitz continuity of $f$ (\cref{lem:basic-properties}),
+    there exists a constant $M\in[0,\infty)$ such that
+    \[
+        f(\proj(x_k)) - f(x_{k}) \leq M \dist(x_k, \mathcal{X}) \enspace (\text{a.\,s.}).
+    \]
+    Combining with the previous inequality and gathering terms involving $\dist(x_k,\mathcal{X})$,
+    we arrive at
+    \begin{align*}
+        \dist(x_{k+1}, \mathcal{X})^2
+        &\leq
+        (1-\mu\eta_k)\dist(x_k, \mathcal{X})^2
+            + \eta_k^2 \mathcal{O}(\gamma_k^2) + 2\eta_k\langle z_k, x_k - \proj(x_k) \rangle \notag \\
+            &\phantom{===}
+                    + 2\eta_k\gamma_k\alpha_k
+                    - 2\eta_k (\tau\gamma_k - M) \dist(x_k, \mathcal{X}).
+    \end{align*}
+    Since $\gamma_k \uparrow \infty$, there exists $k_1\in\N$ such that
+    $\tau_k\gamma_k - M \geq \tau\gamma_k/2$ for all natural numbers $k\geq k_1$. Thus,
+    \begin{align}
+        \label{eq:proof:lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)-convex-case:dist-bound}
+        \dist(x_{k+1}, \mathcal{X})^2 &\leq
+        (1-\mu\eta_k)\dist(x_k, \mathcal{X})^2 + \eta_k^2 \mathcal{O}(\gamma_k^2)
+            + 2\eta_k\langle z_k, x_k - \proj(x_k) \rangle \notag \\
+            &\phantom{===}
+            + 2\eta_k\gamma_k\alpha_k - \tau \eta_k\gamma_k \dist(x_k, \mathcal{X}),
+    \end{align}
+    for all $k \geq k_1$.
+    Dropping the $-\mu\eta_k$ term and 
+    multiplying both sides by $\gamma_k^{-1}$, we get
+    \begin{align*}
+        \gamma_k^{-1} \dist(x_{k+1}, \mathcal{X})^2
+        &\leq
+        \gamma_k^{-1} \dist(x_k, \mathcal{X})^2
+            + \eta_k^2\mathcal{O}(\gamma_k) \\
+            &\phantom{===}
+            + 2\gamma_k^{-1}\eta_k\langle z_k, x_k - \proj(x_k) \rangle
+            + 2\eta_k\alpha_k - \tau \eta_k \dist(x_k, \mathcal{X}),
+    \end{align*}
+    for all $k \geq k_1$.
+    Since $\gamma_k$ is nondecreasing, we have $\gamma_k^{-1} \geq \gamma_{k+1}^{-1}$ for all $k\in\N$.
+    Setting $d_j := \gamma_j^{-1} \dist(x_j, \mathcal{X})^2 \enspace \forall j\in\N$, we therefore have
+    \[
+        d_{k+1}
+        \leq
+        d_k
+            + \eta_k^2\mathcal{O}(\gamma_k)
+            + 2\gamma_k^{-1}\eta_k\langle z_k, x_k - \proj(x_k) \rangle
+            + 2\eta_k\alpha_k
+            - \tau \eta_k \dist(x_k, \mathcal{X}),
+    \]
+    for all $k\geq k_1$.
+    Rearranging again and summing from $k=k_1$ to $k=K$ for $K\in\N$ with $K \geq k_1$, we have
+    \begin{align*}
+        \tau \sum_{k=k_1}^{K} \eta_k \dist(x_k, \mathcal{X})
+        &\leq
+        d_{k_1} - d_{K+1} + \sum_{k=k_1}^{K} \eta_k^2 \mathcal{O}(\gamma_k)
+            + 2 \sum_{k=k_1}^{K}\eta_k\alpha_k \\
+        &\phantom{===} + 2\sum_{k=k_1}^K \gamma_k^{-1}\eta_k \langle z_k, x_k - \proj(x_k) \rangle \\
+        &\leq
+        d_{k_1} + \sum_{k=k_1}^{K} \eta_k^2\mathcal{O}(\gamma_k)
+            + 2 \sum_{k=k_1}^{K}\eta_k\alpha_k \\
+        &\phantom{===} + 2\sum_{k=k_1}^K \gamma_k^{-1}\eta_k \langle z_k, x_k - \proj(x_k) \rangle,
+    \end{align*}
+    where we used $d_{K+1} \geq 0$ in the last step.
+    The distance functional $x\mapsto\dist(x,\mathcal{X})$
+    is convex (\textcolor{red}{TODO: Show this in an example.}), so if we divide both sides of
+    the above inequality by $\tau \cdot S_{k_1, K}$, we obtain
+    \begin{align*}
+        \dist(\bar{x}_{k_1, K}, \mathcal{X})
+        &\leq
+        \frac{d_{k_1}}{\tau S_{k_1, K}} + \frac{\sum_{k=k_1}^{K} \eta_k^2 \mathcal{O}(\gamma_k)}{\tau S_{k_1, K}}
+            + 2 \frac{\sum_{k=k_1}^{K}\eta_k\alpha_k}{\tau S_{k_1, K}} \\
+        &\phantom{===} + 2 \frac{\sum_{k=k_1}^K \gamma_k^{-1}\eta_k \langle z_k, x_k - \proj(x_k) \rangle}{\tau S_{k_1, K}}.
+    \end{align*} 
+    To derive a bound for $\dist(\bar{x}_K, \mathcal{X})$, we proceed similarly as before. We have
+    \[
+        \bar{x}_K = \frac{S_{1, k_1-1}}{S_K} \bar{x}_{1, k_1-1} + \frac{S_{k_1, K}}{S_K} \bar{x}_{k_1, K}
+    \]
+    and
+    \[
+        \frac{S_{1, k_1-1}}{S_K} + \frac{S_{k_1, K}}{S_K} = 1.
+    \]
+    Combining with the latest bound on $\dist(\bar{x}_{k_1, K}, \mathcal{X})$, we obtain the desired bound
+    \begin{align*}
+        \dist(\bar{x}_K, \mathcal{X})
+        &\leq
+        \frac{S_{1, k_1-1}}{S_K} \dist(\bar{x}_{1, k_1-1}, \mathcal{X})
+            + \frac{S_{k_1, K}}{S_K} \dist(\bar{x}_{k_1, K}, \mathcal{X}) \\
+        &\leq
+        \frac{S_{1, k_1-1}}{S_K} \dist(\bar{x}_{1, k_1-1}, \mathcal{X})
+            + \frac{d_{k_1}}{\tau S_K}
+            + \frac{\sum_{k=k_1}^{K} \eta_k^2\mathcal{O}(\gamma_k)}{\tau S_K}
+            + 2 \frac{\sum_{k=k_1}^{K}\eta_k\alpha_k}{\tau S_K} \\
+        &\phantom{===} + 2 \frac{\sum_{k=k_1}^K \gamma_k^{-1}\eta_k \langle z_k, x_k - \proj(x_k) \rangle}{\tau S_K}
+    \end{align*}
+    almost surely, or all $K \geq k_1$.
+    This concludes the proof.
 \end{proof}
 
 \subsection{Strongly convex case}
@@ -1602,56 +1730,10 @@ satisfy certain conditions, which are captured in the following assumption.
         &\phantom{===} + \frac{\sum_{k=k_0}^{K} \mathcal{O}(\gamma_k^2)}{S_K}
             + \frac{\sum_{k=k_0}^{K}\eta_k^{-1}\gamma_k\alpha_k}{S_K}.
     \end{align*}
-    Next, we will derive the desired bound for $\dist(x_k, \mathcal{X})$.
-    Again fix $k \geq k_0$.
-    For the choice $x := \proj(x_k)$,
-    inequality \eqref{eq:lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)} gives us
-    \begin{align*}
-        2\eta_k (f(x_{k}) - f(\proj(x_k)))
-        &\leq
-        (1-\mu\eta_k)\dist(x_k, \mathcal{X})^2 - \norm{\proj(x_k) - x_{k+1}}^2
-            + \eta_k^2 \mathcal{O}(\gamma_k^2) \notag \\
-            &\phantom{===} + 2\eta_k\langle z_k, x_k - \proj(x_k) \rangle
-                    + 2\eta_k\gamma_k\alpha_k - 2\tau \eta_k \gamma_k \dist(x_k, \mathcal{X}).
-    \end{align*}
-    Note that $\norm{\proj(x_k) - x_{k+1}} \geq \dist(x_{k+1}, \mathcal{X})$,
-    hence
-    \begin{align*}
-        \dist(x_{k+1}, \mathcal{X})^2
-        &\leq
-        (1-\mu\eta_k)\dist(x_k, \mathcal{X})^2
-            + \eta_k^2 \mathcal{O}(\gamma_k^2) + 2\eta_k\langle z_k, x_k - \proj(x_k) \rangle \notag \\
-            &\phantom{===}
-                    + 2\eta_k\gamma_k\alpha_k - 2\tau \eta_k \gamma_k \dist(x_k, \mathcal{X}) + 2\eta_k (f(\proj(x_k)) - f(x_{k})),
-    \end{align*}
-    where we also rearranged.
-    Using almost sure boundedness of $(x_k)_{k\in\N}$ (\cref{thm:almost-sure-convergence}) and
-    local Lipschitz continuity of $f$ (\cref{lem:basic-properties}),
-    there exists a constant $M\in[0,\infty)$ such that
-    \[
-        f(\proj(x_k)) - f(x_{k}) \leq M \dist(x_k, \mathcal{X}) \enspace (\text{a.\,s.}).
-    \]
-    Combining with the previous inequality and gathering terms involving $\dist(x_k,\mathcal{X})$,
-    we arrive at
-    \begin{align*}
-        \dist(x_{k+1}, \mathcal{X})^2
-        &\leq
-        (1-\mu\eta_k)\dist(x_k, \mathcal{X})^2
-            + \eta_k^2 \mathcal{O}(\gamma_k^2) + 2\eta_k\langle z_k, x_k - \proj(x_k) \rangle \notag \\
-            &\phantom{===}
-                    + 2\eta_k\gamma_k\alpha_k
-                    - 2\eta_k (\tau\gamma_k - M) \dist(x_k, \mathcal{X}).
-    \end{align*}
-    Since $\gamma_k \uparrow \infty$, there exists $k_1\in\N$ such that
-    $\tau_k\gamma_k - M \geq \tau\gamma_k/2$ for all natural numbers $k\geq k_1$. Thus,
-    \begin{align*}
-        \dist(x_{k+1}, \mathcal{X})^2 &\leq
-        (1-\mu\eta_k)\dist(x_k, \mathcal{X})^2 + \eta_k^2 \mathcal{O}(\gamma_k^2)
-            +  2\eta_k\langle z_k, x_k - \proj(x_k) \rangle\\
-            &\phantom{===}
-            + 2\eta_k\gamma_k\alpha_k - \tau \eta_k\gamma_k \dist(x_k, \mathcal{X}),
-    \end{align*}
-    for all $k \geq k_1$.
+    Next, we will derive the desired bound for $\dist(\bar{x}_K, \mathcal{X})$.
+    Our starting point is inequality
+    \eqref{eq:proof:lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)-convex-case:dist-bound}
+    from the proof of \cref{lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)-convex-case}.
     Multiplying both sides by $\gamma_k^{-1}\eta_k^{-2}$ yields
     \begin{align*}
         \gamma_k^{-1}\eta_k^{-2} \dist(x_{k+1}, \mathcal{X})^2 &\leq
@@ -1687,11 +1769,7 @@ satisfy certain conditions, which are captured in the following assumption.
     \begin{align*}
         \tau \sum_{k=k_1}^{K} \eta_k^{-1} \dist(x_k, \mathcal{X})
         &\leq
-        \sum_{k=k_1}^{K} (d_k - d_{k+1}) + \sum_{k=k_1}^{K} \mathcal{O}(\gamma_k)
-            + 2 \sum_{k=k_1}^{K}\eta_k^{-1}\alpha_k \\
-        &\phantom{===} + 2\sum_{k=k_1}^K \gamma_k^{-1}\eta_k^{-1} \langle z_k, x_k - \proj(x_k) \rangle \\
-        &=
-        d_{k_1} - d_K + \sum_{k=k_1}^{K} \mathcal{O}(\gamma_k)
+        d_{k_1} - d_{K+1} + \sum_{k=k_1}^{K} \mathcal{O}(\gamma_k)
             + 2 \sum_{k=k_1}^{K}\eta_k^{-1}\alpha_k \\
         &\phantom{===} + 2\sum_{k=k_1}^K \gamma_k^{-1}\eta_k^{-1} \langle z_k, x_k - \proj(x_k) \rangle \\
         &\leq
@@ -1699,7 +1777,7 @@ satisfy certain conditions, which are captured in the following assumption.
             + 2 \sum_{k=k_1}^{K}\eta_k^{-1}\alpha_k \\
         &\phantom{===} + 2\sum_{k=k_1}^K \gamma_k^{-1}\eta_k^{-1} \langle z_k, x_k - \proj(x_k) \rangle,
     \end{align*}
-    where we used $d_K \geq 0$ in the last step.
+    where we used $d_{K+1} \geq 0$ in the last step.
     The distance functional $x\mapsto\dist(x,\mathcal{X})$
     is convex (\textcolor{red}{TODO: Show this in an example.}), so if we divide both sides of
     the above inequality by $\tau \cdot S_{k_1, K}$, we obtain
