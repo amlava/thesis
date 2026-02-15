@@ -220,7 +220,7 @@ sequece $\bar{x}_K$ satisfies
 Note that this asymptotic rate is essentially as good as it gets, as we have
 seen earlier that the projected gradient algorithm achieves the rate $\mathcal{O}(1 / K)$.
 \begin{algorithm}[t]
-\caption{Incremental Gradient Method (Nedić et al. \cite{nedich2023huber})}
+\caption{(Nedić et al. \cite{nedich2023huber})}
 \label{alg:nedic-sgd}
 \begin{algorithmic}[1] % [1] enables line numbers
 \Require Initial point $x_0\in\R^n$, step sizes $(\eta_k)_{k\in\N_0}$,
@@ -292,19 +292,21 @@ and average over the resulting stochastic gradients to get
 a variance-reduced estimate of $\E(\nabla F_\xi(x)) + \gamma_k \nabla \pi_k(x)$.
 The pseudo-code for the full algorithm is presented in \cref{alg:seqprox-sgd}.
 \begin{algorithm}[t]
-\caption{Sequential Proximal Stochastic Gradient Descent (SeqProx-SGD)}
+\caption{Stochastic Inexact Penalty Method}
 \label{alg:seqprox-sgd}
 \begin{algorithmic}[1] % [1] enables line numbers
 \Require Initial point $x_0\in\R^n$, step sizes $(\eta_k)_{k\in\N_0}$,
 penalty weights $(\gamma_k)_{k\in\N_0}$,
-smooth penalty functions $(h_k)_{k\in\N_0}$, sample oracle for distribution of $\xi$
+smooth penalty functions $(h_k)_{k\in\N_0}$,
+iterate weights $(w_k)_{k\in\N}$,
+sample oracle for distribution of $\xi$
 \For{$k = 0$ to $K-1$}
     \State Sample $\xi_k$ from the distribution of $\xi$
     \State $g_k \gets \nabla F_{\xi_k}(x_{k}) + \gamma_k \nabla h_k(x_k; A(\xi_k), b(\xi_k))$
     \State $x_{k+1} \gets \textnormal{prox}_{\eta_k r} (x_k - \eta_k g_k$)
 \EndFor
-\State $S_K \gets \sum_{k=1}^{K} \eta_k^{-1}$
-\State $\bar{x}_K \gets S_K^{-1} \sum_{k=1}^{K} \eta_k^{-1} x_k$
+\State $S_K \gets \sum_{k=1}^{K} w_k$
+\State $\bar{x}_K \gets S_K^{-1} \sum_{k=1}^{K} w_k x_k$
 \State \Return $\bar{x}_{K}$
 \end{algorithmic}
 \end{algorithm}
