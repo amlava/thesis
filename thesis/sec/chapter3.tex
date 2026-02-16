@@ -1253,58 +1253,39 @@ satisfy certain conditions, which are captured in the following assumption.
     with probability one, where $L_{\text{loc}} \in (0,\infty)$.
 \end{lemma}
 \begin{proof}
-    Using the inequality $(a + b + c + d)^2 \leq 4 (a^2 + b^2 + c^2 + d^2)$ $\forall a,b,c,d\in\R$, we have
+    We have
     \begin{align*}
-        \norm{z_k}^2
-        &= \norm{g_k - \nabla \psi_k(x_k)}^2 \\
-        &= \norm{\nabla F_{\xi_k}(x_k) + \gamma_k h_k(x_k; A(\xi), b(\xi))
-            + \E(\nabla F_{\xi_k}(x_k)) + \gamma_k \nabla \pi_k(x_k)}^2 \\
-        &\leq 4 \big( \norm{\nabla F_{\xi_k}(x_k)}^2 + \gamma_k^2 \norm{\nabla h_k(x_k; A(\xi), b(\xi))}^2 \\
-            &\phantom{===}+ \norm{\E( \nabla F_{\xi_k}(x_k) )}^2 + \gamma_k^2 \norm{\nabla \pi_k(x_k)}^2 \big),
+        \norm{g_k} &= \norm{\nabla F_{\xi_k}(x_k) + \gamma_k h_k(x_k; A(\xi), b(\xi))} \\
+                &\leq \norm{\nabla F_{\xi_k}(x_k)} + \gamma_k\norm{h_k(x_k; A(\xi), b(\xi))}.
     \end{align*}
-    where we also used $\nabla \E(F_{\xi_k}(x_k)) = \E(\nabla F_{\xi_k}(x_k))$. This follows from
-    almost-sure smoothness of $F_\xi$ (\cref{ass:basic-assumptions}), which we can also use,
-    along with almost-sure boundedness of $(x_k)_{k\in\N}$ (\cref{thm:almost-sure-convergence}), to locally bound
+    By almost-sure smoothness of $(x_k)_{k\in\N_0}$ (\cref{thm:almost-sure-convergence}) and
+    local Lipschitz smoothness of $x\mapsto F_{\xi}(x)$ (a.\,s.), it holds that
     \[
-        \norm{\nabla F_{\xi_k}(x_k)} \leq L_{\text{loc}}
-        \enspace
-        \text{and}
-        \enspace
-        \norm{\E(\nabla F_{\xi_k}(x_k))} \leq \E\norm{ \nabla F_{\xi_k}(x_k) } \leq L_{\text{loc}}.
+        \norm{F_{\xi_k}(x_k)} \leq L_\text{loc} \enspace \text{(a.\,s.)}.
     \]
     By \cref{ass:basic-assumptions}, we have
     \[
         \sup_{k\in\N_0}\sup_{x\in\R^n} \norm{\nabla h_k(x; A(\xi), b(\xi))} \leq G.
-        % \enspace
-        % \text{and}
-        % \enspace
-        % \sup_{k\in\N_0}\sup_{x\in\R^n} \norm{\nabla \pi_k(x)} \leq G.
     \]
-    Therefore
+    Using the inequality $(a + b)^2 \leq 2 (a^2 + b^2)$ $\forall a,b\in\R$, we have
     \[
-        \norm{\nabla F_{\xi_k}(x_k) + \gamma_k \nabla h_k(x_k; A(\xi), b(\xi))}
-        \leq
-        L_{\text{loc}} + \gamma_k G.
+        \norm{g_k}^2 \leq 2L^2_\text{loc} + 2\gamma_k^2G^2
     \]
-    We further have
+    with probability one.
+    The claim follows from $\nabla \psi_k(x_k) = \E_k(g_k)$ and
     \[
-        \sup_{k\in\N_0}\sup_{x\in\R^n} \norm{\nabla \pi_k(x)} \leq G,
+        \norm{g_k - \nabla \psi_k(x_k)}^2
+        \leq 2\norm{g_k}^2 + 2\norm{\nabla \psi_k(x_k)}^2
+        \leq 2\norm{g_k}^2 + 2\E_k\norm{g_k}^2,
     \]
-    by \cref{lem:basic-properties}.
-    In total, thus we obtain
-    \[
-        \norm{z_k}^2
-        \leq
-        4(2 L_{\text{loc}}^2 + 2\gamma_k^2G^2) = 8L_{\text{loc}}^2 + 8\gamma_k^2G^2,
-    \]
-    as desired.
+    where the last step uses Jensen's inequality.
 \end{proof}
 
 \subsection{Convex case}
 
 \begin{lemma}
     \label{lem:parameters-for-convex-case}
-    Let the parameters $(\eta_k)_{k\in\N_0}, (\gamma_k)_{k\in\N_0}. (h_k)_{k\in\N_0}$
+    Let the parameters $(\eta_k)_{k\in\N_0}, (\gamma_k)_{k\in\N_0}, (h_k)_{k\in\N_0}$
     of \cref{alg:seqprox-sgd} satisfy
     \[
         \eta_k = \mathcal{O}\Big( \frac{1}{k^c \log^{(1 + 3e) / 2}(k+1)} \Big),\,
