@@ -72,7 +72,7 @@ Further, for $k\in\N_0$, we define the solution set of problem \eqref{eq:main-pr
 \]
 Since proximal methods seperate the smooth part of the above objective,
 given by $x\mapsto \E(F_\xi(x)) + \gamma_k \pi_k(x)$,
-from the nonsmooth part, $x\mapsto r(x)$, it is useful to also define the functions
+from the possibly nonsmooth part, $x\mapsto r(x)$, it is useful to also define the functions
 \[
     \psi_k(x) := \E(F_\xi(x)) + \gamma_k \pi_k(x),
 \]
@@ -109,10 +109,11 @@ means "$f$ is either convex or $\mu$-strongly convex with $\mu\in(0, \infty)$".
 For brevity, we will typically just say "$f$ is $\mu$-strongly convex", even
 if $\mu = 0$ is allowed. In cases
 where we need $\mu > 0$, we will make that clear.
-If $\mu = 0$, an additional assumption will be necessary to ensure bounded lower-level sets,
-which will be used to prove that the family of sets $(\mathcal{X}_k^\star)_{k\in\N_0}$
-is nonempty and uniformly bounded.
-For example, this can always be ensured by choosing $r$ such that $\dom(r)$
+If $\mu = 0$, the additional assumption of bounded lower-level sets
+ensures that the family of sets $(\mathcal{X}_k^\star)_{k\in\N_0}$
+is nonempty and uniformly bounded (see \cref{lem:basic-properties}).
+Simple ways to guarantee bounded lower-level sets in the
+(non-strongly) convex case are to choose $r$ such that $\dom(r)$
 is compact, or by letting $r(x) = \lambda \norm{x}^2$ for some $\lambda > 0$.
 
 \Cref{ass:basic-assumptions} has multiple useful implications, which are captured
@@ -172,8 +173,8 @@ by the following lemma.
             locally Lipschitz. Similarly, as the sum of a $\mu$-strongly convex function and a convex
             function, $f$ is $\mu$-strongly convex. Any proper, convex, and continuous function
             is subdifferentiable.
-            Finally, $f$ is has bounded lower-level sets per assumption if $\mu = 0$,
-            and by properties of strongly convex functions if $\mu > 0$ (see \textcolor{red}{TODO: Ref a proposition}).
+            Finally, $f$ has bounded lower-level sets per assumption, if $\mu = 0$,
+            and by properties of strongly convex functions, if $\mu > 0$ (see \textcolor{red}{TODO: Ref a proposition}).
         \item By the above, $f$ is $\mu$-strongly convex, locally
             Lipschitz continuous, and subdifferentiable on $\dom(f)$. Combining this with the fact that
             $\pi_k$ is convex, Lipschitz continuous, and differentiable, as well as $\gamma_k > 0$,
@@ -1314,7 +1315,7 @@ satisfy certain conditions, which are captured in the following assumption.
     Then, \cref{ass:step-sizes-and-penalties} holds.
 \end{lemma}
 \begin{proof}
-    See proof of lemma 9 in \cite{nedich2023huber}.
+    See the proof of lemma 9 in \cite{nedich2023huber}.
 \end{proof}
 \begin{lemma}
     \label{lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)-convex-case}
