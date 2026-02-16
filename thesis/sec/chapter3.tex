@@ -721,8 +721,9 @@ fundamental recursive inequality.
         &\leq \psi_k(x_k) + \langle \nabla \psi_k(x_k), x_{k+1} - x_k \rangle + \frac{L + 2\gamma_k\epsilon_k^{-1}}{2} \norm{x_{k+1} - x_k}^2 + r(x_{k+1}) \\
         &\phantom{===} + \gamma_k \epsilon_k G^2
     \end{align*}
-    for any $\epsilon_k\in(0,\infty)$. We let $z_k := \nabla \psi_k(x_k) - g_k$ be the error in the $k$-th
-    stochastic gradient. By adding and subtracting $\langle z_k, x_{k+1} - x_k \rangle$ in
+    for any $\epsilon_k\in(0,\infty)$. Recall the
+    error in the $k$-th stochastic gradient, $z_k = \nabla \psi_k(x_k) - g_k$.
+    By adding and subtracting $\langle z_k, x_{k+1} - x_k \rangle$ in
     the above inequality, we get
     \begin{align*}
         f_k(x_{k+1})
