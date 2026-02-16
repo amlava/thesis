@@ -76,7 +76,15 @@ from the possibly nonsmooth part, $x\mapsto r(x)$, it is useful to also define t
 \[
     \psi_k(x) := \E(F_\xi(x)) + \gamma_k \pi_k(x),
 \]
-for all $k\in\N_0$.
+for all $k\in\N_0$. In the analysis \cref{alg:seqprox-sgd}, we will
+need to control the variance of the error introduced by
+using stochastic gradients. We define the \textbf{stochastic error of the $k$-th stochastic gradient}
+of \cref{alg:seqprox-sgd}, $g_k$, as
+\[
+    z_k := \nabla \psi_k(x_k) - g_k,
+\]
+for $k\in\N_0$. Note that $\E_k(z_k) = 0$, by definition of $g_k$
+and the aforementioned fact that $x_k$ is $\mathcal{F}_k$-measurable.
 
 To ensure
 % (among other things) that the sets $\mathcal{X},\mathcal{X}^\star,\mathcal{X}^\star_k$
@@ -643,7 +651,8 @@ We will now formulate and prove the lemma.
 \end{proof}
 Having established the convergence of the sequences $(x_k^\star)_{k\in\N_0}$
 to the feasible set $\mathcal{X}$, we will now shift our attention to the iterates $(x_k)_{k\in\N_0}$
-of \cref{alg:seqprox-sgd}. We begin with the following
+of \cref{alg:seqprox-sgd}.
+We begin with the following
 fundamental recursive inequality.
 \begin{lemma}[One-step improvement]
     \label{lem:one-step-improvement}
