@@ -14,7 +14,8 @@ the constrained stochastic optimization problem
 where we implicitly assume the existence of a probability space
 $(\Omega, \mathcal{F}, \Prob)$ on which the random variable $\xi\colon\Omega\to\R^p$,
 as well as the expected value mapping $\E(\cdot)$,
-are defined. Further, we endow the probability space with a filtration $\mathcal{F} := (\mathcal{F}_k)_{k\in\N}$
+are defined.
+Further, we endow the probability space with a filtration $\mathcal{F} := (\mathcal{F}_k)_{k\in\N}$
 defined by
 \[
     \mathcal{F}_k := \sigma(\xi_0,\dots,\xi_{k-1})
@@ -76,7 +77,22 @@ from the possibly nonsmooth part, $x\mapsto r(x)$, it is useful to also define t
 \[
     \psi_k(x) := \E(F_\xi(x)) + \gamma_k \pi_k(x),
 \]
-for all $k\in\N_0$. In the analysis \cref{alg:seqprox-sgd}, we will
+for all $k\in\N_0$.
+
+We will denote the iterates of \cref{alg:seqprox-sgd} by $(x_k)_{k\in\N}$.
+The parameters $(w_k)_{k\in\N_0}$ are used to compute the final output - a weighted average
+of the iterates of the first $K\in\N$ iterations - given by
+\[
+    \bar{x}_K := S_K^{-1} \sum_{k=1}^K w_k x_k,
+\]
+where
+\[
+    S_K := \sum_{k=1}^K w_k.
+\]
+Since this is a convex combination\footnote{as long as $w_1,\dots,w_K$ are nonnegative and at least one $w_k$ is positive.}, it follows that $\bar{x}_K \in \dom(f)$ if
+$f$ is convex and $(x_k)_{k\in\N} \subset \dom(f)$ (notice that the first iterate is excluded).
+
+In the analysis of \cref{alg:seqprox-sgd}, we will
 need to control the variance of the error introduced by
 using stochastic gradients. We define the \textbf{stochastic error of the $k$-th stochastic gradient}
 of \cref{alg:seqprox-sgd}, $g_k$, as
@@ -101,10 +117,12 @@ of \cref{alg:seqprox-sgd}, we will make the following basic assumptions.
             Further, the expectation $x\mapsto \E(F_\xi(x))$ is $\mu$-strongly convex for some
             $\mu\in[0, \infty)$.
             If $\mu = 0$, we additionally assume that $f$ has bounded lower-level sets.
-        \item The function $r$ is proper, convex, and locally Lipschitz continuous on $\dom(r)$.
+        \item The function $r\colon\R^d\to\overline{\R}$ is proper, convex, and locally Lipschitz continuous on $\dom(r)$.
         \item The matrix-valued map $A\colon\R^p\to\R^{m\times n}$, and the vector valued
             map $b\colon\R^p\to\R^m$, are both (Borel-)measurable.
-        \item The sequence $(\gamma_k)_{k\in\N_0}$ is nondecreasing and unbounded. 
+        \item The sequence $(\gamma_k)_{k\in\N_0}$ is nondecreasing and unbounded.
+        \item The iterate weights $(w_k)_{k\in\N}$ are nonnegative and $w_k > 0$ for at least
+            one $k\in\{\,1,\dots, K\,\}$, where $K\in\N$ is the number of iterations of \cref{alg:seqprox-sgd}.
         \item There exists at least one feasible point.
     \end{enumerate}
 \end{assumption}
@@ -157,6 +175,9 @@ by the following lemma.
             $(\mathcal{X}_k^\star)_{k\in\N_0}$ is uniformly bounded.
             In particular, the map $x\mapsto \Pi_\mathcal{X}(x)$ is bounded
             when restricted to the set $\cup_{k=0}^\infty \mathcal{X}_k^\star$.
+        \item The iterates $(x_k)_{k\in\N}$ of \cref{alg:seqprox-sgd} (excluding $x_0$)
+            are all included in $\dom(f)$. In particular,
+            $\bar{x}_K \in \dom(f)$ for all $K\in\N$.
     \end{enumerate}
 \end{lemma}
 \begin{proof}
@@ -245,6 +266,14 @@ by the following lemma.
                 < \infty,
             \]
             as desired.
+        \item By definition of the proximal operator,
+            \[
+                x_{k + 1} = \argmin_{x\in\R^d} \Big\{\, r(x) + \frac{1}{2\eta_k} \norm{x - (x_k - \eta_k g_k)}^2 \,\Big\},
+            \]
+            for all $k\in\N_0$.
+            Since $r$ is proper, it must therefore hold that $x_{k} \in \dom(r) = \dom(f)$, for all $k\in\N$.
+            By definition of $\bar{x}_K$ as a convex combination of the iterates $x_1,\dots,x_K$, $K\in\N$,
+            and convexity of $f$, it follows that $\bar{x}_K \in \dom(f)$.
     \end{enumerate}
     This concludes the proof.
 \end{proof}
@@ -1333,7 +1362,8 @@ satisfy certain conditions, which are captured in the following assumption.
             + \frac{\sum_{k=k_0}^K \eta_k\langle z_k, x_k - x^\star \rangle}{S_K}
     \end{align*}
     almost surely,
-    for all $K\in\N$ with $K \geq k_0$, where $S_K := \sum_{k=1}^K w_k$.
+    for all $K\in\N$ with $K \geq k_0$, where $S_{t,k} := \sum_{i=t}^k w_i$, and
+    $\bar{x}_{t,k} := S_{t,k}^{-1} \sum_{i=t}^k w_i x_i$ $\forall t,k\in\N$.
     Furthermore, there exist constants $k_1\in\N$ and $\tau \in (0, \infty)$ such that
     \begin{align*}
         \dist(\bar{x}_K, \mathcal{X})
@@ -1741,7 +1771,8 @@ satisfy certain conditions, which are captured in the following assumption.
     \end{align*}
     almost surely,
     for all $K\in\N$ with $K \geq k_0$, where $e_{k_0} := \eta_{k_0-1}^{-2} \norm{x^\star - x_{k_0}}^2$
-    and $S_K := \sum_{k=1}^K w_k$.
+    $S_{t,k} := \sum_{i=t}^k w_i$, and
+    $\bar{x}_{t,k} := S_{t,k}^{-1} \sum_{i=t}^k w_i x_i$ $\forall t,k\in\N$.
     Furthermore, there exist constants $k_1\in\N$ and $\tau \in (0, \infty)$ such that
     \begin{align*}
         \dist(\bar{x}_K, \mathcal{X})
