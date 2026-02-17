@@ -1010,25 +1010,21 @@ The following lemma will give a bound on the gradient noise $\Var_k(g_k)$.
     Let \cref{ass:basic-assumptions} hold. Then, in the situation of \cref{alg:seqprox-sgd}, there
     exists a constant $\sigma^2\in(0,\infty)$ such that
     \[
-        \Var_k(g_k) \leq \frac{2L^2}{\beta_k} \norm{x_k - x^\star}^2 + \frac{1 + \gamma_k^2}{\beta_k} \sigma^2,
+        \Var_k(g_k) \leq 4 L^2 \norm{x_k - x^\star}^2 + (1 + \gamma_k^2)\sigma^2,
     \]
     for all $k\in\N_0$.
 \end{lemma}
 \begin{proof}
-    Let $k\in\N_0$ and define
-    $\tilde{g}_k := \nabla F_{\xi_k}(x_k) + \gamma_k \nabla h_k(x_k; A(\xi_k), b(\xi_k))$.
-    We have
-    \begin{align*}
+    We will use the inequality $(a + b)^2 \leq 2a^2 + 2b^2 \enspace\forall a,b\in\R$
+    multiple times.
+    For $k\in\N_0$, we have
+    \[
         \Var_k(g_k)
-        &=
-        \frac{1}{\beta_k} \Var_k(\tilde{g}_k) \\
-        &\leq
-        \frac{1}{\beta_k} \E_k\norm{\tilde{g}_k}^2 \\
-        &\leq
-        \frac{1}{\beta_k} \Big( \E_k\norm{\nabla F_\xi(x_k)}^2
-            + \gamma_k^2\, \E_k\norm{\nabla h_k(x_k; A(\xi), b(\xi))}^2 \Big).
-    \end{align*}
-    Using the inequality $(a + b)^2 \leq 2a^2 + 2b^2 \enspace\forall a,b\in\R$, and the (almost sure)
+        \leq \E_k\norm{g_k}^2
+        \leq 2\E_k\norm{\nabla F_\xi(x_k)}^2
+            + 2\gamma_k^2\, \E_k\norm{\nabla h_k(x_k; A(\xi), b(\xi))}^2.
+    \]
+    Using the (a.\,s.)
     $L$-smoothness of $x\mapsto F_\xi(x)$, we have
     \begin{align*}
         \E_k\norm{\nabla F_\xi(x_k)}^2
@@ -1041,8 +1037,7 @@ The following lemma will give a bound on the gradient noise $\Var_k(g_k)$.
     where in the last step we also used that $x_k$ is $\mathcal{F}_k$-measurable and
     $\xi$ is independent of $\mathcal{F}_k$.
     By one of our assumptions, we can find a point $x\in\R^n$ such that
-    $\E\norm{F_\xi(x)}^2 < \infty$. Hence, using smoothness and the inequality
-    $(a + b)^2 \leq 2a^2 + 2b^2 \enspace\forall a,b\in\R$ again, there exists a constant
+    $\E\norm{F_\xi(x)}^2 < \infty$. Hence, using smoothness, there exists a constant
     $M^2\in(0,\infty)$ such that
     \begin{align*}
         \E\norm{\nabla F_\xi(x^\star)}^2
@@ -1051,26 +1046,26 @@ The following lemma will give a bound on the gradient noise $\Var_k(g_k)$.
         &\leq
         2L^2\,\norm{x^\star - x}^2 + 2\,\E\norm{F_\xi(x)}^2 \\
         &\leq
-        \frac{1}{2}M^2.
+        \frac{1}{4}M^2.
     \end{align*}
     Therefore, combining with the previous inequality, we get the bound
     \[
-        \E_k\norm{\nabla F_\xi(x_k)}^2 \leq 2 L^2\, \norm{x_k - x^\star}^2 + M^2.
+        \E_k\norm{\nabla F_\xi(x_k)}^2 \leq 2 L^2\, \norm{x_k - x^\star}^2 + \frac{1}{2} M^2.
     \]
-    Since, per \cref{ass:basic-assumptions}, it holds that the family $(h_k)_{k\in\N}$ has uniformly bounded
-    second moment,
+    Since, per \cref{ass:basic-assumptions}, it holds that the family $(\nabla h_k)_{k\in\N}$ is uniformly
+    bounded,
     there exists a constant
-    $\tilde{M}^2\in[0,\infty)$ such that
+    $\tilde{M}^2\in(0,\infty)$ such that
     \[
-        \E_k\norm{\nabla h_k(x_k; A(\xi), b(\xi))}^2 \leq \tilde{M}^2.
+        \E_k\norm{\nabla h_k(x_k; A(\xi), b(\xi))}^2 \leq \frac{1}{2}\tilde{M}^2.
     \]
     Putting everything together, we obtain
     \[
         \Var_k(g_k)
-        \leq \frac{1}{\beta_k} \Big( 2 L^2\, \norm{x_k - x^\star}^2 + M^2
-            + \gamma_k^2 \tilde{M}^2 \Big)
-        = \frac{2L^2}{\beta_k} \norm{x_k - x^\star}^2
-            + \frac{1}{\beta_k} (M^2 + \gamma_k^2 \tilde{M}^2).
+        \leq 4 L^2\, \norm{x_k - x^\star}^2 + M^2
+            + \gamma_k^2 \tilde{M}^2
+        = 4 L^2 \norm{x_k - x^\star}^2
+            + M^2 + \gamma_k^2 \tilde{M}^2.
     \]
     Setting $\sigma^2 := \max(M^2, \tilde{M}^2)$ yields the desired result.
 \end{proof}
@@ -1103,26 +1098,26 @@ We are now ready to prove the main theorem of this section.
     \Cref{lem:bound-on-variance} lets us bound
     the variance by
     \[
-        \Var_k(g_k) \leq \frac{2L^2}{\beta_k} \norm{x_k - x^\star}^2 + \frac{1 + \gamma_k^2}{\beta_k} \sigma^2,
+        \Var_k(g_k) \leq 4 L^2 \norm{x_k - x^\star}^2 + (1 + \gamma_k^2)\sigma^2
     \]
-    for a constant $M^2\in(0,\infty)$ and all $k\in\N_0$.
+    for a constant $\sigma^2\in(0,\infty)$ and all $k\in\N_0$.
     Thus, we have
     \begin{align*}
         \E_k\norm{x^\star - x_{k+1}}^2
         &\leq
         \norm{x^\star - x_k}^2
-        + \frac{2\eta_k^2}{1-\rho}\Big( \frac{2L^2}{\beta_k} \norm{x_k - x^\star}^2 + \frac{1 + \gamma_k^2}{\beta_k} \sigma^2 \Big) \\
+        + \frac{2\eta_k^2}{1-\rho}\Big( 4 L^2 \norm{x_k - x^\star}^2 + (1 + \gamma_k^2)\sigma^2 \Big) \\
         &\phantom{===} + \mathcal{O}(\eta_k\gamma_k\alpha_k) - 2\eta_k\E_k(f_{k}(x_{k+1}) - f_{k}(x_k^\star))\\
         &=
-        \Big( 1 + 4L^2(1-\rho)^{-1}\beta_k^{-1}\eta_k^2 \Big)\norm{x^\star - x_k}^2
-        + 2\eta_k^2(1-\rho)^{-1}\frac{1 + \gamma_k^2}{\beta_k} \sigma^2 \\
+        \Big( 1 + 8 L^2(1-\rho)^{-1} \eta_k^2 \Big)\norm{x^\star - x_k}^2
+        + 2\eta_k^2(1-\rho)^{-1} (1 + \gamma_k^2) \sigma^2 \\
         &\phantom{===} + \mathcal{O}(\eta_k\gamma_k\alpha_k) - 2\eta_k\E_k(f_{k}(x_{k+1}) - f_{k}(x_k^\star)),
     \end{align*}
     for all $k\in\N_0$.
-    Define the nonegative sequences $(a_k)_{k\in\N_0}, (b_k)_{k\in\N_0}, (c_k)_{k\in\N_0}$ by
+    Define the nonnegative sequences $(a_k)_{k\in\N_0}, (b_k)_{k\in\N_0}, (c_k)_{k\in\N_0}$ by
     \begin{align*}
-        a_k &:= 4L^2(1-\rho)^{-1}\beta_k^{-1}\eta_k^2 \\
-        b_k &:= 2\eta_k^2(1-\rho)^{-1}\frac{1 + \gamma_k^2}{\beta_k} \sigma^2 + \mathcal{O}(\eta_k\gamma_k\alpha_k)\ \\
+        a_k &:= 8L^2(1-\rho)^{-1}\eta_k^2 \\
+        b_k &:= 2\eta_k^2(1-\rho)^{-1}(1 + \gamma_k^2) \sigma^2 + \mathcal{O}(\eta_k\gamma_k\alpha_k)\ \\
         c_k &:= 2\eta_k\E_k(f_{k}(x_{k+1}) - f_{k}(x_k^\star)).
     \end{align*}
     Note that $c_k$ is indeed nonnegative, since $x_k^\star$ minimizes $f_k$.
