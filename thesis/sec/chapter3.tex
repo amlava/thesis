@@ -7,18 +7,18 @@ the constrained stochastic optimization problem
     \label{eq:main-problem-copy}
     \tag{P}
     \begin{aligned}
-    &\min_{x \in \mathbb{R}^n} \, \{\, f(x) := \E(F_\xi(x)) + r(x) \,\} \\
+    &\min_{x \in \mathbb{R}^n} \, \{\, f(x) := \E(F_\zeta(x)) + r(x) \,\} \\
     &\textup{s.\,t.} \quad A(\xi) x - b(\xi) \leq 0 \quad \textnormal{a.\,s.},
     \end{aligned}
 \end{equation}
 where we implicitly assume the existence of a probability space
-$(\Omega, \mathcal{F}, \Prob)$ on which the random variable $\xi\colon\Omega\to\R^p$,
+$(\Omega, \mathcal{F}, \Prob)$ on which the random variables $\zeta\colon\Omega\to\R^q,\xi\colon\Omega\to\R^p$,
 as well as the expected value mapping $\E(\cdot)$,
 are defined.
 Further, we endow the probability space with a filtration $\mathcal{F} := (\mathcal{F}_k)_{k\in\N}$
 defined by
 \[
-    \mathcal{F}_k := \sigma(\xi_0,\dots,\xi_{k-1})
+    \mathcal{F}_k := \sigma((\zeta_0, \xi_0),\dots,(\zeta_{k-1}, \xi_{k-1}))
 \]
 and denote the conditional expectation given $\mathcal{F}_k$ as
 \[
@@ -72,10 +72,10 @@ Further, for $k\in\N_0$, we define the solution set of problem \eqref{eq:main-pr
     \mathcal{X}^\star_k := \{\, x^\star_k\in\dom(f) \mid f_k(x^\star_k) \leq f(x) \, \forall x\in\R^n \,\}.
 \]
 Since proximal methods seperate the smooth part of the above objective,
-given by $x\mapsto \E(F_\xi(x)) + \gamma_k \pi_k(x)$,
+given by $x\mapsto \E(F_\zeta(x)) + \gamma_k \pi_k(x)$,
 from the possibly nonsmooth part, $x\mapsto r(x)$, it is useful to also define the functions
 \[
-    \psi_k(x) := \E(F_\xi(x)) + \gamma_k \pi_k(x),
+    \psi_k(x) := \E(F_\zeta(x)) + \gamma_k \pi_k(x),
 \]
 for all $k\in\N_0$.
 
@@ -89,7 +89,7 @@ where
 \[
     S_K := \sum_{k=1}^K w_k.
 \]
-Since this is a convex combination\footnote{as long as $w_1,\dots,w_K$ are nonnegative and at least one $w_k$ is positive.}, it follows that $\bar{x}_K \in \dom(f)$ if
+Since this is a convex combination\footnote{As long as $w_1,\dots,w_K$ are nonnegative and at least one $w_k$ is positive.}, it follows that $\bar{x}_K \in \dom(f)$ if
 $f$ is convex and $(x_k)_{k\in\N} \subset \dom(f)$ (notice that the first iterate is excluded).
 
 In the analysis of \cref{alg:seqprox-sgd}, we will
@@ -112,12 +112,12 @@ of \cref{alg:seqprox-sgd}, we will make the following basic assumptions.
     \label{ass:basic-assumptions}
     Problem \eqref{eq:main-problem} satisfies the following:
     \begin{enumerate}
-        \item The function $x\mapsto F_\xi(x)$ is almost surely $L$-smooth for some $L\in(0,\infty)$,
-            and there exists a point $x\in\R^n$ such that $\E\norm{\nabla F_\xi(x)}^2 < \infty$.
-            Further, the expectation $x\mapsto \E(F_\xi(x))$ is $\mu$-strongly convex for some
+        \item The function $x\mapsto F_\zeta(x)$ is almost surely $L$-smooth for some $L\in(0,\infty)$,
+            and there exists a point $x\in\R^n$ such that $\E\norm{\nabla F_\zeta(x)}^2 < \infty$.
+            Further, the expectation $x\mapsto \E(F_\zeta(x))$ is $\mu$-strongly convex for some
             $\mu\in[0, \infty)$.
             If $\mu = 0$, we additionally assume that $f$ has bounded lower-level sets.
-        \item The function $r\colon\R^d\to\overline{\R}$ is proper, convex, and locally Lipschitz continuous on $\dom(r)$.
+        \item The function $r\colon\R^d\to\bar{\R}$ is proper, convex, and locally Lipschitz continuous on $\dom(r)$.
         \item The matrix-valued map $A\colon\R^p\to\R^{m\times n}$, and the vector valued
             map $b\colon\R^p\to\R^m$, are both (Borel-)measurable.
         \item The sequence $(\gamma_k)_{k\in\N_0}$ is nondecreasing and unbounded.
@@ -166,7 +166,7 @@ by the following lemma.
         \item Let $B\subset\R^n$ be a bounded subset. Then, for all $k\in\N_0$, the stochastic gradients
         defined by
         \[
-            g_k(x) := \nabla F_\xi(x) + \gamma_k \nabla h_k(x; A(\xi), b(\xi)),
+            g_k(x) := \nabla F_\zeta(x) + \gamma_k \nabla h_k(x; A(\xi), b(\xi)),
         \]
         for $x\in\R^n$,
         satisfy $\sup_{x\in B} \norm{g_k(x)} = \mathcal{O}(\gamma_k)$ almost surely.
@@ -197,8 +197,8 @@ by the following lemma.
         \]
         almost surely.
         In particular, $\pi_k$ is Lipschitz continuous for all $k\in\N_0$.
-        \item By $L$-smoothness of $F_\xi$, the expectation $\E(F_\xi)$ is also $L$-smooth, thus
-            locally Lipschitz. By local Lipschitz continuity of $r$, it follows that $f = \E(F_\xi) + r$ is also
+        \item By $L$-smoothness of $F_\zeta$, the expectation $\E(F_\zeta)$ is also $L$-smooth, thus
+            locally Lipschitz. By local Lipschitz continuity of $r$, it follows that $f = \E(F_\zeta) + r$ is also
             locally Lipschitz. Similarly, as the sum of a $\mu$-strongly convex function and a convex
             function, $f$ is $\mu$-strongly convex. Any proper, convex, and continuous function
             is subdifferentiable.
@@ -217,10 +217,10 @@ by the following lemma.
             Hence, $\psi_k$ is $\mu$-strongly convex and differentiable for all $k\in\N_0$.
         \item Let $B\subset \R^n$ be bounded. By the triangle inequality,
             \[
-                \norm{g_k(x)} \leq \norm{\nabla F_\xi(x)} + \gamma_k \norm{\nabla h_k(x; A(\xi), b(\xi))}.
+                \norm{g_k(x)} \leq \norm{\nabla F_\zeta(x)} + \gamma_k \norm{\nabla h_k(x; A(\xi), b(\xi))}.
             \]
             for all $x\in B$.
-            The claim now follows from local Lipschitz continuity of $F_\xi$ (a.\,s.), and
+            The claim now follows from local Lipschitz continuity of $F_\zeta$ (a.\,s.), and
             the assumption $\sup_{x\in B} \norm{\nabla h_k(x; A(\xi), b(\xi))} < \infty
             \enspace \text{(a.\,s.)} \enspace \forall k\in\N_0$.
         \item As we have already shown, $f$ is convex and has bounded lower-level sets.
@@ -376,7 +376,8 @@ only requires the following natural assumptions.
 \begin{assumption}
     \label{ass:compact-support-without-zero}
     There exists a compact set $\Xi\in\R^p$ such that $\xi$ is supported
-    on $\Xi$ and $\Prob^\xi$ admits a Lebesgue-density $q$ such that
+    on $\Xi$ and $\Prob^\xi$ (\textcolor{red}{TODO: Need to be more precise here,
+    since we actually sample from $\Prob^\zeta \otimes \Prob^\xi$}) admits a Lebesgue-density $q$ such that
     \begin{enumerate}
         \item $q$ is continuous on $\Xi$ and
         \item $q(x) > 0$ for all $x\in \Xi$.
@@ -391,7 +392,8 @@ A simple sufficient condition for the last part of the assumption is continuity 
 on $\Xi$. One can always satisfy \cref{ass:compact-support-without-zero} if the set
 $\Xi$ (or a superset thereof) is known, by sampling uniformly.
 In fact, \cref{lem:lower-bound-on-penalties-by-distance-to-feasibility} will
-demonstrate that uniform sampling is optimal, in the sense that
+demonstrate that uniform sampling is optimal\footnote{Of course, one does not always
+have control over the sampling distribution.}, in the sense that
 it minimizes constants that depend on the distribution of $\xi$ in the derived upper bound.
 This is very intuitive: Since we are working in the setting of almost sure constraints,
 no realization of $\xi$ is more important than any other.
@@ -700,7 +702,7 @@ fundamental recursive inequality.
 \begin{proof}
     For $k\in\N_0$ we denote by $g_k$ the stochastic gradient of $\psi_k$ at $x_k$
     that is used in iteration $k$ of \cref{alg:seqprox-sgd}.
-    We also let $\psi(x) := \E(F_\xi(x))$ for $x\in\R^n$, so that
+    We also let $\psi(x) := \E(F_\zeta(x))$ for $x\in\R^n$, so that
     $\psi_k = \psi + \gamma_k\pi_k$ and
     $\nabla \psi_k = \nabla \psi + \gamma_k \nabla\pi_k$.
     By $L$-smoothness of $\psi$ (\cref{ass:basic-assumptions}),
@@ -751,7 +753,7 @@ fundamental recursive inequality.
         &\phantom{===} + \gamma_k \epsilon_k G^2
     \end{align*}
     for any $\epsilon_k\in(0,\infty)$. The rest of the proof follows
-    the strategy of Cutler et. al. \cite{cutler2023stochastic}, lemma 2. Recall the
+    the strategy of Cutler et al. \cite{cutler2023stochastic}, lemma 2. Recall the
     error in the $k$-th stochastic gradient, $z_k = \nabla \psi_k(x_k) - g_k$.
     By adding and subtracting $\langle z_k, x_{k+1} - x_k \rangle$ in
     the above inequality, we get
@@ -1021,43 +1023,54 @@ The following lemma will give a bound on the gradient noise $\Var_k(g_k)$.
     \[
         \Var_k(g_k)
         \leq \E_k\norm{g_k}^2
-        \leq 2\E_k\norm{\nabla F_\xi(x_k)}^2
-            + 2\gamma_k^2\, \E_k\norm{\nabla h_k(x_k; A(\xi), b(\xi))}^2.
+        \leq 2\E_k\norm{\nabla F_{\zeta_k}(x_k)}^2
+            + 2\gamma_k^2\, \E_k\norm{\nabla h_k(x_k; A(\xi_k), b(\xi_k))}^2.
     \]
     Using the (a.\,s.)
-    $L$-smoothness of $x\mapsto F_\xi(x)$, we have
+    $L$-smoothness of $x\mapsto F_\zeta(x)$, we have
     \begin{align*}
-        \E_k\norm{\nabla F_\xi(x_k)}^2
+        \E_k\norm{\nabla F_{\zeta_k}(x_k)}^2
         &=
-        \E_k\norm{\nabla F_\xi(x_k) - \nabla F_\xi(x^\star) + \nabla F_\xi(x^\star)}^2 \\
+        \E_k\norm{\nabla F_{\zeta_k}(x_k) - \nabla F_{\zeta_k}(x^\star) + \nabla F_{\zeta_k}(x^\star)}^2 \\
         &\leq
-        2\Big( \E_k\norm{\nabla F_\xi(x_k) - \nabla F_\xi(x^\star)}^2 + \E\norm{\nabla F_\xi(x^\star)}^2 \Big) \\
-        &\leq 2 L^2\, \norm{x_k - x^\star}^2 + 2\,\E\norm{\nabla F_\xi(x^\star)}^2,
+        2\Big( \E_k\norm{\nabla F_{\zeta_k}(x_k) - \nabla F_{\zeta_k}(x^\star)}^2 + \E_k\norm{\nabla F_{\zeta_k}(x^\star)}^2 \Big) \\
+        &\leq 2 L^2\, \norm{x_k - x^\star}^2 + 2\,\E_k\norm{\nabla F_{\zeta_k}(x^\star)}^2,
     \end{align*}
-    where in the last step we also used that $x_k$ is $\mathcal{F}_k$-measurable and
-    $\xi$ is independent of $\mathcal{F}_k$.
+    where in the last step we also used that $x_k$ is $\mathcal{F}_k$-measurable.
     By one of our assumptions, we can find a point $x\in\R^n$ such that
-    $\E\norm{F_\xi(x)}^2 < \infty$. Hence, using smoothness, there exists a constant
+    $\E\norm{F_\zeta(x)}^2 < \infty$.
+    By properties of conditional expectation, it then also follows that
+    \[
+        \E\Big( \E_k\norm{\nabla F_{\zeta_k}(x)}^2 \Big) = \E\norm{\nabla F_\zeta(x)}^2 < \infty,
+    \]
+    and therefore
+    \[
+        \E_k\norm{\nabla F_{\zeta_k}(x)}^2 < \infty
+    \]
+    almost surely.
+    Hence, using a.\,s. $L$-smoothness of $x\mapsto F_\zeta(x)$ again, there exists a constant
     $M^2\in(0,\infty)$ such that
     \begin{align*}
-        \E\norm{\nabla F_\xi(x^\star)}^2
+        \E_k\norm{\nabla F_{\zeta_k}(x^\star)}^2
         &=
-        \E\norm{\nabla F_\xi(x^\star) - \nabla F_\xi(x) + \nabla F_\xi(x)}^2 \\
+        \E_k\norm{\nabla F_{\zeta_k}(x^\star) - \nabla F_{\zeta_k}(x) + \nabla F_{\zeta_k}(x)}^2 \\
         &\leq
-        2L^2\,\norm{x^\star - x}^2 + 2\,\E\norm{F_\xi(x)}^2 \\
+        2\, \E_k\norm{\nabla F_{\zeta_k}(x^\star) - \nabla F_{\zeta_k}(x)}^2 + 2\, \E_k\norm{\nabla F_{\zeta_k}(x)}^2 \\
+        &\leq
+        2L^2\,\norm{x^\star - x}^2 + 2\,\E_k\norm{\nabla F_{\zeta_k}(x)}^2 \\
         &\leq
         \frac{1}{4}M^2.
     \end{align*}
     Therefore, combining with the previous inequality, we get the bound
     \[
-        \E_k\norm{\nabla F_\xi(x_k)}^2 \leq 2 L^2\, \norm{x_k - x^\star}^2 + \frac{1}{2} M^2.
+        \E_k\norm{\nabla F_{\zeta_k}(x_k)}^2 \leq 2 L^2\, \norm{x_k - x^\star}^2 + \frac{1}{2} M^2.
     \]
     Since, per \cref{ass:basic-assumptions}, it holds that the family $(\nabla h_k)_{k\in\N}$ is uniformly
     bounded,
     there exists a constant
     $\tilde{M}^2\in(0,\infty)$ such that
     \[
-        \E_k\norm{\nabla h_k(x_k; A(\xi), b(\xi))}^2 \leq \frac{1}{2}\tilde{M}^2.
+        \E_k\norm{\nabla h_k(x_k; A(\xi_k), b(\xi_k))}^2 \leq \frac{1}{2}\tilde{M}^2.
     \]
     Putting everything together, we obtain
     \[
@@ -1290,17 +1303,17 @@ satisfy certain conditions, which are captured in the following assumption.
 \begin{proof}
     We have
     \begin{align*}
-        \norm{g_k} &= \norm{\nabla F_{\xi_k}(x_k) + \gamma_k h_k(x_k; A(\xi), b(\xi))} \\
-                &\leq \norm{\nabla F_{\xi_k}(x_k)} + \gamma_k\norm{h_k(x_k; A(\xi), b(\xi))}.
+        \norm{g_k} &= \norm{\nabla F_{\zeta_k}(x_k) + \gamma_k h_k(x_k; A(\xi)_k, b(\xi_k))} \\
+                &\leq \norm{\nabla F_{\zeta_k}(x_k)} + \gamma_k\norm{h_k(x_k; A(\xi_k), b(\xi_k))}.
     \end{align*}
     By almost-sure smoothness of $(x_k)_{k\in\N_0}$ (\cref{thm:almost-sure-convergence}) and
-    local Lipschitz smoothness of $x\mapsto F_{\xi}(x)$ (a.\,s.), it holds that
+    local Lipschitz smoothness of $x\mapsto F_{\zeta}(x)$ (a.\,s.), it holds that
     \[
-        \norm{F_{\xi_k}(x_k)} \leq L_\text{loc} \enspace \text{(a.\,s.)}.
+        \norm{F_{\zeta_k}(x_k)} \leq L_\text{loc} \enspace \text{(a.\,s.)}.
     \]
     By \cref{ass:basic-assumptions}, we have
     \[
-        \sup_{k\in\N_0}\sup_{x\in\R^n} \norm{\nabla h_k(x; A(\xi), b(\xi))} \leq G.
+        \sup_{k\in\N_0}\sup_{x\in\R^n} \norm{\nabla h_k(x; A(\xi_k), b(\xi_k))} \leq G.
     \]
     Using the inequality $(a + b)^2 \leq 2 (a^2 + b^2)$ $\forall a,b\in\R$, we have
     \[
