@@ -47,14 +47,14 @@ take the following general form
     \label{eq:main-problem}
     \tag{P}
     \begin{aligned}
-    &\min_{x \in \mathbb{R}^n} \, \{\, f(x) := \E(F_\xi(x)) + r(x) \,\} \\
+    &\min_{x \in \mathbb{R}^n} \, \{\, f(x) := \E(F_\zeta(x)) + r(x) \,\} \\
     &\textup{s.\,t.} \quad A(\xi) x - b(\xi) \leq 0 \quad \textnormal{almost surely (a.\,s.)},
     \end{aligned}
 \end{equation}
-where $\xi$ is a random variable that captures uncertainty and
-takes values in $\R^p$.
+where $\zeta$ and $\xi$ are a random variables that capture uncertainty in the objective and
+the constraints.
 The objective $f$ is composed of two functions: The expectation
-functional $\E(F_\xi)\colon\R^n\to\R$, which we assume to
+functional $\E(F_\zeta)\colon\R^n\to\R$, which we assume to
 be smooth, and the potentially nonsmooth function $r\colon\R^n\to\R\cup\{\infty\}$,
 which we will refer to as the \textit{regularizer}.
 The constraints are affine inequalities with matrices $A(z)\in\R^{m\times n}$
@@ -71,14 +71,14 @@ to deal with the constraints one-by-one or in batches, as a simlutaneous treatme
 all constraints, like in the classical projected gradient method \cite{nemirovski2009robust},
 would be impossible to implement.
 This holds true even if the number of constraints is not infinite but merely very large,
-as is the case in modern machine learning, where the random variable $\xi$ models
+as is the case in modern machine learning, where the random variables $\zeta$ and $\xi$ model
 data points in a data set of size $N\in\N$,
 and the decision variable $x$ represents parameters of some statistical model.
 Problem \eqref{eq:main-problem} then takes on the specific form
 \begin{equation*}
     \begin{aligned}
     &\min_{x \in \R^n} \left\{\, f(x) = \frac{1}{N} \sum_{i=1}^N F_i(x) + r(x) \,\right\} \\
-    &\textup{s.\,t.} \quad A_j x - b_j \leq 0 \quad \textnormal{for all $j\in\{\, 1,\dots,N \,\}$}.
+    &\textup{s.\,t.} \quad A_i x - b_i \leq 0 \quad \textnormal{for all $i\in\{\, 1,\dots, N \,\}$}.
     \end{aligned}
 \end{equation*}
 Example problems that can be formulated in this way are support vector machines
@@ -241,7 +241,7 @@ In this work, we aim to build on the incremental gradient method
 First, we will extend the method to the more general situation of \eqref{eq:main-problem}.
 Namely, our version of \eqref{eq:nedic-penalty-problem} has the form
 \begin{equation*}
-    \min_{x\in\R^n} \left\{\, f_k(x) := \E(F_\xi(x)) + r(x) + \gamma_k \pi_k(x) \,\right\},
+    \min_{x\in\R^n} \left\{\, f_k(x) := \E(F_\zeta(x)) + r(x) + \gamma_k \pi_k(x) \,\right\},
 \end{equation*}
 for $k\in\N$, where, as before, $\gamma_k\in(0, \infty)$.
 We keep the penalties $\pi_k(x)$ more generic, but assume that there
@@ -252,16 +252,16 @@ such that
 \]
 for all $x\in\R^n$.
 This more general treatment allows for more flexibility in the design of the method,
-and includes the recent \textit{softplus penalty} introduced in \cite{li2025new}.
+and includes the softplus penalty introduced in \cite{li2025new}.
 
 As opposed to the setting of \cref{alg:nedic-sgd},
 we may not be able to calculate the gradient of our objective,
 because $r$ may be nonsmooth
 or because calculating the gradient of the
-expectation functional, $\E(F_\xi)$, may be infeasible. Say, for example, because the
-distribution of $\xi$ is unknown or, in the case of large-scale machine learning,
+expectation functional, $\E(F_\zeta)$, may be infeasible. Say, for example, because the
+distribution of $\zeta$ is unknown or, in the case of large-scale machine learning,
 because the size of the dataset is too large to feasibly compute the full gradient of
-$\E(F_\xi(x))$ (which would require the evaluation of a very large sum) for
+$\E(F_\zeta(x))$ (which would require the evaluation of a very large sum) for
 multiple iterations.
 Nedić et al. deal with nonsmoothness by using \textit{subgradients}
 instead of gradients, which are also defined at nondifferentiable
@@ -281,15 +281,15 @@ work with \textit{stochastic gradients} instead of regular (full) gradients.
 A stochastic gradient of a differentiable function $f$ at some point $x\in\R^n$
 is any random variable $g$ such that
 $\E(g) = \nabla f(x)$. In our case, we can calculate a stochastic gradient
-of $\E(F_\xi) + \gamma_k \pi_k$ at $x\in\R^n$, based on a sample
-$z$ from the distribution of $\xi$, as
+of $\E(F_\zeta) + \gamma_k \pi_k$ at $x\in\R^n$, based on a sample
+$(s,z)$ from the joint distribution of $\zeta$ and $\xi$, as
 \[
-    \nabla F_z(x) + \gamma_k \nabla h_k(x; A(z), b(z)).
+    \nabla F_s(x) + \gamma_k \nabla h_k(x; A(z), b(z)).
 \]
 To deal with the variance introduced by using a stochastic gradient
 instead of the full gradient, we will use a minibatch of samples
 and average over the resulting stochastic gradients to get
-a variance-reduced estimate of $\E(\nabla F_\xi(x)) + \gamma_k \nabla \pi_k(x)$.
+a variance-reduced estimate of $\E(\nabla F_\zeta(x)) + \gamma_k \nabla \pi_k(x)$.
 The pseudo-code for the full algorithm is presented in \cref{alg:seqprox-sgd}.
 \begin{algorithm}[t]
 \caption{Stochastic Inexact Penalty Method}
