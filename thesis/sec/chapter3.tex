@@ -15,14 +15,14 @@ where we implicitly assume the existence of a probability space
 $(\Omega, \mathcal{F}, \Prob)$ on which the random variables $\zeta\colon\Omega\to\R^q,\xi\colon\Omega\to\R^p$,
 as well as the expected value mapping $\E(\cdot)$,
 are defined.
-Further, we endow the probability space with a filtration $\mathcal{F} := (\mathcal{F}_k)_{k\in\N}$
+Further, we endow the probability space with a filtration $\mathcal{F} := (\mathcal{F}_k)_{k\in\N}$,
 defined by
 \[
-    \mathcal{F}_k := \sigma((\zeta_0, \xi_0),\dots,(\zeta_{k-1}, \xi_{k-1}))
+    \mathcal{F}_k := \sigma((\zeta_0, \xi_0),\dots,(\zeta_{k-1}, \xi_{k-1})),
 \]
 and denote the conditional expectation given $\mathcal{F}_k$ as
 \[
-    \E_k(X) := \E(X \mid \mathcal{F}_k)
+    \E_k(X) := \E(X \mid \mathcal{F}_k),
 \]
 for all $k\in\N$. Similarly, we write
 \[
@@ -277,8 +277,9 @@ by the following lemma.
     \end{enumerate}
     This concludes the proof.
 \end{proof}
-The fact that $x_k^\star$ must not be
-feasible introduces difficulties that prevent the use of
+A key challenge in the analysis of \cref{alg:seqprox-sgd} is the fact that
+$x_k^\star$ must not be
+feasible, which prevents the use of
 standard arguments from the SGD literature to analyse convergence. Our proof
 methods combine approaches from recent works, mainly
 the already mentioned \cite{nedich2023huber}, as well as
@@ -377,7 +378,7 @@ only requires the following natural assumptions.
     \label{ass:compact-support-without-zero}
     There exists a compact set $\Xi\in\R^p$ such that $\xi$ is supported
     on $\Xi$ and $\Prob^\xi$ (\textcolor{red}{TODO: Need to be more precise here,
-    since we actually sample from $\Prob^\zeta \otimes \Prob^\xi$}) admits a Lebesgue-density $q$ such that
+    since we actually sample from $\Prob^{(\zeta, \xi)}$}) admits a Lebesgue-density $q$ such that
     \begin{enumerate}
         \item $q$ is continuous on $\Xi$ and
         \item $q(x) > 0$ for all $x\in \Xi$.

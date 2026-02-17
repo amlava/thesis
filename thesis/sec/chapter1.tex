@@ -301,7 +301,7 @@ smooth penalty functions $(h_k)_{k\in\N_0}$,
 iterate weights $(w_k)_{k\in\N}$,
 sample oracle for joint distribution of $\zeta$ and $\xi$
 \For{$k = 0$ to $K-1$}
-    \State Sample $(\zeta_k, \xi_k)$ from the joint distribution of $\zeta$ and $\xi$
+    \State Sample $(\zeta_k, \xi_k)$ from their joint distribution
     \State $g_k \gets \nabla F_{\zeta_k}(x_{k}) + \gamma_k \nabla h_k(x_k; A(\xi_k), b(\xi_k))$
     \State $x_{k+1} \gets \textnormal{prox}_{\eta_k r} (x_k - \eta_k g_k$)
 \EndFor
