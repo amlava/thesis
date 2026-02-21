@@ -2417,6 +2417,22 @@ the almost-sure bounds we derived in the previous sections.
     with probability at least $1 - \exp(-\delta^2/2)$, as desired.
 \end{proof}
 
+\begin{corollary}
+    Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point} hold.
+    Let the parameters $(\eta_k)_{k\in\N_0}, (\gamma_k)_{k\in\N_0}$, $(h_k)_{k\in\N_0}$
+    be the same as in \cref{lem:parameters-for-convex-case}.
+    Further, let the iterate weights $(w_k)_{k\in\N}$
+    be defined as $w_k := \eta_k$, for all $k\in\N$.
+    Then, there exists a constant
+    $c\in(0,\infty)$ such that, for any $\epsilon\in(0,\infty)$, $\delta\in(0,1)$,
+    and all $K\in\N$ with
+    \[
+        \frac{K}{\log^{2+3e}(K)} \geq c\frac{\sqrt{-2\log(\delta)}}{\epsilon^2\tau^2},
+    \]
+    the output $\bar{x}_K$ of \cref{alg:seqprox-sgd} is an $(\epsilon, \delta)$-solution of
+    \eqref{eq:main-problem-copy}.
+\end{corollary}
+
 \begin{theorem}[Convergence with high probability - strongly convex case]
     \label{thm:convergence-with-high-probability}
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point}
@@ -2695,6 +2711,22 @@ the almost-sure bounds we derived in the previous sections.
     \]
     with probability at least $1 - \exp(-\delta^2/2)$, as desired.
 \end{proof}
+
+\begin{corollary}
+    Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point} hold.
+    Let the parameters $(\eta_k)_{k\in\N_0}, (\gamma_k)_{k\in\N_0}$, $(h_k)_{k\in\N_0}$
+    be the same as in \cref{lem:parameters-for-convex-case}.
+    Further, let the iterate weights $(w_k)_{k\in\N}$
+    be defined as $w_k := \eta_k^{-1}$, for all $k\in\N$.
+    Then, there exists a constant
+    $c\in(0,\infty)$ such that, for any $\epsilon\in(0,\infty)$, $\delta\in(0,1)$,
+    and all $K\in\N$ with
+    \[
+        \frac{K}{\log^{2e}(K)} \geq c\frac{\sqrt{-2\log(\delta)}}{\epsilon^2\tau^2},
+    \]
+    the output $\bar{x}_K$ of \cref{alg:seqprox-sgd} is an $(\epsilon, \delta)$-solution of
+    \eqref{eq:main-problem-copy}.
+\end{corollary}
 
 \section{Infeasible problems}
 
