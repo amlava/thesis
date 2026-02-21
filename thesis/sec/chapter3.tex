@@ -518,7 +518,7 @@ We will now formulate and prove the lemma.
     for $z\in \Xi$. Clearly, $\phi \in \varPsi(x)$.
     We will show that $\norm{\phi(z)} \leq \norm{y(z)}$
     for all $z\in \Xi$. We denote by $\phi_i(z), a_i(z), b_i(z), y_i$, the $i$th
-    row of $\phi(z), A(z), b(z), y$. We have
+    row of $\phi(z), A(z), b(z), y$. It holds that
     \[
         |\phi_i(z)| = \begin{cases}
             0, &a_i (z)x - b_i(z) \leq 0 \\
@@ -1330,8 +1330,6 @@ satisfy certain conditions, which are captured in the following assumption.
     where the last step uses Jensen's inequality.
 \end{proof}
 
-\subsection{Convex case}
-
 \begin{lemma}
     \label{lem:parameters-for-convex-case}
     Let the parameters $(\eta_k)_{k\in\N_0}, (\gamma_k)_{k\in\N_0}, (h_k)_{k\in\N_0}$
@@ -1347,8 +1345,8 @@ satisfy certain conditions, which are captured in the following assumption.
 \begin{proof}
     See the proof of lemma 9 in \cite{nedich2023huber}.
 \end{proof}
-\begin{lemma}
-    \label{lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)-convex-case}
+\begin{theorem}
+    \label{thm:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)-convex-case}
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point}
     hold.
     Let the parameters $(\eta_k)_{k\in\N_0}, (\gamma_k)_{k\in\N_0}$, $(h_k)_{k\in\N_0}$
@@ -1385,7 +1383,7 @@ satisfy certain conditions, which are captured in the following assumption.
             + 2 \frac{\sum_{k=k_1}^K \gamma_k^{-1}\eta_k \langle z_k, x_k - \proj(x_k) \rangle}{\tau S_K}
     \end{align*} 
     almost surely, for all $K\in\N$ with $K \geq k_1$.
-\end{lemma}
+\end{theorem}
 \begin{proof}
     Let $k_0\in\N$ be large enough such that $\eta_{k_0} \leq 1/(2L)$ and fix
     some $k\in\N$ with $k \geq k_0$.
@@ -1421,7 +1419,7 @@ satisfy certain conditions, which are captured in the following assumption.
     \end{align*}
     with probability one. Hence, we have
     \begin{align}
-        \label{eq:lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)}
+        \label{eq:thm:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)}
         2\eta_k (f(x_{k}) - f(x))
         &\leq
         (1-\mu\eta_k)\norm{x - x_k}^2 - \norm{x - x_{k+1}}^2 + 2\eta_k\langle z_k, x_k - x \rangle
@@ -1489,7 +1487,7 @@ satisfy certain conditions, which are captured in the following assumption.
         Next, we will derive the desired bound for $\dist(\bar{x}_K, \mathcal{X})$.
     Again fix $k \geq k_0$.
     For the choice $x := \proj(x_k)$,
-    inequality \eqref{eq:lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)} gives us
+    inequality \eqref{eq:thm:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)} gives us
     \begin{align*}
         2\eta_k (f(x_{k}) - f(\proj(x_k)))
         &\leq
@@ -1531,7 +1529,7 @@ satisfy certain conditions, which are captured in the following assumption.
     Since $\gamma_k \uparrow \infty$, there exists $k_1\in\N$ such that
     $\tau_k\gamma_k - M \geq \tau\gamma_k/2$ for all natural numbers $k\geq k_1$. Thus,
     \begin{align}
-        \label{eq:proof:lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)-convex-case:dist-bound}
+        \label{eq:proof:thm:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)-convex-case:dist-bound}
         \dist(x_{k+1}, \mathcal{X})^2 &\leq
         (1-\mu\eta_k)\dist(x_k, \mathcal{X})^2 + \eta_k^2 \mathcal{O}(\gamma_k^2)
             + 2\eta_k\langle z_k, x_k - \proj(x_k) \rangle \notag \\
@@ -1611,8 +1609,8 @@ satisfy certain conditions, which are captured in the following assumption.
     This concludes the proof.
 \end{proof}
 
-\begin{theorem}[Convergence rates in expectation - convex case]
-    \label{thm:convergence-rates-in-expectation-convex-case}
+\begin{corollary}[Convergence rates in expectation - convex case]
+    \label{cor:convergence-rates-in-expectation-convex-case}
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point}
     hold.
     Let the parameters $(\eta_k)_{k\in\N_0}, (\gamma_k)_{k\in\N_0}$, $(h_k)_{k\in\N_0}$
@@ -1631,9 +1629,9 @@ satisfy certain conditions, which are captured in the following assumption.
         \E(\dist(\bar{x}_K, \mathcal{X}))
         = \tau^{-1} \mathcal{O}\Big( \frac{\log^{(1 + 3e) / 2} (K)}{K^{1-c}} \Big).
     \]
-\end{theorem}
+\end{corollary}
 \begin{proof}
-    \Cref{lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)-convex-case} gives us
+    \Cref{thm:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)-convex-case} gives us
     an upper bound for $f(\bar{x}_K) - f(x^\star)$,
     \begin{align*}
         f(\bar{x}_K) - f(x^\star)
@@ -1655,7 +1653,7 @@ satisfy certain conditions, which are captured in the following assumption.
     \]
     for all $k\in\N$. Hence, taking expectations on both sides of the above inequality, we get
     \begin{align}
-        \label{eq:proof:thm:convergence-rates-in-expectation-convex-case-0}
+        \label{eq:proof:cor:convergence-rates-in-expectation-convex-case-0}
         \E(f(\bar{x}_K) - f(x^\star))
         &\leq
         \frac{S_{1, k_0-1}}{S_K} \E(f(\bar{x}_{1, k_0-1}) - f(x^\star))
@@ -1677,12 +1675,12 @@ satisfy certain conditions, which are captured in the following assumption.
     Combining these facts with the above inequality and applying Cauchy-Schwarz,
     we obtain
     \begin{equation}
-        \label{eq:proof:thm:convergence-rates-in-expectation-convex-case}
+        \label{eq:proof:cor:convergence-rates-in-expectation-convex-case}
         f(\bar{x}_k) - f(x^\star) \geq - \norm{\tilde{\nabla} f(x^\star)} \dist(\bar{x}_k, \mathcal{X}),
     \end{equation}
     for all $k\in\N$.
     Taking expectations in the bound for $\dist(\bar{x}_K, \mathcal{X})$
-    from \cref{lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)},
+    from \cref{thm:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)},
     we know that there exists $k_1\in\N$ such that for all $K\in\N$ with $K\geq k_1$,
     it holds that
     \begin{align*}
@@ -1698,7 +1696,7 @@ satisfy certain conditions, which are captured in the following assumption.
     Since $\eta_k = \mathcal{O}\big(\big(k^c \log^{(1 + 3e) / 2}(k+1)\big)^{-1}\big)$,
     it follows that (\textcolor{red}{TODO: Show this with integral test.})
     \begin{equation}
-        \label{eq:proof:thm:convergence-rates-in-expectation-convex-case:SK-complexity}
+        \label{eq:proof:cor:convergence-rates-in-expectation-convex-case:SK-complexity}
         S_K = \mathcal{O}\Big( \frac{K^{1-c}}{\log^{(1 + 3e) / 2} (K)} \Big)        
     \end{equation}
     By \cref{lem:parameters-for-convex-case}, it holds that
@@ -1709,13 +1707,13 @@ satisfy certain conditions, which are captured in the following assumption.
         \E(\dist(\bar{x}_K, \mathcal{X}))
         = \mathcal{O}\Big( \frac{\log^{(1 + 3e) / 2} (K)}{\tau K^{1-c}} \Big).
     \]
-    Combining with \eqref{eq:proof:thm:convergence-rates-in-expectation-convex-case}, we obtain
+    Combining with \eqref{eq:proof:cor:convergence-rates-in-expectation-convex-case}, we obtain
     \[
         \E( f(\bar{x}_k) - f(x^\star) )
         \geq - \norm{\nabla f(x^\star)} \cdot \mathcal{O}\Big( \frac{\log^{(1 + 3e) / 2} (K)}{\tau K^{1-c}} \Big).
     \]
     For the upper bound in
-    \eqref{eq:proof:thm:convergence-rates-in-expectation-convex-case-0}, we
+    \eqref{eq:proof:cor:convergence-rates-in-expectation-convex-case-0}, we
     similarly find that
     \[
         \E(f(\bar{x}_{K}) - f(x^\star))
@@ -1729,8 +1727,6 @@ satisfy certain conditions, which are captured in the following assumption.
     \]
     as desired.
 \end{proof}
-
-\subsection{Strongly convex case}
 
 \begin{lemma}
     \label{lem:parameters-for-strongly-convex-case}
@@ -1755,8 +1751,8 @@ satisfy certain conditions, which are captured in the following assumption.
     This proves the claim.
 \end{proof}
 
-\begin{lemma}
-    \label{lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)}
+\begin{theorem}
+    \label{thm:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)}
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point}
     hold, and assume that we are in the setting $\mu > 0$.
     Let the parameters $(\eta_k)_{k\in\N_0}, (\gamma_k)_{k\in\N_0}$, $(h_k)_{k\in\N_0}$
@@ -1793,7 +1789,7 @@ satisfy certain conditions, which are captured in the following assumption.
         &\phantom{===} + 2\frac{\sum_{k=k_1}^K \gamma_k^{-1}\eta_k^{-1} \langle z_k, x_k - \proj(x_k) \rangle}{\tau S_K}
     \end{align*} 
     almost surely, for all $K\in\N$ with $K \geq k_1$, where $d_{k_1} := \gamma_{k_1}^{-1} \eta_{k_1-1}^{-2} \dist(x_{k_1}, \mathcal{X})^2$.
-\end{lemma}
+\end{theorem}
 
 \begin{proof}
     Let $k_0\in\N$ be large enough such that $\eta_{k_0} \leq 1/(2L)$ and fix
@@ -1802,13 +1798,13 @@ satisfy certain conditions, which are captured in the following assumption.
     $(\eta_k)_{k\in\N_0}, (\gamma_k)_{k\in\N_0}, (h_k)_{k\in\N_0}$ satisfy
     \cref{ass:step-sizes-and-penalties}.
     We can apply the exact same steps as in the proof of
-    \cref{lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)-convex-case},
-    until we arrive at inequality \eqref{eq:lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)}.
+    \cref{thm:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)-convex-case},
+    until we arrive at inequality \eqref{eq:thm:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)}.
     From this starting point,
     we can closely follow the proof stategy of lemma 13 in \cite{nedich2023huber} to arrive
     at our desired result.
     First, we will prove the claim for $f(\bar{x}_k) - f(x^\star)$. Dropping the
-    $-\dist(x_k,\mathcal{X})$ term from \eqref{eq:lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)},
+    $-\dist(x_k,\mathcal{X})$ term from \eqref{eq:thm:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)},
     setting $x := x^\star \in \mathcal{X}^\star$,
     and multiplying both sides by $\eta_k^{-2}$, we get
     \begin{align*}
@@ -1884,8 +1880,8 @@ satisfy certain conditions, which are captured in the following assumption.
     \end{align*}
     Next, we will derive the desired bound for $\dist(\bar{x}_K, \mathcal{X})$.
     Our starting point is inequality
-    \eqref{eq:proof:lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)-convex-case:dist-bound}
-    from the proof of \cref{lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)-convex-case}.
+    \eqref{eq:proof:thm:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)-convex-case:dist-bound}
+    from the proof of \cref{thm:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)-convex-case}.
     Multiplying both sides by $\gamma_k^{-1}\eta_k^{-2}$ yields
     \begin{align*}
         \gamma_k^{-1}\eta_k^{-2} \dist(x_{k+1}, \mathcal{X})^2 &\leq
@@ -1965,8 +1961,8 @@ satisfy certain conditions, which are captured in the following assumption.
     This concludes the proof.
 \end{proof}
 
-\begin{theorem}[Convergence rates in expectation - strongly convex case]
-    \label{thm:convergence-rates-in-expectation}
+\begin{corollary}[Convergence rates in expectation - strongly convex case]
+    \label{cor:convergence-rates-in-expectation}
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point}
     hold and assume that we are in the setting $\mu > 0$.
     Let the parameters $(\eta_k)_{k\in\N_0}, (\gamma_k)_{k\in\N_0}$, $(h_k)_{k\in\N_0}$
@@ -1983,9 +1979,9 @@ satisfy certain conditions, which are captured in the following assumption.
     \[
         \E(\dist(\bar{x}_{K}, \mathcal{X})) = \tau^{-1} \, \mathcal{O} \Big( \frac{\log^{e}(K)}{K} \Big).
     \]
-\end{theorem}
+\end{corollary}
 \begin{proof}
-    \Cref{lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)} gives us
+    \Cref{thm:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)} gives us
     an upper bound for $f(\bar{x}_K) - f(x^\star)$,
     \begin{align*}
         f(\bar{x}_K) - f(x^\star)
@@ -2006,7 +2002,7 @@ satisfy certain conditions, which are captured in the following assumption.
     \]
     for all $k\in\N$. Hence, taking expectations on both sides of the above inequality, we get
     \begin{align}
-        \label{eq:proof:thm:convergence-rates-in-expectation-0}
+        \label{eq:proof:cor:convergence-rates-in-expectation-0}
         \E(f(\bar{x}_K) - f(x^\star))
         &\leq
         \frac{S_{1, k_0-1}}{S_K} \E(f(\bar{x}_{1, k_0-1}) - f(x^\star))
@@ -2029,12 +2025,12 @@ satisfy certain conditions, which are captured in the following assumption.
     Combining these facts with the above inequality, and applying Cauchy-Schwarz,
     we obtain
     \begin{equation}
-        \label{eq:proof:thm:convergence-rates-in-expectation}
+        \label{eq:proof:cor:convergence-rates-in-expectation}
         f(\bar{x}_k) - f(x^\star) \geq - \norm{\tilde{\nabla} f(x^\star)} \dist(\bar{x}_k, \mathcal{X}),
     \end{equation}
     for all $k\in\N$.
     Taking expectations in the bound for $\dist(\bar{x}_K, \mathcal{X})$
-    from \cref{lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)},
+    from \cref{thm:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)},
     we know that there exists $k_1\in\N$ such that for all $K\in\N$ with $K\geq k_1$,
     it holds that
     \[
@@ -2061,14 +2057,14 @@ satisfy certain conditions, which are captured in the following assumption.
             + \mathcal{O}( \tau^{-1} K^{-1} )  \\
         &= \tau^{-1} \, \mathcal{O} \Big( \frac{\log^{e}(K)}{K} \Big).
     \end{align*}
-    Combining with \eqref{eq:proof:thm:convergence-rates-in-expectation}, we obtain
+    Combining with \eqref{eq:proof:cor:convergence-rates-in-expectation}, we obtain
     \[
         \E( f(\bar{x}_k) - f(x^\star) )
         \geq - \norm{\nabla f(x^\star)} \cdot \mathcal{O} \Big( \frac{\log^{2e}(K)}{\tau K} \Big).
     \]
     Note that $\mathcal{O}(\gamma_k^2) = \mathcal{O}(\log^{2e}(k))$ and
     $\eta_k^{-1}\gamma_k\alpha_k = \mathcal{O}(\log^e(k))$,
-    so for the upper bound in \eqref{eq:proof:thm:convergence-rates-in-expectation-0}, we find that
+    so for the upper bound in \eqref{eq:proof:cor:convergence-rates-in-expectation-0}, we find that
     \begin{align*}
         \E(f(\bar{x}_{K}) - f(x^\star))
         &\leq
@@ -2183,8 +2179,6 @@ the almost-sure bounds we derived in the previous sections.
     Therefore, $(X_k)_{k\in\N_0}$ is a martingale.
 \end{proof}
 
-\subsection{Convex case}
-
 \begin{theorem}[Convergence with high probability - convex case]
     \label{thm:convergence-with-high-probability-convex-case}
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point}
@@ -2213,7 +2207,7 @@ the almost-sure bounds we derived in the previous sections.
 \end{theorem}
 \begin{proof}
     Let $K\in\N$.
-    From \cref{lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)-convex-case}, we have the almost-sure bound
+    From \cref{thm:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)-convex-case}, we have the almost-sure bound
     \begin{align*}
         f(\bar{x}_K) - f(x^\star)
         &\leq
@@ -2227,7 +2221,7 @@ the almost-sure bounds we derived in the previous sections.
     By \cref{thm:almost-sure-convergence}, the numerators in the first two terms are bounded almost surely,
     whereas the sum of the last two terms is on the order
     $\mathcal{O}\big( \log^{(1 + 3e) / 2}(K) / \sqrt{K} \big)$,
-    as argued in the proof of \cref{thm:convergence-rates-in-expectation-convex-case}.
+    as argued in the proof of \cref{cor:convergence-rates-in-expectation-convex-case}.
     Thus,
     \[
         f(\bar{x}_K) - f(x^\star)
@@ -2260,7 +2254,7 @@ the almost-sure bounds we derived in the previous sections.
     for all $t \in (0, \infty)$.
     By \cref{lem:bound-on-norm(zk)}, it holds that $\norm{z_k} \leq M \log^e(k) \, \forall k\in\N_0$, where
     $~M := 4\max(1, \min_{k\in\N_0}\gamma_k)\max(L_\text{loc}, G)$. Further,
-    using \eqref{eq:proof:thm:convergence-rates-in-expectation-convex-case:SK-complexity}, we have
+    using \eqref{eq:proof:cor:convergence-rates-in-expectation-convex-case:SK-complexity}, we have
     \[
         \nu_k
         = \frac{\eta_k}{S_K}
@@ -2300,7 +2294,7 @@ the almost-sure bounds we derived in the previous sections.
     \[
         \Prob\Big( \sum_{k=1}^K \nu_k \langle z_k, x_k - x^\star \rangle \geq t \Big)
         \leq
-        \exp\left(-\frac{1}{2}t^2 \mathcal{O}\Big(\frac{K}{2 M^2 R^2 \log^{2 + 3e}(K)}\Big) \right),
+        \exp\left(-\frac{1}{2}t^2 \mathcal{O}\Big(\frac{K}{M^2 R^2 \log^{2 + 3e}(K)}\Big) \right),
     \]
     for all $t \in (0,\infty)$. Substituting $t := \delta \, \mathcal{O}(MR \log^{(2+3e) / 2}(K) / \sqrt{K})$ for arbitrary $\delta \in (0, 1)$, we obtain
     \[
@@ -2423,8 +2417,6 @@ the almost-sure bounds we derived in the previous sections.
     with probability at least $1 - \exp(-\delta^2/2)$, as desired.
 \end{proof}
 
-\subsection{Strongly convex case}
-
 \begin{theorem}[Convergence with high probability - strongly convex case]
     \label{thm:convergence-with-high-probability}
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point}
@@ -2456,7 +2448,7 @@ the almost-sure bounds we derived in the previous sections.
 \end{theorem}
 \begin{proof}
     Let $K\in\N$.
-    From \cref{lem:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)}, we have the almost-sure bound
+    From \cref{thm:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)}, we have the almost-sure bound
     \begin{align*}
         f(\bar{x}_K) - f(x^\star)
         &\leq
@@ -2479,7 +2471,7 @@ the almost-sure bounds we derived in the previous sections.
     % \end{align*}
     By \cref{thm:almost-sure-convergence}, the numerators in the first two terms are bounded almost surely,
     whereas the sum of the last two terms is on the order $\mathcal{O}(\log^{2e}(K) / K)$,
-    as argued in the proof of \cref{thm:convergence-rates-in-expectation}.
+    as argued in the proof of \cref{cor:convergence-rates-in-expectation}.
     Thus,
     \[
         f(\bar{x}_K) - f(x^\star)

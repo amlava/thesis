@@ -103,6 +103,16 @@
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[chapter]
 
+\newaliascnt{example}{definition}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+
+\newcounter{assumptionCounter}
+\newaliascnt{assumption}{assumptionCounter}
+\newtheorem{assumption}[assumption]{Assumption}
+\aliascntresetthe{assumption}
+
+% \theoremstyle{plain}
 \newaliascnt{lemma}{definition}
 \newtheorem{lemma}[lemma]{Lemma}
 \aliascntresetthe{lemma}
@@ -119,18 +129,10 @@
 \newtheorem{theorem}[theorem]{Theorem}
 \aliascntresetthe{theorem}
 
-\newaliascnt{example}{definition}
-\newtheorem{example}[example]{Example}
-\aliascntresetthe{example}
-
 \newaliascnt{remark}{definition}
 \newtheorem{remark}[remark]{Remark}
 \aliascntresetthe{remark}
 
-\newcounter{assumptionCounter}
-\newaliascnt{assumption}{assumptionCounter}
-\newtheorem{assumption}[assumption]{Assumption}
-\aliascntresetthe{assumption}
 
 \crefname{theorem}{theorem}{theorems}
 \Crefname{theorem}{Theorem}{Theorems}
