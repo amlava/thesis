@@ -48,7 +48,7 @@ which induce the sequence of unconstrained problems
     \min_{x\in\R^n}
     \left\{\, f_k(x) := f(x) + \gamma_k \pi_k(x) \,\right\},
 \end{equation}
-for $k\in\N_0$ and where $(\gamma_k)_{k\in\N_0}$ is a sequence of positive real numbers.
+for $k\in\N_0$, where $(\gamma_k)_{k\in\N_0}$ is a sequence of positive real numbers.
 We assume that the penalty functions will always take the form
 \[
     \pi_k(x) := \E(h_k(x; A(\xi), b(\xi))),
@@ -64,8 +64,9 @@ $\R^n \times \R^{m\times n} \times \R^m$ to $\R$ with the following properties:
     for all $k\in\N_0$ and all feasible points $\tilde{x}\in\mathcal{X}$.
     \item The gradients of $(h_k)_{k\in\N_0}$ have uniformly bounded gradient norm:
         \[
-            \sup_{k\in\N_0}\sup_{x\in\R^n} \norm{\nabla h_k(x; A(\xi), b(\xi))} < \infty.
+            \sup_{k\in\N_0}\sup_{x\in\R^n} \norm{\nabla h_k(x; A(\xi), b(\xi))} < \infty
         \]
+    almost surely.
 \end{enumerate}
 Further, for $k\in\N_0$, we define the solution set of problem \eqref{eq:main-problem-penalized} as
 \[
@@ -393,7 +394,7 @@ A simple sufficient condition for the last part of the assumption is continuity 
 on $\Xi$. One can always satisfy \cref{ass:compact-support-without-zero} if the set
 $\Xi$ (or a superset thereof) is known, by sampling uniformly.
 In fact, \cref{lem:lower-bound-on-penalties-by-distance-to-feasibility} will
-demonstrate that uniform sampling is optimal\footnote{Of course, one does not always
+demonstrate that uniform sampling is optimal\footnote{Of course, one may not
 have control over the sampling distribution.}, in the sense that
 it minimizes constants that depend on the distribution of $\xi$ in the derived upper bound.
 This is very intuitive: Since we are working in the setting of almost sure constraints,
@@ -517,7 +518,7 @@ We will now formulate and prove the lemma.
     \]
     for $z\in \Xi$. Clearly, $\phi \in \varPsi(x)$.
     We will show that $\norm{\phi(z)} \leq \norm{y(z)}$
-    for all $z\in \Xi$. We denote by $\phi_i(z), a_i(z), b_i(z), y_i$, the $i$th
+    for all $z\in \Xi$. We denote by $\phi_i(z), a_i(z), b_i(z), y_i$, the $i$-th
     row of $\phi(z), A(z), b(z), y$. It holds that
     \[
         |\phi_i(z)| = \begin{cases}
@@ -952,7 +953,8 @@ involves a nonnegative term plus a small negative term.
         \geq \langle \tilde{\nabla} f_k(\proj(x_k^\star)), x_k^\star - \proj(x_k^\star) \rangle
         \geq -\norm{\tilde{\nabla} f_k(\proj(x_k^\star))} \dist(x_k^\star, \mathcal{X}).
     \]
-    The sequence $(x_k^\star)_{k\in\N}$ converges to $x^\star$, which implies, by continuity
+    The sequence $(x_k^\star)_{k\in\N}$ converges to $x^\star$
+    (\textcolor{red}{TODO: this is wrong, but need only boundedness anyway.}), which implies, by continuity
     of the projection map, $\lim_{k\to\infty} \proj(x_k^\star) = \proj(x^\star) = x^\star$.
     In particular, $(\proj(x_k^\star))_{k\in\N}$ is bounded, so \cref{lem:basic-properties} implies
     that there exists $K_1\in\N$ such that $\sup_{k\in\N} \norm{\tilde{\nabla} f_k(\proj(x_k^\star))}
@@ -1094,7 +1096,7 @@ We are now ready to prove the main theorem of this section.
         \item $\sum_{k=0}^\infty \eta_k\gamma_k\alpha_k < \infty$.
         \item $\sum_{k=0}^\infty \eta_k^2 \gamma_k^2 < \infty$.
     \end{enumerate}
-    Then $\norm{x_{k} - x^\star}$ converges almost surely and,
+    Then, $\norm{x_{k} - x^\star}$ converges almost surely and,
     in particular, $(x_k)_{k\in\N}$ is bounded almost surely.
     In the case $\mu > 0$, it further holds that
     $\liminf_{k\to\infty} \E\norm{x_{k} - x^\star}^2 = 0$.
@@ -1307,7 +1309,7 @@ satisfy certain conditions, which are captured in the following assumption.
         \norm{g_k} &= \norm{\nabla F_{\zeta_k}(x_k) + \gamma_k h_k(x_k; A(\xi)_k, b(\xi_k))} \\
                 &\leq \norm{\nabla F_{\zeta_k}(x_k)} + \gamma_k\norm{h_k(x_k; A(\xi_k), b(\xi_k))}.
     \end{align*}
-    By almost-sure smoothness of $(x_k)_{k\in\N_0}$ (\cref{thm:almost-sure-convergence}) and
+    By almost-sure boundedness of $(x_k)_{k\in\N_0}$ (\cref{thm:almost-sure-convergence}) and
     local Lipschitz smoothness of $x\mapsto F_{\zeta}(x)$ (a.\,s.), it holds that
     \[
         \norm{F_{\zeta_k}(x_k)} \leq L_\text{loc} \enspace \text{(a.\,s.)}.
