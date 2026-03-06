@@ -378,15 +378,14 @@ only requires the following natural assumptions.
 \begin{assumption}
     \label{ass:compact-support-without-zero}
     There exists a compact set $\Xi\in\R^p$ such that $\xi$ is supported
-    on $\Xi$ and $\Prob^\xi$ (\textcolor{red}{TODO: Need to be more precise here,
-    since we actually sample from $\Prob^{(\zeta, \xi)}$}) admits a Lebesgue-density $q$ such that
+    on $\Xi$ and $\Prob^\xi$ has a Lebesgue-density $q$ such that
     \begin{enumerate}
         \item $q$ is continuous on $\Xi$ and
         \item $q(x) > 0$ for all $x\in \Xi$.
     \end{enumerate}
     Further, we assume that
     \[
-        \int_{\Xi} \norm{A(z)x - b(z)}_1 \, dz < \infty,
+        \int_{\Xi} \norm{A(z)x - b(z)}_1 \, \text{d}z < \infty,
     \]
     for all $x\in\R^n$.
 \end{assumption}
@@ -506,7 +505,7 @@ We will now formulate and prove the lemma.
     \begin{equation}
         \label{eq:proof:lem:lower-bound-on-penalties-by-distance-to-feasibility-2}
         \dist_Y(0, \varPsi(x))
-        = \int_{\Xi} \norm{(A(z)x - b(z))_+}_1 \, dz = \norm{(Ax - b)_+}_Y
+        = \int_{\Xi} \norm{(A(z)x - b(z))_+}_1 \, \text{d}z = \norm{(Ax - b)_+}_Y
     \end{equation}
     for any $x\in C$.
     Fix $x\in C$ and let $y\in \varPsi(x)$.
@@ -544,9 +543,9 @@ We will now formulate and prove the lemma.
     \end{align*}
     and therefore,
     \[
-        \inf_{y \in \varPsi(x)} \int_{\Xi} \norm{y}_1 \, dz
+        \inf_{y \in \varPsi(x)} \int_{\Xi} \norm{y}_1 \, \text{d}z
         \geq
-        \int_{\Xi} \norm{\phi(z)} \, dz,
+        \int_{\Xi} \norm{\phi(z)} \, \text{d}z,
     \]
     proving \eqref{eq:proof:lem:lower-bound-on-penalties-by-distance-to-feasibility-2}.
     To finish the proof, we need to establish a relationship between
@@ -558,17 +557,17 @@ We will now formulate and prove the lemma.
     exist some uniform positive lower bound $c_q \in (0, \infty)$ such that $q(x) \geq c_q$
     for all $x\in \Xi$. If we denote the Lebesgue-measure by $\lambda$, we see that
     \[
-        \Prob^\xi(A) = \int_{A} q(z) \, dz \geq c_q \lambda (A),
+        \Prob^\xi(A) = \int_{A} q(z) \, \text{d}z \geq c_q \lambda (A),
     \]
     for all measurable $A \subset \Xi$.
-    Therefore, $\Prob^\xi$ and $\lambda$ are equivalent on $\Xi$, and
-    $q^{-1}$ is a $\Prob^\xi$-density of $\lambda$.
-    We thus have
+    Therefore, $\Prob^\xi$ and $\lambda$ are equivalent on $\Xi$, hence \cref{prop:radon-nikodym}
+    implies that $q^{-1}$ is a $\Prob^\xi$-density of $\lambda$.
+    Using \cref{prop:density-chain-rule} and \cref{prop:integral-transform}, we can conclude
     \begin{align*}
-        \norm{y}_Y &= \int_{z\in \Xi} \norm{y(z)}_1 \, dz \\
+        \norm{y}_Y &= \int_{z\in \Xi} \norm{y(z)}_1 \, \text{d}z \\
         &= \int_{z\in \Xi} \norm{y(z)}_1 q^{-1}(z) \, \Prob^\xi(dz) \\
         &\leq c_q^{-1} \int_{z\in \Xi} \norm{y(z)}_1 \, \Prob^\xi(dz) \\
-        &= c_q^{-1} \int \norm{y(\xi)}_1 \, d\Prob \\
+        &= c_q^{-1} \int \norm{y(\xi)}_1 \, \text{d}\Prob \\
         &= c_q^{-1} \, \E\norm{y(\xi)}_1.
     \end{align*}
     Combining with \eqref{eq:proof:lem:lower-bound-on-penalties-by-distance-to-feasibility-1}
