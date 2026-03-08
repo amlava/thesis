@@ -476,9 +476,9 @@ The contents of this section can be found in \cite{Boyd_Vandenberghe_2004,garrig
 \subsection{Lipschitz functions}
 
 \begin{definition}
-    Let $f\colon \R^n \to \R$ be differentiable, and $L > 0$. We say that $f$ is
+    Let $f\colon \R^n \to \R$ be differentiable and let $L \in (0,\infty)$. We say that $f$ is
     \textbf{Lipschitz-smooth with constant $L$}, or simply \textbf{$L$-smooth},
-    if its gradient is Lipschitz continuous, i.\,e. there exists a constant $L\in (0,\infty)$ such that
+    if its gradient is $L$-Lipschitz continuous, i.\,e.
     \[
         |\!|\nabla f(y) - \nabla f(x)|\!| \leq L|\!|y - x|\!|
     \]
@@ -494,12 +494,33 @@ The contents of this section can be found in \cite{Boyd_Vandenberghe_2004,garrig
     for all $x, y\in\R^n$.
 \end{proposition}
 
+\begin{proposition}
+    Let $f\colon \R^n \to \R$ be $L$-smooth. Then, $f$ is \textbf{locally Lipschitz continuous}, i.\,e.
+    for all bounded subsets $B\subset\R^n$ there exists a constant $L_B\in(0,\infty)$ such that
+    \[
+        |f(x) - f(y)| \leq L_B \norm{x - y}
+    \]
+    for all $x,y\in B$.
+\end{proposition}
+
 \subsection{Convex optimization}
+
+\begin{definition}
+    An extended real-valued function $f\colon\R^n\to\bar{\R}$ is called \textbf{proper}
+    if $f(x) > -\infty$ for all $x\in\R^n$ and there exists a point $x\in\R^n$ such that $f(x) < \infty$.
+    The \textbf{(effective) domain} of $f\colon\R^n\to\bar{\R}$ is defined as
+    \[
+        \dom(f) := \{\, x\in\R^n \mid f(x) < \infty \,\}.
+    \]
+\end{definition}
+
+
 
 \begin{definition}[Convex function]
     A set $C\subset\R^n$ is called \textbf{convex} if, for all 
     $x,y\in C$ and $t\in [0, 1]$, it holds that $tx + (1-t)y \in C$.
-    We say that a function $f\colon \R^n\to\R$ is \textbf{convex} if
+    We say that a function $f\colon \R^n\to\bar{\R}$ is \textbf{convex} if
+    $\dom(f)$ is convex and
     \begin{align*}
         f((1-t) x + t y) \leq (1-t) f(x) + t f(y)
     \end{align*}
@@ -544,11 +565,13 @@ The contents of this section can be found in \cite{Boyd_Vandenberghe_2004,garrig
 
 \begin{proposition}
     \label{prop:convex-implies-continuous}
-    Every convex function on $\R^n$ is continuous.
+    Every extended real-valued convex function $f\colon\R^n\to\bar{\R}$
+    is continuous on the interior of its domain, $\text{int}(\dom(f))$.
+    In particular, if $\dom(f) = \R^n$, then $f$ is continuous.
 \end{proposition}
 
 \begin{definition}[Subgradient]
-    Let $f\colon \R^n\to\R$ be convex. A vector $g\in\R^n$ is a \textbf{subgradient} of $f$ at $x\in\R^n$ if
+    Let $f\colon \R^n\to\bar{\R}$ be convex. A vector $g\in\R^n$ is a \textbf{subgradient} of $f$ at $x\in\dom(f)$ if
     \[
         f(y) \geq f(x) + \langle g, y-x \rangle
     \]
@@ -557,6 +580,7 @@ The contents of this section can be found in \cite{Boyd_Vandenberghe_2004,garrig
     and we call this set the \textbf{subdifferential of} $f$ \textbf{at} $x$.
     If $\partial f(x) \neq \emptyset$, then we call $f$ \textbf{subdifferentiable at} $x$.
     If $f$ is subdifferentiable for all $x\in\R^n$, we call $f$ \textbf{subdifferentiable}.
+    For $x\ni\dom(f)$, we set $\partial f(x) = \emptyset$.
     If $f$ is subdifferentiable at $x\in\R^n$, then we use the notation
     \[
         \tilde{\nabla} f(x)
@@ -574,7 +598,7 @@ The contents of this section can be found in \cite{Boyd_Vandenberghe_2004,garrig
 \end{proposition}
 
 \begin{proposition}
-    Let $f\colon \R^n\to\R$ be convex and subdifferentiable, and let $C\subset\R^n$ be a convex set.
+    Let $f\colon \R^n\to\bar{\R}$ be convex and subdifferentiable, and let $C\subset\R^n$ be a convex set.
     Then, a point $x^\star\in\R^n$ minimizes $f$ on $C$
     if and only if there exists a subgradient $g \in \partial f(x^\star)$, such that
     \[
@@ -592,26 +616,26 @@ The contents of this section can be found in \cite{Boyd_Vandenberghe_2004,garrig
 % \end{notation}
 
 \begin{definition}[Strongly convex function]
-    Let $f\colon \R^n \to \R$ be subdifferentiable and let $\mu\in (0,\infty)$.
-    We say that $f$ is ($\mu$-)\textbf{strongly convex} if
+    Let $f\colon \R^n \to \bar{\R}$ be subdifferentiable and let $\mu\in (0,\infty)$.
+    We say that $f$ is ($\mu$-)\textbf{strongly convex} if $\dom(f)$ is convex and
     \begin{align*}
         f(y) \geq f(x) + \langle \tilde{\nabla} f(x), y - x \rangle + \frac{\mu}{2} \norm{x - y}^2
     \end{align*}
-    for all $x,y\in\R^n$.
+    for all $x,y\in\dom(f)$.
 \end{definition}
 Clearly, strongly convex functions are convex.
 \begin{proposition}[Convex functions have monotone gradients]
     \label{prop:convex-implies-monotone-gradient}
-    Let $f\colon \R^n\to\R$ be convex subdifferentiable. Then, it holds that
+    Let $f\colon \R^n\to\bar{\R}$ be convex and subdifferentiable. Then, it holds that
     \[
         \langle \tilde{\nabla} f(y) - \tilde{\nabla} f(x), y-x \rangle \geq 0
     \]
-    for all $x,y\in\R^n$. If, additionally, $f\colon \R^n\to\R$ is $\mu$-strongly convex for some $\mu\in(0,\infty)$,
-    it holds that
+    for all $x,y\in\dom(f)$. If, additionally, $f\colon \R^n\to\bar{\R}$ is $\mu$-strongly convex for
+    some $\mu\in(0,\infty)$, it holds that
     \[
         \langle \tilde{\nabla} f(y) - \tilde{\nabla} f(x), y-x \rangle \geq \frac{\mu}{2} \norm{x - y}^2
     \]
-    for all $x,y\in\R^n$.
+    for all $x,y\in\dom(f)$.
 \end{proposition}
 % \begin{proposition}
 %     \label{prop:operations-conserving-convexity}
@@ -657,13 +681,31 @@ Clearly, strongly convex functions are convex.
 %     is $\mu$-strongly convex.
 % \end{proposition}
 
-\begin{proposition}[Convex functions on convex sets have minimizers]
+\begin{proposition}[Minimium of convex function]
     \label{prop:strongly-convex-implies-unique-minimizer}
-    If $f\colon \R^n\to\R$ is convex and $C\subset\R^n$ is convex,
+    If $f\colon \R^n\to\bar{\R}$ is convex and continuous, and $C\subset\dom(f)$ is nonempty, convex, and compact,
     then $f$ admits a minimizer
     on $C$, i.\,e. there exists a point
     $x^\star\in C$ such that $f(x^\star) \leq f(x)$ for all $x\in C$.
     If, additionally, $f$ is strongly convex, then the minimizer is unique.
+\end{proposition}
+
+\begin{definition}[Level sets]
+    Let $f\colon\R^n\to\bar{\R}$ be an extended real-valued function. We say that $f$ has \textbf{bounded lower-level
+    sets} if the sets
+    \[
+        \{\, x\in\R^n \mid f(x) \leq c \,\}
+    \]
+    are bounded for all $c\in\R$.
+\end{definition}
+
+\begin{proposition}
+    Let $f\colon\R^n\to\bar{\R}$ be proper, convex, and continuous. If $f$ has bounded lower level sets, then $f$ attains a minimizer
+    on $\R^n$.
+\end{proposition}
+
+\begin{proposition}
+    Strongly convex functions have bounded lower-level sets.
 \end{proposition}
 
 % \begin{example}
@@ -681,7 +723,7 @@ Clearly, strongly convex functions are convex.
     Let $C\subset\R^n$ be a closed convex set. The \textbf{(euclidian) projection operator onto C} is the
     map $\Pi_C\colon\R^n\to C$, defined as
     \[
-        \Pi_C(x) := \inf_{y\in C}|\!| x - y|\!|
+        \Pi_C(x) := \min_{y\in C}|\!| x - y|\!|
     \]
     for $x\in\R^n$.
 \end{definition}
@@ -701,7 +743,7 @@ Throughout this subsection, we fix an arbitrary probability space $(\Omega, \mat
 \cite{duchi2018introductory}
 
 \begin{definition}
-    Let $f\colon \R^n\to\R$ be a convex function.
+    Let $f\colon \R^n\to\bar{R}$ be a proper and convex.
     A random vector $G\colon\Omega\to\R^n$ is called a \textbf{stochastic (sub-)gradient of $f$
     at $x\in\R^n$}, if
     \[
@@ -733,7 +775,7 @@ A \textbf{convex stochastic optimization problem} has the form
     \min_{x\in\mathcal{X}} \Big\{\, f(x) := \E(F_\xi(x)) \,\Big\}\,,
 \end{equation}
 where $\emptyset \neq \mathcal{X}\subset\R^n$, $\xi\colon\Omega\to\R^m$ is a random vector,
-and $F\colon\R^n \times \R^m \to \R, (x, z) \mapsto F_z(x)$ is a function that satisfies
+and $F\colon\R^n \times \R^m \to \bar{\R}, (x, z) \mapsto F_z(x)$ is a proper function that satisfies
 \begin{itemize}
     \item[-] $x\to F_{\xi(\omega)}(x)$ is convex for almost every $\omega\in\Omega$, and
     \item[-] $\omega\to F_{\xi(\omega)}(x)$ is measurable for all $x\in\R^n$.
@@ -754,13 +796,15 @@ a standard method to solve such a problem is \textbf{stochastic gradient descent
 \State \Return $x_{K}$
 \end{algorithmic}
 \end{algorithm}
+
 The convergence of the iterates $(x_k)_{k\in\N}$,
 generated by \cref{alg:sgd}, to a solution of \eqref{sec:background:stochopt:problem},
 depends heavily on the choice of step sizes $(\eta_k)_{k\in\N}$ and the variance of the stochastic gradients
 $\tilde{\nabla} F_{\xi}(x)$.
 A classical result by
-Robbins and Monro \cite{robbins1951stochastic} states that if $f$ is strongly convex and there exists a constant
-$\sigma^2 \in (0, \infty)$ such that $\sup_{x\in\R^n} \Var(\tilde{\nabla} F_{\xi}(x)) \leq \sigma^2$, then the condition
+Robbins and Monro \cite{robbins1951stochastic} states: If $f$ is strongly convex and there exists a constant
+$\sigma^2 \in (0, \infty)$ such that $\sup_{x\in\R^n} \Var(\tilde{\nabla} F_{\xi}(x)) \leq \sigma^2$, then the
+step-size condition
 \[
     \sum_{k=0}^\infty \eta_k = \infty \quad\text{and}\quad \sum_{k=0}^\infty \eta_k^2 < \infty,
 \]
@@ -772,8 +816,8 @@ can be exploited in algorithm design. This often leads to problems that can be f
     \label{sec:background:stochopt:problem-with-regularizer}
     \min_{x\in\mathcal{X}} \Big\{\, f(x) := \E(F_\xi(x)) + r(x) \,\Big\}\,,
 \end{equation}
-where now the objective consists of a differentiable part $x\mapsto F_\xi(x)$, and a potentially less well-behaved
-part $r\colon\R^n\to\bar{\R}$, which is even allowed to take on the value $+\infty$. For example, the function $r$ can be
+where now the objective consists of a differentiable part $F\colon \R^n\times\R^m \to \R$, and a potentially less well-behaved
+part $r\colon\R^n\to\bar{\R}$. For example, the function $r$ can be
 the $\ell_1$-regularizer $x\mapsto \lambda \norm{x}_1$ to promote sparsity, which is a non-differentiable operation at $x = 0$.
 Another popular choice is to use $r$ to encode some constraints of the form $x\in \mathcal{S}\subset\R^n$ directly into $f$, by letting
 \[
