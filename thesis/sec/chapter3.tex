@@ -1731,26 +1731,32 @@ satisfy certain conditions, which are captured in the following assumption.
     from \cref{thm:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)},
     we know that there exists $k_1\in\N$ such that for all $K\in\N$ with $K\geq k_1$,
     it holds that
-    \begin{align*}
+    \begin{align}
+        \label{eq:proof:cor:convergence-rates-in-expectation-convex-case:penultimate-bound}
         \E(\dist(\bar{x}_K, \mathcal{X}))
         &\leq
         \frac{S_{1, k_1-1}}{S_K} \E(\dist(\bar{x}_{1, k_1-1}, \mathcal{X}))
             + \frac{\gamma_{k_1}^{-1}\norm{x^\star - x_{k_1}}^2}{\tau S_K}
-            + \frac{\sum_{k=k_1}^{K} \eta_k^2\mathcal{O}(\gamma_k)}{\tau S_K} \\
+            + \frac{\sum_{k=k_1}^{K} \eta_k^2\mathcal{O}(\gamma_k)}{\tau S_K} \notag \\
         &\phantom{===}
             + 2 \frac{\sum_{k=k_1}^{K}\eta_k\alpha_k}{\tau S_K}.
-    \end{align*}
+    \end{align}
     The first two terms are constants.
     Since $\eta_k = \mathcal{O}\big(\big(k^c \log^{(1 + 3e) / 2}(k+1)\big)^{-1}\big)$,
-    it follows that (\textcolor{red}{TODO: Show this with integral test.})
-    \begin{equation}
+    it follows by a standard integral bound that
+    \begin{align}
         \label{eq:proof:cor:convergence-rates-in-expectation-convex-case:SK-complexity}
-        S_K = \mathcal{O}\Big( \frac{K^{1-c}}{\log^{(1 + 3e) / 2} (K)} \Big)        
-    \end{equation}
-    By \cref{lem:parameters-for-convex-case}, it holds that
+        S_K &= \sum_{k=1}^K \eta_k \notag \\
+            &= \sum_{k=1}^K \frac{1}{k^c \log^{(1 + 3e) / 2}(k+1)} \notag \\
+            &\geq \int_{1}^{K+1} \frac{1}{x^c \log^{(1 + 3e) / 2}(x+1)} \, \text{d}x \notag \\
+            &\geq \frac{1}{\log^{(1 + 3e) / 2}(K+2)} \int_{1}^{K+1} \frac{1}{x^c} \, \text{d}x \notag \\
+            &= \frac{K^{1-c}}{\log^{(1 + 3e) / 2} (K+2)}.
+    \end{align}
+    By \cref{lem:parameters-for-convex-case}, it also holds that
     $\sum_{k=1}^K \gamma_k\eta_k \alpha_k = \mathcal{O}(1)$ and
     $\sum_{k=1}^K \eta_k^2\gamma_k^2 = \mathcal{O}(1)$.
-    Therefore, we obtain
+    Therefore, by combining with \eqref{eq:proof:cor:convergence-rates-in-expectation-convex-case:penultimate-bound},
+    we obtain
     \[
         \E(\dist(\bar{x}_K, \mathcal{X}))
         = \mathcal{O}\Big( \frac{\log^{(1 + 3e) / 2} (K)}{\tau K^{1-c}} \Big).
@@ -1768,7 +1774,7 @@ satisfy certain conditions, which are captured in the following assumption.
         \leq
         \mathcal{O}\Big( \frac{\log^{(1 + 3e) / 2} (K)}{K^{1-c}} \Big).
     \]
-    Putting the two bounds together, we obtain
+    Putting the two bounds together, we finally arrive at
     \[
         \E| f(\bar{x}_{K}) - f(x^\star) |
         = \max(1, \tau^{-1}) \, \mathcal{O}\Big( \frac{\log^{(1 + 3e) / 2} (K)}{K^{1-c}} \Big),
