@@ -506,13 +506,16 @@ The contents of this section can be found in \cite{Boyd_Vandenberghe_2004,garrig
 
 \subsection{Convex optimization}
 
-\begin{definition}
-    An extended real-valued function $f\colon\R^n\to\bar{\R}$ is called \textbf{proper}
+\begin{definition}[Extended real-valued function]
+    The \textbf{extended real number line} is defined as $\bar{R} := \R \cup \{ \pm \infty \}$. 
+    An function $f\colon\R^n\to\bar{\R}$ is called \textbf{extended real-valued function}.
+    An extended real-valued function $f$ is called \textbf{proper},
     if $f(x) > -\infty$ for all $x\in\R^n$ and there exists a point $x\in\R^n$ such that $f(x) < \infty$.
     The \textbf{(effective) domain} of $f\colon\R^n\to\bar{\R}$ is defined as
     \[
         \dom(f) := \{\, x\in\R^n \mid f(x) < \infty \,\}.
     \]
+    An extended real-valued function $f$ is called \textbf{continuous} if $f$ is continuous on $\dom(f)$.
 \end{definition}
 
 \begin{definition}[Convex function]
@@ -702,12 +705,14 @@ Clearly, strongly convex functions are convex.
 \begin{proposition}
     \label{prop:convex+bounded-lower-level-sets-implies-minimizer}
     Let $f\colon\R^n\to\bar{\R}$ be proper, convex, and continuous, and let $C\subset\R^n$ be a closed convex set.
-    If $f$ has bounded lower level sets, then $f$ attains a minimizer on $C$.
+    If $f$ has bounded lower level sets, then $f$ attains a minimizer on $C$, and the set of minimizers of $f$
+    on $C$ is compact.
 \end{proposition}
 
 \begin{proposition}
     \label{prop:strongly-convex-implies-lower-level-sets}
-    Strongly convex functions have bounded lower-level sets.
+    Strongly convex functions have bounded lower-level sets and attain a unique minimizer
+    on any nonempty closed convex set.
 \end{proposition}
 
 % \begin{example}
@@ -722,7 +727,7 @@ Clearly, strongly convex functions are convex.
 % \end{example}
 
 \begin{definition}[Projection operator]
-    Let $C\subset\R^n$ be a closed convex set. The \textbf{(euclidian) projection operator onto C} is the
+    Let $C\subset\R^n$ be a nonempty closed convex set. The \textbf{(euclidian) projection operator onto C} is the
     map $\Pi_C\colon\R^n\to C$, defined as
     \[
         \Pi_C(x) := \min_{y\in C}|\!| x - y|\!|
@@ -732,7 +737,7 @@ Clearly, strongly convex functions are convex.
 
 \begin{proposition}[Projection is Lipschitz]
     \label{prop:projection-is-lipschitz}
-    For a closed convex set $C\subset\R^n$, the projection operator $\Pi_C$ is $1$-Lipschitz continuous, that is
+    For a nonempty closed convex set $C\subset\R^n$, the projection operator $\Pi_C$ is $1$-Lipschitz continuous, that is
     \[
         \norm{\Pi_C(x) - \Pi_C(y)} \leq \norm{x - y}
     \]
@@ -741,7 +746,7 @@ Clearly, strongly convex functions are convex.
 
 \begin{proposition}[Projection is convex]
     \label{prop:projecton-is-convex}
-    For a closed convex set $C\subset\R^n$, the projection operator $\Pi_C$ is convex.
+    For a nonempty closed convex set $C\subset\R^n$, the projection operator $\Pi_C$ is convex.
 \end{proposition}
 
 \subsection{Stochastic optimization}

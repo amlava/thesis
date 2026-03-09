@@ -194,7 +194,7 @@ by the following lemma.
         for $x\in\R^n$,
         satisfy $\sup_{x\in B} \norm{g_k(x)} = \mathcal{O}(\gamma_k)$ almost surely.
         \item The set $\mathcal{X}^\star$ is nonempty compact. For all $k\in\N_0$,
-            the set $\mathcal{X}_k^\star$ is nonempty compact, and the family
+            the set $\mathcal{X}_k^\star$ is nonempty, compact, and the family
             $(\mathcal{X}_k^\star)_{k\in\N_0}$ is uniformly bounded.
             In particular, the map $x\mapsto \Pi_\mathcal{X}(x)$ is bounded
             when restricted to the set $\cup_{k=0}^\infty \mathcal{X}_k^\star$.
@@ -257,7 +257,7 @@ by the following lemma.
             unconstrained minimizer.
             Compactness of the solution sets
             follows from continuity and the bounded lower-level sets properties
-            (\textcolor{red}{TODO: Ref a proposition}).
+            (see \cref{prop:convex+bounded-lower-level-sets-implies-minimizer}).
             To prove uniform boundedness of the family $(\mathcal{X}_k^\star)_{k\in\N_0}$,
             fix any feasible point $\hat{x}\in\mathcal{X}$ (which exists per \cref{ass:basic-assumptions}).
             By our assumptions on the penalty sequence $(\pi_k)_{k\in\N_0}$,
@@ -439,7 +439,7 @@ We will now formulate and prove the lemma.
     (\textcolor{red}{TODO: Not all of assumption 1 is needed here, should probably split
     the assumption up into two parts.})
     Assume \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point} hold
-    and let $C\subset\R^n$ be a compact subset. Then
+    and let $C\subset\R^n$ be a compact subset. Then,
     there exists a constant $\tau\in(0,\infty)$ such that
     \[
        \tau \dist(x, \mathcal{X}) \leq \pi_k(x),
