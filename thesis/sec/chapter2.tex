@@ -191,11 +191,11 @@ follow directly from \cref{prop:integrals}.
     In particular: If $X^2$ is integrable, then $X$ must also be integrable.
 \end{proposition}
 
-\begin{proposition}[Boubnded convergence theorem]
+\begin{proposition}[Bounded convergence theorem]
     \label{prop:bounded-convergence-theorem}
     Let $(\Omega, \mathcal{F}, \Prob)$ be a probability space and let $(X_k)_{k\in\N_0}$ be a sequence
     of uniformly bounded real-valued random variables on $\Omega$ such that $\lim_{k\to\infty} X_k = X$
-    almost surely for some integrable random variable $X$. Then, it holds that
+    almost surely for some random variable $X$. Then, $X$ is integrable and
     \[
         \lim_{k\to\infty} \E(X_k) = \E(X).
     \]
@@ -252,7 +252,7 @@ then they have the same expected value and variance.
     then we use the notation $\mu \ll \nu$.
     We say that $\mu$ and $\nu$
     are \textbf{equivalent}, if $\mu \ll \nu$ and $\nu \ll \mu$.
-    If $\mu$ and $\nu$ are equivalent, then we use the notation $\mu \sim \nu$.
+    If $\mu$ and $\nu$ are equivalent, we use the notation $\mu \sim \nu$.
 \end{definition}
 
 \begin{proposition}[Radon-Nikodym]
@@ -260,7 +260,7 @@ then they have the same expected value and variance.
     Let $(\Omega, \mathcal{F})$ be a measurable space and let $\mu$ and $\nu$ be measures
     on $(\Omega, \mathcal{F})$. Then, $\mu \ll \nu$
     if and only if there exists a $\nu$-density of $\mu$.
-    If $\mu$ and $\nu$ are equivalent and $f$ is a $\nu$-density of $\mu$, then $f > 0$
+    If $\mu$ and $\nu$ are equivalent and $f$ is a $\nu$-density of $\mu$, then $f$ is positive
     $\nu$-almost everywhere
     and there exists a $\mu$-density $g$ of $\nu$, such that $f \cdot g = 1$ $\nu$-almost everywhere.
 \end{proposition}
@@ -415,20 +415,20 @@ Below, we state some further properties of conditional expectations.
 
 \begin{definition}[Filtration]
     Let $(\Omega, \mathcal{F}, \Prob)$ be a probability space. A sequence
-    of $\sigma$-algebras $(\mathcal{F}_n)_{n\in\N_0}$ with
-    $\mathcal{F}_n \subset \mathcal{F} \, \forall n\in\N_0$
-    is called a \textbf{filtration} if $\mathcal{F}_{n-1} \subset \mathcal{F}_{n}$
-    for all $n\in\N$. If $(\mathcal{F}_n)_{n\in\N_0}$ is a filtration on
+    of $\sigma$-algebras $(\mathcal{F}_k)_{k\in\N_0}$ with
+    $\mathcal{F}_k \subset \mathcal{F} \, \forall k\in\N_0$
+    is called a \textbf{filtration} if $\mathcal{F}_{k-1} \subset \mathcal{F}_{k}$
+    for all $k\in\N$. If $(\mathcal{F}_k)_{k\in\N_0}$ is a filtration on
     $(\Omega, \mathcal{F}, \Prob)$, then we call
-    $(\Omega, \mathcal{F}, \Prob, (\mathcal{F}_n)_{n\in\N_0})$ a \textbf{filtered probability space}.
+    $(\Omega, \mathcal{F}, \Prob, (\mathcal{F}_k)_{k\in\N_0})$ a \textbf{filtered probability space}.
 \end{definition}
 
 \begin{example}[Natural filtration]
-    Given a sequence of random variables $(X_n)_{n\in\N_0}$ on some common probabilty
+    Given a sequence of random variables $(X_k)_{k\in\N_0}$ on some common probabilty
     space $(\Omega, \mathcal{F}, \Prob)$, one can define a filtration
-    $(\mathcal{F}_n)_{n\in\N}$ via $\mathcal{F}_n := \sigma(X_0, \dots, X_n)$ for all $n\in\N_0$.
+    $(\mathcal{F}_k)_{k\in\N_0}$ via $\mathcal{F}_k := \sigma(X_0, \dots, X_k)$ for all $k\in\N_0$.
     This filtration is referred to as the \textbf{natural filtration}
-    of the sequence $(X_n)_{n\in\N_0}$.
+    of the sequence $(X_k)_{k\in\N_0}$.
 \end{example}
 
 \begin{definition}[Stochastic process]
@@ -436,30 +436,30 @@ Below, we state some further properties of conditional expectations.
     sequence of random variables $(X_t)_{t\in T}$, where $T \subset \R$
     is some set of indeces, is called a
     \textbf{stochastic process}.
-    Let $(\mathcal{F}_n)_{n\in\N_0}$ be a filtration on
-    $(\Omega, \mathcal{F}, \Prob)$. A stochastic process $X := (X_n)_{n\in\N_0}$
-    is called \textbf{adapted to $(\mathcal{F}_n)_{n\in\N_0}$}, if
-    $X_n$ is $\mathcal{F}_n$-measurable for all $n\in\N_0$. 
+    Let $(\mathcal{F}_k)_{k\in\N_0}$ be a filtration on
+    $(\Omega, \mathcal{F}, \Prob)$. A stochastic process $X := (X_k)_{k\in\N_0}$
+    is said to be \textbf{adapted to $(\mathcal{F}_k)_{k\in\N_0}$}, if
+    $X_k$ is $\mathcal{F}_k$-measurable for all $k\in\N_0$. 
 \end{definition}
 
 Clearly, any stochastic process is adapted to their natural filtration.
 
 \begin{definition}[Martingale]
-    Let $X := (X_n)_{n\in\N}$ be a stochastic process on a
+    Let $X := (X_k)_{k\in\N_0}$ be a stochastic process on a
     filtered probability space
-    $(\Omega, \mathcal{F}, \Prob, (\mathcal{F}_n)_{n\in\N_0})$.
+    $(\Omega, \mathcal{F}, \Prob, (\mathcal{F}_k)_{k\in\N_0})$.
     Then, we say that $X$ is a \textbf{martingale}, if the following conditions are satisfied:
     \begin{enumerate}
-        \item $\E|X_n| < \infty$ for all $n\in\N_0$.
-        \item $X$ is adapted to $(\mathcal{F}_n)_{n\in\N_0}$, i.\,e. $X_n$ is $\mathcal{F}_n$-measurable for all $n\in\N_0$.
-        \item $\E(X_{n+1} \mid X_{n}) = X_n$ for all $n\in\N_0$.
+        \item $\E|X_k| < \infty$ for all $k\in\N_0$.
+        \item $X$ is adapted to $(\mathcal{F}_k)_{k\in\N_0}$, i.\,e. $X_k$ is $\mathcal{F}_k$-measurable for all $k\in\N_0$.
+        \item $\E(X_{k+1} \mid X_{k}) = X_k$ for all $k\in\N_0$.
     \end{enumerate}
 \end{definition}
 
 \begin{proposition}[Azuma-Hoeffding inequality]
     \label{prop:azuma-hoeffding}
     Let $(X_k)_{k\in\N_0}$ be a martingale on a filtered probability space
-    $(\Omega, \mathcal{F}, \Prob, (\mathcal{F}_n)_{n\in\N_0})$
+    $(\Omega, \mathcal{F}, \Prob, (\mathcal{F}_k)_{k\in\N_0})$
     and let $(c_k)_{k\in\N}$ be a sequence such that
     \[
         |X_k - X_{k-1}| \leq c_k
@@ -517,8 +517,8 @@ The contents of this section can be found in \cite{Boyd_Vandenberghe_2004,garrig
 \subsection{Convex optimization}
 
 \begin{definition}[Extended real-valued function]
-    The \textbf{extended real number line} is defined as $\bar{R} := \R \cup \{ \pm \infty \}$. 
-    An function $f\colon\R^n\to\bar{\R}$ is called \textbf{extended real-valued function}.
+    The \textbf{extended real number line} is defined as $\bar{\R} := \R \cup \{ \pm \infty \}$. 
+    A function $f\colon\R^n\to\bar{\R}$ is called \textbf{extended real-valued function}.
     An extended real-valued function $f$ is called \textbf{proper},
     if $f(x) > -\infty$ for all $x\in\R^n$ and there exists a point $x\in\R^n$ such that $f(x) < \infty$.
     The \textbf{(effective) domain} of $f\colon\R^n\to\bar{\R}$ is defined as
@@ -536,8 +536,7 @@ The contents of this section can be found in \cite{Boyd_Vandenberghe_2004,garrig
     \begin{align*}
         f((1-t) x + t y) \leq (1-t) f(x) + t f(y)
     \end{align*}
-    for all $x, y\in\R^n$ and all $t\in (0, 1)$. We say that $f$ is \textbf{concave} if
-    $-f$ is convex.
+    for all $x, y\in\R^n$ and all $t\in (0, 1)$.
 \end{definition}
 % \textcolor{red}{TODO: Come back to the following.}
 % The following two propositions together imply that inequality constraints
@@ -592,7 +591,7 @@ The contents of this section can be found in \cite{Boyd_Vandenberghe_2004,garrig
     and we call this set the \textbf{subdifferential of} $f$ \textbf{at} $x$.
     If $\partial f(x) \neq \emptyset$, then we call $f$ \textbf{subdifferentiable at} $x$.
     If $f$ is subdifferentiable for all $x\in\R^n$, we call $f$ \textbf{subdifferentiable}.
-    For $x\ni\dom(f)$, we set $\partial f(x) = \emptyset$.
+    For $x\notin\dom(f)$, we set $\partial f(x) = \emptyset$.
     If $f$ is subdifferentiable at $x\in\R^n$, then we use the notation
     \[
         \tilde{\nabla} f(x)
