@@ -279,7 +279,7 @@ by the following lemma.
             it follows that the family $(\mathcal{X}_k^\star)_{k\in\N_0}$ is uniformly bounded.
             In particular, since $f_{\leq f(\hat{x}) + c}$ is also closed,
             by continuity of $f$, and thus compact, it follows that the image of the set
-            $f_{\leq f(\hat{x}) + c}$ under the continuous map $\Pi_{\mathcal{X}}$
+            $f_{\leq f(\hat{x}) + c}$ under the continuous map $\Pi_{\mathcal{X}}$ (\cref{prop:projection-is-lipschitz})
             is compact. Therefore, we obtain
             \[
                 \sup_{k\in\N} \sup_{x_k^\star \in \mathcal{X}_k^\star} 
@@ -1171,7 +1171,7 @@ We are now ready to prove the main theorem of this section.
     \cref{lem:robbins-siegmund}, which implies that with probability one the sequence
     $\norm{x^\star - x_{k}}^2$ converges and
     $\sum_{k=0}^\infty \eta_k\E_k(f_{k}(x_{k+1}) - f_{k}(x_k^\star)) < \infty$.
-    By the bounded convergence theorem (\textcolor{red}{TODO: add ref}), it further holds that
+    By the bounded convergence theorem, \cref{prop:bounded-convergence-theorem}, it further holds that
     \begin{align*}
         \infty > \E\Big( \sum_{k=0}^\infty \eta_k\E_k(f_{k}(x_{k+1}) - f_{k}(x_k^\star)) \Big)
         &=
@@ -1263,7 +1263,7 @@ satisfy certain conditions, which are captured in the following assumption.
     \]
     almost surely.
     We will now analyze $\norm{x_{k+1} - x_k}$. Let $y_k := \prox_{\eta_k r} (x_k)$. Then, using
-    the triangle inequality and the nonexpansiveness property of the proximal operator (\textcolor{red}{TODO}),
+    the triangle inequality and the Lipschitz property of the proximal operator (\cref{prop:prox-is-lipschitz}),
     we have
     \begin{align*}
         \norm{x_{k+1} - x_k} &= \norm{x_{k+1} - y_k + y_k - x_k} \\
@@ -1279,7 +1279,7 @@ satisfy certain conditions, which are captured in the following assumption.
     \[
         \tilde{\nabla} r(y_k) + \frac{y_k - x_k}{\eta_k} = 0 \enspace\iff\enspace \frac{x_k - y_k}{\eta_k} \in \partial r(y_k).
     \]
-    Since $x_k$ is in the domain of $r$ for all $k\in\N$ \textcolor{red}{(TODO)},
+    Since $x_k$ is in the domain of $r$ for all $k\in\N$ (\cref{lem:basic-properties}),
     we can now use the above, together with convexity, to get
     \[
         r(x_k) - r(y_k) \geq \langle \eta_k^{-1} (x_k - y_k), x_k - y_k \rangle = \eta_k^{-1} \norm{x_k - y_k}^2,
@@ -1598,7 +1598,7 @@ satisfy certain conditions, which are captured in the following assumption.
     \end{align*}
     where we used $d_{K+1} \geq 0$ in the last step.
     The distance functional $x\mapsto\dist(x,\mathcal{X})$
-    is convex (\textcolor{red}{TODO: Show this in an example.}), so if we divide both sides of
+    is convex (\cref{prop:distance-functional-is-convex}), so if we divide both sides of
     the above inequality by $\tau \cdot S_{k_1, K}$, we obtain
     \begin{align*}
         \dist(\bar{x}_{k_1, K}, \mathcal{X})
@@ -1950,7 +1950,7 @@ satisfy certain conditions, which are captured in the following assumption.
     \end{align*}
     where we used $d_{K+1} \geq 0$ in the last step.
     The distance functional $x\mapsto\dist(x,\mathcal{X})$
-    is convex (\textcolor{red}{TODO: Show this in an example.}), so if we divide both sides of
+    is convex (\cref{prop:distance-functional-is-convex}),), so if we divide both sides of
     the above inequality by $\tau \cdot S_{k_1, K}$, we obtain
     \begin{align*}
         \dist(\bar{x}_{k_1, K}, \mathcal{X})

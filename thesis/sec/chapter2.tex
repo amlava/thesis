@@ -191,6 +191,16 @@ follow directly from \cref{prop:integrals}.
     In particular: If $X^2$ is integrable, then $X$ must also be integrable.
 \end{proposition}
 
+\begin{proposition}[Boubnded convergence theorem]
+    \label{prop:bounded-convergence-theorem}
+    Let $(\Omega, \mathcal{F}, \Prob)$ be a probability space and let $(X_k)_{k\in\N_0}$ be a sequence
+    of uniformly bounded real-valued random variables on $\Omega$ such that $\lim_{k\to\infty} X_k = X$
+    almost surely for some integrable random variable $X$. Then, it holds that
+    \[
+        \lim_{k\to\infty} \E(X_k) = \E(X).
+    \]
+\end{proposition}
+
 \begin{definition}
     Let $(\Omega, \mathcal{F}, \Prob)$ be a probability space and let $X\colon \Omega \to \R^n$ be a random variable.
     If $X^2$ is integrable, we define the \textbf{variance of} $X$, denoted by $\Var(X)$, as $\Var(X) := \E|\!|X-\E(X)|\!|^2$.
@@ -749,6 +759,20 @@ Clearly, strongly convex functions are convex.
     For a nonempty closed convex set $C\subset\R^n$, the projection operator $\Pi_C$ is convex.
 \end{proposition}
 
+\begin{definition}[Distance functional]
+    For a nonempty set $C\subset\R^n$, the \textbf{(euclidian) distance functional} $\dist(\cdot, C)\colon\R^n\to[0,\infty)$
+    is defined as
+    \[
+        \dist(x, C) := \inf_{y\in C} \norm{x - y}.
+    \]
+\end{definition}
+
+\begin{proposition}[Distance functional is convex]
+    \label{prop:distance-functional-is-convex}
+    For a nonempty convex set $C\subset\R^n$, the distance functional $\dist(\cdot, C)$ is convex.
+    If, additonally, $C$ is closed, it holds that $\dist(x, C) = \norm{x - \Pi_{C}(x)}$ for all $x\in\R^n$.
+\end{proposition}
+
 \subsection{Stochastic optimization}
 
 Throughout this subsection, we fix an arbitrary probability space $(\Omega, \mathcal{F}, \Prob)$.
@@ -852,6 +876,7 @@ Note that, under the stated assumptions, the minimization problem always has a u
 $x\mapsto r(x) + \frac{1}{2\eta}\norm{x - y}^2$ is strongly convex (\cref{prop:strongly-convex-implies-unique-minimizer}).
 A property that will be useful for us is the following.
 \begin{proposition}[Prox is Lipschitz]
+    \label{prop:prox-is-lipschitz}
     Let $r\colon\R^n \to \bar{\R}$ be proper and convex, and let $\eta \in (0,\infty)$. The
     proximity operator $\prox_{\eta r}\colon \R^n\to\R^n$ is $1$-Lipschitz, i.\,e.
     \[
