@@ -121,7 +121,7 @@ of \cref{alg:seqprox-sgd}, we will make the following basic assumptions.
             $\mu\in[0, \infty)$.
             If $\mu = 0$, we additionally assume that $f$ has bounded lower-level sets.
         \item The function $r\colon\R^d\to\bar{\R}$ is proper, convex, and
-        locally Lipschitz continuous on $\dom(r)$. (\textcolor{red}{TODO: Remove the "locally" part})
+        Lipschitz continuous on $\dom(r)$ with constant $L_r$.
         \item The matrix-valued map $A\colon\R^p\to\R^{m\times n}$, and the vector valued
             map $b\colon\R^p\to\R^m$, are both (Borel-)measurable.
         \item The sequence $(\gamma_k)_{k\in\N_0}$ is nondecreasing and unbounded.
@@ -178,11 +178,11 @@ by the following lemma.
             In particular, $\pi_k$ is Lipschitz continuous for all $k\in\N$.
         \item The objective $f$ of \eqref{eq:main-problem-copy} is $\mu$-strongly convex with
             $\mu\in[0, \infty)$, locally
-            Lipschitz continuous, and subdifferentiable on $\dom(f)$. Further,
+            Lipschitz continuous on $\dom(f)$, and subdifferentiable on $\dom(f)$. Further,
             $f$ has bounded lower-level sets.
         \item The objectives $(f_k)_{k\in\N_0}$ of \eqref{eq:main-problem-penalized} are
         $\mu$-strongly convex with $\mu\in[0, \infty)$, locally
-            Lipschitz continuous, and subdifferentiable on $\dom(f_k)$.
+            Lipschitz continuous on $\dom(f_k)$, and subdifferentiable on $\dom(f_k)$.
             Further, $f_k$ has bounded lower-level sets for all $k\in\N_0$.
         \item The functions $(\psi_k)_{k\in\N_0}$ are differentiable and $\mu$-strongly convex with
             $\mu\in[0, \infty)$.
@@ -221,18 +221,19 @@ by the following lemma.
         almost surely.
         In particular, $\pi_k$ is Lipschitz continuous for all $k\in\N_0$.
         \item By $L$-smoothness of $F_\zeta$, the expectation $\E(F_\zeta)$ is also $L$-smooth, thus
-            locally Lipschitz. By local Lipschitz continuity of $r$, it follows that $f = \E(F_\zeta) + r$ is also
-            locally Lipschitz. Similarly, as the sum of a $\mu$-strongly convex function and a convex
+            locally Lipschitz. By Lipschitz continuity of $r$ on $\dom(r)$, it follows that $f = \E(F_\zeta) + r$ is also
+            Lipschitz continuous on $\dom(r) = \dom(f)$. Similarly, as the sum of a $\mu$-strongly convex function and a convex
             function, $f$ is $\mu$-strongly convex. Any proper, convex, and continuous function
             is subdifferentiable.
             Finally, $f$ has bounded lower-level sets per assumption, if $\mu = 0$,
-            and by properties of strongly convex functions, if $\mu > 0$ (see \textcolor{red}{TODO: Ref a proposition}).
-        \item By the above, $f$ is $\mu$-strongly convex, locally
-            Lipschitz continuous, and subdifferentiable on $\dom(f)$. Combining this with the fact that
+            and by properties of strongly convex functions, if $\mu > 0$ (see \cref{prop:strongly-convex-implies-lower-level-sets}).
+        \item By the above, $f$ is $\mu$-strongly convex,
+            Lipschitz continuous on $\dom(f)$, and subdifferentiable on $\dom(f)$.
+            Combining this with the fact that
             $\pi_k$ is convex, Lipschitz continuous, and differentiable, as well as $\gamma_k > 0$,
             it follows that $f_k = f + \gamma_k \pi_k$
-            is also $\mu$-strongly convex, locally
-            Lipschitz continuous, and subdifferentiable on $\dom(f)$, for all $k\in\N_0$.
+            is also $\mu$-strongly convex,
+            Lipschitz continuous on $\dom(f)$, and subdifferentiable on $\dom(f)$, for all $k\in\N_0$.
             Bounded lower-level sets follow from the same argument as above.
             Finally, the claim follows from
             $\dom(f) = \dom(f_k) \enspace \forall k\in\N_0$.
@@ -250,9 +251,9 @@ by the following lemma.
             The set $\mathcal{X}$ is the intersection of the closed convex sets
             $\{\, x\in\dom(f) \mid A(z)x - b(z) \leq 0 \,\}$ over $z$ in the support of $\xi$.
             Thus, $\mathcal{X}$ is itself closed and convex, which implies that $f$
-            attains a minimizer on $\mathcal{X}$ (\textcolor{red}{TODO: Ref a proposition}).
+            attains a minimizer on $\mathcal{X}$, by \cref{prop:convex+bounded-lower-level-sets-implies-minimizer}.
             For $k\in\N_0$, we have also shown that
-            $f_k$ is convex and has bounded lower-level sets, which implies that $f_k$ has an
+            $f_k$ is convex and has bounded lower-level sets, so the same proposition implies that $f_k$ has an
             unconstrained minimizer.
             Compactness of the solution sets
             follows from continuity and the bounded lower-level sets properties
@@ -1278,21 +1279,20 @@ satisfy certain conditions, which are captured in the following assumption.
     \[
         \tilde{\nabla} r(y_k) + \frac{y_k - x_k}{\eta_k} = 0 \enspace\iff\enspace \frac{x_k - y_k}{\eta_k} \in \partial r(y_k).
     \]
-    Since $x_k$ is in the domain of $r$ for all $k\in\N$ \textcolor{red}{(TODO)} (not necessarily
-    for $k=0$), we can now use the above, together with convexity, to get
+    Since $x_k$ is in the domain of $r$ for all $k\in\N$ \textcolor{red}{(TODO)},
+    we can now use the above, together with convexity, to get
     \[
         r(x_k) - r(y_k) \geq \langle \eta_k^{-1} (x_k - y_k), x_k - y_k \rangle = \eta_k^{-1} \norm{x_k - y_k}^2,
     \]
     for all $k\in\N$.
-    Finally, local Lipschitz continuity of $r$  (\cref{ass:basic-assumptions}) yields (a.\,s.)
+    Finally, Lipschitz continuity of $r$ on $\dom(r)$ (\cref{ass:basic-assumptions}) yields
     \[
         L_r \norm{x_k - y_k} \geq r(x_k) - r(y_k) \geq \eta_k^{-1} \norm{x_k - y_k}^2
         \enspace\iff\enspace
         \norm{x_k - y_k} \leq \eta_k L_r,
     \]
-    for some $L_r \in (0,\infty)$, where we again used that $(x_k)_{k\in\N_0}$ is bounded almost surely
-    (\cref{thm:almost-sure-convergence})
-    and the prox operator is nonexpansive (\textcolor{red}{TODO}).
+    almost surely, where we again used that $(x_k)_{k\in\N_0}$ is bounded almost surely
+    (\cref{thm:almost-sure-convergence}).
     Combining with \eqref{eq:proof:lem:functional-upper-bound}, we therefore obtain
     \begin{align*}
         2\eta_k(f_k(x_k) - f_k(x))

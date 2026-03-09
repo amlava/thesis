@@ -495,6 +495,7 @@ The contents of this section can be found in \cite{Boyd_Vandenberghe_2004,garrig
 \end{proposition}
 
 \begin{proposition}
+    \label{prop:smoothness-implies-local-lipschitz}
     Let $f\colon \R^n \to \R$ be $L$-smooth. Then, $f$ is \textbf{locally Lipschitz continuous}, i.\,e.
     for all bounded subsets $B\subset\R^n$ there exists a constant $L_B\in(0,\infty)$ such that
     \[
@@ -513,8 +514,6 @@ The contents of this section can be found in \cite{Boyd_Vandenberghe_2004,garrig
         \dom(f) := \{\, x\in\R^n \mid f(x) < \infty \,\}.
     \]
 \end{definition}
-
-
 
 \begin{definition}[Convex function]
     A set $C\subset\R^n$ is called \textbf{convex} if, for all 
@@ -589,7 +588,7 @@ The contents of this section can be found in \cite{Boyd_Vandenberghe_2004,garrig
 \end{definition}
 
 \begin{proposition}
-    Let $f\colon \R^n\to\R$ be differentiable. Then $f$ is convex if and only if
+    Let $f\colon \R^n\to\R$ be differentiable. Then, $f$ is convex if and only if
     \[
         f(y) \geq f(x) + \langle \nabla f(x), y-x \rangle
     \]
@@ -597,7 +596,8 @@ The contents of this section can be found in \cite{Boyd_Vandenberghe_2004,garrig
     $\partial f(x) = \{ \nabla f(x) \}$ for all $x\in\R^n$.
 \end{proposition}
 
-\begin{proposition}
+\begin{proposition}[First-order condition for minimizers]
+    \label{prop:first-order-condition-for-minimizer}
     Let $f\colon \R^n\to\bar{\R}$ be convex and subdifferentiable, and let $C\subset\R^n$ be a convex set.
     Then, a point $x^\star\in\R^n$ minimizes $f$ on $C$
     if and only if there exists a subgradient $g \in \partial f(x^\star)$, such that
@@ -700,11 +700,13 @@ Clearly, strongly convex functions are convex.
 \end{definition}
 
 \begin{proposition}
-    Let $f\colon\R^n\to\bar{\R}$ be proper, convex, and continuous. If $f$ has bounded lower level sets, then $f$ attains a minimizer
-    on $\R^n$.
+    \label{prop:convex+bounded-lower-level-sets-implies-minimizer}
+    Let $f\colon\R^n\to\bar{\R}$ be proper, convex, and continuous, and let $C\subset\R^n$ be a closed convex set.
+    If $f$ has bounded lower level sets, then $f$ attains a minimizer on $C$.
 \end{proposition}
 
 \begin{proposition}
+    \label{prop:strongly-convex-implies-lower-level-sets}
     Strongly convex functions have bounded lower-level sets.
 \end{proposition}
 
@@ -728,13 +730,18 @@ Clearly, strongly convex functions are convex.
     for $x\in\R^n$.
 \end{definition}
 
-\begin{proposition}
+\begin{proposition}[Projection is Lipschitz]
     \label{prop:projection-is-lipschitz}
     For a closed convex set $C\subset\R^n$, the projection operator $\Pi_C$ is $1$-Lipschitz continuous, that is
     \[
         \norm{\Pi_C(x) - \Pi_C(y)} \leq \norm{x - y}
     \]
     for all $x,y\in\R^n$.
+\end{proposition}
+
+\begin{proposition}[Projection is convex]
+    \label{prop:projecton-is-convex}
+    For a closed convex set $C\subset\R^n$, the projection operator $\Pi_C$ is convex.
 \end{proposition}
 
 \subsection{Stochastic optimization}
@@ -838,7 +845,15 @@ To deal with such objectives effectively, we use the following concept.
 \end{definition}
 Note that, under the stated assumptions, the minimization problem always has a unique solution, since the objective
 $x\mapsto r(x) + \frac{1}{2\eta}\norm{x - y}^2$ is strongly convex (\cref{prop:strongly-convex-implies-unique-minimizer}).
-
+A property that will be useful for us is the following.
+\begin{proposition}[Prox is Lipschitz]
+    Let $r\colon\R^n \to \bar{\R}$ be proper and convex, and let $\eta \in (0,\infty)$. The
+    proximity operator $\prox_{\eta r}\colon \R^n\to\R^n$ is $1$-Lipschitz, i.\,e.
+    \[
+        \norm{\prox_{\eta r}(x) - \prox_{\eta r}(y)} \leq \norm{x - y}
+    \]
+    for all $x,y\in\R^n$.
+\end{proposition}
 We can now describe the \textbf{stochastic proximal gradient method} in \cref{alg:prox-sgd}.
 \begin{algorithm}[t]
 \caption{Stochastic Proximal Gradient Descent (SPGD)}
