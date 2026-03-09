@@ -724,6 +724,16 @@ Clearly, strongly convex functions are convex.
     on any nonempty closed convex set.
 \end{proposition}
 
+\begin{proposition}
+    \label{prop:convex-lipschitz-then-uniformly-bounded-subgradients}
+    Let $f\colon\R^n\to\bar{R}$ be convex and $L$-Lipschitz continuous on $\dom(f)$. Then, $f$ is subdifferentiable
+    and the subgradients are uniformly bounded by $L$, i.\,e.
+    \[
+        \sup_{\tilde{\nabla} f(x) \in \partial f(x)} \norm{ \tilde{\nabla} f(x) } \leq L
+    \]
+    for all $x\in\dom(f)$.
+\end{proposition}
+
 % \begin{example}
 %     \label{ex:convex-functions}
 %     Examples of (strongly) convex functions include

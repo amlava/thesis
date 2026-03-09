@@ -189,10 +189,10 @@ by the following lemma.
         \item Let $B\subset\R^n$ be a bounded subset. Then, for all $k\in\N_0$, the stochastic gradients
         defined by
         \[
-            g_k(x) := \nabla F_\zeta(x) + \gamma_k \nabla h_k(x; A(\xi), b(\xi)),
+            g_k(x, \omega) := \nabla F_\zeta(\omega)(x) + \gamma_k \nabla h_k(x; A(\xi(\omega)), b(\xi(\omega))),
         \]
-        for $x\in\R^n$,
-        satisfy $\sup_{x\in B} \norm{g_k(x)} = \mathcal{O}(\gamma_k)$ almost surely.
+        for $x\in\R^n,\omega\in\Omega$,
+        satisfy $\sup_{x\in B} \norm{g_k(x, \cdot)} = \mathcal{O}(\gamma_k)$ almost surely.
         \item The set $\mathcal{X}^\star$ is nonempty compact. For all $k\in\N_0$,
             the set $\mathcal{X}_k^\star$ is nonempty, compact, and the family
             $(\mathcal{X}_k^\star)_{k\in\N_0}$ is uniformly bounded.
@@ -967,22 +967,47 @@ involves a nonnegative term plus a small negative term.
     \[
         f_k(x_{k+1}) - f_k(x^\star) \geq (f_k(x_{k+1}) - f_k(x_k^\star)) + f_k(x_k^\star) - f_k(\proj(x_k^\star)) - \gamma_k\alpha_k.
     \]
-    For the next steps, we let $\tilde{\nabla} f(x)$ denote the minimum-norm subgradient
-    in $\partial f(x)$, for all $x\in\dom(f)$.
+    For the next steps, for all $x\in\dom(f)$ and $k\in\N$,
+    we let $\tilde{\nabla} f(x) \in \partial f_k(x)$ denote an arbitrary,
+    but fixed subgradient of $f_k$ at $x$.
     To analyze $f_k(x_k^\star) - f_k(\proj(x_k^\star))$, we first use convexity and Cauchy-Schwarz to get
     \[
         f_k(x_k^\star) - f_k(\proj(x_k^\star))
         \geq \langle \tilde{\nabla} f_k(\proj(x_k^\star)), x_k^\star - \proj(x_k^\star) \rangle
         \geq -\norm{\tilde{\nabla} f_k(\proj(x_k^\star))} \dist(x_k^\star, \mathcal{X}).
     \]
-    The sequence $(x_k^\star)_{k\in\N}$ converges to $x^\star$
-    (\textcolor{red}{TODO: this is wrong, but need only boundedness anyway.}), which implies, by continuity
-    of the projection map, $\lim_{k\to\infty} \proj(x_k^\star) = \proj(x^\star) = x^\star$.
-    In particular, $(\proj(x_k^\star))_{k\in\N}$ is bounded, so \cref{lem:basic-properties} implies
-    that there exists $K_1\in\N$ such that $\sup_{k\in\N} \norm{\tilde{\nabla} f_k(\proj(x_k^\star))}
-    \leq c_1 \gamma_k$ for some $c_1\in(0,\infty)$ and all $k\geq K_1$. Hence,
+    The sequence $(x_k^\star)_{k\in\N}$ is bounded (\cref{lem:basic-properties}), which implies
+    that $(\proj(x_k^\star))_{k\in\N}$ is bounded, by continuity
+    of the projection map (\cref{prop:projection-is-lipschitz}).
+    \Cref{lem:basic-properties} says
+    that there exists $K_1\in\N$ such that
+    the stochastic gradient
     \[
-        f_k(x_k^\star) - f_k(\proj(x_k^\star)) \geq -c_1 \gamma_k\, \dist(x_k^\star,\mathcal{X}),
+        g_k(x, \omega) := \nabla F_\zeta(\omega)(x) + \gamma_k \nabla h_k(x; A(\xi(\omega)), b(\xi(\omega)))
+    \]
+    satisfies, for any bounded set $B\subset\R^n$,
+    \begin{equation}
+        \label{eq:proof:lem:recursion-for-almost-sure-convergence:asymptotic-of-g_k}
+        \norm{g_k(x, \cdot)} = \mathcal{O}(\gamma_k)
+    \end{equation}
+    almost surely, for all $x\in B$.
+    By $L_r$-Lipschitz-continuity of $r$, we know that any subgradient $\norm{\tilde{\nabla} r(x)}$
+    is bounded by $L_r$, for all $x\in\dom(r)$ (\cref{prop:convex-lipschitz-then-uniformly-bounded-subgradients}).
+    It follow that, for all $x\in\R^n$,
+    \[
+        \norm{\tilde{\nabla} f_k(x)} = \norm{\E(g_k(x, \cdot)) + \tilde{\nabla} r(x)}
+        \leq \E\norm{g_k(x, \cdot)} + L_r.
+    \]
+    Combining with \eqref{eq:proof:lem:recursion-for-almost-sure-convergence:asymptotic-of-g_k},
+    and noting that we have already established that $(\proj(x_k^\star))_{k\in\N_0}$ is bounded almost surely,
+    we obtain
+    \[
+        \sup_{r\in\N_0} \norm{\tilde{\nabla} f_k(\proj(x_r^\star))} = \mathcal{O}(\gamma_k)
+    \]
+    almost surely. Hence, there exist constants $K_1\in\N$ and $c_1\in(0,\infty)$, such that
+    \[
+        \sup_{r\in\N} \norm{\tilde{\nabla} f_k(\proj(x_r^\star))}
+        \leq c_1 \gamma_k
     \]
     for all $k\geq K_1$.
     By \cref{thm:distance-to-feasibility-bound}, it holds that there exist
