@@ -48,30 +48,32 @@ which induce the sequence of unconstrained problems
     \min_{x\in\R^n}
     \left\{\, f_k(x) := f(x) + \gamma_k \pi_k(x) \,\right\},
 \end{equation}
-for $k\in\N_0$, where $(\gamma_k)_{k\in\N_0}$ is a sequence of positive real numbers.
-We assume that the penalty functions will always take the form
-\[
-    \pi_k(x) := \E(h_k(x; A(\xi), b(\xi))),
-\]
-where, for all $k\in\N_0$,
-we let $(h_k)_{k\in\N_0}$ be any sequence of functions from
-$\R^n \times \R^{m\times n} \times \R^m$ to $\R$ with the following properties:
-\begin{enumerate}
-    \item For all $k\in\N_0$, $h_k$ is convex and differentiable.
-    \item $\pi_k(x) \geq \E\norm{(A(\xi)x - b(\xi))_+}_1$ for all $x\in\R^n$ and $k\in\N_0$.
-    \item There exists a sequence $(\alpha_k)_{k\in\N_0}$ such that
-    $\pi_k(\tilde{x}) \leq \alpha_k$ and $\sup_{k\in\N_0} \gamma_k\alpha_k < \infty$
-    for all $k\in\N_0$ and all feasible points $\tilde{x}\in\mathcal{X}$.
-    \item The gradients of $(h_k)_{k\in\N_0}$ have uniformly bounded gradient norm:
-        \[
-            \sup_{k\in\N_0}\sup_{x\in\R^n} \norm{\nabla h_k(x; A(\xi), b(\xi))} < \infty
-        \]
-    almost surely.
-\end{enumerate}
+for $k\in\N_0$, where $(\gamma_k)_{k\in\N_0}$ is a sequence of positive real numbers. The properties
+of $(\pi_k)_{k\in\N_0}$ are specified below in \cref{ass:basic-assumptions}.
+% We assume that the penalty functions will always take the form
+% \[
+%     \pi_k(x) := \E(h_k(x; A(\xi), b(\xi))),
+% \]
+% where, for all $k\in\N_0$,
+% we let $(h_k)_{k\in\N_0}$ be any sequence of functions from
+% $\R^n \times \R^{m\times n} \times \R^m$ to $\R$ with the following properties:
+% \begin{enumerate}
+%     \item For all $k\in\N_0$, $h_k$ is convex and differentiable.
+%     \item $\pi_k(x) \geq \E\norm{(A(\xi)x - b(\xi))_+}_1$ for all $x\in\R^n$ and $k\in\N_0$.
+%     \item There exists a sequence $(\alpha_k)_{k\in\N_0}$ such that
+%     $\pi_k(\tilde{x}) \leq \alpha_k$ and $\sup_{k\in\N_0} \gamma_k\alpha_k < \infty$
+%     for all $k\in\N_0$ and all feasible points $\tilde{x}\in\mathcal{X}$.
+%     \item The gradients of $(h_k)_{k\in\N_0}$ have uniformly bounded gradient norm:
+%         \[
+%             \sup_{k\in\N_0}\sup_{x\in\R^n} \norm{\nabla h_k(x; A(\xi), b(\xi))} < \infty
+%         \]
+%     almost surely.
+% \end{enumerate}
 Further, for $k\in\N_0$, we define the solution set of problem \eqref{eq:main-problem-penalized} as
 \[
     \mathcal{X}^\star_k := \{\, x^\star_k\in\dom(f) \mid f_k(x^\star_k) \leq f(x) \, \forall x\in\R^n \,\}.
 \]
+
 Since proximal methods seperate the smooth part of the above objective,
 given by $x\mapsto \E(F_\zeta(x)) + \gamma_k \pi_k(x)$,
 from the possibly nonsmooth part, $x\mapsto r(x)$, it is useful to also define the functions
@@ -81,8 +83,8 @@ from the possibly nonsmooth part, $x\mapsto r(x)$, it is useful to also define t
 for all $k\in\N_0$.
 
 We will denote the iterates of \cref{alg:seqprox-sgd} by $(x_k)_{k\in\N}$.
-The parameters $(w_k)_{k\in\N_0}$ are used to compute the final output - a weighted average
-of the iterates of the first $K\in\N$ iterations - given by
+The parameters $(w_k)_{k\in\N_0}$ are used to compute the final output -- a weighted average
+of the iterates of the first $K\in\N$ iterations -- given by
 \[
     \bar{x}_K := S_K^{-1} \sum_{k=1}^K w_k x_k,
 \]
@@ -126,6 +128,25 @@ of \cref{alg:seqprox-sgd}, we will make the following basic assumptions.
         \item The iterate weights $(w_k)_{k\in\N}$ are nonnegative and $w_k > 0$ for at least
             one $k\in\{\,1,\dots, K\,\}$, where $K\in\N$ is the number of iterations of \cref{alg:seqprox-sgd}.
         \item There exists at least one feasible point.
+        \item The functions $(\pi_k)_{k\in\N_0}$ in \eqref{eq:main-problem-penalized} have the form
+            \[
+                \pi_k(x) := \E(h_k(x; A(\xi), b(\xi)))
+            \]
+            for all $k\in\N_0$, where, for all $k\in\N_0$,
+            we let $(h_k)_{k\in\N_0}$ be any sequence of functions from
+            $\R^n \times \R^{m\times n} \times \R^m$ to $\R$ with the following properties:
+            \begin{enumerate}
+                \item For all $k\in\N_0$, $h_k$ is convex and differentiable.
+                \item For all $x\in\R^n$ and $k\in\N_0$, it holds that $\pi_k(x) \geq \E\norm{(A(\xi)x - b(\xi))_+}_1$.
+                \item There exists a sequence $(\alpha_k)_{k\in\N_0}$ such that
+                $\pi_k(\tilde{x}) \leq \alpha_k$ and $\sup_{k\in\N_0} \gamma_k\alpha_k < \infty$
+                for all $k\in\N_0$ and all feasible points $\tilde{x}\in\mathcal{X}$.
+                \item The gradients of $(h_k)_{k\in\N_0}$ have uniformly bounded gradient norm:
+                    \[
+                        \sup_{k\in\N_0}\sup_{x\in\R^n} \norm{\nabla h_k(x; A(\xi), b(\xi))} < \infty
+                    \]
+                almost surely.
+        \end{enumerate}
     \end{enumerate}
 \end{assumption}
 
