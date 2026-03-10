@@ -693,14 +693,14 @@ Clearly, strongly convex functions are convex.
 %     is $\mu$-strongly convex.
 % \end{proposition}
 
-\begin{proposition}[Minimium of convex function]
-    \label{prop:strongly-convex-implies-unique-minimizer}
-    If $f\colon \R^n\to\bar{\R}$ is convex and continuous, and $C\subset\dom(f)$ is nonempty, convex, and compact,
-    then $f$ admits a minimizer
-    on $C$, i.\,e. there exists a point
-    $x^\star\in C$ such that $f(x^\star) \leq f(x)$ for all $x\in C$.
-    If, additionally, $f$ is strongly convex, then the minimizer is unique.
-\end{proposition}
+% \begin{proposition}[Minimium of convex function]
+%     \label{prop:strongly-convex-implies-unique-minimizer}
+%     If $f\colon \R^n\to\bar{\R}$ is convex and continuous, and $C\subset\dom(f)$ is nonempty, convex, and compact,
+%     then $f$ admits a minimizer
+%     on $C$, i.\,e. there exists a point
+%     $x^\star\in C$ such that $f(x^\star) \leq f(x)$ for all $x\in C$.
+%     If, additionally, $f$ is strongly convex, then the minimizer is unique.
+% \end{proposition}
 
 \begin{definition}[Level sets]
     Let $f\colon\R^n\to\bar{\R}$ be an extended real-valued function. We say that $f$ has \textbf{bounded lower-level
@@ -721,7 +721,8 @@ Clearly, strongly convex functions are convex.
 \begin{proposition}
     \label{prop:strongly-convex-implies-lower-level-sets}
     Strongly convex functions have bounded lower-level sets and attain a unique minimizer
-    on any nonempty closed convex set.
+    on any nonempty closed convex set. In particular, strongly convex functions defined on $\R^n$
+    attain a unique (global) minimizer on $\R^n$.
 \end{proposition}
 
 \begin{proposition}
@@ -882,7 +883,7 @@ To deal with such objectives effectively, we use the following concept.
     for $x\in\R^n$.
 \end{definition}
 Note that, under the stated assumptions, the minimization problem always has a unique solution, since the objective
-$x\mapsto r(x) + \frac{1}{2\eta}\norm{x - y}^2$ is strongly convex (\cref{prop:strongly-convex-implies-unique-minimizer}).
+$x\mapsto r(x) + \frac{1}{2\eta}\norm{x - y}^2$ is strongly convex (\cref{prop:strongly-convex-implies-lower-level-sets}).
 A property that will be useful for us is the following.
 \begin{proposition}[Prox is Lipschitz]
     \label{prop:prox-is-lipschitz}
