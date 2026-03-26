@@ -1,1 +1,28 @@
 \chapter*{Abstract}
+
+We study stochastic convex optimization problems with almost sure affine
+inequality constraints of the form
+\begin{equation*}
+    \begin{aligned}
+    &\min_{x \in \mathbb{R}^n} \, \{\, f(x) := \E(F_\xi(x)) + r(x) \,\} \\
+    &\textup{subject to} \quad A(\xi) x - b(\xi) \leq 0 \quad \textnormal{almost surely},
+    \end{aligned}
+\end{equation*}
+allowing for infinitely many constraints and composite objectives.
+To handle the constraints without projections, we develop a single-loop
+penalty-based method inspired by smoothed exact penalties, combined
+with proximal operators to accommodate nonsmooth regularizers and more
+general objective structures. Under reasonable assumptions, we prove convergence in both
+the convex and strongly convex settings.
+In particular, our method attains rates of order
+\[
+    \mathcal{O}\Bigl(\frac{\log^{1/2+\epsilon} K}{\sqrt{K}}\Bigr)
+    \quad\text{and}\quad
+    \mathcal{O}\Bigl(\frac{\log^\epsilon K}{K}\Bigr),
+\]
+for any $\epsilon>0$, respectively, matching the optimal stochastic rates
+up to arbitrarily small logarithmic factors, while remaining projection-free.
+Unlike several related methods, our analysis does not require a global bound
+on the variance of stochastic gradients, and allows for infinitely many constraints.
+Numerical experiments support the theoretical
+findings and illustrate the practical performance of the method.
