@@ -1,11 +1,9 @@
 \chapter{Introduction}
 
-\section{Problem statement and objective}
-
 
 Mathematical optimization is concerned with problems of the form
 \[
-  \min_{x\in \mathcal{X}}  f(x),
+  \min_{x\in \mathcal{X}} \, f(x),
 \]
 where $f\colon\R^n\to\R\cup\{\infty\}$ is a function and
 $\mathcal{X}\subset\dom(f)$ is a set.
@@ -19,145 +17,123 @@ if there exists $x^\star\in\mathcal{X}$ such that $f(x^\star) \leq f(x)$ for all
 then $x^\star$ is called \textit{solution}. The value $f(x^\star)$ is called
 \textit{optimal value} or \textit{minimal value}.
 In practice, the feasible set $\mathcal{X}$ is often defined implicitly through the use of auxillary functions,
-which yields to the formulation
-\begin{equation*}
+which leads to the formulation
+\begin{equation}
+    \label{eq:general-constrained-problem}
     \begin{aligned}
-    &\min_{x \in \mathbb{R}^n} f(x) \\
-    &\textup{subject to (s.\,t.)} \enspace &g(x) \leq 0 \\
-    &\phantom{\textup{s.\,t.}} \enspace &h(x) = 0
+    &\min_{x \in \mathbb{R}^n} \, f(x) \\
+    &\textup{subject to (s.\,t.)} \enspace &g(x) \leq 0 \notag \\
+    &\phantom{\textup{s.\,t.}} \enspace &h(x) = 0 \notag
     \end{aligned}
-\end{equation*}
+\end{equation}
 for functions $g\colon\R^n\to\R^m$, $h\colon\R^n\to\R^\ell$. The feasible
 set is then given by $\mathcal{X} = \{\, x\in\R^n \mid g(x) \leq 0 \text{ and } h(x) = 0 \,\}$.
 An important special case of optimization problems are
-\textit{convex optimization} problems, in which the objective $f$ and
-the map $g$ are convex functions, and $h$ is affine.
+\textit{convex optimization} problems, where the objective $f$ and
+the map $g$ are convex functions, and $h$ is affine \cite{boyd2004convex}.
 Convex problems have (among other things) the highly desirable property that
 every local minimum is a global minimum, which makes
-optimization algorithms that only use local information (like gradients)
+gradient-based optimization algorithms
 work effectively.
 
-In this work, we will condsider
-convex problems that are subject to randomness.
-Such \textit{stochastic optimization} problems
-arise in many applications (\textcolor{red}{TODO: add refs}).
-The problems we will analyze
-take the following general form
+In this work, we will consider
+\textit{stochastic} convex optimization problems
+\cite{robbins1951stochastic,birge2011introduction}, which incorporate uncertainty
+into the problem formulation through the use of random variables.
+Such problems appear in many areas of
+applied mathematics, including machine learning \cite{bottou2018optimization},
+supply chain management \cite{santoso2005stochastic}, and
+portfolio optimization \cite{mulvey1995robust}.
+Specifically, the stochastic optimization problems that we will consider
+take the form
 \begin{equation}
     \label{eq:main-problem}
     \tag{P}
     \begin{aligned}
-    &\min_{x \in \mathbb{R}^n} \, \{\, f(x) := \E(F_\zeta(x)) + r(x) \,\} \\
-    &\textup{s.\,t.} \quad A(\xi) x - b(\xi) \leq 0 \quad \textnormal{almost surely (a.\,s.)},
+    &\min_{x \in \mathbb{R}^n} \, \{\, f(x) := \E(F_\xi(x)) + r(x) \,\} \\
+    &\textup{subject to} \quad A(\xi) x - b(\xi) \leq 0 \quad \textnormal{almost surely},
     \end{aligned}
 \end{equation}
-where $\zeta$ and $\xi$ are a random variables that capture uncertainty in the objective and
+where $\xi$ is a random variable that capture uncertainty in the objective and
 the constraints.
-The objective $f$ is composed of two functions: The expectation
-functional $\E(F_\zeta)\colon\R^n\to\R$, which we assume to
+The objective $f$ is composed of two functions: the expectation
+functional $\E(F_\xi)\colon\R^n\to\R$, which we assume to
 be smooth, and the potentially nonsmooth function $r\colon\R^n\to\R\cup\{\infty\}$,
 which we will refer to as the \textit{regularizer}.
 The constraints are affine inequalities with matrices $A(z)\in\R^{m\times n}$
-and $b(z)\in\R^m$ for $z\in\R^p$.
+and vectors $b(z)\in\R^m$ for $z\in\R^p$.
+We are particularly interested in the case where the number of constraints
+induced by the distribution of $\xi$ are large, and possibly even infinite.
+Notable instances of problems that can be formulated in this way
+include primal support vector machines \cite{fercoq2019almost,hastie2009elements},
+and robust optimization by sampling \cite{ben2009robust,calafiore2005uncertain,xu2020primal}.
 
-Examples of these problems
-appear in numerous areas of applied mathematics. One such domain is optimal control,
-where the randomness often arises from some continuous uncertainty in some
-variables, which leads to an infinite amount of constraints.
-For example, such uncertainty could come
-from an unknown future demand that is subject to gaussian noise (see \cref{ex:inventory-control}).
-In that case, optimization algorithms for solving \eqref{eq:main-problem} need a way
-to deal with the constraints one-by-one or in batches, as a simlutaneous treatment of
-all constraints, like in the classical projected gradient method \cite{nemirovski2009robust},
-would be impossible to implement.
-This holds true even if the number of constraints is not infinite but merely very large,
-as is the case in modern machine learning, where the random variables $\zeta$ and $\xi$ model
-data points in a data set of size $N\in\N$,
-and the decision variable $x$ represents parameters of some statistical model.
-Problem \eqref{eq:main-problem} then takes on the specific form
-\begin{equation*}
-    \begin{aligned}
-    &\min_{x \in \R^n} \left\{\, f(x) = \frac{1}{N} \sum_{i=1}^N F_i(x) + r(x) \,\right\} \\
-    &\textup{s.\,t.} \quad A_i x - b_i \leq 0 \quad \textnormal{for all $i\in\{\, 1,\dots, N \,\}$}.
-    \end{aligned}
-\end{equation*}
-Example problems that can be formulated in this way are support vector machines
-and logistic regression with fairness constraints (\textcolor{red}{TODO}).
+A popular approach to solve \eqref{eq:main-problem} is an iterative method called \textit{stochastic gradient
+descent} (SGD), introduced by Robbins and Monro \cite{robbins1951stochastic}.
+SGD is very similar to the classic \textit{gradient descent} algorithm \cite{boyd2004convex,nocedal2006numerical}.
+The difference is that the gradients are replaced
+by \textit{stochastic gradients}: A stochastic gradient of $f$ at $x\in\R^n$ is a
+random variable $g$ such that $\E(g) = \nabla f(x)$. For example, if $f(x) = \E(F_\xi(x))$ and $F_\xi$
+satisfies certain regularity assumptions, then
+$\nabla f(x) = \E(\nabla F_\xi(x))$, which implies that $\nabla F_\xi(x)$ is a stochastic gradient of $f$
+at $x$ for every $x\in\R^n$.
+The advantage is that the computation of the gradient $\nabla f(x)$ is replaced with the typically (much) cheaper
+computation of $\nabla F_\xi(x)$.
 
-A classical approach to solve \eqref{eq:main-problem} is stochastic subgradient
-descent (SGD) \cite{robbins1951stochastic}: We start from an initial point $x_0\in\R^n$.
-In iteration $k\in\N$, we pick a \textit{step size} $\eta_k\in(0,\infty)$ and a
-\textit{stochastic subgradient} $g_k$ of $f$ at $x_k$.
-Then we set
+Unfortunately, classic SGD is not generally applicable to problems such as \eqref{eq:main-problem},
+because in order to deal with the constraints, the algorithm
+needs to compute the projection $x\mapsto \argmin_{y\in \mathcal{X}} \norm{x - y}$
+onto the feasible set $\mathcal{X}$ in every iteration, where $\norm{\cdot}$ is the euclidian norm.
+This computation is well known to
+be tractable only for certain (simple) kinds of constraints \cite{duchi2018introductory}.
+In contrast, problem \eqref{eq:main-problem} may have a highly complex set of constraints, possibly even infinitely many.
+
+A standard method for dealing with constraints in deterministic inequality-constrained optimization problems like
+\eqref{eq:general-constrained-problem} with $h\equiv 0$, involves the use of a \textit{penalty functions}
+$\pi\colon\R^n\to[0,\infty)$ such that $\pi(x) = 0$ for all $x\in\mathcal{X}$ and $\pi(x) > 0$
+otherwise.
+Instead of the constrained problem \eqref{eq:general-constrained-problem}, one considers
+the unconstrained problem
 \[
-    x_{k+1} = \proj(x_k - \eta_k g_k)
+    \min_{x\in\R^n} \, f(x) + \gamma \pi(x),
 \]
-and repeat. The map $\proj\colon\R^n\to\R^n$ is the \textit{projection map onto} $\mathcal{X}$,
-which is defined as $\proj(x) := \argmin_{y\in\mathcal{X}} \norm{x - y}$, and
-ensures that the iterates stay in the feasible set $\mathcal{X}$. If $x^\star\in\mathcal{X}$
-solves \eqref{eq:main-problem}, then one can show that, under suitable
-choice of step sizes, $\norm{x_k - x^\star}^2$ converges to the solution
-of \eqref{eq:main-problem} with rate $\mathcal{O}(1/k)$ for \textit{strongly convex} objectives
-(\textcolor{red}{TODO: add ref for strongly convex}).
-However, Nemirovski et al. \cite{nemirovski2009robust} showed that
-this convergence is highly dependent on knowing the strong convexity constant,
-and proposed a more robust version of the algorithm that utilizes suitable averages of the original
-iterates. They proved that the resulting iterates $(\bar{x}_k)_{k\in\N}$ yield convergence of the
-function values $f(\bar{x}_k)$ to that of $f(x^\star)$ with rate
-$\mathcal{O}(1/\sqrt{k})$ for objectives $f$ which need only be convex.
-Unfortunately, we can not apply SGD to our problem, because the complexity of $\mathcal{X}$ makes computing
-the projection $\proj(x_k - \eta_K g_k)$ infeasible in our case.
+where $\gamma\in(0,\infty)$ is a parameter that controls the degree to which infeasible points get peanalized.
+Popular examples of penalty functions are
+\begin{itemize}
+    \item The nonsmooth penalty $\pi_{\ell_1}(x) := \norm{(g(x))_+}_1$ with $\norm{\cdot}_1$ the $\ell_1$-norm on $\R^m$, and
+    \item The smooth penalty $\pi_{\ell_2}(x) := \norm{(g(x))_+}_2^2$ with $\norm{\cdot}_2$ the $\ell_2$-norm on $\R^m$,
+\end{itemize}
+where we denote by $(y)_+$ the elementwise application of $x\mapsto \max(0, x)$ to the vector $y\in\R^m$.
+Unfortunately, these penalty suffer from well-known problems: The smooth penalty $\pi_{\ell_2}$ will in general not
+recover a feasible point of \eqref{eq:general-constrained-problem} --- no matter how large $\gamma$
+is chosen. Besides this, it also suffers from the problem that its gradient is unbounded
+on $\R^n$, which leads to issues related to poor conditioning. On the other hand, the
+nonsmooth penalty $\pi_{\ell_1}$ is \textit{exact}, which means that there does
+exist a penalty parameter $\gamma^\star\in(0,\infty)$ such that the minimizer
+of $f + \gamma^\star \pi_{\ell_1}$ is the same as that of the original constrained problem.
+However, it is not clear in general how to choose $\gamma^\star$, and
+the non-differentiability introduces problems for gradient-based methods.
+For more information on penalty methods, one can consult standard references such as
+the works by Nocedal \& Wright \cite{nocedal2006numerical}, and Bertsekas \cite{bertsekas1997nonlinear}.
+% Penalty methods are typically implemented with a two-loop iterative algorithm, where, in the inner loop,
+% one applies some optimization method to \dots for some number of iterations.
+% Then, in the outer loop, $\gamma$ is increased, and one again enters the inner loop, this time starting
+% from the iterate found through the previous inner loop run. This process is repeated for some fixed number of iterations,
+% or until some stopping criterion is met.
 
-% To solve problems of type \eqref{eq:main-problem},
-% we propose a novel method, which combines the work of Nedić et al. \cite{nedich2023huber}
-% with the proximal gradient method \cite{parikh2014proximal}, into a sequential
-% proximal stochastic gradient method (SeqProx-SGD).
-A classic idea to deal with complex feasibility sets is to use \textit{penalty functions}.
-In this approach
-the constrained problem \eqref{eq:main-problem} gets approximated by
-an unconstrained problem, by introducing a convex function $\pi\colon\R^n\to\R$ that penalizes
-points that are not feasible: $\pi(x) > 0$ for infeasible $x$ and $\pi(x) = 0$ for feasible $x$.
-The resulting approximation to \eqref{eq:main-problem}
-then takes the form
-\begin{equation}
-    \label{eq:basic-penalized-problem}
-    \min_{x\in\R^n} \left\{\, f_\gamma(x) := f(x) + \gamma \pi(x) \,\right\},    
-\end{equation}
-where $\gamma\in (0,\infty)$ is a constant that is used to control the influence of the penalty function $\pi$
-on the objective. For this unconstrained problem, the projection map is simply the identiy map, so one can easily
-apply SGD to solve \eqref{eq:basic-penalized-problem}.
-The larger $\gamma$, the closer the solution to \eqref{eq:basic-penalized-problem}
-is to being feasible. Under suitable choice for $\pi$, one can show that
-in the limit $\gamma \to \infty$ the sequence of solutions $(x_\gamma^\star)_{\gamma\in(0, \infty)}$
-to \eqref{eq:basic-penalized-problem} converges to the solution $x^\star$ of \eqref{eq:main-problem}:
-$\lim_{\gamma\to\infty} x^\star_\gamma = x^\star$. For certain choices of $\pi$, one
-can even show that there exists some finite $\gamma\in(0, \infty)$, such that $x_\gamma^\star = x^\star$.
-Such penalties are called \textit{exact penalties}. A standard example is the Hinge penalty
-$\pi_{\ell_1}$, defined by $\pi_{\ell_1}(x) := \E(\norm{(A(\xi)x - b(\xi))_+}_1)$, where $\norm{\cdot}_1$ is
-the $\ell_1$-norm, and $(y)_+$ applies $\R \ni t\mapsto\max(t, 0)$ to every element of $y\in\R^m$.
-While the defining property of exact penalties is very desirable, they, like the Hinge penalty,
-all suffer from necessarily being nonsmooth, which is known to slow down stochastic subgradient descent.
-On the other hand, smooth penalties like the squared hinge penalty
-$\pi_{\ell_2}(x) := \E(\norm{(A(\xi)x - b(\xi))_+}_2^2)$ with $\norm{\cdot}_2$ the $\ell_2$-norm,
-often need $\gamma$ to grow very large to get solutions that are reasonably close to the feasible set.
-This has the unfortunate side effect
-that the gradient norm $\norm{\nabla f_\gamma}_2$ can grow very large, which
-makes stochastic gradient descent iterates often very unstable in practice.
-Additionally, one is forced to use step sizes that decay to $0$ quickly to counter
-the large gradient norms, which
-slows down convergence. 
-
-A solution to the drawbacks of classical penalty methods was introduced by Nedić et al. \cite{nedich2023huber},
-where the authors analyzed problems similar to ours of the form
+An alternative to the aforementioned penalty functions, which avoids many of their drawbacks,
+was introduced by Nedić et al. \cite{nedich2023huber}. In their work,
+the authors analyzed a special case of our problem \eqref{eq:main-problem}, namely
 \begin{equation}
     \label{eq:nedic-problem}
     \begin{aligned}
-    &\min_{x \in \R^n} f(x) \\
+    &\min_{x \in \R^n} \, f(x) \\
     &\textup{s.\,t.} \quad a_i^\top x - b_i \leq 0 \quad \textnormal{for all $i\in\{\, 1,\dots,m \,\}$}.
     \end{aligned}
 \end{equation}
-Instead of a fixed penalty function $\pi$ however, the authors
-introduced a sequence of smooth \textit{inexact} penalties $(\pi^{\textnormal{hub}}_k)_{k\in\N}$,
+Their method to solve \eqref{eq:nedic-problem} is a penalty method. However,
+instead of a fixed penalty function $\pi$, the authors
+introduced a sequence of smooth penalty functions $(\pi^{\textnormal{hub}}_k)_{k\in\N}$,
 defined as follows: Let $(\delta_k)_{k\in\N}$ be a sequence of positive real numbers. For $k\in\N$, we define
 \[
     \pi_k^\textnormal{hub}(x) := \frac{1}{m} \sum_{i=1}^{m} h_k^{\text{hub}}(x; a_i, b_i),
@@ -172,144 +148,118 @@ where
         0, \quad&\textnormal{if $\langle a, x \rangle - b < -\delta_k$},
     \end{cases}
 \]
-for $x,a \in\R^n$, and $b\in\R$.
-The authors then considered the sequence of unconstrained problems
-\begin{equation}
-    \label{eq:nedic-penalty-problem}
-    \min_{x\in\R^n} \left\{\, f_k(x) := f(x) + \gamma_k \pi_k^{\textnormal{hub}}(x) \,\right\},
-\end{equation}
-for $k\in\N$ and $\gamma_k\in(0,\infty)$.
-Whereas before we required $\pi(x) = 0$ for all feasible points,
-the inexact penalties only satisfy $\pi_k^\textnormal{hub}(x) \geq 0$ for feasible $x\in\R^n$.
-The crucial properties of the particular penalty sequence that the authors introduced
-were that the sequence a) majorizes the hinge penalty, $\pi_k^\textnormal{hub}(x) \geq \pi_{\ell_1}(x)$ for all $x\in\R^n$,
-b) converges to $\pi_{\ell_1}$ pointwis, $\lim_{k\to\infty} \pi_k^\textnormal{hub}(x) = \pi_{\ell_1}(x)$ for all $x\in\R^n$,
-and c) has uniformly bounded gradients, $\sup_{k\in\N}\sup_{x\in\R^n} \norm{\nabla \pi_k^\textnormal{hub}(x)}_2 < \infty$.
-By carefully choosing the sequence of parameters that control the convergence to $\pi_{\ell_1}$, denoted
-by $(\delta_k)_{k\in\N}$, as well as the
-sequence $(\gamma_k)_{k\in\N}$, the authors were able to show that there exists
-a $\gamma_K\in(0,\infty)$ large enough such that the distance-to-feasibility of the solution $x_K^\star$
-to the corresponding problem \eqref{eq:nedic-penalty-problem}, is independent of $\gamma_K$ and
-only controlled by $\delta_K$. Written in mathematical notation, this means that
-$\dist(x_K^\star, \mathcal{X}) := \inf_{x\in\mathcal{X}} \norm{x - x_K^\star} = \mathcal{O}(\delta_K)$. Thus,
-this approach manages to combine the highly desirable properties of smooth unconstrained problems
-with that of exact penalties.
-The authors then go on to present an iterative stochastic gradient algorithm (see \cref{alg:nedic-sgd}),
-which proceeds as follows: Start from an initial point $x_0\in\R^n$. Then, in iteration $k\in\N$,
-we compute a subgradient of $f$ at $x_k$, denoted by $\tilde{\nabla}f(x_k)$. Then we
-sample a random index $i\in\{\,1,\dots,m\,\}$ and calculate the gradient $\nabla h_k^{\text{hub}}(x_k; a_i, b_i)$.
-Finally, update 
-\[
-    x_{k+1} := x_k - \eta_k(\tilde{\nabla}f(x_k) + \gamma_k \nabla h_k^{\text{hub}}(x_k; a_i, b_i)).
-\]
-After a set amount of $K\in\N$ iterations, one then computes the weighted average
-\[
-    \bar{x}_K := \sum_{k=0}^K \eta_k^{-1} x_k.
-\]
-For strongly convex objectives (that satisfy certain assumptions on the gradients),
-the authors show that, for any $\epsilon \in (0, \infty)$,
-one can choose $(\eta_k)_{k\in\N}, (\gamma_k)_{k\in\N}, (\delta_k)_{k\in\N}$ such that the
-sequece $\bar{x}_K$ satisfies
-\[
-    \dist(\bar{x}_K, \mathcal{X}) = \mathcal{O}\Big(\frac{\log^{\epsilon} K}{K}\Big)
-    \enspace
-    \text{and}
-    \enspace
-    |f(\bar{x}_K) - f(x^\star)| = \mathcal{O}\Big(\frac{\log^{2\epsilon} K}{K}\Big).
-\]
-Note that this asymptotic rate is essentially as good as it gets, as we have
-seen earlier that the projected gradient algorithm achieves the rate $\mathcal{O}(1 / K)$.
-\begin{algorithm}[t]
-\caption{(Nedić et al. \cite{nedich2023huber})}
-\label{alg:nedic-sgd}
-\begin{algorithmic}[1] % [1] enables line numbers
-\Require Initial point $x_0\in\R^n$, step sizes $(\eta_k)_{k\in\N_0}$,
-penalty weights $(\gamma_k)_{k\in\N_0}$
-\For{$k = 0$ to $K - 1$}
-    \State Uniformly sample random index $i \in \{\, 1,\dots,m \,\}$
-    \State $g \gets \tilde{\nabla} f(x_{k}) + \gamma_k \nabla h_k^{\text{hub}} (x_k; a_i, b_i)$
-    \State $x_{k+1} \gets x_k - \eta_k g$
-\EndFor
-\State $S_K \gets \sum_{k=1}^{K} \eta_k^{-1}$
-\State $\bar{x}_K \gets S_K^{-1} \sum_{k=1}^{K} \eta_k^{-1} x_k$
-\State \Return $\bar{x}_{K}$
-\end{algorithmic}
-\end{algorithm}
+for $x,a \in\R^n$, and $b\in\R$. The crucial properties of the sequence $(\pi_k^\text{hub})_{k\in\N_0}$
+are that (i) it is a sequence of smooth functions, (ii) the sequence converges to the exact penalty function $x\mapsto\norm{\max(0, x)}_1$
+as $k\to\infty$, and (iii) the gradients of $(\pi_k^\text{hub})_{k\in\N_0}$ are uniformly bounded, in the sense that
+there exists a constant $G\in(0,\infty)$ such that
+$\nabla \pi_k^\text{hub}(x) \leq G$ for all $x\in\R^n$ and $k\in\N_0$.
+These properties are very desirable for mathematical analysis.
+Indeed,
+the authors designed a single-loop iterative method around the penalty sequence $(\pi_k^\text{hub})$ and proved that
+--- under reasonable assumptions --- their method converges to the solution of problem \eqref{eq:nedic-problem}.
+More specifically, for any $\epsilon\in(0,\infty)$,
+one can achieve convergence rates of $\mathcal{O}(\log^{(1+3\epsilon)/2} / \sqrt{K})$ in the convex case, and
+$\mathcal{O}(\log^{\epsilon} / K)$ in the case where the objective is \textit{strongly convex},
+as the number of iterations, $K\in\N$, goes to infinity.
+This almost matches the rates of $\mathcal{O}(1/\sqrt{K})$ and $\mathcal{O}(1/K)$
+achievable by SGD in the convex and strongly convex settings, respectively
+\cite{robbins1971convergence,nemirovski2009robust}, while being projection-free.
+It should also be highlighted that the method is single-loop, as opposed to the
+two-loop design of most other previously mentioned methods designed to solve constrained problems like \eqref{eq:nedic-problem},
+which makes for a particularly simple implementation.
 
-In this work, we aim to build on the incremental gradient method
-(\cref{alg:nedic-sgd}).
-First, we will extend the method to the more general situation of \eqref{eq:main-problem}.
-Namely, our version of \eqref{eq:nedic-penalty-problem} has the form
-\begin{equation*}
-    \min_{x\in\R^n} \left\{\, f_k(x) := \E(F_\zeta(x)) + r(x) + \gamma_k \pi_k(x) \,\right\},
-\end{equation*}
-for $k\in\N$, where, as before, $\gamma_k\in(0, \infty)$.
-We keep the penalties $\pi_k(x)$ more generic, but assume that there
-exist smooth real-valued functions $(h_k)_{k\in\N}$ defined on $\R^m$,
-such that
-\[
-    \pi_k(x) = \E(h_k(x_k; A(\xi), b(\xi))) \enspace\text{and}\enspace \pi_k(x) \downarrow_{k\to\infty} \pi_{\ell_1}(x)
-\]
-for all $x\in\R^n$.
-This more general treatment allows for more flexibility in the design of the method,
-and includes the softplus penalty introduced in \cite{li2025new}.
+Apart from \cite{nedich2023huber},
+among existing work on constrained stochastic optimization,
+the settings considered by Fercoq et al. \cite{fercoq2019almost},
+Li et al. \cite{li2023softplus}, and Xu et al. \cite{xu2020primal}
+are the most closely related to ours.
+Of those, \cite{li2023softplus} and \cite{xu2020primal} both
+consider case of finitely many inequalities, which is a
+special of our setting \eqref{eq:main-problem} for discrete $\xi$.
+Further, \cite{li2023softplus} focuses on strongly convex finite-sum objectives, in order
+to leverage accelerated stochastic gradient methods such as SVRG \cite{johnson2013svrg}.
+In contrast, we will consider objectives that contain general expected value functions,
+and provide analysis for both strongly convex, as well as general convex settings.
+The setting of \cite{fercoq2019almost} most closely
+resembles ours, however, both \cite{fercoq2019almost} and \cite{xu2020primal}
+make assumptions to ensure that the stochastic
+gradients have uniformly bounded variance. However, this assumption does not apply to many
+realistic settings \cite{nguyen2018sgd} and we will not rely on it for the
+analysis of our method.
 
-As opposed to the setting of \cref{alg:nedic-sgd},
-we may not be able to calculate the gradient of our objective,
-because $r$ may be nonsmooth
-or because calculating the gradient of the
-expectation functional, $\E(F_\zeta)$, may be infeasible. Say, for example, because the
-distribution of $\zeta$ is unknown or, in the case of large-scale machine learning,
-because the size of the dataset is too large to feasibly compute the full gradient of
-$\E(F_\zeta(x))$ (which would require the evaluation of a very large sum) for
-multiple iterations.
-Nedić et al. deal with nonsmoothness by using \textit{subgradients}
-instead of gradients, which are also defined at nondifferentiable
-points.
-However, in our approach we choose to instead use a \textit{proximal operator} \cite{parikh2014proximal} to deal
-with nonsmooth objectives:
-For $\eta\in(0, \infty)$ and $r\colon\R^n\to\R\cup\{\infty\}$,
-the proximal operator $\prox_{\eta r}\colon\R^n\to\R^n$ is defined as
-\[
-    \prox_{\eta r}(x) := \argmin_{u\in\R^n} \left\{\, r(u) + \frac{1}{2\eta} \norm{u - x}^2_2 \,\right\}.
-\]
-Under mild conditions on $r$, the proximal operator is well-defined and always
-yields a point in the domain of $f$.
-The proximal operator allows us to only work with gradients of the differentiable terms in our objective.
-To calculate these gradients for objectives involving intractable expectation functionals/large sums, we
-work with \textit{stochastic gradients} instead of regular (full) gradients.
-A stochastic gradient of a differentiable function $f$ at some point $x\in\R^n$
-is any random variable $g$ such that
-$\E(g) = \nabla f(x)$. In our case, we can calculate a stochastic gradient
-of $\E(F_\zeta) + \gamma_k \pi_k$ at $x\in\R^n$, based on a sample
-$(s,z)$ from the joint distribution of $\zeta$ and $\xi$, as
-\[
-    \nabla F_s(x) + \gamma_k \nabla h_k(x; A(z), b(z)).
-\]
-To deal with the variance introduced by using a stochastic gradient
-instead of the full gradient, we will use a minibatch of samples
-and average over the resulting stochastic gradients to get
-a variance-reduced estimate of $\E(\nabla F_\zeta(x)) + \gamma_k \nabla \pi_k(x)$.
-The pseudo-code for the full algorithm is presented in \cref{alg:seqprox-sgd}.
-\begin{algorithm}[t]
-\caption{Stochastic Inexact Penalty Method}
-\label{alg:seqprox-sgd}
-\begin{algorithmic}[1] % [1] enables line numbers
-\Require Initial point $x_0\in\R^n$, step sizes $(\eta_k)_{k\in\N_0}$,
-penalty weights $(\gamma_k)_{k\in\N_0}$,
-penalty functions $(h_k)_{k\in\N_0}$,
-iterate weights $(w_k)_{k\in\N}$
-%sample oracle for joint distribution of $\zeta$ and $\xi$
-\For{$k = 0$ to $K-1$}
-    \State Sample $(\zeta_k, \xi_k)$ from their joint distribution
-    \State $g_k \gets \nabla F_{\zeta_k}(x_{k}) + \gamma_k \nabla h_k(x_k; A(\xi_k), b(\xi_k))$
-    \State $x_{k+1} \gets \textnormal{prox}_{\eta_k r} (x_k - \eta_k g_k$)
-\EndFor
-\State $S_K \gets \sum_{k=1}^{K} w_k$
-\State $\bar{x}_K \gets S_K^{-1} \sum_{k=1}^{K} w_k x_k$
-\State \Return $\bar{x}_{K}$
-\end{algorithmic}
-\end{algorithm}
+Our contributions in this work are twofold.
+First, we build on the ideas of Nedić et al. \cite{nedich2023huber} with a new
+algorithm which uses \textit{proximal operators} \cite{parikh2014proximal,moreau1965proximite}.
+As a result, our algorithm is applicable to a wider range
+of objective functions, as we do
+not require the objective to be subdifferentiable everywhere.
+Further, our approach exploits the compositional structure of the objective function in \eqref{eq:main-problem},
+which can lead to faster convergence.
+Second, we analyze our method in the more general setting of problem \eqref{eq:main-problem},
+which allows for infinitely many constraints and makes no finite-sum assumption on the objective.
+
+In the following, we will first begin with a review of the relevant background material in the
+fields of probability and convex optimization in \cref{chap:background}.
+The main contributions of this work
+are then presented in \cref{chap:sipm}, where we formulate our algorithm
+and prove various convergence results under mild assumptions on the problem setting beyond convexity.
+A notable feature of our proofs is that we do not make any global-boundedness assumptions on the norm
+of the stochastic gradients, which stands in contrast to typical works in the stochastic optimization
+literature, including classics like \cite{nemirovski2009robust,robbins1951stochastic}.
+We back our theoretical analysis up with numerical experiments in \cref{chap:numerical-experiments}.
+Finally, we summarize our findings and point to future research directions in \cref{chap:outlook}.
+% Namely, our version of \eqref{eq:nedic-penalty-problem} has the form
+% \begin{equation*}
+%     \min_{x\in\R^n} \left\{\, f_k(x) := \E(F_\xi(x)) + r(x) + \gamma_k \pi_k(x) \,\right\},
+% \end{equation*}
+% for $k\in\N$, where, as before, $\gamma_k\in(0, \infty)$.
+% We keep the penalties $\pi_k(x)$ more generic, but assume that there
+% exist smooth real-valued functions $(h_k)_{k\in\N}$ defined on $\R^m$,
+% such that
+% \[
+%     \pi_k(x) = \E(h_k(x_k; A(\xi), b(\xi))) \enspace\text{and}\enspace \pi_k(x) \downarrow_{k\to\infty} \pi_{\ell_1}(x)
+% \]
+% for all $x\in\R^n$.
+% This more general treatment allows for more flexibility in the design of the method,
+% and includes the softplus penalty introduced in \cite{li2025new}.
+
+% As opposed to the setting of \cref{alg:nedic-sgd},
+% we may not be able to calculate the gradient of our objective,
+% because $r$ may be nonsmooth
+% or because calculating the gradient of the
+% expectation functional, $\E(F_\xi)$, may be infeasible. Say, for example, because the
+% distribution of $\xi$ is unknown or, in the case of large-scale machine learning,
+% because the size of the dataset is too large to feasibly compute the full gradient of
+% $\E(F_\xi(x))$ (which would require the evaluation of a very large sum) for
+% multiple iterations.
+% Nedić et al. deal with nonsmoothness by using \textit{subgradients}
+% instead of gradients, which are also defined at nondifferentiable
+% points.
+% However, in our approach we choose to instead use a \textit{proximal operator} \cite{parikh2014proximal} to deal
+% with nonsmooth objectives:
+% For $\eta\in(0, \infty)$ and $r\colon\R^n\to\R\cup\{\infty\}$,
+% the proximal operator $\prox_{\eta r}\colon\R^n\to\R^n$ is defined as
+% \[
+%     \prox_{\eta r}(x) := \argmin_{u\in\R^n} \left\{\, r(u) + \frac{1}{2\eta} \norm{u - x}^2_2 \,\right\}.
+% \]
+% Under mild conditions on $r$, the proximal operator is well-defined and always
+% yields a point in the domain of $f$.
+% The proximal operator allows us to only work with gradients of the differentiable terms in our objective.
+% To calculate these gradients for objectives involving intractable expectation functionals/large sums, we
+% work with \textit{stochastic gradients} instead of regular (full) gradients.
+% A stochastic gradient of a differentiable function $f$ at some point $x\in\R^n$
+% is any random variable $g$ such that
+% $\E(g) = \nabla f(x)$. In our case, we can calculate a stochastic gradient
+% of $\E(F_\xi) + \gamma_k \pi_k$ at $x\in\R^n$, based on a sample
+% $(s,z)$ from the joint distribution of $\xi$ and $\xi$, as
+% \[
+%     \nabla F_s(x) + \gamma_k \nabla h_k(x; A(z), b(z)).
+% \]
+% To deal with the variance introduced by using a stochastic gradient
+% instead of the full gradient, we will use a minibatch of samples
+% and average over the resulting stochastic gradients to get
+% a variance-reduced estimate of $\E(\nabla F_\xi(x)) + \gamma_k \nabla \pi_k(x)$.
+% The pseudo-code for the full algorithm is presented in \cref{alg:seqprox-sgd}.
 % \begin{algorithm}[t]
 % \caption{Sequential Proximal Stochastic Gradient Descent (SeqProx-SGD)}
 % \label{alg:seqprox-sgd-single-batch}
@@ -351,19 +301,17 @@ iterate weights $(w_k)_{k\in\N}$
 % \end{algorithmic}
 % \end{algorithm}
 
-Our objective is to analyze
+% Our objective is to analyze
 %both \cref{alg:seqprox-sgd,alg:seqprox-agd}
-\cref{alg:seqprox-sgd} theoretically
-and support our theoretical findings with numerical examples. \textcolor{red}{TODO: Mention here the outline.
-Difficulties: No bounded gradient assumption for $f$, infinite constraints, non-feasibility of iterates.}
+% \cref{alg:seqprox-sgd} theoretically
+% and support our theoretical findings with numerical examples. \textcolor{red}{TODO: Mention here the outline.
+% Difficulties: No bounded gradient assumption for $f$, infinite constraints, non-feasibility of iterates.}
 
+% \section{Contributions}
 
-\section{Contributions}
+% \section{Related literature}
 
-
-\section{Related literature}
-
-\section{Example applications}
+% \section{Example applications}
 
 % To motivate our investigation, we will present
 % applications of our methods to specific optimal control and machine learning problems.
@@ -573,13 +521,13 @@ Difficulties: No bounded gradient assumption for $f$, infinite constraints, non-
 %     which has the highly desirable property of being an \textit{exact} penalty: \textcolor{red}{TODO} ...
 % \end{example}
 
-\section{Notation}
+% \section{Notation}
 
-Since we only ever work with functions, which are
-proper, closed, and convex, the subdifferentials
-are nonempty and we may always
-select a subgradient at a point $x\in\R^n$, which we will
-generically denote by $\tilde{\nabla} f(x)\in\partial f(x)$.
+% Since we only ever work with functions, which are
+% proper, closed, and convex, the subdifferentials
+% are nonempty and we may always
+% select a subgradient at a point $x\in\R^n$, which we will
+% generically denote by $\tilde{\nabla} f(x)\in\partial f(x)$.
 
 
 % \section{Example Section}
