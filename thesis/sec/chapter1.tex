@@ -88,8 +88,13 @@ This computation is well known to
 be tractable only for certain (simple) kinds of constraints \cite{duchi2018introductory}.
 In contrast, problem \eqref{eq:main-problem} may have a highly complex set of constraints, possibly even infinitely many.
 
-A standard method for dealing with constraints in deterministic inequality-constrained optimization problems like
-\eqref{eq:general-constrained-problem} with $h\equiv 0$, involves the use of a \textit{penalty functions}
+A standard method for dealing with
+constraints in
+% deterministicinequality-constrained
+deterministic constrained optimization problems like
+\eqref{eq:general-constrained-problem},
+% with $h\equiv 0$,
+involves the use of \textit{penalty functions}
 $\pi\colon\R^n\to[0,\infty)$ such that $\pi(x) = 0$ for all $x\in\mathcal{X}$ and $\pi(x) > 0$
 otherwise.
 Instead of the constrained problem \eqref{eq:general-constrained-problem}, one considers
@@ -98,10 +103,11 @@ the unconstrained problem
     \min_{x\in\R^n} \, f(x) + \gamma \pi(x),
 \]
 where $\gamma\in(0,\infty)$ is a parameter that controls the degree to which infeasible points get peanalized.
-Popular examples of penalty functions are
+In the case where the problem is purely inequality constrained, that is $h\equiv 0$,
+popular examples of penalty functions are
 \begin{itemize}
-    \item The nonsmooth penalty $\pi_{\ell_1}(x) := \norm{(g(x))_+}_1$ with $\norm{\cdot}_1$ the $\ell_1$-norm on $\R^m$, and
-    \item The smooth penalty $\pi_{\ell_2}(x) := \norm{(g(x))_+}_2^2$ with $\norm{\cdot}_2$ the $\ell_2$-norm on $\R^m$,
+    \item the nonsmooth penalty $\pi_{\ell_1}(x) := \norm{(g(x))_+}_1$ with $\norm{\cdot}_1$ the $\ell_1$-norm on $\R^m$, and
+    \item the smooth penalty $\pi_{\ell_2}(x) := \norm{(g(x))_+}_2^2$ with $\norm{\cdot}_2$ the $\ell_2$-norm on $\R^m$,
 \end{itemize}
 where we denote by $(y)_+$ the elementwise application of $x\mapsto \max(0, x)$ to the vector $y\in\R^m$.
 Unfortunately, these penalty suffer from well-known problems: The smooth penalty $\pi_{\ell_2}$ will in general not
