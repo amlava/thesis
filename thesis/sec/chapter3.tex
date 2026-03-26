@@ -501,11 +501,13 @@ We will now formulate and prove the lemma.
     Assume \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point} hold
     and let $C\subset\R^n$ be a compact subset. Then,
     there exists a constant $\tau\in(0,\infty)$ such that
-    \[
-       \tau \dist(x, \mathcal{X}) \leq \pi_k(x),
-    \]
+    \begin{equation}
+        \label{eq:lem:lower-bound-on-penalties-by-distance-to-feasibility:tau}
+        \tau \dist(x, \mathcal{X}) \leq \pi_k(x),
+    \end{equation}
     for all $x\in C$ and $k\in\N_0$.
 \end{lemma}
+
 \begin{proof}
     We consider the Banach space $Y := L_1(\Xi, \R^m)$ equipped with the norm
     \[
@@ -660,8 +662,23 @@ We will now formulate and prove the lemma.
         \dist(x, \mathcal{X}) \leq c c_q^{-1} \E\norm{(A(\xi)x - b(\xi))_+}_1.
     \]
     The claim follows after setting $\tau := c^{-1} c_q$
-    and applying part 7b of \cref{ass:basic-assumptions}.
+    and applying part 7(b) of \cref{ass:basic-assumptions}.
 \end{proof}
+
+\begin{notation}
+    For the rest of this work, we will reserve the letter $\tau$ to refer to a constant
+    such that \eqref{eq:lem:lower-bound-on-penalties-by-distance-to-feasibility:tau} holds
+    in the given context.
+\end{notation}
+Note that $\tau^{-1}$ is proportional to the inverse of the minimum of the density
+of $\xi$ on its support. For a fixed (bounded) support $\Xi$, this value is minimized if
+the density is the uniform density on $\Xi$. Therefore, if the support $\Xi$ is known, it
+is optimal to sample uniformly from $\Xi$ for \cref{alg:seqprox-sgd}.
+
+We can now prove that, under certain assumptions, we can guarantee that the sequence of minimizers
+$(x_k)_{k\in\N_0}^\star$ corresponding to the problems \eqref{eq:main-problem-penalized} converge
+to the feasible set $\mathcal{X}$ with a rate that is controllable via the majorizing sequence
+$(\alpha_k)_{k\in\N_0}$ (recall part 7(c) of \cref{ass:basic-assumptions}).
 \begin{theorem}[Convergence of $x_k^\star$]
     \label{thm:distance-to-feasibility-bound}
     Assume \cref{ass:basic-assumptions,ass:slater-point,ass:compact-support-without-zero} hold
@@ -1291,8 +1308,19 @@ We are now ready to prove the main theorem of this section.
     in the case $\mu > 0$, by \cref{thm:distance-to-feasibility-bound}.
 \end{proof}
 
+Having established conditions under which the sequence of iterates $(x_k)_{k\in\N_0}$ generated
+by \cref{alg:seqprox-sgd} stay bounded with probability one, we can now move on to
+prove convergence of the algorithm.
 
 \section{Convergence rates in expectation}
+
+In this section, we will establish conditions under which the
+iterates $(x_k)_{k\in\N_0}$ generated
+by \cref{alg:seqprox-sgd} converge to a solution $x^\star$  of \eqref{eq:main-problem-copy}.
+Concretely, we will show that the expected optimality gap, $\E|f(\bar{x}_k) - f(x^\star)|$, and
+the distance to the feasible set, $\E(\dist(\bar{x}_k, \mathcal{X}))$, both converge
+to zero. Moreover, we will prove asymptotic rates of convergence, relative to the number
+of iterations $K\in\N$ that the algorithm runs.
 
 In the previous section, we established that the iterates $(x_k)_{k\in\N_0}$
 of \cref{alg:seqprox-sgd} are bounded with probability one,
@@ -1317,6 +1345,8 @@ satisfy certain conditions, which are captured in the following assumption.
         \item $\sum_{k=0}^\infty \eta_k^2 \gamma_k^2 < \infty$,
     \end{enumerate}
 \end{assumption}
+
+Under the above assumption, it is now possible to prove the following crucial bound.
 \begin{lemma}
     \label{lem:functional-upper-bound}
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point,ass:step-sizes-and-penalties} hold.
@@ -1419,6 +1449,8 @@ satisfy certain conditions, which are captured in the following assumption.
     \end{align*}
     as desired.
 \end{proof}
+
+To proceed, we will need to bound the size of $z_k$.
 \begin{lemma}
     \label{lem:bound-on-norm(zk)}
     Let \cref{ass:basic-assumptions,ass:step-sizes-and-penalties} hold.
@@ -1459,6 +1491,7 @@ satisfy certain conditions, which are captured in the following assumption.
     where the last step uses Jensen's inequality.
 \end{proof}
 
+The following lemma will give us a parametrization of \cref{alg:seqprox-sgd} that satisifes \cref{ass:step-sizes-and-penalties}.
 \begin{lemma}
     \label{lem:parameters-for-convex-case}
     Let the parameters $(\eta_k)_{k\in\N_0}, (\gamma_k)_{k\in\N_0}, (h_k)_{k\in\N_0}$
@@ -1500,7 +1533,7 @@ The following theorem will provide upper bounds on the optimality gap $f(\bar{x}
 and the feasibility gap $\dist(\bar{x}_K)$ in the general convex case. Based on this result,
 we will then prove convergence
 rates of $\E|f(\bar{x}_K) - f(x^\star)|$ and $\E(\dist(\bar{x}_K))$.
-\begin{theorem}
+\begin{theorem}[Central bounds - general convex case]
     \label{thm:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)-convex-case}
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point}
     hold.
@@ -1747,6 +1780,8 @@ rates of $\E|f(\bar{x}_K) - f(x^\star)|$ and $\E(\dist(\bar{x}_K))$.
     This concludes the proof.
 \end{proof}
 
+We can now give concrete convergence rates for the expected optimality gap and the expected distance to the feasible set
+of the iterates $(\bar{x}_k)_{k\in\N_0}$ generated from \cref{alg:seqprox-sgd} with suitable parameters.
 \begin{corollary}[Convergence rates in expectation - convex case]
     \label{cor:convergence-rates-in-expectation-convex-case}
     Let the assumptions of \cref{thm:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)-convex-case} hold.
@@ -1875,6 +1910,7 @@ It follows that, in the general convex case, we can achieve the convergence rate
 \[
     \E| f(\bar{x}_{K}) - f(x^\star) | + \dist(\bar{x}_K) = \tau^{-1} \, \mathcal{O}\Big( \frac{\log^{(1 + 3e) / 2} (K)}{\sqrt{K}} \Big).
 \]
+
 We will now turn our attention to the special case where the objective is strongly convex, i.\,e. $\mu \in (0,\infty)$.
 In this setting, we can achieve a faster rate than in the general convex case, provided the parameters are set correctly.
 
@@ -1901,7 +1937,8 @@ In this setting, we can achieve a faster rate than in the general convex case, p
     This proves the claim.
 \end{proof}
 
-\begin{theorem}
+With this choice of parameters, we can prove the following.
+\begin{theorem}[Central bounds - strongly convex case]
     \label{thm:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)}
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point}
     hold, and assume that we are in the setting $\mu > 0$.
@@ -2093,6 +2130,8 @@ In this setting, we can achieve a faster rate than in the general convex case, p
     This concludes the proof.
 \end{proof}
 
+From \cref{thm:upper-bound-on-f(xk)-f(xstar)-and-dist(xk)}, we can derive the following improved
+convergence rates in the strongly convex case.
 \begin{corollary}[Convergence rates in expectation - strongly convex case]
     \label{cor:convergence-rates-in-expectation}
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point}
@@ -2216,6 +2255,9 @@ In this setting, we can achieve a faster rate than in the general convex case, p
     as desired.
 \end{proof}
 
+This concludes the section on convergence rates in expectation. Next, we will consider a different kind of
+notion for convergence.
+
 \section{High-probability guarantees}
 
 In the previous section, we proved
@@ -2321,6 +2363,7 @@ is the stochastic gradient of $\psi_k$ at $x_k$ used in \cref{alg:seqprox-sgd}.
     Therefore, $(X_k)_{k\in\N_0}$ is a martingale.
 \end{proof}
 
+We can now prove the main theorem of this section.
 \begin{theorem}[Convergence with high probability - convex case]
     \label{thm:convergence-with-high-probability-convex-case}
     Let \cref{ass:basic-assumptions,ass:compact-support-without-zero,ass:slater-point}
