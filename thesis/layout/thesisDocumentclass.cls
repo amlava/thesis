@@ -159,7 +159,7 @@
 
 % Weitere Befehle
 \newcommand{\sign}{\text{sign}}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\norm}[1]{|\!|#1|\!|}
 \newcommand{\E}{\mathbb{E}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\N}{\mathbb{N}}
