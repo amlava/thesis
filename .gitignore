@@ -53,3 +53,11 @@ latexmkrc
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+# other
+old-thesis
+
+# python
+.pytest_cache
+.venv
+__pycache__

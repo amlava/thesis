@@ -1,0 +1,43 @@
+[project]
+name = "sipm"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "amir", email = "." }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "torch>=2.10.0",
+    "numpy>=2.4.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "matplotlib>=3.8.0",
+    "ruff>=0.5.0",
+    "pre-commit>=3.7.0",
+    "scikit-learn>=1.4.0",
+    "pandas>=2.2.0",
+]
+
+[project.scripts]
+sipm = "sipm:main"
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[build-system]
+requires = ["uv_build>=0.9.2,<0.10.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "cvxpy>=1.8.1",
+    "yfinance>=1.2.0",
+]

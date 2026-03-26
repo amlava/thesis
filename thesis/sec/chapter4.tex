@@ -1,6 +1,16 @@
 \chapter{Numerical Experiments}
 \label{chap:numerical-experiments}
 
+In this chapter, we will apply \cref{alg:seqprox-sgd} to
+two concrete settings. First, in \cref{sec:numerical-example-svm},
+we will consider the primal hard-margin support vector machine problem,
+which is a popular method in machine learning for classification.
+Then, in \cref{sec:numerical-example-inventory-control} we will
+consider the standard control problem of inventory management subject
+to uncertainty in demand projections.
+The experiments are implemented in PyTorch \cite{paszke2019pytorch}, and the source code
+can be found under \textcolor{red}{TODO}.
+
 \section{Primal hard-margin SVM}
 \label{sec:numerical-example-svm}
 
@@ -62,12 +72,7 @@ and
     b(a, b) = -1,
 \]
 for $(a, b) \in D$.
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.75\textwidth]{../code/examples/svm/breast_cancer/sipm_svm_errors.pdf}
-    \caption{Breast cancer: training and test misclassification rates over iterations. The shaded regions show $\pm 1$ standard deviations.}
-    \label{fig:svm-breast-cancer-errors}
-\end{figure}
+
 To test \cref{alg:seqprox-sgd} on real world data, we use the Wisconsin Diagnostic Breast Cancer dataset \cite{breastcancer}
 with $n=30$ features and $N=569$ samples.
 Features are standardized, and we use a stratified $70/30$ train/test
@@ -98,20 +103,26 @@ and test error across iterations with $\pm 1$ standard deviation bands.
 After $400$ iterations, the final training error is
 $0.1357 \pm 0.0158$ and the final test error is
 $0.1386 \pm 0.0192$.
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.75\textwidth]{../code/examples/svm/breast_cancer/sipm_svm_errors.pdf}
+    \caption{Breast cancer: training and test misclassification rates over iterations. The shaded regions show $\pm 1$ standard deviations.}
+    \label{fig:svm-breast-cancer-errors}
+\end{figure}
 
 \section{Inventory control}
 \label{sec:numerical-example-inventory-control}
-
+ 
 This example is adapted from Section~4.8.2 in \cite{evans1983introduction}.
 We consider a discrete-time inventory problem over a finite horizon
 $\{0,\dots,n-1\}$, where $n\in\N$.
 Let $(\Omega,\mathcal{F},\mathbb{P})$ be a probability space
-and let $\xi\colon\Omega\to\R^m$ be a random variable.
+and let $\xi\colon\Omega\to\R^p$ be a random variable.
 For each period $k\in\{\, 0,\dots,n-1 \,\}$,
 we introduce the following quantities:
 \begin{itemize}
-    \item[-] $x_k(\xi)$: \text{inventory level at the beginning of period } $k$,
-    \item[-] $\alpha_k$: order quantity placed in period $k$,
+    \item[-] $y_k(\xi)$: inventory level at the beginning of period $k$,
+    \item[-] $x_k$: order quantity placed in period $k$,
     \item[-] $d_k(\xi)$: random customer demand in period $k$,
     \item[-] $\gamma$: per-unit ordering cost,
     \item[-] $\beta$: per-unit holding cost.
@@ -119,42 +130,42 @@ we introduce the following quantities:
 The inventory evolves according to
 \begin{equation}
     \label{eq:sec:numerical-example-inventory-control:dynamics}
-    x_{k+1}(\xi) = x_k(\xi) + \alpha_k - d_k(\xi)
+    y_{k+1}(\xi) = y_k(\xi) + x_k - d_k(\xi)
 \end{equation}
 for $k \in \{0,\dots,n-1\}$,
-with a prescribed deterministic initial inventory $x_0 \in (0,\infty)$.
+with a prescribed deterministic initial inventory $y_0 \in (0,\infty)$.
 We seek to minimise the expected total ordering and holding cost subject
 to almost-sure nonnegativity of the inventory at every period.
-Adding a quadratic regulariser $\lambda\|\alpha\|_2^2$ with $\lambda > 0$
+Adding a quadratic regulariser $\lambda\|x\|^2$ with $\lambda\in(0,\infty)$
 for stability, and imposing a finite ordering capacity
-$\alpha_{\max}\in(0, \infty)$, the problem reads
+$x_{\max}\in(0, \infty)$, the problem reads
 \begin{equation}
     \label{eq:inventory-control-example}
     \begin{aligned}
-        &\min_{\alpha \in \mathbb{R}^{n}} \;
-            \mathbb{E}\Bigl(\sum_{k=0}^{n-1} \gamma \alpha_k
-            + \beta \sum_{k=1}^{n} x_k(\xi)\Bigr)
-            + \lambda\|\alpha\|_2^2 \\[6pt]
+        &\min_{x \in \mathbb{R}^{n}} \;
+            \mathbb{E}\Bigl(\sum_{k=0}^{n-1} \gamma x_k
+            + \beta \sum_{k=1}^{n} y_k(\xi)\Bigr)
+            + \lambda\|x\|^2 \\[6pt]
         &\text{s.\,t.}\quad
-            x_{k+1}(\xi) = x_k(\xi) + \alpha_k - d_k(\xi)
+            y_{k+1}(\xi) = y_k(\xi) + x_k - d_k(\xi)
             \quad\text{a.\,s. for all}
             \; k\in\{0,\dots,n-1\} \\[4pt]
         &\hspace{1.3cm}
-            x_k(\xi) \geq 0
+            y_k(\xi) \geq 0
             \quad\text{a.\,s. for all} \; k\in\{1,\dots,n\} \\[4pt]
         &\hspace{1.3cm}
-            0 \leq \alpha_k \leq \alpha_{\max}
+            0 \leq x_k \leq x_{\max}
             \quad \text{for all} \; k \in \{\, 0,\dots,n-1 \,\}.
     \end{aligned}
 \end{equation}
-We can eliminate the state variables $(x_k)_{k\in\{\, 0,\dots,n-1 \,\}}$ by solving
+We can eliminate the state variables $(y_k)_{k\in\{\, 0,\dots,n-1 \,\}}$ by
 recursively solving the dynamics \eqref{eq:sec:numerical-example-inventory-control:dynamics}.
 This yields
 \[
-    x_k(\xi) = x_0 + \sum_{j=0}^{k-1}\bigl(\alpha_j - d_j(\xi)\bigr),
+    y_k(\xi) = y_0 + \sum_{j=0}^{k-1}\bigl(x_j - d_j(\xi)\bigr),
 \]
 for all $k\in\{\, 0,\dots,n-1 \,\}$.
-The nonnegativity constraints thus become linear inequalities in $\alpha$.
+The nonnegativity constraints thus become linear inequalities in $x$.
 To write them compactly, let
 $A = (a_{ij})_{i,j\in\{1,\dots,n\}} \in \mathbb{R}^{n\times n}$
 be the lower-triangular matrix with
@@ -176,12 +187,12 @@ Setting
     \qquad
     \eta(\xi) := \beta\,\mathbf{1}^\top A\, d(\xi),
     \qquad
-    b(\xi) := -A\,d(\xi) + x_0\,\mathbf{1},
+    b(\xi) := -A\,d(\xi) + y_0\,\mathbf{1},
 \]
 and
 \[
-    r(\alpha) := \begin{cases}
-        1, \quad\text{if $\alpha \in [0, \alpha_{\max}]^n$}, \\
+    r(x) := \begin{cases}
+        1, \quad\text{if $x \in [0, x_{\max}]^n$}, \\
         0, \quad\text{else,}
     \end{cases}
 \]
@@ -189,16 +200,16 @@ problem~\eqref{eq:inventory-control-example} fits our template~\eqref{eq:main-pr
 taking
 $A(\xi) \equiv -A$,
 \[
-    F(\alpha,\xi) = \langle v, \alpha \rangle - \eta(\xi) + \lambda \norm{\alpha}_2^2,
+    F(x,\xi) = \langle v, x \rangle - \eta(\xi) + \lambda \norm{x}^2,
 \]
 and the proximal term $r$ as above.
 For data generation, we use a horizon of $n = 40$
 periods and generate $200$ demand scenarios.
 That is, we generate $200$ trajectories $\{\, d_0(\xi),\dots,d_{39}(\xi) \,\}$.
-The sample are generated independently, for each period $k \in \{0,\dots,39\}$,
+The samples are generated independently, for each period $k \in \{0,\dots,39\}$,
 according to a lognormal distribution
 \[
-    d_k \sim \operatorname{Lognormal}\bigl(\log(m_k),\,0.14^2\bigr),
+    d_k \sim \operatorname{Lognormal}\bigl(\log(m_k),\,0.15^2\bigr),
     \qquad
     m_k := 1.65 + 0.30 \sin\Bigl(\frac{2\pi k}{12}\Bigr).
 \]
@@ -217,21 +228,21 @@ The parameters are chosen as
     \qquad
     \lambda = 0.5,
     \qquad
-    x_0 = \frac{8}{s},
+    y_0 = \frac{8}{s},
     \qquad
-    \alpha_{\max} = \frac{4}{s}.
+    x_{\max} = \frac{4}{s}.
 \]
 Since the empirical objective is $2\lambda$-strongly convex,
 we apply \cref{alg:seqprox-sgd} with the strongly convex schedule
 from \cref{cor:convergence-rates-in-expectation}:
 \[
     \eta_0 = \frac{1}{\lambda},
-    \qquad
+    \quad
     \eta_k = \frac{1}{\lambda k},
-    \qquad
+    \quad
     \gamma_k  = c_\gamma \ln(k+2),
-    \qquad
-    \delta_k  = \frac{c_\delta}{k+1}
+    \quad
+    \delta_k  = \frac{c_\delta}{k+1},
     \quad
     w_k = \eta_k^{-1},
 \]
@@ -256,25 +267,25 @@ The tuned pair is $(c_\gamma, c_\delta) = (80, 1.5)$,
 which is then used to rerun the algorithm for $5000$ iterations.
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.75\textwidth]{../code/examples/optimal_control/inventory/sipm_inventory_gap_v3.pdf}
-\caption{Inventory control: relative distance $\|\bar\alpha_k-\alpha^\star\|/\|\alpha^\star\|$
+\includegraphics[width=0.75\textwidth]{../code/examples/optimal_control/inventory/sipm_inventory_gap.pdf}
+\caption{Inventory control: relative distance $\|\bar x_k-x^\star\|/\|x^\star\|$
 over iterations. The shaded region shows $\pm 3$ standard deviations,
 and the dotted horizontal line indicates the level $0.2$.}
 \label{fig:inventory-gap}
 \end{figure}
-
-To test the performance of our algorithm, we determie the ground-truth solution
+ 
+To test the performance of our algorithm, we determine the ground-truth solution
 with CVX \cite{diamond2016cvxpy}. Note that strong convexity of the objective,
 along with the fact that we sample a finite amount of scenarios for the affine
 constraints,
 guarantee the existence of a unique minimizer
-$\alpha^\star$ (see \cref{prop:strongly-convex-implies-lower-level-sets}).
+$x^\star$ (see \cref{prop:strongly-convex-implies-lower-level-sets}).
 We repeat the experiment over $10$ independent runs on the full dataset
 and report the mean and standard deviation of the averaged iterates
-$(\bar\alpha_k)_{k\in\mathbb{N}}$.
+$(\bar x_k)_{k\in\mathbb{N}}$.
 \Cref{fig:inventory-gap} shows the relative distance
-$\|\bar\alpha_k-\alpha^\star\| / \|\alpha^\star\|$,
-where $\alpha^\star$ denotes the unique empirical CVX minimiser,
+$\|\bar x_k-x^\star\| / \|x^\star\|$,
+where $x^\star$ denotes the unique CVX minimiser,
 together with $\pm 3$ standard deviation bands and a dotted reference
 line at level $0.2$.
 After $5000$ iterations, the final relative distance is
