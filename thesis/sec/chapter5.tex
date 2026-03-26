@@ -1,11 +1,65 @@
 \chapter{Summary and Outlook}
+\label{chap:outlook}
 
-\textcolor{red}{Future research directions:
-\begin{enumerate}
-    \item Acceleration a la https://proceedings.mlr.press/v54/lei17a/lei17a.pdf;
-    \item Non-convex settings;
-    \item Functional constraints;
-    \item Non-stationary distribution of $\zeta$ and $\xi$ (online setting);
-    \item Adaptive sampling to reduce effective support of constraints.
-\end{enumerate}
-}
+We developed a method for stochastic optimization problems subject to almost sure affine constraints
+of the form
+\begin{equation*}
+    \begin{aligned}
+    &\min_{x \in \mathbb{R}^n} \, \{\, f(x) := \E(F_\xi(x)) + r(x) \,\} \\
+    &\textup{subject to} \quad A(\xi) x - b(\xi) \leq 0 \quad \textnormal{almost surely}.
+    \end{aligned}
+\end{equation*}
+Our method naturally handles the case where there are infinitely many constraints, which is more general than
+than the settings which have been considered in related works \cite{nedich2023huber,li2025new}. For example,
+our guarantees hold in the setting of
+robust optimization by sampling
+\cite{ben2009robust,xu2020primal,calafiore2005uncertain}.
+Further, because our algorithm
+uses penalty functions to softly enforce constraints, it is applicable even if the constraints are not fully satisfiable.
+Empirically, we found that the iterates still converge to a reasonable solution in that case (see \cref{sec:numerical-example-svm}).
+
+We analyzed the convergence
+properties of the method in the convex and strongly convex regimes.
+In the convex setting, one can achieve a convergence rate of
+$\mathcal{O}(\log^{1/2 + \epsilon} K / \sqrt{K})$ for any $\epsilon \in (0,\infty)$.
+The convergence rate can be improved
+to $\mathcal{O}(\log^{\epsilon} K / K)$ for any $\epsilon \in (0,\infty)$, in the strongly convex case.
+These rates improve upon the rates achieved in the closely related work by Fercoq et al. \cite{fercoq2019almost}
+without the need of a global variance bound on the stochastic gradients.
+Furthermore, it is known that stochastic projected gradient descent achieves the minimax optimal convergence rates of
+$\mathcal{O}(1/\sqrt{K})$ in the convex setting, and $\mathcal{O}(1/K)$ in the strongly convex setting \cite{nemirovski_yudin_1983,agarwal2009information}.
+Thus, the convergence rates of our method match the optimal convergence rates
+up to an arbitrarily small logarithmic factor, while being projection-free.
+Besides the typical convergence guarantees which hold in expectation, we also provided convergence guarantees that hold
+with high-probability in the general convex setting.
+Notably, we did not rely on any of the typical
+global boundedness assumptions regarding the stochastic gradients of the objective $f$.
+
+There are a lot of research directions for future work.
+The most glaring restriction is that we only handle constraints that
+are affine in the decision variable.
+An extension to more general functional inequalities would be a significant next step.
+It would also be interesting to analyze the algorithm in the more common setting of chance constraints, where
+constraints only need to hold with some
+high probability, instead of almost surely.
+A straight-forward way to transform a chance constrained problem into an
+almost sure one is through the sampling-and-discarding approach
+\cite{campi2011sampling}. However, this requires the ability to sample
+a possibly very large amount of times, which is not feasible
+in \textit{online optimization} \cite{shalev2025online} settings, where one typically cannot sample on-demand.
+
+Another possible avenue for future research is the use of acceleration methods.
+To speed up the convergence of first-order methods, a popular method in deterministic optimization
+is Nesterov's \textit{accelerated
+gradient method} (AGD) \cite{nesterov1983method,nesterov2004introductory}. In stochastic optimization, a naive application
+of AGD does not lead to faster (asymptotic) convergence rates, due to an increase in variance in the gradient estimates.
+Instead, acceleration is achieved via variance reduction methods, such as SAGA \cite{defazio2014saga} and SVRG \cite{johnson2013svrg}.
+These algorithms achieve acceleration, while keeping variance managable by periodically calculating full gradients of the objective.
+Unfortunately, a straight-forward application of these methods to our setting is not possible,
+unless we assume a finite-sum structure of the objective and a finite number of constraints.
+Moreover, the number of summands involved in the objective, as well as the number of constraints, need to be managable, so
+that the occasional calculation of full gradients of the penalized objective used in our method is feasible.
+A promising recent method that circumvents these issues was proposed in \cite{lei2017less}, where the authors manage
+to greatly improve the convergence of stochastic gradient methods, while avoiding the calculation of full gradients.
+An adaptation of their methods to our constrained setting is a promising future research direction to improve upon the convergence
+rate of our algorithm.
