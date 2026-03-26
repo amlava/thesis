@@ -1,4 +1,5 @@
-\chapter{Theory Background}
+\chapter{Mathematical Background}
+\label{chap:background}
 
 Throughout, we let $|\!|\cdot|\!|$ denote the standard Euclidian norm and
 $\langle \cdot, \cdot \rangle$ the standard inner product on $\R^d$.
@@ -172,6 +173,7 @@ follow directly from \cref{prop:integrals}.
         \item[(iii)] If $X \leq Y$, then $\E(X) \leq \E(Y)$. If, additionally,
         $X(\omega) < Y(\omega)$ for all $\omega$ in an event $A\in\mathcal{F}$ with $\Prob(A) > 0$,
         then $\E(X) < \E(Y)$.
+        \item[(iv)] $\norm{\E(X)} \leq \E\norm{X}$.
     \end{enumerate}
 \end{proposition}
 
@@ -473,8 +475,6 @@ Clearly, any stochastic process is adapted to their natural filtration.
 
 \section{Optimization theory}
 
-The contents of this section can be found in \cite{Boyd_Vandenberghe_2004,garrigos2023handbook}.
-
 % \begin{proposition}
 %     \label{prop:linear-combination-of-lipschitz-is-lipschitz}
 %     Let $f\colon \R^n \to \R$ be $L_f$-smooth and let  $g\colon \R^n \to \R$
@@ -512,6 +512,19 @@ The contents of this section can be found in \cite{Boyd_Vandenberghe_2004,garrig
         |f(x) - f(y)| \leq L_B \norm{x - y}
     \]
     for all $x,y\in B$.
+\end{proposition}
+
+\begin{proposition}
+    \label{prop:local-lipschitz-iff-bounded-gradient-norm}
+    A function $f\colon \R^n \to \R$ is locally Lipschitz continuous
+    if and only if, for any bounded subset $B\subset\R^n$, there exists $L_B\in(0,\infty)$ such that
+    \[
+        \sup_{x\in B} \norm{\nabla f(x)} \leq L_B.
+    \]
+    In particular, $f$ is $L$-Lipschitz continuous if and only if
+    \[
+        \sup_{x\in\R^n} \norm{\nabla f(x)} \leq L.
+    \]
 \end{proposition}
 
 \subsection{Convex optimization}
@@ -636,6 +649,21 @@ The contents of this section can be found in \cite{Boyd_Vandenberghe_2004,garrig
     for all $x,y\in\dom(f)$.
 \end{definition}
 Clearly, strongly convex functions are convex.
+\begin{proposition}
+    \label{prop:strongly-convex-iff-convex-plus-quadratic}
+    A function $f\colon\R^n\to\bar{\R}$ is $\mu$-strongly if and only if
+    there exists a convex function $g\colon\R^n\to\bar{\R}$ such that
+    $f(x) = g(x) + \frac{\mu}{2} \norm{x}^2$ for all $x\in\R^n$.
+\end{proposition}
+\begin{proposition}
+    \label{prop:strongly-convex-bound-on-optimal-value}
+    Let $f\colon\R^n\to\bar{\R}$ be $\mu$-strongly convex, and let $C\subset\R^n$ be a convex set.
+    If $x^\star\in C$ minimizes $f$ on $C$, it then holds that
+    \[
+        f(x^\star) \leq f(x) - \frac{\mu}{2} \norm{x^\star - x}^2
+    \]
+    for all $x\in C$.
+\end{proposition}
 \begin{proposition}[Convex functions have monotone gradients]
     \label{prop:convex-implies-monotone-gradient}
     Let $f\colon \R^n\to\bar{\R}$ be convex and subdifferentiable. Then, it holds that
@@ -715,7 +743,7 @@ Clearly, strongly convex functions are convex.
     \label{prop:convex+bounded-lower-level-sets-implies-minimizer}
     Let $f\colon\R^n\to\bar{\R}$ be proper, convex, and continuous, and let $C\subset\R^n$ be a closed convex set.
     If $f$ has bounded lower level sets, then $f$ attains a minimizer on $C$, and the set of minimizers of $f$
-    on $C$ is compact.
+    on $C$ is compact and convex.
 \end{proposition}
 
 \begin{proposition}
@@ -727,7 +755,7 @@ Clearly, strongly convex functions are convex.
 
 \begin{proposition}
     \label{prop:convex-lipschitz-then-uniformly-bounded-subgradients}
-    Let $f\colon\R^n\to\bar{R}$ be convex and $L$-Lipschitz continuous on $\dom(f)$. Then, $f$ is subdifferentiable
+    Let $f\colon\R^n\to\bar{\R}$ be convex and $L$-Lipschitz continuous on $\dom(f)$. Then, $f$ is subdifferentiable
     and the subgradients are uniformly bounded by $L$, i.\,e.
     \[
         \sup_{\tilde{\nabla} f(x) \in \partial f(x)} \norm{ \tilde{\nabla} f(x) } \leq L
@@ -798,8 +826,10 @@ Throughout this subsection, we fix an arbitrary probability space $(\Omega, \mat
 \end{definition}
 
 \begin{example}[Per-sample stochastic gradient]
-    Let $F\colon \R^n\times\Omega\to\R$ be continuously differentiable in its first argument
-    and let $f(x) := \E(F(x, \cdot))$ for all $x\in\R^n$.
+    \label{ex:stochastic-gradient}
+    Let $F\colon \R^n\times\Omega\to\R$ be continuously differentiable in its first argument and
+    assume that $\E\norm{\nabla F(x, \cdot)} < \infty$.
+    Further, let $f(x) := \E(F(x, \cdot))$ for all $x\in\R^n$.
     Then, for any $x\in\R^n$, the random vector $G_x\colon \Omega\to\R^n$, defined by
     $G_x(\omega) := \nabla_x F(x, \omega)$, is a
     stochastic gradient of $f$ at $x$.
@@ -833,7 +863,7 @@ a standard method to solve such a problem is \textbf{stochastic gradient descent
 \caption{Stochastic Gradient Descent (SGD)}
 \label{alg:sgd}
 \begin{algorithmic}[1] % [1] enables line numbers
-\Require Initial point $x_0\in\R^n$, step sizes $(\eta_k)_{k\in\N_0}$
+\Require Initial point $x_0\in\R^n$, step sizes $(\eta_k)_{k\in\N_0}$, number of iterations $K\in\N$
 \For{$k = 0$ to $K - 1$}
     \State Sample $\xi_k$ from distribution of $\xi$
     \State $g \gets \tilde{\nabla} F_{\xi_k}(x_k)$
@@ -859,7 +889,7 @@ ensures that \cref{alg:sgd} converges to the minimum of $f$.
 In many applications (such as the one we care about, see \eqref{eq:main-problem}), the objective function in \eqref{sec:background:stochopt:problem} exhibits special structure, which
 can be exploited in algorithm design. This often leads to problems that can be formulated as
 \begin{equation}
-    \label{sec:background:stochopt:problem-with-regularizer}
+    \label{eq:sec:background:stochopt:problem-with-regularizer}
     \min_{x\in\mathcal{X}} \Big\{\, f(x) := \E(F_\xi(x)) + r(x) \,\Big\}\,,
 \end{equation}
 where now the objective consists of a differentiable part $F\colon \R^n\times\R^m \to \R$, and a potentially less well-behaved
@@ -875,7 +905,8 @@ Another popular choice is to use $r$ to encode some constraints of the form $x\i
 
 To deal with such objectives effectively, we use the following concept.
 \begin{definition}[Proximity operator]
-    Let $r\colon\R^n \to \bar{\R}$ be proper and convex, and let $\eta \in (0,\infty)$. The \textbf{proximity operator}
+    Let $r\colon\R^n \to \bar{\R}$ be proper, convex, and continuous, and let $\eta \in (0,\infty)$.
+    The \textbf{proximity operator}
     $\prox_{\eta r}\colon \R^n\to\R^n$ is defined as
     \[
         \prox_{\eta r}(x) := \argmin_{y\in\R^n} \Big\{\, r(x) + \frac{1}{2\eta}\norm{x - y}^2 \,\Big\}
@@ -883,23 +914,28 @@ To deal with such objectives effectively, we use the following concept.
     for $x\in\R^n$.
 \end{definition}
 Note that, under the stated assumptions, the minimization problem always has a unique solution, since the objective
-$x\mapsto r(x) + \frac{1}{2\eta}\norm{x - y}^2$ is strongly convex (\cref{prop:strongly-convex-implies-lower-level-sets}).
+$x\mapsto r(x) + \frac{1}{2\eta}\norm{x - y}^2$ is strongly convex
+(\cref{prop:strongly-convex-iff-convex-plus-quadratic,prop:strongly-convex-implies-lower-level-sets}).
 A property that will be useful for us is the following.
 \begin{proposition}[Prox is Lipschitz]
     \label{prop:prox-is-lipschitz}
-    Let $r\colon\R^n \to \bar{\R}$ be proper and convex, and let $\eta \in (0,\infty)$. The
+    Let $r\colon\R^n \to \bar{\R}$ be proper, convex, and continuous, and let $\eta \in (0,\infty)$. Then, the
     proximity operator $\prox_{\eta r}\colon \R^n\to\R^n$ is $1$-Lipschitz, i.\,e.
     \[
         \norm{\prox_{\eta r}(x) - \prox_{\eta r}(y)} \leq \norm{x - y}
     \]
     for all $x,y\in\R^n$.
 \end{proposition}
-We can now describe the \textbf{stochastic proximal gradient method} in \cref{alg:prox-sgd}.
+We can now describe the \textbf{stochastic proximal gradient method} for solving
+problems of the form
+\eqref{eq:sec:background:stochopt:problem-with-regularizer} in \cref{alg:prox-sgd}.
+Our algorithm, which we will analyze in \cref{chap:sipm}, is also a
+proximal gradient method.
 \begin{algorithm}[t]
 \caption{Stochastic Proximal Gradient Descent (SPGD)}
 \label{alg:prox-sgd}
 \begin{algorithmic}[1] % [1] enables line numbers
-\Require Initial point $x_0\in\R^n$, step sizes $(\eta_k)_{k\in\N_0}$
+\Require Initial point $x_0\in\R^n$, step sizes $(\eta_k)_{k\in\N_0}$, number of iterations $K\in\N$
 \For{$k = 0$ to $K - 1$}
     \State Sample $\xi_k$ from distribution of $\xi$
     \State $g \gets \tilde{\nabla} F_{\xi_k}(x_k)$
@@ -945,6 +981,8 @@ We can now describe the \textbf{stochastic proximal gradient method} in \cref{al
 % \cref{sec:iterate-average} and the iterate moving average $\hat{x}_k$ in \cref{sec:ima}.
 
 \subsection{Multifunctions and metric regularity}
+
+References: \cite{bonnans2013perturbation,rockafellar1998variational}.
 
 \begin{definition}[Multifunction]
     Let $X$ and $Y$ be Banach spaces. A function $\varPsi\colon X\to 2^Y$
