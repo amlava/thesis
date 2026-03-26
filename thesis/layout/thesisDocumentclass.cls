@@ -133,6 +133,10 @@
 \newtheorem{remark}[remark]{Remark}
 \aliascntresetthe{remark}
 
+\newaliascnt{notation}{definition}
+\newtheorem{notation}[notation]{Notation}
+\aliascntresetthe{notation}
+
 
 \crefname{theorem}{theorem}{theorems}
 \Crefname{theorem}{Theorem}{Theorems}
@@ -154,6 +158,8 @@
 \Crefname{assumption}{Assumption}{Assumptions}
 \crefname{remark}{remark}{remarks}
 \Crefname{remark}{Remark}{Remarks}
+\crefname{notation}{notation}{notations}
+\Crefname{notation}{Notation}{Notations}
 
 \renewcommand{\proofname}{Proof}
 
