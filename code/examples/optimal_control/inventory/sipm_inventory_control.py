@@ -12,17 +12,17 @@ from sipm import DistributionSampler, SIPMConfig, StochasticInexactPenaltyMethod
 
 
 def make_inventory_dataset(
-    seed: int = 7,
-    num_periods: int = 40,
-    num_scenarios: int = 200,
+    num_periods: int,
+    num_scenarios: int,
+    seed: int = 7
 ):
     rng = np.random.default_rng(seed)
     t = np.arange(num_periods, dtype=np.float32)
-    seasonal = 1.65 + 0.3 * np.sin(2.0 * np.pi * t / 12.0)
+    seasonal = 1.5 + 0.3 * np.sin(2.0 * np.pi * t / 12.0)
     mean_demand = seasonal
     demand = rng.lognormal(
         mean=np.log(mean_demand),
-        sigma=0.14,
+        sigma=0.2,
         size=(num_scenarios, num_periods),
     ).astype(np.float32)
     return demand
@@ -228,9 +228,9 @@ def main():
     x0_raw = 8.0
     order_cap_raw = 4.0
     reg_lambda = 0.5
-    num_iters = 5000
-    tune_iters = 500
-    num_scenarios = 200
+    num_iters = 10000
+    tune_iters = 1000
+    num_scenarios = 2000
 
     demand_raw = make_inventory_dataset(num_periods=num_periods, num_scenarios=num_scenarios)
     demand_scale = float(np.mean(demand_raw))
@@ -245,8 +245,8 @@ def main():
     step_scale = 1.0
     ref_full, x_star = solve_reference(v, beta, a_mat, demand, x0, order_cap, reg_lambda)
     x_star_norm = max(float(np.linalg.norm(x_star)), 1e-12)
-    gamma_scales = [20, 40, 60, 80, 100, 120]
-    delta_scales = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0]
+    gamma_scales = [160, 170, 180, 190, 200]
+    delta_scales = [0.05, 0.075, 0.1, 0.125, 0.15]
     selected = {"score": float("inf")}
     for gamma_candidate in gamma_scales:
         for delta_candidate in delta_scales:
@@ -265,13 +265,16 @@ def main():
                 seed=101,
             )
             mean_viol = mean_violation(averaged[-1], a_mat, demand, x0)
-            if mean_viol < selected["score"]:
+            score = float(np.linalg.norm(averaged[-1] - x_star)) / x_star_norm
+            # if mean_viol < selected["score"]:
+            if score < selected["score"]:
                 selected = {
-                    "score": mean_viol,
+                    "score": score,
                     "step_scale": step_scale,
                     "gamma_scale": gamma_candidate,
                     "delta_scale": delta_candidate,
                     "tune_iters": tune_iters,
+                    "mean_violation": mean_viol
                 }
 
     all_gap = []
@@ -288,7 +291,7 @@ def main():
             selected["gamma_scale"],
             selected["delta_scale"],
             num_iters,
-            seed=500 + 17 * run,
+            seed=500 + run,
         )
         gap = []
         for alpha_eval in averaged:
@@ -319,14 +322,15 @@ def main():
     plt.gca().yaxis.set_major_locator(MultipleLocator(0.2))
     plt.ylim(bottom=0.0)
     plt.tight_layout()
-    plt.savefig(out_dir / "sipm_inventory_gap.pdf")
+    plt.savefig(out_dir / "sipm_inventory_gap2.pdf")
     plt.close()
 
     print("Fixed step scale:", selected["step_scale"])
     print("Tuning iterations:", selected["tune_iters"])
     print("Tuned gamma scale:", selected["gamma_scale"])
     print("Tuned delta scale:", selected["delta_scale"])
-    print("Tuning mean violation:", selected["score"])
+    print("Tuning mean violation:", selected["mean_violation"])
+    print("Tuning score:", selected["score"])
     print("Demand scale:", demand_scale)
     print("Regularization lambda:", reg_lambda)
     print("Reference full objective:", ref_full)
