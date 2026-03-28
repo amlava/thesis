@@ -254,16 +254,16 @@ $(h_k)_{k\in\N_0}$ is again
 the Huber-type penalty sequence from \cref{ex:huber-type-penalty}.
 The parameters $c_\gamma$ and $c_\delta$
 are tuned by minimizing
-the relative distance to the true optimum after $1000$ iterations
-\footnote{Of course, the distance to the ground-truth minimizer is not known in
-practice, and it is not clear how to tune the parameters in the general case
+the relative distance to the true optimum after $1000$ iterations\footnote{Of course,
+the distance to the ground-truth minimizer is not known in
+practice. It is not clear how to tune the parameters in the general case
 of problem \eqref{eq:main-problem-copy}.
 If $r\equiv 0$, however, one could instead consider the norm of the gradient
 of the penalized objective, $\norm{ \nabla f(\bar{x}_k) + \gamma_k \nabla \pi(\bar{x}_k)}$,
 as a scoring criterion. If $\bar{x}_k$ is close
 to $x^\star$, this value is approximately equal to zero. What constitutes a good scoring criterion
 in the general case remains an open question.}
-over the grid
+over all combinations of
 \[
     c_\gamma \in \{\, 160, 170, 180, 190, 200 \,\}
 \]

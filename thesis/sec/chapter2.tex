@@ -16,7 +16,7 @@ $\ell_p$-norm on $\R^n$, defined as
     \norm{x}_p := \Bigl(\sum_{i=1}^n | x_i |^p\Bigr)^{\frac{1}{p}}
 \]
 for $p\in[1, \infty)$. Since we will mostly be using the $\ell_2$ ("euclidian") norm,
-we will omit the subscript, that is, we will write
+we will omit its subscript, that is, we will write
 \[
     \norm{\cdot} := \norm{\cdot}_2.
 \]
@@ -985,12 +985,12 @@ depends heavily on the choice of step sizes $(\eta_k)_{k\in\N}$ and the variance
 $\tilde{\nabla} F_{\xi}(x)$.
 A classical result by
 Robbins and Monro \cite{robbins1951stochastic} states: If $f$ is strongly convex and there exists a constant
-$\sigma^2 \in (0, \infty)$ such that $\sup_{x\in\R^n} \Var(\tilde{\nabla} F_{\xi}(x)) \leq \sigma^2$, then the
-step-size condition
+$M^2 \in (0, \infty)$ such that $\sup_{x\in\R^n} \E\norm{\tilde{\nabla} F_{\xi}(x)}^2 \leq M^2$, then the
+step-size conditions
 \[
     \sum_{k=0}^\infty \eta_k = \infty \quad\text{and}\quad \sum_{k=0}^\infty \eta_k^2 < \infty,
 \]
-ensures that \cref{alg:sgd} converges to the minimum of $f$.
+ensure that \cref{alg:sgd} converges to the minimum of $f$ on $\mathcal{X}$.
 
 In many applications (such as the one we care about, see \eqref{eq:main-problem}), the objective function in \eqref{sec:background:stochopt:problem} exhibits special structure, which
 can be exploited in algorithm design. This often leads to problems that can be formulated as
