@@ -9,29 +9,30 @@ Then, in \cref{sec:numerical-example-inventory-control} we will
 consider the standard control problem of inventory management subject
 to uncertainty in demand projections.
 The experiments are implemented in PyTorch \cite{paszke2019pytorch}, and the source code
-can be found under \textcolor{red}{TODO}.
+can be found on \href{https://github.com/amlava/thesis}{\textcolor{teal}{github}}.
+Code development was partially assisted by OpenAI Codex \cite{openai_codex_2025}.
 
-\section{Primal hard-margin SVM}
+\section{Classification with support vector machines}
 \label{sec:numerical-example-svm}
 
 A common problem in machine learning
 is binary classification, where we are given a dataset
-$D := \{\, (a_i, b_i) \mid i\in\{\, 1,\dots,N \,\} \,\}$
+$D := \{\, (a_i, y_i) \mid i\in\{\, 1,\dots,N \,\} \,\}$
 of size $N\in\N$, where each
 $a_i\in\R^n$ is called \textit{feature}
-and each $b_i\in \{ 0, 1 \}$ is called
+and each $y_i\in \{ -1, 1 \}$ is called
 \textit{label}. As a specific example, one can think of the problem of
 classifying images of pets
-as either a cat ("$0$") or dog ("$1$").
+as either a cat ("$-1$") or dog ("$1$").
 The features and labels can be seen as samples from an underlying
-probability distribution $\Prob$ on the space $\R^n \times \{0, 1\}$.
+probability distribution $\Prob$ on the space $\R^n \times \{-1, 1\}$.
 Given this dataset, we aim to learn a rule to classify 
 new samples $a_{n+1}\in\R^n$ from the distribution of the features
 as either $0$ or $1$. Ideally this rule would
 choose the class that maximizes $\Prob(a_{n+1}, \cdot)$.
 One approach to find such a rule is called \textit{support vector machine} (SVM),
 which is an algorithm for constructing a hyperplane that seperates the two
-subsets $\{\, a\in \R^n \mid (a, 0) \in D  \,\}$
+subsets $\{\, a\in \R^n \mid (a, -1) \in D  \,\}$
 and $\{\, a\in \R^n \mid (a, 1) \in D  \,\}$.
 New samples are then classified based
 on which side of the hyperplane they lie in.
@@ -46,14 +47,14 @@ with affine constraints:
     &\min_{x \in \R^n} \,
         \frac{1}{2} |\!|x|\!|^2 \\
     &\textup{s.\,t.}\quad
-    b_i \langle a_i, x \rangle \geq 1 \quad\textnormal{for all $i\in\{ \, 1,\dots,N \, \}$}.
+    y_i \langle a_i, x \rangle \geq 1 \quad\textnormal{for all $i\in\{ \, 1,\dots,N \, \}$}.
     \end{aligned}
 \end{equation}
 If a solution to the above problem exists, we say that the dataset is
 \textit{linearly seperable}.
 This is often not the case, which is why the above problem is usually relaxed to the unconstrained problem
 \[
-    \min_{x\in\R^n} \frac{1}{2} |\!|x|\!|^2 + C \sum_{i=1}^{N} \max(0, 1 - b_i \langle a_i, x \rangle), 
+    \min_{x\in\R^n} \frac{1}{2} |\!|x|\!|^2 + C \sum_{i=1}^{N} \max(0, 1 - y_i \langle a_i, x \rangle), 
 \]
 where $C\in (0, \infty)$. This problem always has a solution, regardless of whether
 or not the dataset is actually linearly seperable. However,
@@ -67,19 +68,19 @@ This problem fits our template problem \eqref{eq:main-problem-copy} by taking
 $F_\xi(x) \equiv \frac{1}{2}\norm{x}^2$, $r \equiv 0$,
 and
 \[
-    A(a, b) = -b a^\top,
+    A(a, y) = -y a^\top,
     \qquad
-    b(a, b) = -1,
+    b(a, y) = -1,
 \]
-for $(a, b) \in D$.
+for $(a, y) \in D$.
 
 To test \cref{alg:seqprox-sgd} on real world data, we use the Wisconsin Diagnostic Breast Cancer dataset \cite{breastcancer}
 with $n=30$ features and $N=569$ samples.
 Features are standardized, and we use a stratified $70/30$ train/test
-split\footnote{For background information on machine learning evaluation methods,
-see the book \cite{geron2022hands}.}.
+split.\footnote{For background information on machine learning evaluation methods,
+see the book \cite{geron2022hands}.}
 To avoid perfect separability, we flip labels independently with probability $0.1$.
-As the penalty function sequence $(h_k)_{k\in\N_0}$, we use the Huber-type penalty from (\textcolor{red}{TODO}).
+As the penalty function sequence $(h_k)_{k\in\N_0}$, we use the Huber-type penalty from \cref{ex:huber-type-penalty}.
 The objective is $1$-strongly convex, so we use the parameter schedule suggested by \cref{cor:convergence-rates-in-expectation}:
 \[
     \eta_0 = 2,\qquad
@@ -192,8 +193,8 @@ Setting
 and
 \[
     r(x) := \begin{cases}
-        1, \quad\text{if $x \in [0, x_{\max}]^n$}, \\
-        0, \quad\text{else,}
+        0, \quad\text{if $x \in [0, x_{\max}]^n$}, \\
+        \infty, \quad\text{else,}
     \end{cases}
 \]
 problem~\eqref{eq:inventory-control-example} fits our template~\eqref{eq:main-problem} by
@@ -204,22 +205,23 @@ $A(\xi) \equiv -A$,
 \]
 and the proximal term $r$ as above.
 For data generation, we use a horizon of $n = 40$
-periods and generate $200$ demand scenarios.
-That is, we generate $200$ trajectories $\{\, d_0(\xi),\dots,d_{39}(\xi) \,\}$.
-The samples are generated independently, for each period $k \in \{0,\dots,39\}$,
+periods and generate $2000$ demand scenarios.
+That is, we generate $2000$ trajectories $\{\, d_0(\xi),\dots,d_{39}(\xi) \,\}$.
+The samples are generated independently, for each period $k \in \{\, 0,\dots,39 \,\}$,
 according to a lognormal distribution
 \[
-    d_k \sim \operatorname{Lognormal}\bigl(\log(m_k),\,0.15^2\bigr),
+    d_k \sim \operatorname{Lognormal}\bigl(\log(m_k),\,0.2^2\bigr),
     \qquad
-    m_k := 1.65 + 0.30 \sin\Bigl(\frac{2\pi k}{12}\Bigr).
+    m_k := 1.5 + 0.30 \sin\Bigl(\frac{2\pi k}{12}\Bigr).
 \]
 The demand follows a seasonal pattern with lognormal noise.
 For interpretability of the parameter $\lambda$, we
 rescale all inventory quantities by the empirical mean demand
 \[
-    s := \frac{1}{200\cdot 40}\sum_{i=1}^{200}\sum_{k=0}^{39} d_k^{(i)}
-    \approx 1.679.
+    s := \frac{1}{2000\cdot 40}\sum_{i=1}^{2000}\sum_{k=0}^{39} d_k^{(i)},
 \]
+where $d_k^{(i)}$ denotes the $i$-th demand scenario in period $k\in\{\, 0,\dots,39 \,\}$
+for $i\in \{\, 1,\dots, 2000 \,\}$.
 The parameters are chosen as
 \[
     \gamma = 0.6,
@@ -249,22 +251,28 @@ from \cref{cor:convergence-rates-in-expectation}:
 where $k \in \mathbb{N}_0, c_\gamma, c_\delta\in(0,\infty)$,
 and the penalty function sequence
 $(h_k)_{k\in\N_0}$ is again
-the Huber-type penalty sequence from (\textcolor{red}{TODO}).
+the Huber-type penalty sequence from \cref{ex:huber-type-penalty}.
 The parameters $c_\gamma$ and $c_\delta$
-are tuned by minimising
-the mean constraint violation after $500$ iterations
-\footnote{Since the distance to the ground-truth minimiser is not available in
-practice, constraint violation serves as a practical tuning criterion.}
+are tuned by minimizing
+the relative distance to the true optimum after $1000$ iterations
+\footnote{Of course, the distance to the ground-truth minimizer is not known in
+practice, and it is not clear how to tune the parameters in the general case
+of problem \eqref{eq:main-problem-copy}.
+If $r\equiv 0$, however, one could instead consider the norm of the gradient
+of the penalized objective, $\norm{ \nabla f(\bar{x}_k) + \gamma_k \nabla \pi(\bar{x}_k)}$,
+as a scoring criterion. If $\bar{x}_k$ is close
+to $x^\star$, this value is approximately equal to zero. What constitutes a good scoring criterion
+in the general case remains an open question.}
 over the grid
 \[
-    c_\gamma \in \{\, 20, 40, 60, 80, 100, 120 \,\}
+    c_\gamma \in \{\, 160, 170, 180, 190, 200 \,\}
 \]
 and
 \[
-    c_\delta \in \{\, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0 \,\}.
+    c_\delta \in \{\, 0.05, 0.075, 0.1, 0.125, 0.15 \,\}.
 \]
-The tuned pair is $(c_\gamma, c_\delta) = (80, 1.5)$,
-which is then used to rerun the algorithm for $5000$ iterations.
+The tuned pair is $(c_\gamma, c_\delta) = (180, 0.125)$,
+which is then used to rerun the algorithm for $10000$ iterations.
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.75\textwidth]{../code/examples/optimal_control/inventory/sipm_inventory_gap.pdf}
@@ -280,7 +288,8 @@ along with the fact that we sample a finite amount of scenarios for the affine
 constraints,
 guarantee the existence of a unique minimizer
 $x^\star$ (see \cref{prop:strongly-convex-implies-lower-level-sets}).
-We repeat the experiment over $10$ independent runs on the full dataset
+We repeat the experiment over $10$ independent runs for 10000 iterations each
+on the full dataset
 and report the mean and standard deviation of the averaged iterates
 $(\bar x_k)_{k\in\mathbb{N}}$.
 \Cref{fig:inventory-gap} shows the relative distance
@@ -288,5 +297,5 @@ $\|\bar x_k-x^\star\| / \|x^\star\|$,
 where $x^\star$ denotes the unique CVX minimiser,
 together with $\pm 3$ standard deviation bands and a dotted reference
 line at level $0.2$.
-After $5000$ iterations, the final relative distance is
-$1.68\times10^{-1} \pm 1.1\times10^{-3}$.
+After $10000$ iterations, the final relative distance is
+$1.74\times10^{-1} \pm 1.2\times10^{-3}$.
