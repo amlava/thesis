@@ -32,9 +32,34 @@ the constrained stochastic optimization problem
     \end{aligned}
 \end{equation}
 
-The algorithm proceeds as follows. \textcolor{red}{TODO: Describe algorithm.}
-We note that, instead of sampling a single constraint in each iteration, one could
-instead sample a minibatch of them, that is, take multiple samples, and
+The algorithm proceeds as follows.
+We start from an initial point $x_0\in\R^n$. In the beginning of each iteration
+$k\in\N_0$, we sample from the distribution of $\xi$. Then,
+based on this sample,
+we calculate a stochastic gradient (see \cref{ex:stochastic-gradient}), $g_k$, of the \textbf{penalized objective},
+\[
+    x\mapsto \E(F_{\tilde{\xi}}(x)) + \gamma_k \pi_k(x),
+\]
+at the current iterate, $x_k$. Here, $\gamma_k\in(0,\infty)$ and
+\[
+    \pi_k(x) := \E(h_k(x; A(\xi), b(\xi))) \;\forall x\in\R^n
+\]
+with $(h_k)_{k\in\N_0}$ a sequence of functions
+that we will specify the properties of later.
+Following that, we take a standard gradient step with
+step size $\eta_k\in(0,\infty)$ on the current iterate, followed
+by an application of the proximity operator:
+\[
+    x_{k+1} := \prox_{\eta_k r}(x_k - \eta_k g_k),
+\]
+which yields the next iterate $x_{k+1}$.
+After a set amount of $K\in\N$ iterations of this proceedure,
+the algorithm computes a weigthed average of the iterates $x_1,\dots,x_K$,
+whereby the weighting is controlled by a paramater sequence $(w_k)_{k\in\N}$.
+This yields $\bar{x}_K$, the output of \cref{alg:seqprox-sgd}.
+
+It should be noted that, instead of sampling a single realization of $\xi$ in each iteration,
+one could instead sample a minibatch of them, that is, take multiple samples, and
 average over the resulting stochastic gradients. This would lead to lower variance
 in the gradient estimates, which is desirable. To reduce notational clutter, however,
 we choose to omit minibatches from the presentation of the algorithm and its theoretical
