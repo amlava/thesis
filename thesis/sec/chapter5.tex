@@ -10,7 +10,7 @@ of the form
     \end{aligned}
 \end{equation*}
 Our method naturally handles the case where there are infinitely many constraints, which is more general than
-than the settings which have been considered in related works \cite{nedich2023huber,li2025new}. For example,
+than the settings which have been considered in related works \cite{nedich2023huber,li2023softplus}. For example,
 our guarantees hold in the setting of
 robust optimization by sampling
 \cite{ben2009robust,xu2020primal,calafiore2005uncertain}.
@@ -46,12 +46,12 @@ A straight-forward way to transform a chance constrained problem into an
 almost sure one is through the sampling-and-discarding approach
 \cite{campi2011sampling}. However, this requires the ability to sample
 a possibly very large amount of times, which is not feasible
-in \textit{online optimization} \cite{shalev2025online} settings, where one typically cannot sample on-demand.
+in online optimization \cite{shalev2025online} settings, where one typically cannot sample on-demand.
 
 Another possible avenue for future research is the use of acceleration methods.
 To speed up the convergence of first-order methods, a popular method in deterministic optimization
-is Nesterov's \textit{accelerated
-gradient method} (AGD) \cite{nesterov1983method,nesterov2004introductory}. In stochastic optimization, a naive application
+is Nesterov's accelerated
+gradient method (AGD) \cite{nesterov1983method,nesterov2004introductory}. In stochastic optimization, a naive application
 of AGD does not lead to faster (asymptotic) convergence rates, due to an increase in variance in the gradient estimates.
 Instead, acceleration is achieved via variance reduction methods, such as SAGA \cite{defazio2014saga} and SVRG \cite{johnson2013svrg}.
 These algorithms achieve acceleration, while keeping variance managable by periodically calculating full gradients of the objective.
