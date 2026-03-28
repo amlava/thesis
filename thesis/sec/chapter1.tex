@@ -1,6 +1,5 @@
 \chapter{Introduction}
 
-
 Mathematical optimization is concerned with problems of the form
 \[
   \min_{x\in \mathcal{X}} \, f(x),
@@ -16,7 +15,7 @@ In that case,
 if there exists $x^\star\in\mathcal{X}$ such that $f(x^\star) \leq f(x)$ for all $x\in\mathcal{X}$,
 then $x^\star$ is called \textit{solution}. The value $f(x^\star)$ is called
 \textit{optimal value} or \textit{minimal value}.
-In practice, the feasible set $\mathcal{X}$ is often defined implicitly through the use of auxillary functions,
+In practice, the feasible set $\mathcal{X}$ is often defined implicitly through the use of auxilliary functions,
 which leads to the formulation
 \begin{equation}
     \label{eq:general-constrained-problem}
@@ -29,7 +28,7 @@ which leads to the formulation
 for functions $g\colon\R^n\to\R^m$, $h\colon\R^n\to\R^\ell$. The feasible
 set is then given by $\mathcal{X} = \{\, x\in\R^n \mid g(x) \leq 0 \text{ and } h(x) = 0 \,\}$.
 An important special case of optimization problems are
-\textit{convex optimization} problems, where the objective $f$ and
+\textit{convex optimization problems}, where the objective $f$ and
 the map $g$ are convex functions, and $h$ is affine \cite{boyd2004convex}.
 Convex problems have (among other things) the highly desirable property that
 every local minimum is a global minimum, which makes
@@ -74,16 +73,16 @@ SGD is very similar to the classic \textit{gradient descent} algorithm \cite{boy
 The difference is that the gradients are replaced
 by \textit{stochastic gradients}: A stochastic gradient of $f$ at $x\in\R^n$ is a
 random variable $g$ such that $\E(g) = \nabla f(x)$. For example, if $f(x) = \E(F_\xi(x))$ and $F_\xi$
-satisfies certain regularity assumptions, then
+satisfies certain regularity conditions, then
 $\nabla f(x) = \E(\nabla F_\xi(x))$, which implies that $\nabla F_\xi(x)$ is a stochastic gradient of $f$
 at $x$ for every $x\in\R^n$.
-The advantage is that the computation of the gradient $\nabla f(x)$ is replaced with the typically (much) cheaper
+The advantage is that the computation of the gradient $\nabla f(x)$ is replaced with the (potentially much) cheaper
 computation of $\nabla F_\xi(x)$.
 
 Unfortunately, classic SGD is not generally applicable to problems such as \eqref{eq:main-problem},
 because in order to deal with the constraints, the algorithm
 needs to compute the projection $x\mapsto \argmin_{y\in \mathcal{X}} \norm{x - y}$
-onto the feasible set $\mathcal{X}$ in every iteration, where $\norm{\cdot}$ is the euclidian norm.
+onto the feasible set $\mathcal{X}$ in every iteration, where $\norm{\cdot}$ denotes the euclidian norm.
 This computation is well known to
 be tractable only for certain (simple) kinds of constraints \cite{duchi2018introductory}.
 In contrast, problem \eqref{eq:main-problem} may have a highly complex set of constraints, possibly even infinitely many.
@@ -180,7 +179,7 @@ the settings considered by Fercoq et al. \cite{fercoq2019almost},
 Li et al. \cite{li2023softplus}, and Xu et al. \cite{xu2020primal}
 are the most closely related to ours.
 Of those, \cite{li2023softplus} and \cite{xu2020primal} both
-consider case of finitely many inequalities, which is a
+consider the case of finitely many inequalities, which is a
 special of our setting \eqref{eq:main-problem} for discrete $\xi$.
 Further, \cite{li2023softplus} focuses on strongly convex finite-sum objectives, in order
 to leverage accelerated stochastic gradient methods such as SVRG \cite{johnson2013svrg}.
