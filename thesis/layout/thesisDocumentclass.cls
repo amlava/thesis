@@ -52,6 +52,7 @@
 % aliascnt to make cleveref distinguish environments that share a counter
 \RequirePackage{aliascnt}
 
+\setlength{\headheight}{14.5pt}
 
 % Schriftgröße und Kapitelstil
 \def\largetitlestyle{\normalfont}
