@@ -7,14 +7,14 @@ Mathematical optimization is concerned with problems of the form
 where $f\colon\R^n\to\R\cup\{\infty\}$ is a function and
 $\mathcal{X}\subset\dom(f)$ is a set.
 Typically, the set $\mathcal{X}$ is called the \textit{feasible set},
-elements $x\in\mathcal{X}$ are \textit{feasible points}, and $f$ is called the \textit{objective function},
+elements $x\in\mathcal{X}$ are called \textit{feasible points}, and $f$ is called the \textit{objective function},
 or simply \textit{objective}.
-Oftentimes, a point $x\in\R^n$ is referred to as a \textit{decision variable}.
+Oftentimes, one refers to $x\in\R^n$ as a \textit{decision variable}.
 If $\mathcal{X}$ is nonempty, then the problem is called \textit{feasible}.
 In that case,
 if there exists $x^\star\in\mathcal{X}$ such that $f(x^\star) \leq f(x)$ for all $x\in\mathcal{X}$,
 then $x^\star$ is called \textit{solution}. The value $f(x^\star)$ is called
-\textit{optimal value} or \textit{minimal value}.
+\textit{optimal value}, \textit{minimal value}, or simply \textit{minimum}.
 In practice, the feasible set $\mathcal{X}$ is often defined implicitly through the use of auxilliary functions,
 which leads to the formulation
 \begin{equation}
@@ -29,16 +29,16 @@ for functions $g\colon\R^n\to\R^m$, $h\colon\R^n\to\R^\ell$. The feasible
 set is then given by $\mathcal{X} = \{\, x\in\R^n \mid g(x) \leq 0 \text{ and } h(x) = 0 \,\}$.
 An important special case of optimization problems are
 \textit{convex optimization problems}, where the objective $f$ and
-the map $g$ are convex functions, and $h$ is affine \cite{boyd2004convex}.
+the map $g$ are convex functions, and $h$ is affine.
 Convex problems have (among other things) the highly desirable property that
 every local minimum is a global minimum, which makes
 gradient-based optimization algorithms
-work effectively.
+work effectively \cite{boyd2004convex}.
 
 In this work, we will consider
-\textit{stochastic} convex optimization problems
-\cite{robbins1951stochastic,birge2011introduction}, which incorporate uncertainty
-into the problem formulation through the use of random variables.
+\textit{stochastic} convex optimization problems, which incorporate uncertainty
+into the problem formulation through the use of random variables
+\cite{robbins1951stochastic,birge2011introduction}.
 Such problems appear in many areas of
 applied mathematics, including machine learning \cite{bottou2018optimization},
 supply chain management \cite{santoso2005stochastic}, and
@@ -53,19 +53,31 @@ take the form
     &\textup{subject to} \quad A(\xi) x - b(\xi) \leq 0 \quad \textnormal{almost surely},
     \end{aligned}
 \end{equation}
-where $\xi$ is a random variable that capture uncertainty in the objective and
+where $\xi$ is a random variable that captures uncertainty in the objective and
 the constraints.
 The objective $f$ is composed of two functions: the expectation
 functional $\E(F_\xi)\colon\R^n\to\R$, which we assume to
 be smooth, and the potentially nonsmooth function $r\colon\R^n\to\R\cup\{\infty\}$,
-which we will refer to as the \textit{regularizer}.
+which is sometimes referred to as the \textit{regularizer}.
 The constraints are affine inequalities with matrices $A(z)\in\R^{m\times n}$
 and vectors $b(z)\in\R^m$ for $z\in\R^p$.
 We are particularly interested in the case where the number of constraints
-induced by the distribution of $\xi$ are large, and possibly even infinite.
+induced by the distribution of $\xi$ is large, possibly even infinite.
 Notable instances of problems that can be formulated in this way
 include primal support vector machines \cite{fercoq2019almost,hastie2009elements},
 and robust optimization by sampling \cite{ben2009robust,calafiore2005uncertain,xu2020primal}.
+
+% Closely related to problems like \eqref{eq:main-problem-copy} are \textit{chance constrained}
+% optimization problems, which take the form
+% \begin{equation*}
+%     \begin{aligned}
+%     &\min_{x \in \mathbb{R}^n} \, \{\, f(x) := \E(F_\xi(x)) + r(x) \,\} \\
+%     &\textup{subject to} \quad \Prob(A(\xi) x - b(\xi) \leq 0) \geq 1 - \alpha
+%     \end{aligned}
+% \end{equation*}
+% for some $\alpha \in [0, 1)$. Chance constrained problems are
+% difficult for several reasons, one being that
+% the constraints are nonconvex for most probability measures $\Prob$.
 
 A popular approach to solve \eqref{eq:main-problem} is an iterative method called \textit{stochastic gradient
 descent} (SGD), introduced by Robbins and Monro \cite{robbins1951stochastic}.
@@ -81,8 +93,9 @@ computation of $\nabla F_\xi(x)$.
 
 Unfortunately, classic SGD is not generally applicable to problems such as \eqref{eq:main-problem},
 because in order to deal with the constraints, the algorithm
-needs to compute the projection $x\mapsto \argmin_{y\in \mathcal{X}} \norm{x - y}$
-onto the feasible set $\mathcal{X}$ in every iteration, where $\norm{\cdot}$ denotes the euclidian norm.
+needs to compute the \textit{projection operator}, $x\mapsto \argmin_{y\in \mathcal{X}} \norm{x - y}$
+with $\norm{\cdot}$ denoting the euclidian norm on $\R^n$,
+in every iteration.
 This computation is well known to
 be tractable only for certain (simple) kinds of constraints \cite{duchi2018introductory}.
 In contrast, problem \eqref{eq:main-problem} may have a highly complex set of constraints, possibly even infinitely many.
@@ -91,7 +104,7 @@ A standard method for dealing with
 constraints in
 % deterministicinequality-constrained
 deterministic constrained optimization problems like
-\eqref{eq:general-constrained-problem},
+\eqref{eq:general-constrained-problem}
 % with $h\equiv 0$,
 involves the use of \textit{penalty functions}
 $\pi\colon\R^n\to[0,\infty)$ such that $\pi(x) = 0$ for all $x\in\mathcal{X}$ and $\pi(x) > 0$
@@ -109,7 +122,7 @@ popular examples of penalty functions are
     \item the smooth penalty $\pi_{\ell_2}(x) := \norm{(g(x))_+}_2^2$ with $\norm{\cdot}_2$ the $\ell_2$-norm on $\R^m$,
 \end{itemize}
 where we denote by $(y)_+$ the elementwise application of $x\mapsto \max(0, x)$ to the vector $y\in\R^m$.
-Unfortunately, these penalty suffer from well-known problems: The smooth penalty $\pi_{\ell_2}$ will in general not
+Unfortunately, these penalty functions suffer from well-known problems: The smooth penalty $\pi_{\ell_2}$ will in general not
 recover a feasible point of \eqref{eq:general-constrained-problem} --- no matter how large $\gamma$
 is chosen. Besides this, it also suffers from the problem that its gradient is unbounded
 on $\R^n$, which leads to issues related to poor conditioning. On the other hand, the
