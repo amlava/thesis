@@ -36,11 +36,11 @@ The algorithm proceeds as follows.
 We start from an initial point $x_0\in\R^n$. In the beginning of each iteration
 $k\in\N_0$, we sample from the distribution of $\xi$. Then,
 based on this sample,
-we calculate a stochastic gradient (see \cref{ex:stochastic-gradient}), $g_k$, of the \textbf{penalized objective},
+we calculate a stochastic gradient (see \cref{ex:stochastic-gradient}), $g_k$, of the \textbf{penalized objective}
 \[
-    x\mapsto \E(F_{\tilde{\xi}}(x)) + \gamma_k \pi_k(x),
+    x\mapsto \E(F_\xi(x)) + \gamma_k \pi_k(x),
 \]
-at the current iterate, $x_k$. Here, $\gamma_k\in(0,\infty)$ and
+at the current iterate $x_k$. Here, $\gamma_k\in(0,\infty)$ and
 \[
     \pi_k(x) := \E(h_k(x; A(\xi), b(\xi))) \;\forall x\in\R^n
 \]
@@ -61,7 +61,7 @@ This yields $\bar{x}_K$, the output of \cref{alg:seqprox-sgd}.
 It should be noted that, instead of sampling a single realization of $\xi$ in each iteration,
 one could instead sample a minibatch of them, that is, take multiple samples, and
 average over the resulting stochastic gradients. This would lead to lower variance
-in the gradient estimates, which is desirable. To reduce notational clutter, however,
+in the gradient estimates, which is desirable. However, in order to reduce notational clutter
 we choose to omit minibatches from the presentation of the algorithm and its theoretical
 analysis.
 
@@ -245,7 +245,7 @@ We will refer back to this example in our numerical experiments in \cref{chap:nu
         \end{cases}
     \]
     for all $k\in\N_0$. The sequence $(h_k^\text{hub})_{k\in\N_0}$ is a sequence of convex and continuously
-    differentiable functions with $h_k^0(x; a, b) \geq \max(\langle a, x \rangle - b, 0)$ for all $x\in\R^m$,
+    differentiable functions with $h_k^0(x; a, b) \geq \norm{a}^{-1} \max(\langle a, x \rangle - b, 0)$ for all $x\in\R^m$,
     and
     \[
         h_k^{0}(x; a, b) \leq \frac{\delta_k}{4 \norm{a}}
@@ -446,17 +446,17 @@ by the following lemma.
     \end{enumerate}
     This concludes the proof.
 \end{proof}
-A key challenge in the analysis of \cref{alg:seqprox-sgd} is the fact that
-$x_k^\star$ need not be
-feasible, which prevents the use of
+A key challenge in the analysis of \cref{alg:seqprox-sgd} is the fact that both
+the generated iterates $(x_k)_{k\in\N_0}$ and the true minima $(x_k^\star)_{k\in\N_0}$
+need not be feasible, which prevents the use of
 standard arguments from the SGD literature to analyse convergence. Our proof
 methods combine approaches from recent works, mainly
 the already mentioned \cite{nedich2023huber}, as well as
-\cite{cutler2023stochastic}. The latter paper
-investigates \textit{stochastic optimization problems under distributional drift}.
+\cite{cutler2023stochastic}. The latter work
+investigates stochastic optimization problems under \textit{distributional drift}.
 While these kinds of problems are not exactly the same as the ones we are
 working with, the two settings do indeed exhibit striking resemblences.
-Namely, Cutler et al.~\cite{cutler2023stochastic} investigated a sequence of
+Namely, the authors investigate a sequence of
 time-dependent composite problems of the form
 \[
     \min_{x\in\R^n} g_t(x) + r_t(x),
@@ -481,12 +481,9 @@ A naive application of the techniques in Cutler et al. \cite{cutler2023stochasti
 would then lead to a restriction on the step sizes $(\eta_k)_{k\in\N}$ of
 the form $\eta_k \in (0, 1/L_k)$ with $L_k$ the smoothness constant of $\psi_k$.
 With some care however, we manage to circumvent this restriction, as well as
-the Lipschitz assumption on $\nabla \pi_k$, and only require $\eta_k\in(0, 1/L)$,
-which allows for a lot more freedom in the choice of step sizes.
-The resulting inequality can then be used
-to adapt the proof strategy from Nedić et al. \cite{nedich2023huber}
-(where the authors did not use proximal maps in their algorithm)
-to our proximal method.
+the Lipschitz assumption on $\nabla \pi_k$, and only require $\eta_k\in(0, 1/L)$.
+This allows for a lot more freedom in the choice of step sizes
+and is ultimately key for deriving the final convergence rates.
 
 \section{Almost sure convergence}
 \label{sec:almost-sure-convergence}
