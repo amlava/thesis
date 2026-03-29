@@ -65,12 +65,10 @@ small, the resulting classifier will perform poorly.
 In contrast, our \cref{alg:seqprox-sgd} allows us to bypass this problem because we can directly apply it to
 \eqref{eq:svm-hard-margin}.
 This problem fits our template problem \eqref{eq:main-problem-copy} by taking
-$F_\xi(x) \equiv \frac{1}{2}\norm{x}^2$, $r \equiv 0$,
+$F_\xi(x) := \frac{1}{2}\norm{x}^2$, $r \equiv 0$,
 and
 \[
-    A(a, y) = -y a^\top,
-    \qquad
-    b(a, y) = -1,
+    g(x, (a, y)) := -y \langle a, x \rangle + 1
 \]
 for $(a, y) \in D$.
 
@@ -118,20 +116,20 @@ This example is adapted from Section~4.8.2 in \cite{evans1983introduction}.
 We consider a discrete-time inventory problem over a finite horizon
 $\{0,\dots,n-1\}$, where $n\in\N$.
 Let $(\Omega,\mathcal{F},\mathbb{P})$ be a probability space
-and let $\xi\colon\Omega\to\R^p$ be a random variable.
+and let $\zeta\colon\Omega\to\R^p$ be a random variable.
 For each period $k\in\{\, 0,\dots,n-1 \,\}$,
 we introduce the following quantities:
 \begin{itemize}
-    \item[-] $y_k(\xi)$: inventory level at the beginning of period $k$,
+    \item[-] $y_k(\zeta)$: inventory level at the beginning of period $k$,
     \item[-] $x_k$: order quantity placed in period $k$,
-    \item[-] $d_k(\xi)$: random customer demand in period $k$,
+    \item[-] $d_k(\zeta)$: random customer demand in period $k$,
     \item[-] $\gamma$: per-unit ordering cost,
     \item[-] $\beta$: per-unit holding cost.
 \end{itemize}
 The inventory evolves according to
 \begin{equation}
     \label{eq:sec:numerical-example-inventory-control:dynamics}
-    y_{k+1}(\xi) = y_k(\xi) + x_k - d_k(\xi)
+    y_{k+1}(\zeta) = y_k(\zeta) + x_k - d_k(\zeta)
 \end{equation}
 for $k \in \{0,\dots,n-1\}$,
 with a prescribed deterministic initial inventory $y_0 \in (0,\infty)$.
@@ -145,14 +143,14 @@ $x_{\max}\in(0, \infty)$, the problem reads
     \begin{aligned}
         &\min_{x \in \mathbb{R}^{n}} \;
             \mathbb{E}\Bigl(\sum_{k=0}^{n-1} \gamma x_k
-            + \beta \sum_{k=1}^{n} y_k(\xi)\Bigr)
+            + \beta \sum_{k=1}^{n} y_k(\zeta)\Bigr)
             + \lambda\|x\|^2 \\[6pt]
         &\text{s.\,t.}\quad
-            y_{k+1}(\xi) = y_k(\xi) + x_k - d_k(\xi)
+            y_{k+1}(\zeta) = y_k(\zeta) + x_k - d_k(\zeta)
             \quad\text{a.\,s. for all}
             \; k\in\{0,\dots,n-1\} \\[4pt]
         &\hspace{1.3cm}
-            y_k(\xi) \geq 0
+            y_k(\zeta) \geq 0
             \quad\text{a.\,s. for all} \; k\in\{1,\dots,n\} \\[4pt]
         &\hspace{1.3cm}
             0 \leq x_k \leq x_{\max}
@@ -163,7 +161,7 @@ We can eliminate the state variables $(y_k)_{k\in\{\, 0,\dots,n-1 \,\}}$ by
 recursively solving the dynamics \eqref{eq:sec:numerical-example-inventory-control:dynamics}.
 This yields
 \[
-    y_k(\xi) = y_0 + \sum_{j=0}^{k-1}\bigl(x_j - d_j(\xi)\bigr),
+    y_k(\zeta) = y_0 + \sum_{j=0}^{k-1}\bigl(x_j - d_j(\zeta)\bigr),
 \]
 for all $k\in\{\, 0,\dots,n-1 \,\}$.
 The nonnegativity constraints thus become linear inequalities in $x$.
@@ -178,7 +176,7 @@ be the lower-triangular matrix with
 \]
 We further define
 \[
-    d(\xi) := \bigl(d_0(\xi),\dots,d_{n-1}(\xi)\bigr)^\top \in \mathbb{R}^n,
+    d(\zeta) := \bigl(d_0(\zeta),\dots,d_{n-1}(\zeta)\bigr)^\top \in \mathbb{R}^n,
     \qquad
     \mathbf{1} := (1,\dots,1)^\top \in \mathbb{R}^n.
 \]
@@ -186,9 +184,7 @@ Setting
 \[
     v := \mathbf{1}^\top(\beta A + \gamma I_n),
     \qquad
-    \eta(\xi) := \beta\,\mathbf{1}^\top A\, d(\xi),
-    \qquad
-    b(\xi) := -A\,d(\xi) + y_0\,\mathbf{1},
+    \eta(\zeta) := \beta\,\mathbf{1}^\top A\, d(\zeta),
 \]
 and
 \[
@@ -198,15 +194,15 @@ and
     \end{cases}
 \]
 problem~\eqref{eq:inventory-control-example} fits our template~\eqref{eq:main-problem} by
-taking
-$A(\xi) \equiv -A$,
-\[
-    F(x,\xi) = \langle v, x \rangle - \eta(\xi) + \lambda \norm{x}^2,
-\]
-and the proximal term $r$ as above.
+taking the proximal term $r$ as above,
+\begin{align*}
+    F(x,(i, \zeta)) &:= \langle v, x \rangle - \eta(\zeta) + \lambda \norm{x}^2,  \quad\text{and} \\
+    g(x, (i, \zeta)) &:= -A_i x + A_i d(\zeta) - y_0,
+\end{align*}
+where we let $A_i$ denote the $i$-th row of $A$ for $i\in\{\, 0,\dots,39 \,\}$.
 For data generation, we use a horizon of $n = 40$
 periods and generate $2000$ demand scenarios.
-That is, we generate $2000$ trajectories $\{\, d_0(\xi),\dots,d_{39}(\xi) \,\}$.
+That is, we generate $2000$ trajectories $\{\, d_0(\zeta),\dots,d_{39}(\zeta) \,\}$.
 The samples are generated independently, for each period $k \in \{\, 0,\dots,39 \,\}$,
 according to a lognormal distribution
 \[

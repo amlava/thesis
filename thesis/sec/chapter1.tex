@@ -50,7 +50,7 @@ take the form
     \tag{P}
     \begin{aligned}
     &\min_{x \in \mathbb{R}^n} \, \{\, f(x) := \E(F_\xi(x)) + r(x) \,\} \\
-    &\textup{subject to} \quad A(\xi) x - b(\xi) \leq 0 \quad \textnormal{almost surely},
+    &\textup{subject to} \quad g(x,\xi) \leq 0 \quad \textnormal{almost surely},
     \end{aligned}
 \end{equation}
 where $\xi$ is a random variable that captures uncertainty in the objective and
@@ -59,13 +59,11 @@ The objective $f$ is composed of two functions: the expectation
 functional $\E(F_\xi)\colon\R^n\to\R$, which we assume to
 be smooth, and the potentially nonsmooth function $r\colon\R^n\to\R\cup\{\infty\}$,
 which is sometimes referred to as the \textit{regularizer}.
-The constraints are affine inequalities with matrices $A(z)\in\R^{m\times n}$
-and vectors $b(z)\in\R^m$ for $z\in\R^p$.
 We are particularly interested in the case where the number of constraints
 induced by the distribution of $\xi$ is large, possibly even infinite.
 Notable instances of problems that can be formulated in this way
-include primal support vector machines \cite{fercoq2019almost,hastie2009elements},
-and robust optimization by sampling \cite{ben2009robust,calafiore2005uncertain,xu2020primal}.
+include primal support vector machines \cite{fercoq2019almost,hastie2009elements}, and
+robust optimization by sampling \cite{ben2009robust,calafiore2005uncertain,xu2020primal}.
 
 % Closely related to problems like \eqref{eq:main-problem-copy} are \textit{chance constrained}
 % optimization problems, which take the form
@@ -191,38 +189,37 @@ among existing work on constrained stochastic optimization,
 the settings considered by Fercoq et al. \cite{fercoq2019almost},
 Li et al. \cite{li2023softplus}, and Xu et al. \cite{xu2020primal}
 are the most closely related to ours.
-Of those, \cite{li2023softplus} and \cite{xu2020primal} both
-consider the case of finitely many inequalities, which is a
-special of our setting \eqref{eq:main-problem} for discrete $\xi$.
+Of those, \cite{nedich2023huber} and \cite{fercoq2019almost} consider
+the special case of affine constraints, and in \cite{nedich2023huber},
+\cite{li2023softplus}, and \cite{xu2020primal}, the authors
+assume a finite constraint set. The setting we consider therefore generalizes those of prior works.
 Further, \cite{li2023softplus} focuses on strongly convex finite-sum objectives, in order
 to leverage accelerated stochastic gradient methods such as SVRG \cite{johnson2013svrg}.
 In contrast, we will consider objectives that contain general expected value functions,
 and provide analysis for both strongly convex, as well as general convex settings.
-The setting of \cite{fercoq2019almost} most closely
-resembles ours, however, both \cite{fercoq2019almost} and \cite{xu2020primal}
+Finally, both \cite{fercoq2019almost} and \cite{xu2020primal}
 make assumptions to ensure that the stochastic
 gradients have uniformly bounded variance. However, this assumption does not apply to many
 realistic settings \cite{nguyen2018sgd} and we will not rely on it for the
 analysis of our method.
 
-Our contributions in this work are twofold.
-First, we build on the ideas of Nedić et al. \cite{nedich2023huber} with a new
-algorithm which uses \textit{proximal operators} \cite{parikh2014proximal,moreau1965proximite}.
-As a result, our algorithm is applicable to a wider range
-of objective functions, as we do
-not require the objective to be subdifferentiable everywhere.
-Further, our approach exploits the compositional structure of the objective function in \eqref{eq:main-problem},
-which can lead to faster convergence.
-Second, we analyze our method in the more general setting of problem \eqref{eq:main-problem},
-which allows for infinitely many constraints and makes no finite-sum assumption on the objective.
+Our contributions in this work are as follows:
+We build on the ideas of Nedić et al. \cite{nedich2023huber} with a new
+algorithm that exploits the compositional structure in the objective and
+applies to a wider range of constraints.
+Specifically, our method and the analysis thereof apply to the
+general setting of problem \eqref{eq:main-problem},
+which allows for infinitely many nonlinear constraints and
+makes no finite-sum assumption on the objective. This clearly differentiates
+it from the settings considered in prior works.
+A notable feature of our proofs is that we do not make any global boundedness assumptions on the norm
+of the stochastic gradients, which stands in contrast to many related works in the stochastic optimization
+literature.
 
 In the following, we will first begin with a review of the relevant background material in the
 fields of probability and convex optimization in \cref{chap:background}.
 The main contributions of this work
 are then presented in \cref{chap:sipm}, where we formulate our algorithm
 and prove various convergence results under mild assumptions on the problem setting beyond convexity.
-A notable feature of our proofs is that we do not make any global boundedness assumptions on the norm
-of the stochastic gradients, which stands in contrast to typical works in the stochastic optimization
-literature, including classics like \cite{nemirovski2009robust,robbins1951stochastic}.
 We back our theoretical analysis up with numerical experiments in \cref{chap:numerical-experiments}.
 Finally, we summarize our findings and point to future research directions in \cref{chap:outlook}.

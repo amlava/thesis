@@ -1,11 +1,11 @@
 \chapter*{Abstract}
 
-We study stochastic convex optimization problems with almost sure affine
-inequality constraints of the form
+We study stochastic convex optimization problems subject to almost sure
+inequality constraints:
 \begin{equation*}
     \begin{aligned}
     &\min_{x \in \mathbb{R}^n} \, \{\, f(x) := \E(F_\xi(x)) + r(x) \,\} \\
-    &\textup{subject to} \quad A(\xi) x - b(\xi) \leq 0 \quad \textnormal{almost surely},
+    &\textup{subject to} \quad g(x,\xi) \leq 0 \quad \textnormal{almost surely},
     \end{aligned}
 \end{equation*}
 allowing for infinitely many constraints and composite objectives.
@@ -19,6 +19,6 @@ $\mathcal{O}(\log^{1/2+\epsilon} K / \sqrt{K})$ and $\mathcal{O}(\log^\epsilon K
 for any $\epsilon\in(0,\infty)$, respectively, matching the optimal stochastic rates
 up to arbitrarily small logarithmic factors, while remaining projection-free.
 Unlike several related methods, our analysis does not require a global bound
-on the variance of stochastic gradients, and allows for infinitely many constraints.
+on the variance of stochastic gradients, and allows for infinitely many functional constraints.
 Numerical experiments support the theoretical
 findings and illustrate the practical performance of the method.
