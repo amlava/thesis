@@ -65,7 +65,15 @@ in the gradient estimates, which is desirable. However, in order to reduce notat
 we choose to omit minibatches from the presentation of the algorithm and its theoretical
 analysis.
 
-\textcolor{red}{TODO: Outline.}
+We will start with some technical preliminaries and first assumptions to set the stage
+for the subsequent analysis. Then, in \cref{sec:almost-sure-convergence},
+we will establish the very important result that we can choose the parameters
+of \cref{alg:seqprox-sgd} in a way that guarantees that the sequence
+of iterates $(x_k)_{k\in\N_0}$ is bounded with probability 1.
+Based on this result, we can then move on to prove convergence
+of the iterates $(x_k)_{k\in\N_0}$ to the solution of
+problem \eqref{eq:main-problem-copy} in
+\cref{sec:convergence-in-expectation,sec:high-probability-bounds}.
 
 \section{Technical preliminaries}
 
@@ -1388,14 +1396,16 @@ by \cref{alg:seqprox-sgd} stay bounded with probability one, we can now move on 
 prove convergence of the algorithm.
 
 \section{Convergence rates in expectation}
+\label{sec:convergence-in-expectation}
 
 In this section, we will establish conditions under which the
 iterates $(x_k)_{k\in\N_0}$ generated
 by \cref{alg:seqprox-sgd} converge to a solution $x^\star$  of \eqref{eq:main-problem-copy}.
 Concretely, we will show that the expected optimality gap, $\E|f(\bar{x}_k) - f(x^\star)|$, and
-the distance to the feasible set, $\E(\dist(\bar{x}_k, \mathcal{X}))$, both converge
-to zero. Moreover, we will prove asymptotic rates of convergence, relative to the number
-of iterations $K\in\N$ that the algorithm runs.
+the expected distance to the feasible set, $\E(\dist(\bar{x}_k, \mathcal{X}))$, both converge
+to zero. The attainable convergence rates are
+$\mathcal{O}(\log^{1/2+\epsilon} K / \sqrt{K})$ in the convex case and $\mathcal{O}(\log^\epsilon K / K)$
+in the strongly convex case, respectively, for arbitrary $\epsilon\in(0,\infty)$.
 
 In the previous section, we established that the iterates $(x_k)_{k\in\N_0}$
 of \cref{alg:seqprox-sgd} are bounded with probability one,
