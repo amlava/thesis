@@ -8,7 +8,7 @@ We developed a method for stochastic optimization problems subject to almost sur
     &\textup{subject to} \quad g(x, \xi) \leq 0 \quad \textnormal{almost surely}.
     \end{aligned}
 \end{equation*}
-Our method naturally handles the case where there are infinitely many nonlinear constraints,
+Our method provably handles the case of infinitely many nonlinear constraints,
 which is more general than
 the settings which have been considered in related works \cite{fercoq2019almost,xu2020primal,nedich2023huber,li2023softplus}.
 Further, because our algorithm
@@ -23,9 +23,7 @@ In the convex setting, one can achieve a convergence rate of
 $\mathcal{O}(\log^{1/2 + \epsilon} K / \sqrt{K})$ for any $\epsilon \in (0,\infty)$.
 The convergence rate can be improved
 to $\mathcal{O}(\log^{\epsilon} K / K)$ for any $\epsilon \in (0,\infty)$, in the strongly convex case.
-These rates improve upon the rates achieved in the closely related work by Fercoq et al. \cite{fercoq2019almost},
-without the need of a global variance bound on the stochastic gradients, while also being applicable to nonlinear constraints.
-Further, it is known that stochastic projected gradient descent achieves the minimax optimal convergence rates of
+It is known that stochastic projected gradient descent achieves the minimax optimal convergence rates of
 $\mathcal{O}(1/\sqrt{K})$ in the convex setting, and $\mathcal{O}(1/K)$ in the strongly convex setting \cite{nemirovski_yudin_1983,agarwal2009information}.
 Thus, the convergence rates of our method match the optimal convergence rates
 up to an arbitrarily small logarithmic factor, while being projection-free.
@@ -40,13 +38,14 @@ constraints only need to hold with some
 high probability, instead of almost surely.
 A straight-forward way to approximate a chance constrained problem by an
 almost sure one is through the sampling-and-discarding approach
-\cite{campi2011sampling}. However, this is only and approximation and further
+\cite{campi2011sampling}. However, this is only an approximation and, furthermore,
 requires the ability to sample
-a possibly very large amount of times. This is not always feasible, for example,
+a possibly very large amount of times before the optimization begins. This is not always feasible, for example,
 in online optimization settings, where on-demand sampling is not possible \cite{shalev2025online}.
 On a related note, the current analysis of our algorithm does not hold in the general
 online optimization setting, as we require an i.\,i.\,d. assumption on the sampling process,
-which is unrealistic in the online context.
+which is unrealistic in the online context. An extension to online settings with a practical
+stopping rule for handling chance-constraints could greatly enhance the applicability of our method.
 
 Another possible avenue for future research is the use of methods for accelerating convergence.
 To speed up the convergence of first-order methods, a popular method in deterministic optimization
@@ -58,9 +57,10 @@ Instead, acceleration is achieved via variance reduction methods, such as SAGA \
 These algorithms achieve acceleration, while keeping variance managable by periodically calculating full gradients of the objective.
 Unfortunately, a straight-forward application of these methods to our setting is not possible,
 unless we assume a finite-sum structure of the objective and a finite number of constraints.
-Moreover, the number of summands involved in the objective, as well as the number of constraints, need to be managable, so
-that the occasional calculation of full gradients of the penalized objective used in our method is feasible.
+Moreover, the number of summands involved in the objective, as well as the number of constraints, could be extremely large.
+This would make even an occasional calculation of full gradients infeasible for us.
 A promising recent method that circumvents these issues was proposed in \cite{lei2017less}, where the authors manage
 to greatly improve the convergence of stochastic gradient methods, while avoiding the calculation of full gradients.
-An adaptation of their methods to our constrained setting is a promising future research direction to improve upon the convergence
-rate of our algorithm.
+Incorporating their techniques into our algorithm
+is a promising future research direction to improve upon the convergence
+rate of our current method.

@@ -65,8 +65,8 @@ robust optimization by sampling \cite{ben2009robust,calafiore2005uncertain,xu202
 We are particularly interested in the case where the number of constraints
 induced by the distribution of $\xi$ is large, possibly even infinite.
 These \textit{large-scale} constraints prevent the use of classical methods
-in deterministic optimization, which need to process all constraints at once,
-which motivates the development of a method that only needs to process
+in deterministic optimization, which need to process all constraints at once.
+This motivates the development of a method that only needs to process
 a small amount of constraints at a time.
 
 % Closely related to problems like \eqref{eq:main-problem-copy} are \textit{chance constrained}
@@ -116,24 +116,23 @@ the unconstrained problem
 \[
     \min_{x\in\R^n} \, f(x) + \gamma \pi(x),
 \]
-where $\gamma\in(0,\infty)$ is a parameter that controls the degree to which infeasible points get peanalized.
+where $\gamma\in(0,\infty)$ is a parameter that controls the degree to which infeasible points get penalized.
 In the case where the problem is purely inequality constrained, that is $h\equiv 0$,
 popular examples of penalty functions are
 \begin{itemize}
-    \item the nonsmooth penalty $\pi_{\ell_1}(x) := \norm{(g(x))_+}_1$ with $\norm{\cdot}_1$ the $\ell_1$-norm on $\R^m$, and
-    \item the smooth penalty $\pi_{\ell_2}(x) := \norm{(g(x))_+}_2^2$ with $\norm{\cdot}_2$ the $\ell_2$-norm on $\R^m$,
+    \item[-] the nonsmooth penalty $\pi_{\ell_1}(x) := \norm{(g(x))_+}_1$ with $\norm{\cdot}_1$ the $\ell_1$-norm on $\R^m$, and
+    \item[-] the smooth penalty $\pi_{\ell_2}(x) := \norm{(g(x))_+}_2^2$ with $\norm{\cdot}_2$ the $\ell_2$-norm on $\R^m$,
 \end{itemize}
 where we denote by $(y)_+$ the elementwise application of $x\mapsto \max(0, x)$ to the vector $y\in\R^m$.
-Unfortunately, these penalty functions suffer from well-known problems: The smooth penalty $\pi_{\ell_2}$ will in general not
+Unfortunately, these penalty functions suffer from well-known problems: The smooth penalty $\pi_{\ell_2}$ will, in general, not
 recover a feasible point of \eqref{eq:general-constrained-problem} --- no matter how large $\gamma$
-is chosen. Besides this, it also suffers from the problem of unbounded gradients, which leads to issues related to poor conditioning. On the other hand, the
+is chosen. To get reasonably close to a feasible point, one is often forced to
+choose a very large $\gamma$, which introduces issues related to poor conditioning. On the other hand, the
 nonsmooth penalty $\pi_{\ell_1}$ is \textit{exact}, which means that there does
 exist a penalty parameter $\gamma^\star\in(0,\infty)$ such that the minimizer
 of $f + \gamma^\star \pi_{\ell_1}$ is the same as that of the original constrained problem.
 However, it is not clear in general how to choose $\gamma^\star$, and
-the non-differentiability introduces problems for gradient-based methods.
-For more information on penalty methods, one can consult standard references such as
-the works by Nocedal \& Wright \cite{nocedal2006numerical}, and Bertsekas \cite{bertsekas1997nonlinear}.
+the non-differentiability introduces problems for gradient-based methods \cite{nocedal2006numerical,bertsekas1997nonlinear}.
 Lastly, as these penalties need to evaluate all $m$ constraints at once, they are not applicable
 to the large-scale problems that we care about.
 % Penalty methods are typically implemented with a two-loop iterative algorithm, where, in the inner loop,
@@ -184,10 +183,9 @@ one can achieve convergence rates of $\mathcal{O}(\log^{(1+3\epsilon)/2} / \sqrt
 $\mathcal{O}(\log^{\epsilon} / K)$ in the case where the objective is \textit{strongly convex},
 as the number of iterations, $K\in\N$, goes to infinity.
 This almost matches the rates of $\mathcal{O}(1/\sqrt{K})$ and $\mathcal{O}(1/K)$
-achievable by SGD in the convex and strongly convex settings, respectively
-\cite{robbins1971convergence,nemirovski2009robust}, while being projection-free.
-It should also be highlighted that the method is single-loop, as opposed to the
-two-loop design of most other previously mentioned methods designed to solve constrained problems like \eqref{eq:nedic-problem},
+achievable by SGD in the convex and strongly convex settings, respectively, while being projection-free \cite{robbins1971convergence,nemirovski2009robust}.
+It should also be highlighted that the method is single-loop, as opposed to the typical
+two-loop design of the previously mentioned penalty methods,
 which makes for a particularly simple implementation.
 
 Apart from \cite{nedich2023huber},
@@ -195,14 +193,14 @@ among existing work on constrained stochastic optimization,
 the settings considered by Fercoq et al. \cite{fercoq2019almost},
 Li et al. \cite{li2023softplus}, and Xu et al. \cite{xu2020primal}
 are the most closely related to ours.
-Of those, \cite{nedich2023huber} and \cite{fercoq2019almost} consider
-the special case of affine constraints, and in \cite{nedich2023huber},
-\cite{li2023softplus}, and \cite{xu2020primal}, the authors
+Of those, \cite{fercoq2019almost} and \cite{nedich2023huber} consider
+the special case of affine constraints, and in \cite{xu2020primal},
+\cite{nedich2023huber}, and \cite{li2023softplus}, the authors
 assume a finite constraint set. The setting we consider therefore generalizes those of prior works.
 Further, \cite{li2023softplus} focuses on strongly convex finite-sum objectives, in order
 to leverage accelerated stochastic gradient methods such as SVRG \cite{johnson2013svrg}.
 In contrast, we will consider objectives that contain general expected value functions,
-and provide analysis for both strongly convex, as well as general convex settings.
+and provide analysis for both strongly convex, as well as general convex objectives.
 Finally, both \cite{fercoq2019almost} and \cite{xu2020primal}
 make assumptions to ensure that the stochastic
 gradients have uniformly bounded variance. However, this assumption does not apply to many
@@ -226,6 +224,6 @@ In the following, we will first begin with a review of the relevant background m
 fields of probability and convex optimization in \cref{chap:background}.
 The main contributions of this work
 are then presented in \cref{chap:sipm}, where we formulate our algorithm
-and prove various convergence results under mild assumptions on the problem setting beyond convexity.
-We back our theoretical analysis up with numerical experiments in \cref{chap:numerical-experiments}.
+and prove various convergence results under relatively mild assumptions on the problem setting beyond convexity.
+We support our theoretical analysis with numerical experiments in \cref{chap:numerical-experiments}.
 Finally, we summarize our findings and point to future research directions in \cref{chap:outlook}.
