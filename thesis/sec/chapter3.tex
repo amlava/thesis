@@ -33,7 +33,7 @@ the constrained stochastic optimization problem
 \end{equation}
 
 The algorithm proceeds as follows.
-We start from an initial point $x_0\in\R^n$. In the beginning of each iteration
+We start from an initial point $x_0\in\dom(f)$. In the beginning of each iteration
 $k\in\N_0$, we sample from the distribution of $\xi$. Then,
 based on this sample,
 we calculate a stochastic gradient (see \cref{ex:stochastic-gradient}), $g_k$, of the \textbf{penalized objective}
@@ -669,8 +669,8 @@ We will now formulate and prove the lemma.
     \Cref{ass:slater-point} implies $0\in\interior(\range \varPsi)$. Indeed,
     the constant function $\tilde{y} \equiv -\rho$ is an element of $L_1(\Xi, \R)$,
     thus $\tilde{y} \in \text{range}(\varPsi)$, by \cref{ass:slater-point}.
-    In particular, this implies that $(\tilde{y}/2, -\tilde{y}/2) \subset \text{range}(\varPsi)$.
-    Since $0$ is contained in $(\tilde{y}/2, -\tilde{y}/2)$, we can conclude $0\in\text{int}(\text{range}\varPsi)$.
+    In particular, $(\tilde{y}/2, \infty) \subset \text{range}(\varPsi)$.
+    Since $0$ is contained in $(\tilde{y}/2, \infty)$, we can conclude $0\in\text{int}(\text{range}\varPsi)$.
     Therefore, we
     can apply \cref{prop:robinson-ursescu}, which guarantees the existence of a constant
     $c\in\R_{\geq 0}$ such that
