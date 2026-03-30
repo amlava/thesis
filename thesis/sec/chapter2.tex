@@ -22,7 +22,7 @@ we will omit its subscript, that is, we will write
 \]
 The euclidian inner product is denoted by $\langle \cdot, \cdot \rangle$.
 
-For $x\in\R^n$ we will write $(x)_+$ for the elementwise application of $\max(\cdot, 0)$ to $x$,
+For $x\in\R^n$, we will write $(x)_+$ to denote the elementwise application of $\max(\cdot, 0)$ to $x$,
 that is, $(x)_+$ is defined as the vector $y\in\R^n$
 such that
 \[
@@ -30,8 +30,9 @@ such that
 \]
 where $x_i$ and $y_i$ denote the $i$-th component of $x$ and $y$, respectively, for $i\in\{\,1,\dots,n\,\}$.
 
-For a function $f\colon\R^n\to\R$ differentiable at $x\in\R^n$, we denote the gradient of $f$ at $x$ by
-$\nabla f(x)$. If $f$ is merely subdifferentiable at $x\in\R^n$ (see \cref{def:subgradient}), we will use the
+For a function $f\colon\R^n\to\R$ that is differentiable at $x\in\R^n$, we denote the gradient of $f$ at $x$ by
+$\nabla f(x)$.
+If $f$ is merely subdifferentiable at $x\in\R^n$ (see \cref{def:subgradient}), we will use the
 notation $\tilde{\nabla} f(x)$ to refer to a subgradient of $f$ at $x$, which will typically be arbitrary,
 unless otherwise specified.
 
@@ -57,7 +58,7 @@ for all $x,y\in\R^n$ and any $\epsilon\in(0, \infty)$.
 \section{Probability theory}
 
 Most of the contents of this section are standard and can be found in various texts
-such as~\cite{vershynin2018high,billingsley1995}. Some content is more specialized, in which case
+such as~\cite{vershynin2018high,billingsley1995}. Some material is more specialized, in which case
 we will point to additional references.
 
 \subsection{Measure and integration}
@@ -475,7 +476,7 @@ Below, we state some further properties of conditional expectations.
     $\Var(X_1 + \cdots + X_N \mid Y) = \Var(X_1 \mid Y) / N$ --- a fact that will be used later.
 \end{remark}
 
-\begin{proposition}
+\begin{proposition}[Monotonicity]
     \label{prop:conditional-variance-properties}
     Let $(\Omega, \mathcal{F}, \Prob)$ be a probability space and
     let $X\colon \Omega \to \R^n$ be an integrable random variable.
@@ -488,8 +489,6 @@ Below, we state some further properties of conditional expectations.
 \end{proposition}
 
 \subsection{Martingales}
-
-The contents of this section are relevant for \cref{sec:high-probability-bounds}.
 
 \begin{definition}[Filtration]
     Let $(\Omega, \mathcal{F}, \Prob)$ be a probability space. A sequence
@@ -557,7 +556,7 @@ It was subsequently extended to martingales by Azuma \cite{azuma1967weighted}.
 
 Most of the contents of this section are standard, and can be found in various works in optimization such
 as \cite{rockafellar1997convex,garrigos2023handbook}. For an introduction to convex optimization with a focus
-on modelling of real-life problems,
+on modelling,
 we refer the reader to \cite{boyd2004convex}.
 For more specialized content, we will
 point to additional references.
@@ -906,17 +905,21 @@ Clearly, strongly convex functions are convex.
 \subsection{Stochastic optimization}
 
 Throughout this subsection, we fix an arbitrary probability space $(\Omega, \mathcal{F}, \Prob)$.
-The key reference for this section is
+The main reference for this section is
 \cite{duchi2018introductory}.
 
 \begin{definition}
-    Let $f\colon \R^n\to\bar{R}$ be a proper and convex.
+    Let $f\colon \R^n\to\bar{\R}$ be a proper and convex function.
     A random vector $g\colon\Omega\to\R^n$ is called a \textbf{stochastic (sub-)gradient of $f$
     at $x\in\R^n$}, if
     \[
         \E(g)\in\partial f(x).
     \]
 \end{definition}
+
+We note that our definition of stochastic gradients --- in particular, the requirement that
+they are unbiased subgradient estimates ---
+is not standard, and other literature on stochastic optimization might use a different definition.
 
 \begin{example}[Per-sample stochastic gradient]
     \label{ex:stochastic-gradient}
@@ -953,7 +956,7 @@ A \textbf{convex stochastic optimization problem} has the form
     \min_{x\in\mathcal{X}} \Big\{\, f(x) := \E(F_\xi(x)) \,\Big\}\,,
 \end{equation}
 where $\emptyset \neq \mathcal{X}\subset\R^n$, $\xi\colon\Omega\to\R^m$ is a random vector,
-and $F\colon\R^n \times \R^m \to \bar{\R}, (x, z) \mapsto F_z(x)$ is a proper function that satisfies
+and $F\colon\R^n \times \R^m \to \bar{\R}$ is a proper function that satisfies
 \begin{itemize}
     \item[-] $x\to F_{\xi(\omega)}(x)$ is convex for almost every $\omega\in\Omega$, and
     \item[-] $\omega\to F_{\xi(\omega)}(x)$ is measurable for all $x\in\R^n$.
@@ -997,10 +1000,10 @@ can be exploited in algorithm design. This often leads to problems that can be f
 where now the objective consists of a differentiable part $F\colon \R^n\times\R^m \to \R$, and a potentially less well-behaved
 part $r\colon\R^n\to\bar{\R}$. For example, the function $r$ can be
 the $\ell_1$-regularizer $x\mapsto \lambda \norm{x}_1$ to promote sparsity, which is a non-differentiable operation at $x = 0$.
-Another popular choice is to use $r$ to encode some constraints of the form $x\in \mathcal{S}\subset\R^n$ directly into $f$, by letting
+Another popular choice is to use $r$ to encode some constraints of the form $x\in S\subset\R^n$ directly into $f$, by letting
 \[
     r(x) := \begin{cases}
-        0, \quad&\text{if $x\in\mathcal{S}$,}\\
+        0, \quad&\text{if $x\in S$,}\\
         \infty, \quad&\text{else.}
     \end{cases}
 \]
@@ -1106,11 +1109,12 @@ For further reading, we refer the reader to \cite{rockafellar1998variational}.
     \[
         \varPsi^{-1}(y) := \{\, x\in X \mid y\in\varPsi(x) \,\}.
     \]
-    The multifunction $\varPsi$ is said to be \textbf{closed at a point} $x\in X$ if
-    $x_k \to x$, $y_k\in \varPsi(x_k)$, and $y_k \to y$ imply that $y\in\varPsi(x)$.
+    The multifunction $\varPsi$ is said to be \textbf{closed at a point} $x\in X$ if,
+    for sequences $(x_k)_{k\in\N} \subset X$ and $(y_k)_{k\in\N} \subset Y$, the relations
+    $\lim_{k\to\infty} x_k = x$, $y_k\in \varPsi(x_k) \; \forall k\in\N$, and $\lim_{k\to\infty} y_k = y$ imply that $y\in\varPsi(x)$.
     If $\varPsi$ is closed at all points $x\in X$, then $\varPsi$ is said to be \textbf{closed}.
     Finally, it is said that $\varPsi$ is \textbf{convex} if, for any $x_1,x_2\in X$ and
-    w$t\in [0, 1]$,
+    $t\in [0, 1]$,
     \[
         t \varPsi(x_1) + (1 - t) \varPsi(x_2) \subset \varPsi(t x_1 + (1 - t) x_2).
     \]
