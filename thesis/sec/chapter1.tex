@@ -59,11 +59,15 @@ The objective $f$ is composed of two functions: the expectation
 functional $\E(F_\xi)\colon\R^n\to\R$, which we assume to
 be smooth, and the potentially nonsmooth function $r\colon\R^n\to\R\cup\{\infty\}$,
 which is sometimes referred to as the \textit{regularizer}.
-We are particularly interested in the case where the number of constraints
-induced by the distribution of $\xi$ is large, possibly even infinite.
 Notable instances of problems that can be formulated in this way
 include primal support vector machines \cite{fercoq2019almost,hastie2009elements}, and
 robust optimization by sampling \cite{ben2009robust,calafiore2005uncertain,xu2020primal}.
+We are particularly interested in the case where the number of constraints
+induced by the distribution of $\xi$ is large, possibly even infinite.
+These \textit{large-scale} constraints prevent the use of classical methods
+in deterministic optimization, which need to process all constraints at once,
+which motivates the development of a method that only needs to process
+a small amount of constraints at a time.
 
 % Closely related to problems like \eqref{eq:main-problem-copy} are \textit{chance constrained}
 % optimization problems, which take the form
@@ -122,8 +126,7 @@ popular examples of penalty functions are
 where we denote by $(y)_+$ the elementwise application of $x\mapsto \max(0, x)$ to the vector $y\in\R^m$.
 Unfortunately, these penalty functions suffer from well-known problems: The smooth penalty $\pi_{\ell_2}$ will in general not
 recover a feasible point of \eqref{eq:general-constrained-problem} --- no matter how large $\gamma$
-is chosen. Besides this, it also suffers from the problem that its gradient is unbounded
-on $\R^n$, which leads to issues related to poor conditioning. On the other hand, the
+is chosen. Besides this, it also suffers from the problem of unbounded gradients, which leads to issues related to poor conditioning. On the other hand, the
 nonsmooth penalty $\pi_{\ell_1}$ is \textit{exact}, which means that there does
 exist a penalty parameter $\gamma^\star\in(0,\infty)$ such that the minimizer
 of $f + \gamma^\star \pi_{\ell_1}$ is the same as that of the original constrained problem.
@@ -131,6 +134,8 @@ However, it is not clear in general how to choose $\gamma^\star$, and
 the non-differentiability introduces problems for gradient-based methods.
 For more information on penalty methods, one can consult standard references such as
 the works by Nocedal \& Wright \cite{nocedal2006numerical}, and Bertsekas \cite{bertsekas1997nonlinear}.
+Lastly, as these penalties need to evaluate all $m$ constraints at once, they are not applicable
+to the large-scale problems that we care about.
 % Penalty methods are typically implemented with a two-loop iterative algorithm, where, in the inner loop,
 % one applies some optimization method to \dots for some number of iterations.
 % Then, in the outer loop, $\gamma$ is increased, and one again enters the inner loop, this time starting
@@ -171,7 +176,8 @@ there exists a constant $G\in(0,\infty)$ such that
 $\nabla \pi_k^\text{hub}(x) \leq G$ for all $x\in\R^n$ and $k\in\N_0$.
 These properties are very desirable for mathematical analysis.
 Indeed,
-the authors designed a single-loop iterative method around the penalty sequence $(\pi_k^\text{hub})$ and proved that
+the authors designed a single-loop iterative method around the penalty sequence $(\pi_k^\text{hub})$,
+which only requires the evaluation of one constraint per iteration. They proved that
 --- under reasonable assumptions --- their method converges to the solution of problem \eqref{eq:nedic-problem}.
 More specifically, for any $\epsilon\in(0,\infty)$,
 one can achieve convergence rates of $\mathcal{O}(\log^{(1+3\epsilon)/2} / \sqrt{K})$ in the convex case, and
