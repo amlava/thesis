@@ -1,22 +1,21 @@
 \chapter{Summary and Outlook}
 \label{chap:outlook}
 
-We developed a method for stochastic optimization problems subject to almost sure affine constraints
-of the form
+We developed a method for stochastic optimization problems subject to almost sure constraints:
 \begin{equation*}
     \begin{aligned}
     &\min_{x \in \mathbb{R}^n} \, \{\, f(x) := \E(F_\xi(x)) + r(x) \,\} \\
     &\textup{subject to} \quad g(x, \xi) \leq 0 \quad \textnormal{almost surely}.
     \end{aligned}
 \end{equation*}
-Our method naturally handles the case where there are infinitely many constraints, which is more general than
-the settings which have been considered in related works \cite{nedich2023huber,li2023softplus}. For example,
-our guarantees hold in the setting of
-robust optimization by sampling
-\cite{ben2009robust,xu2020primal,calafiore2005uncertain}.
+Our method naturally handles the case where there are infinitely many nonlinear constraints,
+which is more general than
+the settings which have been considered in related works \cite{nedich2023huber,li2023softplus}.
 Further, because our algorithm
-uses penalty functions to softly enforce constraints, it is applicable even if the constraints are not fully satisfiable.
-Empirically, we found that the iterates still converge to a reasonable solution in that case (see \cref{sec:numerical-example-svm}).
+uses penalty functions to softly enforce constraints, it is applicable even if the constraints
+are not fully satisfiable.
+Empirically, we found that the iterates still converge to a reasonable solution in
+that case (see \cref{sec:numerical-example-svm}).
 
 We analyzed the convergence
 properties of the method in the convex and strongly convex regimes.

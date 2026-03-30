@@ -280,7 +280,8 @@ We will refer back to this example in our numerical experiments in \cref{chap:nu
         \end{cases}
     \]
     for all $k\in\N_0$. The sequence $(h_k^\text{hub})_{k\in\N_0}$ is a sequence of convex and continuously
-    differentiable functions with $h_k^\text{hub}(x) \geq (x)_+$ for all $x\in\R$ and $k\in\N_0$,
+    differentiable functions. For all $k\in\N_0$, it holds that
+    $h_k^\text{hub}(x) \geq (x)_+$ for all $x\in\R$ with $x \geq 0$,
     and
     \[
         h_k^{\text{hub}}(x) \leq \frac{\delta_k}{4}
@@ -518,7 +519,7 @@ the quantitative convergence rates of our methods.
 
 The proof for almost sure convergence hinges on two technical lemmata. The first is the well-known
 Robbins-Siegmund lemma, which provides a general sufficient condition to guarantee almost sure
-convergence of so-called "almost supermartingales".
+convergence of so-called \textit{almost supermartingales}.
 \begin{lemma}[Robbins-Siegmund]
     \label{lem:robbins-siegmund}
     Let $(\mathcal{F}_k)_{k\in\N}$ be an increasing sequence of $\sigma$-algebras and $v_k, a_k,
