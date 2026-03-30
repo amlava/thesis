@@ -244,9 +244,9 @@ Next, we will make some assumptions about the penalty sequence of \cref{alg:seqp
         \item There exists a sequence $(\alpha_k)_{k\in\N_0}$ such that
         $\pi_k(\hat{x}) \leq \alpha_k$ and $\sup_{k\in\N_0} \gamma_k\alpha_k < \infty$
         for all $k\in\N_0$ and all feasible points $\hat{x}\in\mathcal{X}$.
-        \item The gradients of $(h_k)_{k\in\N_0}$ have uniformly bounded gradient norm:
+        \item The gradients of $(h_k)_{k\in\N_0}$ have uniformly bounded derivatives:
             \[
-                \sup_{k\in\N_0}\sup_{x\in\R} \norm{\nabla h_k(x)} < \infty.
+                \sup_{k\in\N_0}\sup_{x\in\R} | h^\prime_k(x) | < \infty.
             \]  
         % There exists
         % a constant $G\in(0,\infty)$ such that
@@ -288,7 +288,7 @@ We will refer back to this example in our numerical experiments in \cref{chap:nu
     for all $k\in\N_0$ and $x\in\R$ with $x \leq 0$.
     Further, it holds that
     \[
-        \nabla h_k^{\text{hub}}(x) = \begin{cases}
+        (h_k^{\text{hub}})^\prime(x) = \begin{cases}
             1, \quad&\text{if } x > \delta_k, \\
             \frac{x + \delta_k}{2\delta_k}, \quad&\text{if } -\delta_k \leq x \leq \delta_k, \\
             0, \quad&\text{if $x < -\delta_k$,}
@@ -296,7 +296,7 @@ We will refer back to this example in our numerical experiments in \cref{chap:nu
     \]
     for all $k\in\N_0$ and $x\in\R$, so, in particular,
     \[
-        \norm{\nabla h_k^{\text{hub}}(x)}
+        |(h_k^{\text{hub}})^\prime(x)|
         \leq
         1
     \]
@@ -666,7 +666,12 @@ We will now formulate and prove the lemma.
         \mathcal{X}.
     \]
     Hence we have $\dist(x, \mathcal{X}) = \dist(x, \varPsi^{-1}(0))$.
-    Note that \cref{ass:slater-point} implies $0 \in \interior(\range \varPsi )$. Therefore we
+    \Cref{ass:slater-point} implies $0\in\interior(\range \varPsi)$. Indeed,
+    the constant function $\tilde{y} \equiv -\rho$ is an element of $L_1(\Xi, \R)$,
+    thus $\tilde{y} \in \text{range}(\varPsi)$, by \cref{ass:slater-point}.
+    In particular, this implies that $(\tilde{y}/2, -\tilde{y}/2) \subset \text{range}(\varPsi)$.
+    Since $0$ is contained in $(\tilde{y}/2, -\tilde{y}/2)$, we can conclude $0\in\text{int}(\text{range}\varPsi)$.
+    Therefore, we
     can apply \cref{prop:robinson-ursescu}, which guarantees the existence of a constant
     $c\in\R_{\geq 0}$ such that
     \[

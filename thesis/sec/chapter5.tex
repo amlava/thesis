@@ -10,7 +10,7 @@ of the form
     \end{aligned}
 \end{equation*}
 Our method naturally handles the case where there are infinitely many constraints, which is more general than
-than the settings which have been considered in related works \cite{nedich2023huber,li2023softplus}. For example,
+the settings which have been considered in related works \cite{nedich2023huber,li2023softplus}. For example,
 our guarantees hold in the setting of
 robust optimization by sampling
 \cite{ben2009robust,xu2020primal,calafiore2005uncertain}.
@@ -24,9 +24,9 @@ In the convex setting, one can achieve a convergence rate of
 $\mathcal{O}(\log^{1/2 + \epsilon} K / \sqrt{K})$ for any $\epsilon \in (0,\infty)$.
 The convergence rate can be improved
 to $\mathcal{O}(\log^{\epsilon} K / K)$ for any $\epsilon \in (0,\infty)$, in the strongly convex case.
-These rates improve upon the rates achieved in the closely related work by Fercoq et al. \cite{fercoq2019almost}
-without the need of a global variance bound on the stochastic gradients.
-Furthermore, it is known that stochastic projected gradient descent achieves the minimax optimal convergence rates of
+These rates improve upon the rates achieved in the closely related work by Fercoq et al. \cite{fercoq2019almost},
+without the need of a global variance bound on the stochastic gradients, while also being applicable to nonlinear constraints.
+Further, it is known that stochastic projected gradient descent achieves the minimax optimal convergence rates of
 $\mathcal{O}(1/\sqrt{K})$ in the convex setting, and $\mathcal{O}(1/K)$ in the strongly convex setting \cite{nemirovski_yudin_1983,agarwal2009information}.
 Thus, the convergence rates of our method match the optimal convergence rates
 up to an arbitrarily small logarithmic factor, while being projection-free.
