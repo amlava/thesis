@@ -35,24 +35,26 @@ with high-probability in the general convex setting.
 Notably, we did not rely on any of the typical
 global boundedness assumptions regarding the stochastic gradients of the objective $f$.
 
-There are a lot of research directions for future work.
-The most glaring restriction is that we only handle constraints that
-are affine in the decision variable.
-An extension to more general functional inequalities would be a significant next step.
-It would also be interesting to analyze the algorithm in the more common setting of chance constraints, where
+There are a lot of directions for future research.
+One interesting avenue is to adapt the algorithm to the setting of chance constraints, where
 constraints only need to hold with some
 high probability, instead of almost surely.
-A straight-forward way to transform a chance constrained problem into an
+A straight-forward way to approximate a chance constrained problem by an
 almost sure one is through the sampling-and-discarding approach
-\cite{campi2011sampling}. However, this requires the ability to sample
-a possibly very large amount of times, which is not feasible
-in online optimization \cite{shalev2025online} settings, where one typically cannot sample on-demand.
+\cite{campi2011sampling}. However, this is only and approximation and further
+requires the ability to sample
+a possibly very large amount of times. This is not always feasible, for example,
+in online optimization settings, where on-demand sampling is not possible \cite{shalev2025online}.
+On a related note, the current analysis of our algorithm does not hold in the general
+online optimization setting, as we require an i.\,i.\,d. assumption on the sampling process,
+which is unrealistic in the online context.
 
-Another possible avenue for future research is the use of acceleration methods.
+Another possible avenue for future research is the use of methods for accelerating convergence.
 To speed up the convergence of first-order methods, a popular method in deterministic optimization
 is Nesterov's accelerated
-gradient method (AGD) \cite{nesterov1983method,nesterov2004introductory}. In stochastic optimization, a naive application
-of AGD does not lead to faster (asymptotic) convergence rates, due to an increase in variance in the gradient estimates.
+gradient method (AGD) \cite{nesterov1983method,nesterov2004introductory}.
+In stochastic optimization, however, a naive application
+of AGD does typically not lead to faster (asymptotic) convergence rates, due to an increase in variance in the gradient estimates.
 Instead, acceleration is achieved via variance reduction methods, such as SAGA \cite{defazio2014saga} and SVRG \cite{johnson2013svrg}.
 These algorithms achieve acceleration, while keeping variance managable by periodically calculating full gradients of the objective.
 Unfortunately, a straight-forward application of these methods to our setting is not possible,
